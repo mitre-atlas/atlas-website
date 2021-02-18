@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt-content-test',
+    title: 'Adversarial ML Threat Matrix',
     htmlAttrs: {
       lang: 'en'
     },
