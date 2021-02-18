@@ -1,0 +1,3 @@
+[submodule "content/threat-matrix"]
+	path = content/threat-matrix
+	url = git@gitlab.mitre.org:advml/data.git
