@@ -1,7 +1,7 @@
 <template>
-  <div class="index-homepage">
-    <Header />
-  </div>
+    <div class="matrix-page">
+        <Header />
+    </div>
 </template>
 
 <script>

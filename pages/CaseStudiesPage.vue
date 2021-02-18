@@ -1,7 +1,7 @@
 <template>
-  <div class="index-homepage">
-    <Header />
-  </div>
+    <div class="case-studies">
+      <Header />
+    </div>
 </template>
 
 <script>
