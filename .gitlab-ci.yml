@@ -8,5 +8,7 @@ pages:
   artifacts:
     paths:
       - public
+  tags:
+    - docker
   only:
     - master
