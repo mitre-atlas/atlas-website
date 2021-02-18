@@ -1,6 +1,6 @@
 <template>
-  <div class="index-homepage">
-    <Header />
+  <div>
+      <Header />
   </div>
 </template>
 
