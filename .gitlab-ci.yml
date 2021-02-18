@@ -1,0 +1,12 @@
+image: node:alpine3.13
+
+pages:
+  script:
+    - npm install
+    - npm run generate
+    - mv dist public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
