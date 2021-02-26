@@ -17,14 +17,17 @@
                             <NuxtLink to="/matrixpage">Matrix</NuxtLink>
                         </b-nav-item>
                         <b-nav-item href="">
-                            <NuxtLink to="/casestudiespage">Case Studies</NuxtLink>
+                            <NuxtLink to="/content/?page=case-studies-page">Case Studies</NuxtLink>
                         </b-nav-item>
                         <b-nav-item-dropdown text="Resources" class="resources-list">
                             <b-dropdown-item href="">
-                                <NuxtLink to="/advesarialml101">Adversarial ML 101</NuxtLink>
+                                <NuxtLink to="/content/?page=adversarial-ml-101">Adversarial ML 101</NuxtLink>
                             </b-dropdown-item>
                             <b-dropdown-item href="">
-                                <NuxtLink to="/contribute">Contribute</NuxtLink>
+                                <NuxtLink to="/content/?page=contributors">Contribute</NuxtLink>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="">
+                                <NuxtLink to="/content/?page=feedback">Feedback</NuxtLink>
                             </b-dropdown-item>
                         </b-nav-item-dropdown>
                     </b-navbar-nav>
