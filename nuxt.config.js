@@ -48,5 +48,37 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  hooks: {
+    'content:file:beforeParse': (file) => {
+
+      console.log(file.path)
+      if (file.path.includes('tactics_full.yaml') || file.path.includes('techniques_full.yaml')) {
+        // Insert a - before each non-empty-line non-comment --- or #
+        // Match up until the :
+        // var regex = /^([^\s-#]+):/gm // includes files that have ---, like tactics and techniques.yaml
+        var regex = /^([^\s#]+):/gm // no ----
+
+        // Debug
+        // var match = regex.exec(file.data)
+        // while (match != null) {
+        //   console.log(match[0])
+        //   match = regex.exec(file.data)
+        // }
+
+        // Make each entry a list object, with ID
+        file.data = file.data.replace(regex, '- id: $1')
+
+        // Prepend list root after document separator
+        // file.data = file.data.replace('---', '---\nitems:') // When there is a ----
+        file.data = 'items:\n' + file.data
+        // console.log(file.data);
+      }
+    },
+
+    'content:options': (options) => {
+      // console.log('Content options:', options)
+    }
   }
 }
