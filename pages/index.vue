@@ -1,6 +1,5 @@
 <template>
   <div class="index-homepage">
-    <Header />
     <nuxt-content :document="page" />
     <!-- <div>
       <h1>Adversarial Machine Learning</h1>
@@ -12,11 +11,8 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
-
 export default {
   components: {
-    Header
   },
   async asyncData ({ $content }) {
     const page = await $content('pages/adversarial-ml-threat-matrix').fetch()
