@@ -14,7 +14,7 @@
                         <b-nav-item href="/matrix/">Matrix</b-nav-item>
                         <b-nav-item href="/tactics/">Tactics</b-nav-item>
                         <b-nav-item href="/techniques/">Techniques</b-nav-item>
-                        <b-nav-item href="/casestudiespage/">Case Studies</b-nav-item>
+                        <b-nav-item href="/content/?page=case-studies-page">Case Studies</b-nav-item>
                         <b-nav-item-dropdown text="Resources" class="resources-list">
                             <b-dropdown-item href="/content/?page=adversarial-ml-101">Adversarial ML 101</b-dropdown-item>
                             <b-dropdown-item href="/content/?page=contributors">Contribute</b-dropdown-item>
