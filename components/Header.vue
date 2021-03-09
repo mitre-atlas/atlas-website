@@ -14,7 +14,13 @@
                     <b-navbar-nav class="ml-auto">
                         <b-navbar-nav>
                         <b-nav-item href="">
-                            <NuxtLink to="/matrixpage">Matrix</NuxtLink>
+                            <NuxtLink to="/matrix">Matrix</NuxtLink>
+                        </b-nav-item>
+                        <b-nav-item href="">
+                            <NuxtLink to="/tactics">Tactics</NuxtLink>
+                        </b-nav-item>
+                        <b-nav-item href="">
+                            <NuxtLink to="/techniques">Techniques</NuxtLink>
                         </b-nav-item>
                         <b-nav-item href="">
                             <NuxtLink to="/casestudiespage">Case Studies</NuxtLink>
@@ -45,7 +51,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 a {
     text-decoration: none;
