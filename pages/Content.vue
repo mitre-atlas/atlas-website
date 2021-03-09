@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
     <div class="content-wrapper" v-if="page != null">
       <nuxt-content :document="page" />
     </div>
@@ -8,7 +7,6 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
 
 export default {
   data () {
@@ -17,7 +15,6 @@ export default {
     }
   },
   components: {
-    Header
   },
   methods: {
     setupContent () {
