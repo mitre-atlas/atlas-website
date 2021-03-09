@@ -19,8 +19,6 @@
                             <b-dropdown-item href="/content/?page=adversarial-ml-101">Adversarial ML 101</b-dropdown-item>
                             <b-dropdown-item href="/content/?page=contributors">Contribute</b-dropdown-item>
                             <b-dropdown-item href="/content/?page=feedback">Feedback</b-dropdown-item>
-                            <b-dropdown-item href="/advesarialml101/">Adversarial ML 101</b-dropdown-item>
-                            <b-dropdown-item href="/contribute/">Contribute</b-dropdown-item>
                         </b-nav-item-dropdown>
                     </b-navbar-nav>
                         <!-- <b-nav-form>
