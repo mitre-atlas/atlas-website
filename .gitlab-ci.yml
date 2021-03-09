@@ -10,5 +10,5 @@ pages:
       - public
   tags:
     - docker
-  only:
-    - master
+  when:
+    - manual
