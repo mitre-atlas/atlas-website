@@ -13,31 +13,20 @@
                     <!-- Right aligned nav items -->
                     <b-navbar-nav class="ml-auto">
                         <b-navbar-nav>
-                        <b-nav-item href="">
-                            <NuxtLink to="/matrix">Matrix</NuxtLink>
+                        <b-nav-item href="/matrix/">Matrix</NuxtLink>
                         </b-nav-item>
-                        <b-nav-item href="">
-                            <NuxtLink to="/tactics">Tactics</NuxtLink>
-                        </b-nav-item>
-                        <b-nav-item href="">
-                            <NuxtLink to="/techniques">Techniques</NuxtLink>
-                        </b-nav-item>
-                        <b-nav-item href="">
-                            <NuxtLink to="/casestudiespage">Case Studies</NuxtLink>
-                        </b-nav-item>
+                        <b-nav-item href="/tactics/">Tactics</b-nav-item>
+                        <b-nav-item href="/techniques/">Techniques</b-nav-item>
+                        <b-nav-item href="/casestudiespage/">Case Studies</b-nav-item>
                         <b-nav-item-dropdown text="Resources" class="resources-list">
-                            <b-dropdown-item href="">
-                                <NuxtLink to="/advesarialml101">Adversarial ML 101</NuxtLink>
-                            </b-dropdown-item>
-                            <b-dropdown-item href="">
-                                <NuxtLink to="/contribute">Contribute</NuxtLink>
-                            </b-dropdown-item>
+                            <b-dropdown-item href="/advesarialml101/">Adversarial ML 101</b-dropdown-item>
+                            <b-dropdown-item href="/contribute/">Contribute</b-dropdown-item>
                         </b-nav-item-dropdown>
                     </b-navbar-nav>
-                        <b-nav-form>
+                        <!-- <b-nav-form>
                             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
                             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                        </b-nav-form>
+                        </b-nav-form> -->
                     </b-navbar-nav>
                 </b-collapse>
             </b-navbar>
@@ -61,10 +50,6 @@ a {
 .resources-list a  {
     text-decoration: none;
     color: black;
-}
-
-NuxtLink {
-    color: blue;
 }
 
 </style>
