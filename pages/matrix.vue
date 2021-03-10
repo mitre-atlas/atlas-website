@@ -3,7 +3,15 @@
     <h1>{{title}}</h1>
     <p>{{description}}</p>
 
-    <b-table bordered hover :fields="fields" :items="items">
+    <b-table
+      :fields="fields"
+      :items="items"
+      bordered
+      head-variant="light"
+      >
+      <template v-slot:head()="data">
+        <span v-html="data.field.label"></span>
+      </template>
       <template #cell()="data">
         <span v-html="data.value"></span>
       </template>
@@ -33,7 +41,11 @@ export default {
     })
 
     // Use the tactic names in order as the table columns
-    const fields = tactics.items.map(item => item.name)
+    // Formulate into links to the tactic
+    const fields = tactics.items.map((item) => {
+      const link = `<a href="/tactics/${item.id}">${item.name}</a>`
+      return link
+    })
 
     // Construct the table items
 
