@@ -13,7 +13,7 @@
       </p>
 
       <p>
-        <b>Tactics:</b> {{info.tactics}}
+        <b>Tactics:</b> <span v-html=info.tactics />
       </p>
     </b-card-text>
   </b-card>
@@ -37,8 +37,16 @@ export default {
     // Find the first info that contains the specified ID
     const info = content.items.find(info => info.id.includes(params.id))
 
-    // Consider creating a link out of the ID, parsing out the last element
-    console.log(info)
+    // Consider creating a link out of the tactics list, parsing out the last element as needed
+    info.tactics = info.tactics.map((id) => {
+      if (id.includes('.')) {
+        id = id.split('.').pop()
+      }
+      return `<a href="/tactics/${id}">${id}</a>`
+    })
+
+    // Turn into list of links
+    info.tactics = info.tactics.join(',')
 
     return { info }
   }
