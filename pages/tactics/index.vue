@@ -8,7 +8,7 @@
 <script>
 export default {
   async asyncData ({ $content }) {
-    const content = await $content('threat-matrix/tactics_full').only(['items']).fetch()
+    const content = await $content('threat-matrix/tactics').only(['items']).fetch()
 
     // Consider creating a link out of the ID, parsing out the last element
     content.items.forEach((value, index, array) => {

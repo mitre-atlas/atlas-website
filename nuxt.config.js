@@ -68,7 +68,7 @@ export default {
     'content:file:beforeParse': (file) => {
 
       console.log(file.path)
-      if (file.path.includes('tactics_full.yaml') || file.path.includes('techniques_full.yaml')) {
+      if (file.path.includes('tactics.yaml') || file.path.includes('techniques.yaml')) {
         // Insert a - before each non-empty-line non-comment --- or #
         // Match up until the :
         // var regex = /^([^\s-#]+):/gm // includes files that have ---, like tactics and techniques.yaml

@@ -24,7 +24,7 @@
 export default {
   async asyncData ({ $content, params }) {
     console.log(params.id)
-    const content = await $content('threat-matrix/techniques_full')
+    const content = await $content('threat-matrix/techniques')
       .only(['items'])
       // .where({
       //   'items.id': { $eq: params.id } // This isn't working - perhaps only supported for JSON
