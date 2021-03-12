@@ -1,6 +1,8 @@
 <template>
   <v-app-bar
     app
+    dark
+    color="grey darken-3"
     >
     <v-toolbar-title v-text="title" />
 
