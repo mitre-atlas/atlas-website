@@ -11,14 +11,14 @@
                     <!-- Right aligned nav items -->
                     <b-navbar-nav class="ml-auto">
                         <b-navbar-nav>
-                        <b-nav-item href="/matrix/">Matrix</NuxtLink>
-                        </b-nav-item>
+                        <b-nav-item href="/matrix/">Matrix</b-nav-item>
                         <b-nav-item href="/tactics/">Tactics</b-nav-item>
                         <b-nav-item href="/techniques/">Techniques</b-nav-item>
-                        <b-nav-item href="/casestudiespage/">Case Studies</b-nav-item>
+                        <b-nav-item href="/content/?page=case-studies-page">Case Studies</b-nav-item>
                         <b-nav-item-dropdown text="Resources" class="resources-list">
-                            <b-dropdown-item href="/advesarialml101/">Adversarial ML 101</b-dropdown-item>
-                            <b-dropdown-item href="/contribute/">Contribute</b-dropdown-item>
+                            <b-dropdown-item href="/content/?page=adversarial-ml-101">Adversarial ML 101</b-dropdown-item>
+                            <b-dropdown-item href="/content/?page=contributors">Contribute</b-dropdown-item>
+                            <b-dropdown-item href="/content/?page=feedback">Feedback</b-dropdown-item>
                         </b-nav-item-dropdown>
                     </b-navbar-nav>
                         <!-- <b-nav-form>
