@@ -1,10 +1,10 @@
 <template>
 <div>
-  <b-table bordered hover :fields="fields" :items="items">
-    <template #cell(id)="data">
-       <b-link :href="data.item.id">{{data.item.id}}</b-link>
+  <v-data-table :headers="fields" :items="items">
+    <template v-slot:[`item.id`]="{ item }">
+       <nuxt-link :to="`${$route.path}/${item.id}`">{{ item.id }}</nuxt-link>
     </template>
-  </b-table>
+  </v-data-table>
 </div>
 </template>
 
@@ -14,9 +14,9 @@ export default {
   props: ['items'],
   data: () => ({
     fields: [
-      { key: 'id', label: 'ID' },
-      { key: 'name', label: 'Name' },
-      { key: 'description', label: 'Description' }
+      { value: 'id', text: 'ID' },
+      { value: 'name', text: 'Name' },
+      { value: 'description', text: 'Description' }
     ]
   })
 }

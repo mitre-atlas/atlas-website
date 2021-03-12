@@ -1,13 +1,11 @@
 <template>
 <div>
-  <h1>{{title}}</h1>
+  <div class="text-h2">{{title}}</div>
   <info-table :items="content.items" />
 </div>
 </template>
 
 <script>
-import InfoTable from '../../components/InfoTable.vue'
-
 export default {
   async asyncData ({ $content }) {
     const content = await $content('threat-matrix/tactics_full').only(['items']).fetch()
@@ -21,9 +19,6 @@ export default {
     })
 
     return { content }
-  },
-  components: {
-    InfoTable
   },
   data: () => ({
     title: 'Adversarial ML Tactics'
