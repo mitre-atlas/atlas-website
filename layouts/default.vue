@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <v-app>
     <Header />
-    <b-container class="mt-5">
+    <!-- <b-container class="mt-5">
       <Nuxt />
-    </b-container>
-  </div>
+    </b-container> -->
+  </v-app>
 </template>
 
 <style>
