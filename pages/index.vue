@@ -12,18 +12,22 @@
 
 <script>
 export default {
-  components: {
-  },
+
   async asyncData ({ $content }) {
     const page = await $content('pages/adversarial-ml-threat-matrix').fetch()
 
     return {
       page
     }
-  }
+  },
+
+  // Populate store upon start
+  // async fetch () {
+  //   await this.$store.dispatch('getTactics')
+  //   // await this.$store.dispatch('getTechniques')
+  //   // await this.$store.dispatch('getCaseStudies')
+
+  //   console.log(this.$store.state.tactics.length)
+  // }
 }
 </script>
-
-<style>
-
-</style>

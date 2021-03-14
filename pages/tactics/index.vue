@@ -1,27 +1,19 @@
 <template>
 <div>
   <div class="text-h2">{{title}}</div>
-  <info-table :items="content.items" />
+  <info-table :items="getTactics" />
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  async asyncData ({ $content }) {
-    const content = await $content('threat-matrix/tactics').only(['items']).fetch()
-
-    // Consider creating a link out of the ID, parsing out the last element
-    content.items.forEach((value, index, array) => {
-      // Parse out true ID if ID string is fully qualified
-      if (value.id.includes('.')) {
-        array[index].id = value.id.split('.').pop()
-      }
-    })
-
-    return { content }
-  },
   data: () => ({
     title: 'Adversarial ML Tactics'
-  })
+  }),
+  computed: {
+    ...mapGetters(['getTactics'])
+  }
 }
 </script>

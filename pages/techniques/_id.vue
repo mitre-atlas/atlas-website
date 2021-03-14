@@ -9,11 +9,14 @@
 
       <p v-if="'subtechnique-of' in info">
         <span class="font-weight-bold">Sub-technique of:</span>
-        {{info['subtechnique-of']}}
+        <nuxt-link :to="`/techniques/${parentTechnique.id}`">{{ parentTechnique.name }}</nuxt-link>
       </p>
 
       <p>
-        <span class="font-weight-bold">Tactics:</span> <span v-html=info.tactics />
+        <span class="font-weight-bold">Tactics:</span>
+        <span v-for="(tactic, i) in referencedTactics" :key="i">
+          <nuxt-link :to="`/tactics/${tactic.id}`">{{tactic.name}}</nuxt-link>
+        </span>
       </p>
     </v-card-text>
   </v-card>
@@ -22,33 +25,19 @@
 
 <script>
 export default {
-  async asyncData ({ $content, params }) {
-    console.log(params.id)
-    const content = await $content('threat-matrix/techniques')
-      .only(['items'])
-      // .where({
-      //   'items.id': { $eq: params.id } // This isn't working - perhaps only supported for JSON
-      // })
-      .fetch()
-      .catch((err) => {
-        console.log(err)
+  computed: {
+    info () {
+      return this.$store.getters.getTechniqueById(this.$route.params.id)
+    },
+    parentTechnique () {
+      const fullId = this.info['subtechnique-of']
+      return this.$store.getters.getTechniqueWhereIdIn(fullId)
+    },
+    referencedTactics () {
+      return this.info.tactics.map((fullId) => {
+        return this.$store.getters.getTacticWhereIdIn(fullId)
       })
-
-    // Find the first info that contains the specified ID
-    const info = content.items.find(info => info.id.includes(params.id))
-
-    // Consider creating a link out of the tactics list, parsing out the last element as needed
-    info.tactics = info.tactics.map((id) => {
-      if (id.includes('.')) {
-        id = id.split('.').pop()
-      }
-      return `<a href="/tactics/${id}">${id}</a>`
-    })
-
-    // Turn into list of links
-    info.tactics = info.tactics.join(',')
-
-    return { info }
+    }
   }
 }
 </script>

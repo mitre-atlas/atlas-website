@@ -2,7 +2,7 @@
 <div>
   <v-data-table :headers="fields" :items="items">
     <template v-slot:[`item.id`]="{ item }">
-       <nuxt-link :to="`${$route.path}/${item.id}`">{{ item.id }}</nuxt-link>
+       <nuxt-link :to="`/${$route.name}/${item.id}`">{{ item.id }}</nuxt-link>
     </template>
   </v-data-table>
 </div>
