@@ -3,10 +3,75 @@ const yaml = require('js-yaml')
 
 export const state = () => ({
   data: {
-    // Represents the threat matrix data
+    // Represents the input threat matrix data
     tactics: [],
     techniques: [],
-    studies: []
+    studies: [],
+    // Represents the populated tactics, techniques, and subtechniques
+    matrix: []
+  },
+  // Mapping of tactic names to v-icons
+  tacticStyling: {
+    'Model Evasion': {
+      icon: 'mdi-eye-off',
+      color: 'deep-purple'
+    },
+    Reconnaissance: {
+      icon: 'mdi-account-search',
+      color: 'green lighten-2'
+    },
+    'Resource Development': {
+      icon: 'mdi-apps',
+      color: 'green'
+    },
+    'Initial Access': {
+      icon: 'mdi-door-open',
+      color: 'light-green darken-2'
+    },
+    Execution: {
+      icon: 'mdi-xml',
+      color: 'lime darken-2'
+    },
+    Persistence: {
+      icon: 'mdi-lock-open-plus',
+      color: 'amber'
+    },
+    'Privilege Escalation': {
+      icon: 'mdi-shield-account',
+      color: 'orange'
+    },
+    'Defense Evasion': {
+      icon: 'mdi-security',
+      color: 'orange lighten-2'
+    },
+    'Credential Access': {
+      icon: 'mdi-key',
+      color: 'orange'
+    },
+    Discovery: {
+      icon: 'mdi-cloud-search',
+      color: 'orange darken-2'
+    },
+    'Lateral Movement': {
+      icon: 'mdi-swap-horizontal-bold',
+      color: 'deep-orange lighten-2'
+    },
+    Collection: {
+      icon: 'mdi-file-multiple',
+      color: 'deep-orange'
+    },
+    'Command and Control': {
+      icon: 'mdi-lan-connect',
+      color: 'red'
+    },
+    Exfiltration: {
+      icon: 'mdi-package-down',
+      color: 'red darken-2'
+    },
+    Impact: {
+      icon: 'mdi-fire',
+      color: 'red darken-4'
+    }
   }
 })
 
@@ -17,6 +82,12 @@ export const getters = {
   },
   getTechniques: (state) => {
     return state.data.techniques
+  },
+  getMatrix: (state) => {
+    return state.data.matrix
+  },
+  getTacticStyling: (state) => {
+    return state.tacticStyling
   },
 
   // Find by ID (exact match)
@@ -55,7 +126,7 @@ export const actions = {
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
-  async nuxtServerInit ({ commit }, { req }) {
+  async nuxtServerInit ({ commit }) {
     // Retrieve the threat matrix YAML data and populate store upon start
     const getTactics = await fs.readFile('static/data/tactics.yaml', 'utf-8')
     const getTechniques = await fs.readFile('static/data/techniques.yaml', 'utf-8')
@@ -64,10 +135,53 @@ export const actions = {
     // Get all contents, then parse and commit payload
     const promise = Promise.all([getTactics, getTechniques, getCaseStudies])
       .then((contents) => {
+        // Parse YAML files
         const [tactics, techniques, studies] = contents.map(yaml.load)
 
+        // Build a populated version of the data, where tactics hold parent techniques
+        // and parent techniques hold subtechniques
+
+        // Split out subtechniques
+        const parentTechniques = techniques.filter((technique) => {
+          return !('subtechnique_of' in technique)
+        })
+        const subtechniques = techniques.filter((technique) => {
+          return ('subtechnique_of' in technique)
+        })
+
+        // Populate parent techniques with subtechniques
+        subtechniques.forEach((subtechnique) => {
+          const parentTechniqueId = subtechnique.subtechnique_of
+          const parentTechniqueIndex = parentTechniques.findIndex(t => t.id === parentTechniqueId)
+          const parentTechnique = parentTechniques[parentTechniqueIndex]
+
+          // Associate subtechnique with the parent technique
+          if ('subtechniques' in parentTechnique) {
+            parentTechnique.subtechniques.push(subtechnique)
+          } else {
+            parentTechnique.subtechniques = [subtechnique]
+          }
+        })
+
+        // Populate tactics with populated techniques
+        const populatedTactics = tactics.map((tactic) => {
+          // Build up the top-level parent techniques
+          const relevantFullTechniques = parentTechniques.filter((technique) => {
+            // Must be a parent-level technique that is under this tactic
+            return technique.tactics.some(parentTacticId => tactic.id === parentTacticId)
+          })
+
+          tactic.techniques = relevantFullTechniques
+
+          return tactic
+        })
+
+        const matrix = {
+          tactics: populatedTactics
+        }
+
         // Create an object with keys named the same as these vars
-        const payload = { tactics, techniques, studies }
+        const payload = { tactics, techniques, studies, matrix }
 
         commit('SET_THREAT_MATRIX_DATA', payload)
       })
