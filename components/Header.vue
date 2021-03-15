@@ -1,53 +1,107 @@
 <template>
-    <div class="header">
-        <div>
-            <b-navbar toggleable="lg" type="dark" variant="dark">
-                <b-navbar-brand href="/">MITRE | AdvML</b-navbar-brand>
+  <v-app-bar
+    app
+    dark
+    color="grey darken-3"
+    >
+    <v-toolbar-title v-text="title" />
 
-                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <v-spacer />
 
-                <b-collapse id="nav-collapse" is-nav>
+    <v-toolbar-items
+      v-for="(link, i) in links"
+      :key="i"
+      >
 
-                    <!-- Right aligned nav items -->
-                    <b-navbar-nav class="ml-auto">
-                        <b-navbar-nav>
-                        <b-nav-item href="/matrix/">Matrix</b-nav-item>
-                        <b-nav-item href="/tactics/">Tactics</b-nav-item>
-                        <b-nav-item href="/techniques/">Techniques</b-nav-item>
-                        <b-nav-item href="/content/?page=case-studies-page">Case Studies</b-nav-item>
-                        <b-nav-item-dropdown text="Resources" class="resources-list">
-                            <b-dropdown-item href="/content/?page=adversarial-ml-101">Adversarial ML 101</b-dropdown-item>
-                            <b-dropdown-item href="/content/?page=contributors">Contribute</b-dropdown-item>
-                            <b-dropdown-item href="/content/?page=feedback">Feedback</b-dropdown-item>
-                        </b-nav-item-dropdown>
-                    </b-navbar-nav>
-                        <!-- <b-nav-form>
-                            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-                            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                        </b-nav-form> -->
-                    </b-navbar-nav>
-                </b-collapse>
-            </b-navbar>
-        </div>
-    </div>
+      <v-menu
+        v-if="link.isDropdown"
+        offset-y
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            text
+            class="text-capitalize"
+            nuxt
+          >
+            {{ link.name }}
+            <v-icon right>
+              mdi-menu-down
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(childLink, j) in link.links"
+            :key="j"
+          >
+            <v-btn
+              v-text="childLink.name"
+              :href="childLink.href"
+              text
+              class="text-capitalize"
+              nuxt
+            />
+          </v-list-item>
+
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        v-else
+        v-text="link.name"
+        :href="link.href"
+        text
+        class="text-capitalize"
+        nuxt
+      ></v-btn>
+    </v-toolbar-items>
+  </v-app-bar>
 </template>
 
 <script>
 export default {
-
+  data: () => ({
+    title: 'MITRE | AdvML',
+    links: [
+      {
+        name: 'Matrix',
+        href: '/matrix'
+      },
+      {
+        name: 'Tactics',
+        href: '/tactics'
+      },
+      {
+        name: 'Techniques',
+        href: '/techniques'
+      },
+      {
+        name: 'Case Studies',
+        href: '/content/?page=case-studies-page'
+      },
+      {
+        name: 'Resources',
+        isDropdown: true,
+        links: [
+          {
+            name: 'Adversarial ML 101',
+            href: '/content/?page=adversarial-ml-101'
+          },
+          {
+            name: 'Contribute',
+            href: '/content/?page=contributors'
+          },
+          {
+            name: 'Feedback',
+            href: '/content/?page=feedback'
+          }
+        ]
+      }
+    ]
+  })
 }
 </script>
-
-<style scoped>
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.resources-list a  {
-    text-decoration: none;
-    color: black;
-}
-
-</style>

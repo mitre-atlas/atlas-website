@@ -1,22 +1,22 @@
 <template>
 <div>
-  <h1>{{info.name}}</h1>
+  <div class="text-h2">{{info.name}}</div>
   <p>{{info.description}}</p>
 
-  <b-card>
-    <b-card-text>
-      <b>ID:</b> {{info.id}}
+  <v-card>
+    <v-card-text>
+      <span class="font-weight-bold">ID:</span> {{info.id}}
 
       <p v-if="'subtechnique-of' in info">
-        <b>Sub-technique of:</b>
+        <span class="font-weight-bold">Sub-technique of:</span>
         {{info['subtechnique-of']}}
       </p>
 
       <p>
-        <b>Tactics:</b> <span v-html=info.tactics />
+        <span class="font-weight-bold">Tactics:</span> <span v-html=info.tactics />
       </p>
-    </b-card-text>
-  </b-card>
+    </v-card-text>
+  </v-card>
 </div>
 </template>
 

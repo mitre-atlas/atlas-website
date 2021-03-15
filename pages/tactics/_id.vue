@@ -1,12 +1,12 @@
 <template>
 <div>
-  <h1>{{info.name}}</h1>
+  <div class="text-h2">{{info.name}}</div>
   <p>{{info.description}}</p>
-  <b-card>
-    <b-card-text>
-      <b>ID:</b> {{info.id}}
-    </b-card-text>
-  </b-card>
+  <v-card>
+    <v-card-text>
+      <span class="font-weight-bold">ID:</span> {{info.id}}
+    </v-card-text>
+  </v-card>
 </div>
 </template>
 

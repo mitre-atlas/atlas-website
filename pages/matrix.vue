@@ -1,21 +1,19 @@
 <template>
   <div>
-    <h1>{{title}}</h1>
+    <div class="text-h2">{{title}}</div>
     <p>{{description}}</p>
 
-    <b-table
-      :fields="fields"
+    <v-data-table
+      :headers="fields"
       :items="items"
-      bordered
-      head-variant="light"
       >
-      <template v-slot:head()="data">
+      <!-- <template v-slot:head()="data">
         <span v-html="data.field.label"></span>
       </template>
       <template #cell()="data">
         <span v-html="data.value"></span>
-      </template>
-    </b-table>
+      </template> -->
+    </v-data-table>
   </div>
 </template>
 
@@ -120,9 +118,9 @@ export default {
     title: 'Adversarial ML Matrix',
     description: 'Below are the tactics and techniques representing the adversarial machine learning threat matrix.',
     fields: [
-      { key: 'id', label: 'ID' },
-      { key: 'name', label: 'Name' },
-      { key: 'description', label: 'Description' }
+      { value: 'id', text: 'ID' },
+      { value: 'name', text: 'Name' },
+      { value: 'description', text: 'Description' }
     ]
   })
 }
