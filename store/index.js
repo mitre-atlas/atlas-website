@@ -83,6 +83,9 @@ export const getters = {
   getTechniques: (state) => {
     return state.data.techniques
   },
+  getStudies: (state) => {
+    return state.data.studies
+  },
   getMatrix: (state) => {
     return state.data.matrix
   },
@@ -96,6 +99,9 @@ export const getters = {
   },
   getTechniqueById: state => (id) => {
     return state.data.techniques.find(t => t.id === id)
+  },
+  getStudyById: state => (id) => {
+    return state.data.studies.find(s => s.id === id)
   },
 
   // Find by ID (short ID by potentially fully-qualified ID)
