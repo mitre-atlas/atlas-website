@@ -1,3 +1,6 @@
+const fs = require('fs').promises
+const yaml = require('js-yaml')
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -72,5 +75,26 @@ export default {
   }
   },
 
-  hooks: {}
+  hooks: {},
+
+  generate: {
+    routes () {
+      const getTactics = fs.readFile('static/data/tactics.yaml', 'utf-8')
+      const getTechniques = fs.readFile('static/data/techniques.yaml', 'utf-8')
+      const getCaseStudies = fs.readFile('static/data/case-studies.yaml', 'utf-8')
+
+      return Promise.all([getTactics, getTechniques, getCaseStudies])
+      .then((contents) => {
+        // Parse YAML files
+        const [tactics, techniques, studies] = contents.map(yaml.load)
+        // Construct each dynamic route
+        const tacticRoutes = tactics.map(t => `/tactics/${t.id}`)
+        const techniqueRoutes = techniques.map(t => `/techniques/${t.id}`)
+        const studyRoutes = studies.map(s => `/studies/${s.id}`)
+        // Combine into a single list and return
+        const dynamicRoutes = [...tacticRoutes, ...techniqueRoutes, ...studyRoutes]
+        return dynamicRoutes
+      })
+    }
+  }
 }
