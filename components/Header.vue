@@ -81,7 +81,7 @@ export default {
       },
       {
         name: 'Case Studies',
-        href: '/content/?page=case-studies-page'
+        href: '/studies'
       },
       {
         name: 'Resources',

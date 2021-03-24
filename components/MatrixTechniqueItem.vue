@@ -1,5 +1,5 @@
 <template>
-  <v-list-item>
+  <v-list-item :href="`/techniques/${technique.id}`">
     <matrix-technique-content :technique="technique" />
   </v-list-item>
 </template>
