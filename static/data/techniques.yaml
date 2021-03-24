@@ -10,7 +10,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0001
   object-type: technique
   name: ML Model Discovery
@@ -23,7 +23,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0002
   object-type: technique
   name: Reveal ML Ontology
@@ -36,7 +36,7 @@
     '
   subtechnique-of: MLT0001
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0003
   object-type: technique
   name: Reveal ML Model Family
@@ -49,7 +49,7 @@
     '
   subtechnique-of: MLT0001
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0004
   object-type: technique
   name: Gathering Datasets
@@ -62,7 +62,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0005
   object-type: technique
   name: Exploit Physical Environment
@@ -75,7 +75,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0006
   object-type: technique
   name: Model Replication
@@ -84,7 +84,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0007
   object-type: technique
   name: Exploit API - Shadow Model
@@ -98,7 +98,7 @@
     '
   subtechnique-of: MLT0006
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0008
   object-type: technique
   name: Alter Publicly Available, Pre-Trained Weights
@@ -112,7 +112,7 @@
     '
   subtechnique-of: MLT0006
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0009
   object-type: technique
   name: Model Stealing
@@ -126,7 +126,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0043
+  - TA0043
 - id: MLT0010
   object-type: technique
   name: Pre-Trained ML Model with Backdoor
@@ -138,7 +138,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0001
+  - TA0001
 - id: MLT0011
   object-type: technique
   name: Execute Unsafe ML Models
@@ -149,7 +149,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0002
+  - TA0002
 - id: MLT0012
   object-type: technique
   name: ML Models from Compromised Sources
@@ -162,7 +162,7 @@
     '
   subtechnique-of: MLT0011
   tactics:
-  - org.mitre.attack.enterprise.TA0002
+  - TA0002
 - id: MLT0013
   object-type: technique
   name: Pickle Embedding
@@ -174,7 +174,7 @@
     '
   subtechnique-of: MLT0011
   tactics:
-  - org.mitre.attack.enterprise.TA0002
+  - TA0002
 - id: MLT0014
   object-type: technique
   name: Execute unsafe ML Model Execution
@@ -186,7 +186,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0003
+  - TA0003
 - id: MLT0015
   object-type: technique
   name: Evasion Attack
@@ -316,7 +316,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0010
+  - TA0010
 - id: MLT0025
   object-type: technique
   name: Membership Inference Attack
@@ -328,7 +328,7 @@
     '
   subtechnique-of: MLT0024
   tactics:
-  - org.mitre.attack.enterprise.TA0010
+  - TA0010
 - id: MLT0026
   object-type: technique
   name: ML Model Inversion
@@ -342,7 +342,7 @@
     '
   subtechnique-of: MLT0024
   tactics:
-  - org.mitre.attack.enterprise.TA0010
+  - TA0010
 - id: MLT0027
   object-type: technique
   name: ML Model Stealing
@@ -356,7 +356,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0010
+  - TA0010
 - id: MLT0028
   object-type: technique
   name: Defacement
@@ -367,7 +367,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0040
+  - TA0040
 - id: MLT0029
   object-type: technique
   name: Denial of Service
@@ -377,7 +377,7 @@
 
     '
   tactics:
-  - org.mitre.attack.enterprise.TA0040
+  - TA0040
 - id: T1546.004
   object-type: technique
   name: .bash_profile and .bashrc

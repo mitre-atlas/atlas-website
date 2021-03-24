@@ -3,6 +3,9 @@
     <v-list-item-title
       v-text="technique.name"
     ></v-list-item-title>
+    <v-list-item-subtitle>
+      {{ technique.id }}
+    </v-list-item-subtitle>
   </v-list-item-content>
 </template>
 

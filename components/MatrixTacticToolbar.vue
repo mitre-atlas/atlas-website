@@ -4,16 +4,16 @@
     elevation="1"
     dense
   >
-    <v-toolbar-title>
+    <v-toolbar-title class="text-caption font-weight-bold">
       <v-icon
         left
         :color="tacticStyle.color"
       >
         {{ tacticStyle.icon }}
       </v-icon>
-      {{ tactic.name }}
+      {{ tactic.name }} {{tactic.id}}
     </v-toolbar-title>
-
+    <!--
     <v-spacer />
 
     <v-badge
@@ -21,7 +21,7 @@
       inline
       color="grey"
     />
-
+    -->
   </v-toolbar>
 </template>
 
