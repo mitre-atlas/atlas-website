@@ -1,11 +1,11 @@
 <template>
   <v-card flat>
 
-    <v-card-text>
+    <!-- <v-card-text>
       <div class="text-body-1 text--primary font-weight-medium">
       {{ study.summary }}
       </div>
-    </v-card-text>
+    </v-card-text> -->
 
     <v-list subheader>
       <v-subheader>Incident date</v-subheader>
@@ -24,8 +24,8 @@
       <v-subheader>Verified by</v-subheader>
       <study-details-list-item :itemList="study['verified-by']" />
 
-      <v-subheader>Sources</v-subheader>
-      <study-details-list-item :itemList="study.sources" />
+      <!-- <v-subheader>Sources</v-subheader>
+      <study-details-list-item :itemList="study.sources" /> -->
 
     </v-list>
   </v-card>
