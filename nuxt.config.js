@@ -88,10 +88,31 @@ export default {
       .then((contents) => {
         // Parse YAML files
         const [tactics, techniques, studies] = contents.map(yaml.load)
+
+        // Build out tactics and techniques used in the case studies
+        // with which to filter the ATT&CK data
+        const studyTactics = new Set()
+        const studyTechniques = new Set()
+        studies.forEach((study) => {
+          study.procedure.forEach((p) => {
+            studyTactics.add(p.tactic)
+            studyTechniques.add(p.technique)
+          })
+        })
+
+        // Use only tactics referenced in case studies
+        const filteredTactics = tactics.filter((tactic) => {
+          return studyTactics.has(tactic.id)
+        })
+        const filteredTechniques = techniques.filter((technique) => {
+          return studyTechniques.has(technique.id)
+        })
+
         // Construct each dynamic route
-        const tacticRoutes = tactics.map(t => `/tactics/${t.id}`)
-        const techniqueRoutes = techniques.map(t => `/techniques/${t.id}`)
+        const tacticRoutes = filteredTactics.map(t => `/tactics/${t.id}`)
+        const techniqueRoutes = filteredTechniques.map(t => `/techniques/${t.id}`)
         const studyRoutes = studies.map(s => `/studies/${s.id}`)
+
         // Combine into a single list and return
         const dynamicRoutes = [...tacticRoutes, ...techniqueRoutes, ...studyRoutes]
         return dynamicRoutes
