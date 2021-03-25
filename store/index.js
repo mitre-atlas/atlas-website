@@ -144,14 +144,33 @@ export const actions = {
         // Parse YAML files
         const [tactics, techniques, studies] = contents.map(yaml.load)
 
+        // Build out tactics and techniques used in the case studies
+        // with which to filter the ATT&CK data
+        const studyTactics = new Set()
+        const studyTechniques = new Set()
+        studies.forEach((study) => {
+          study.procedure.forEach((p) => {
+            studyTactics.add(p.tactic)
+            studyTechniques.add(p.technique)
+          })
+        })
+
         // Build a populated version of the data, where tactics hold parent techniques
         // and parent techniques hold subtechniques
 
+        // Use only tactics referenced in case studies
+        const filteredTactics = tactics.filter((tactic) => {
+          return studyTactics.has(tactic.id)
+        })
+        const filteredTechniques = techniques.filter((technique) => {
+          return studyTechniques.has(technique.id)
+        })
+
         // Split out subtechniques
-        const parentTechniques = techniques.filter((technique) => {
+        const parentTechniques = filteredTechniques.filter((technique) => {
           return !('subtechnique_of' in technique)
         })
-        const subtechniques = techniques.filter((technique) => {
+        const subtechniques = filteredTechniques.filter((technique) => {
           return ('subtechnique_of' in technique)
         })
 
@@ -170,7 +189,7 @@ export const actions = {
         })
 
         // Populate tactics with populated techniques
-        const populatedTactics = tactics.map((tactic) => {
+        const populatedTactics = filteredTactics.map((tactic) => {
           // Build up the top-level parent techniques
           const relevantFullTechniques = parentTechniques.filter((technique) => {
             // Must be a parent-level technique that is under this tactic
@@ -186,8 +205,13 @@ export const actions = {
           tactics: populatedTactics
         }
 
-        // Create an object with keys named the same as these vars
-        const payload = { tactics, techniques, studies, matrix }
+        // Create an object with some keys named the same as these vars
+        const payload = {
+          tactics: filteredTactics,
+          techniques: filteredTechniques,
+          studies,
+          matrix
+        }
 
         commit('SET_THREAT_MATRIX_DATA', payload)
       })
