@@ -89,15 +89,15 @@ export default {
         links: [
           {
             name: 'Adversarial ML 101',
-            href: '/content/?page=adversarial-ml-101'
+            href: '/page/adversarial-ml-101'
           },
           {
             name: 'Contribute',
-            href: '/content/?page=contributors'
+            href: '/page/contributors'
           },
           {
             name: 'Feedback',
-            href: '/content/?page=feedback'
+            href: '/page/feedback'
           }
         ]
       }
