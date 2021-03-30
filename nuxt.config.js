@@ -80,6 +80,7 @@ export default {
   hooks: {},
 
   generate: {
+    fallback: true,
     routes () {
       // TODO Update to use JSON
       const getTactics = fs.readFile('static/data/tactics.json', 'utf-8')
