@@ -1,5 +1,5 @@
 <template>
-  <img :src="dynamicImage">
+  <img :src="dynamicImage" alt="image not found" class="markdown-image">
 </template>
 
 <script>
@@ -17,5 +17,9 @@ export default {
 </script>
 
 <style>
+
+.markdown-image {
+  width: -moz-available;
+}
 
 </style>
