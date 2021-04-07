@@ -1,5 +1,6 @@
 <template>
   <div>
+    <breadcrumbs></breadcrumbs>
     <div class="text-h4 pt-10">{{ study.name }}</div>
 
     <v-row>
@@ -41,7 +42,12 @@
 </template>
 
 <script>
+import Breadcrumbs from '@/components/Breadcrumbs'
+
 export default {
+  components: {
+    Breadcrumbs
+  },
   computed: {
     study () {
       return this.$store.getters.getStudyById(this.$route.params.id)

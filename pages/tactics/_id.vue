@@ -1,5 +1,6 @@
 <template>
 <div>
+  <breadcrumbs></breadcrumbs>
   <div class="text-h2">{{info.name}}</div>
   <div class="subtitle-1">{{info.id}}</div>
   <p>{{info.description}}</p>
@@ -26,7 +27,12 @@
 </template>
 
 <script>
+import Breadcrumbs from '@/components/Breadcrumbs'
+
 export default {
+  components: {
+    Breadcrumbs
+  },
   computed: {
     info () {
       return this.$store.getters.getTacticById(this.$route.params.id)
