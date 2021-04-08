@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-title :text="title" />
-
-    <div>{{ description }}</div>
+    <breadcrumbs></breadcrumbs>
+    <div class="text-h2">{{title}}</div>
+    <div class="text-body-1">{{ description }}</div>
 
     <v-data-iterator
       :items="getStudies"
@@ -31,8 +31,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 export default {
+  components: {
+    Breadcrumbs
+  },
   data: () => ({
     title: 'Case Studies',
     description: 'Lists associated case studies.',
