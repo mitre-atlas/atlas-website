@@ -43,3 +43,24 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.nuxt-content {
+  margin: 3rem;
+}
+
+.nuxt-content h1 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.nuxt-content h2 {
+
+}
+
+.nuxt-content a {
+  color: gray;
+}
+
+</style>

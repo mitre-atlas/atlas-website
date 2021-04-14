@@ -10,8 +10,8 @@ An attack that happens at "inference time" is an attack where the learned state 
 
 With this in mind, we can jump into the attacks on ML systems. 
 
-![Adversarial ML 101](/images/AdvML101.PNG)
-
+<!-- ![Adversarial ML 101](~/static/assets/AdvML101.PNG) -->
+<markdown-image imagename="AdvML101.PNG" ></markdown-image>
 
 # Machine Learning Attacks
 Attacks on machine learning systems can be categorized as follows.
@@ -30,21 +30,22 @@ Attacks on machine learning systems can be categorized as follows.
 ## Attack Scenario #1: Inference Attack 
 Consider the most common deployment scenario where a model is deployed as an API endpoint. In this blackbox setting an attacker can only query the model and observe the response. The attacker controls the input to the model, but the attacker does not know how it is processed.
 
-![Adversarial ML 101](../images/AdvML101_Inference.PNG)
+<!-- ![Adversarial ML 101](../images/AdvML101_Inference.PNG) -->
+<markdown-image imagename="AdvML101_Inference.PNG" ></markdown-image>
 
 ---- 
 ## Attack Scenario #2: Training Time Attack
 Consider that an attacker has control over training data. This flavor of attack is shown in [Tay Poisoning Case Study](/pages/case-studies-page.md#tay-poisoning) where the attacker was able to compromise the training data via the feedback mechanism.
 
 
-![Adversarial ML 101](/images/AdvML101_Traintime.PNG)
-
+<!-- ![Adversarial ML 101](/images/AdvML101_Traintime.PNG) -->
+<markdown-image imagename="AdvML101_Traintime.PNG" ></markdown-image>
 
 ## Attack Scenario #3: Attack on Edge/Client
 Consider that a model exists on a client (like a phone) or on the edge (such as IoT) . An attacker might have access to model code through reversing the service on the client. This flavor of attack is shown in [Bosch Case Study with EdgeAI](/pages/case-studies-page.md#bosch---edge-ai).
 
-![Adversarial ML 101](/images/AdvML101_Client.PNG)
-
+<!-- ![Adversarial ML 101](/images/AdvML101_Client.PNG) -->
+<markdown-image imagename="AdvML101_Client.PNG" ></markdown-image>
 
 # Important Notes
 1.  This does not cover all kinds of attacks -- adversarial ML is an active area of research with new classes of attacks constantly being discovered.
