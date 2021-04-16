@@ -52,10 +52,6 @@ export default {
 
 <style scoped>
 
-.content-container {
-  display: flex;
-}
-
 .nuxt-content {
   margin: 3rem;
 }

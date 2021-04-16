@@ -58,11 +58,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-.content-container {
-  display: flex;
-}
-
-</style>
