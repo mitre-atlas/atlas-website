@@ -1,10 +1,11 @@
 <template>
   <div>
-
+    Page not specified
   </div>
 </template>
 
 <script>
+
 export default {
 
 }

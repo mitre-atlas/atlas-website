@@ -14,12 +14,12 @@
 export default {
 
   async asyncData ({ $content }) {
-    const page = await $content('pages/adversarial-ml-threat-matrix').fetch()
+    const page = await $content('adversarial-ml-threat-matrix').fetch()
 
     return {
       page
     }
-  },
+  }
 
   // Populate store upon start
   // async fetch () {
