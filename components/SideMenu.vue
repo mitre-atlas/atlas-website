@@ -1,18 +1,13 @@
 <template>
-  <div class="side-menu">
+  <div class="side-menu mt-8" style="height: 100%;">
       <v-navigation-drawer permanent left>
         <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
             {{ title }}
           </v-list-item-title>
-          <!-- <v-list-item-subtitle>
-            subtext
-          </v-list-item-subtitle> -->
         </v-list-item-content>
       </v-list-item>
-
-      <v-divider></v-divider>
 
       <v-list
         dense
@@ -28,10 +23,11 @@
           <!-- <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon> -->
-
+          <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>{{ study.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ study.name }}</v-list-item-subtitle>
           </v-list-item-content>
+          </v-list-item>
         </v-list-item>
       </v-list>
       </v-navigation-drawer>
@@ -77,7 +73,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
