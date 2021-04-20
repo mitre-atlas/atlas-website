@@ -5,12 +5,12 @@
     dense
   >
     <v-toolbar-title class="text-caption font-weight-bold">
-      <v-icon
+      <!-- <v-icon
         left
         :color="tacticStyle.color"
       >
         {{ tacticStyle.icon }}
-      </v-icon>
+      </v-icon> -->
       {{ tactic.name }} {{tactic.id}}
     </v-toolbar-title>
     <!--

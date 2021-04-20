@@ -78,7 +78,13 @@ export default {
   }
   },
 
-  hooks: {},
+  hooks: {
+    'content:file:beforeParse': (file) => {
+      if (file.path.includes('case-studies.yaml') {
+
+      }
+    }
+  },
 
   generate: {
     routes () {

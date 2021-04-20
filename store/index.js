@@ -160,23 +160,23 @@ export const actions = {
 
         // Use only tactics referenced in case studies
         const filteredTactics = tactics.filter((tactic) => {
-          return studyTactics.has(tactic.id)
+          return true // studyTactics.has(tactic.id)
         })
         const filteredTechniques = techniques.filter((technique) => {
-          return studyTechniques.has(technique.id)
+          return true // studyTechniques.has(technique.id)
         })
 
         // Split out subtechniques
         const parentTechniques = filteredTechniques.filter((technique) => {
-          return !('subtechnique_of' in technique)
+          return !('subtechnique-of' in technique)
         })
         const subtechniques = filteredTechniques.filter((technique) => {
-          return ('subtechnique_of' in technique)
+          return ('subtechnique-of' in technique)
         })
 
         // Populate parent techniques with subtechniques
         subtechniques.forEach((subtechnique) => {
-          const parentTechniqueId = subtechnique.subtechnique_of
+          const parentTechniqueId = subtechnique['subtechnique-of']
           const parentTechniqueIndex = parentTechniques.findIndex(t => t.id === parentTechniqueId)
           const parentTechnique = parentTechniques[parentTechniqueIndex]
 
