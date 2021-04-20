@@ -1,6 +1,6 @@
 <template>
   <div class="side-menu">
-      <v-navigation-drawer absoulte permanent left>
+      <v-navigation-drawer permanent left>
         <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
