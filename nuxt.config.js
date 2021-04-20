@@ -80,7 +80,7 @@ export default {
 
   hooks: {
     'content:file:beforeParse': (file) => {
-      if (file.path.includes('case-studies.yaml') {
+      if (file.path.includes('case-studies.yaml')) {
 
       }
     }
