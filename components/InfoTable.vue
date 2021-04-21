@@ -4,6 +4,9 @@
     <template v-slot:[`item.id`]="{ item }">
        <nuxt-link :to="`/${$route.name}/${item.id}`">{{ item.id }}</nuxt-link>
     </template>
+    <template v-slot:[`item.description`]="{ item }">
+      <span v-html="item.description" />
+    </template>
   </v-data-table>
 </div>
 </template>

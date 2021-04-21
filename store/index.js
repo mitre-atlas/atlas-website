@@ -141,6 +141,22 @@ export const actions = {
     // Get all contents, then parse and commit payload
     const promise = Promise.all([getTactics, getTechniques, getCaseStudies])
       .then((contents) => {
+        // Pre-parse actions
+        // Convert Markdown-style links, i.e. [name](full or relative URL)
+
+        // Internal links start with / and are converted to nuxt-links
+        // TODO nuxt-links do not resolve when using v-html, replacing with regular relative links
+        const internalLinkRegex = /\[([^[]+)\]\((\/.*?)\)/gm
+        contents[1] = contents[1].replace(internalLinkRegex, '<a href="$2">$1</a>') // '<nuxt-link to="$2">$1</nuxt-link>')
+
+        // External links start with http and are converted to HTML links
+        const externalLinkRegex = /\[([^[]+)\]\((http.*?)\)/gm
+        contents[1] = contents[1].replace(externalLinkRegex, '<a href="$2">$1</a>')
+
+        // Escape any colons, i.e. (Citation: ...) from ATT&CK descriptions
+        const descriptionWithoutEscapeRegex = /description: "/gm
+        contents[1] = contents[1].replace(descriptionWithoutEscapeRegex, 'description: |\n    "')
+
         // Parse YAML files
         const [tactics, techniques, studies] = contents.map(yaml.load)
 

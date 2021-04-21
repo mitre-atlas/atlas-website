@@ -80,7 +80,23 @@ export default {
 
   hooks: {
     'content:file:beforeParse': (file) => {
-      if (file.path.includes('case-studies.yaml')) {
+      if (file.path.includes('techniques.yaml')) {
+        console.log("HELLO")
+        // Convert Markdown-style links, i.e. [name](full or relative URL)
+
+        // Internal links start with / and are converted to nuxt-links
+        var internalLinkRegex = /\[([^\[]+)\]\((\/.*)\)/gm
+        // file.data = file.data.replace(internalLinkRegex, `<nuxt-link to="${$2}">${$1}</nuxt-link>`)
+        var match = internalLinkRegex.exec(file.data)
+        while (match != null) {
+          console.log(match[0] + " " + match[1])
+          match = internalLinkRegex.exec(file.data)
+        }
+
+        // External links start with http and are converted to HTML links
+        var externalLinkRegex = /\[([^\[]+)\]\((http.*)\)/gm
+        // file.data = file.data.replace(externalLinkRegex, `<a href="${$2}">${$1}</a>`)
+
 
       }
     }

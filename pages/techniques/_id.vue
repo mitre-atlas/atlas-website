@@ -6,7 +6,7 @@
   <div class="info-container">
     <breadcrumbs></breadcrumbs>
     <div class="text-h2">{{info.name}}</div>
-    <p>{{info.description}}</p>
+    <div v-html="info.description" />
 
     <v-card>
       <v-card-text>
