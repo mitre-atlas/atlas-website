@@ -10,7 +10,9 @@
 
     <v-card>
       <v-card-text>
-        <span class="font-weight-bold">ID:</span> {{info.id}}
+        <p>
+          <span class="font-weight-bold">ID:</span> {{info.id}}
+        </p>
 
         <p v-if="'subtechnique-of' in info">
           <span class="font-weight-bold">Sub-technique of:</span>
@@ -20,6 +22,7 @@
         <p>
           <span class="font-weight-bold">Tactics:</span>
           <span v-for="(tactic, i) in referencedTactics" :key="i">
+            <span v-if="i != 0">,</span>
             <nuxt-link :to="`/tactics/${tactic.id}`">{{tactic.name}}</nuxt-link>
           </span>
         </p>
@@ -47,7 +50,21 @@ export default {
       return this.$store.getters.getTechniqueWhereIdIn(fullId)
     },
     referencedTactics () {
-      return this.info.tactics.map((fullId) => {
+      let tacticsList = []
+      if ('tactics' in this.info) {
+        // This is a parent technique
+        tacticsList = this.info.tactics
+      } else {
+        // This is a subtechnique
+        // Subtechnique ID is the parent technique ID.XYZ
+        const parentId = this.info.id.substring(0, this.info.id.lastIndexOf('.'))
+        // Lookup referenced tactics from its parent
+        const parentTechnique = this.$store.getters.getTechniqueById(parentId)
+        tacticsList = parentTechnique.tactics
+      }
+
+      // Return the list of tactics
+      return tacticsList.map((fullId) => {
         return this.$store.getters.getTacticWhereIdIn(fullId)
       })
     }
