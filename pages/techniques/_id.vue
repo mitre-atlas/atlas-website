@@ -26,8 +26,24 @@
             <nuxt-link :to="`/tactics/${tactic.id}`">{{tactic.name}}</nuxt-link>
           </span>
         </p>
+
+        <span>
+        <a href='#' @click="openNewTab">MITRE ATT&CK</a>
+        <v-icon small>mdi-open-in-new</v-icon>
+        </span>
       </v-card-text>
     </v-card>
+
+    <!--
+    <div v-if="info.external_references.length > 1">
+      <page-section-title text="Sources" />
+      <ol class="mt-2">
+        <li v-for="(ref, i) in info.external_references.slice(1)" :key="i">
+          <a :href="ref.url">{{ ref.description }}</a>
+        </li>
+      </ol>
+    </div>
+    -->
   </div>
 </div>
 </template>
@@ -67,6 +83,12 @@ export default {
       return tacticsList.map((fullId) => {
         return this.$store.getters.getTacticWhereIdIn(fullId)
       })
+    }
+  },
+  methods: {
+    openNewTab () {
+      const url = this.info.external_references[0].url
+      window.open(url, '_blank')
     }
   }
 }

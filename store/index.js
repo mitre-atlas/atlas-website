@@ -1,5 +1,4 @@
 const fs = require('fs').promises
-const yaml = require('js-yaml')
 
 export const state = () => ({
   data: {
@@ -134,9 +133,9 @@ export const actions = {
   // TODO Caching, also needs return or await
   async nuxtServerInit ({ commit }) {
     // Retrieve the threat matrix YAML data and populate store upon start
-    const getTactics = await fs.readFile('static/data/tactics.yaml', 'utf-8')
-    const getTechniques = await fs.readFile('static/data/techniques.yaml', 'utf-8')
-    const getCaseStudies = await fs.readFile('static/data/case-studies.yaml', 'utf-8')
+    const getTactics = await fs.readFile('static/data/tactics.json', 'utf-8')
+    const getTechniques = await fs.readFile('static/data/techniques.json', 'utf-8')
+    const getCaseStudies = await fs.readFile('static/data/case-studies.json', 'utf-8')
 
     // Get all contents, then parse and commit payload
     const promise = Promise.all([getTactics, getTechniques, getCaseStudies])
@@ -147,18 +146,53 @@ export const actions = {
         // Internal links start with / and are converted to nuxt-links
         // TODO nuxt-links do not resolve when using v-html, replacing with regular relative links
         const internalLinkRegex = /\[([^[]+)\]\((\/.*?)\)/gm
-        contents[1] = contents[1].replace(internalLinkRegex, '<a href="$2">$1</a>') // '<nuxt-link to="$2">$1</nuxt-link>')
+        contents[1] = contents[1].replace(internalLinkRegex, "<a href='$2'>$1</a>") // '<nuxt-link to="$2">$1</nuxt-link>')
 
         // External links start with http and are converted to HTML links
         const externalLinkRegex = /\[([^[]+)\]\((http.*?)\)/gm
-        contents[1] = contents[1].replace(externalLinkRegex, '<a href="$2">$1</a>')
-
-        // Escape any colons, i.e. (Citation: ...) from ATT&CK descriptions
-        const descriptionWithoutEscapeRegex = /description: "/gm
-        contents[1] = contents[1].replace(descriptionWithoutEscapeRegex, 'description: |\n    "')
+        contents[1] = contents[1].replace(externalLinkRegex, "<a href='$2'>$1</a>")
 
         // Parse YAML files
-        const [tactics, techniques, studies] = contents.map(yaml.load)
+        const data = contents.map(JSON.parse)
+        let { 1: techniques } = data
+        const { 0: tactics, 2: studies } = data
+
+        // Replace any (Citation: <source_name> ) text in ATT&CK data with citation links
+        // using external references
+        const citationRegex = /(\(Citation: (.*?)\))/gm
+        techniques = techniques.map((technique) => {
+          // Find citations
+          let match = citationRegex.exec(technique.description)
+          // Reference superscript numbering
+          let refNum = 1
+
+          while (match != null) {
+            // 0 is whole match, 1 happens to also be the whole match, and 2 is the source name
+            const citation = match[1]
+            const sourceName = match[2]
+
+            // Look up the corresponding URL from external references by source name
+            const reference = technique.external_references.find((ef) => {
+              if (ef.source_name === sourceName) {
+                return true
+              }
+              return false
+            })
+
+            // Construct a superscript citation link
+            const refSuperscriptLink = `<sup><a href='${reference.url}'>[${refNum}]</a></sup>`
+            // Replace the entire citation text with the link
+            technique.description = technique.description.replace(citation, refSuperscriptLink)
+
+            // Move on to next match
+            match = citationRegex.exec(technique.description)
+            // Increment the reference for the next link
+            refNum += 1
+          }
+
+          return technique
+        })
+        // contents[1] = contents[1].replace(citationRegex, "<a href='$2'>$1</a>")
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
