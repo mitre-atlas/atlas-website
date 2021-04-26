@@ -149,11 +149,11 @@ export const actions = {
 
         // Internal links start with / and are converted to nuxt-links
         // TODO nuxt-links do not resolve when using v-html, replacing with regular relative links
-        const internalLinkRegex = /\[([^[]+)\]\((\/.*?)\)/gm
+        const internalLinkRegex = /\[([^[]+?)\]\((\/.*?)\)/gm
         contents[1] = contents[1].replace(internalLinkRegex, "<a href='$2'>$1</a>") // '<nuxt-link to="$2">$1</nuxt-link>')
 
         // External links start with http and are converted to HTML links
-        const externalLinkRegex = /\[([^[]+)\]\((http.*?)\)/gm
+        const externalLinkRegex = /\[([^[]+?)\]\((http.*?)\)/gm
         contents[1] = contents[1].replace(externalLinkRegex, "<a href='$2'>$1</a>")
 
         // Parse YAML files
