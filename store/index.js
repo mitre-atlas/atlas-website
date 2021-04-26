@@ -115,6 +115,10 @@ export const getters = {
   // by short ID
   getTechniquesByTacticId: state => (tacticId) => {
     return state.data.techniques.filter((t) => {
+      // This is a subtechnique, does not have tactics in AdvML
+      if (!('tactics' in t)) {
+        return false
+      }
       // Returns true when at least 1 of the referenced tactic matches the query
       return t.tactics.some(fullTacticId => fullTacticId.includes(tacticId))
     })
@@ -217,7 +221,7 @@ export const actions = {
 
         const tacticsIdsReferenced = new Set()
         filteredTechniques.forEach((technique) => {
-          // This is a subtechnique
+          // This is a subtechnique, does not have tactics in AdvML
           if (!('tactics' in technique)) {
             return false
           }

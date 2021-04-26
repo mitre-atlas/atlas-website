@@ -34,8 +34,8 @@
           <v-card-subtitle>
             {{ info.id }}
           </v-card-subtitle>
-          <v-card-text>
-            {{ info.description }}
+          <v-card-text v-html="info.description">
+
           </v-card-text>
         </div>
       </v-expand-transition>
