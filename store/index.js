@@ -110,6 +110,20 @@ export const getters = {
   getTechniqueWhereIdIn: state => (id) => {
     return state.data.techniques.find(t => id.includes(t.id))
   },
+  getStudiesWhereTacticIdIn: state => (id) => {
+    return state.data.studies.filter((s) => {
+      return s.procedure.some((p) => {
+        return p.tactic === id
+      })
+    })
+  },
+  getStudiesWhereTechniqueIdIn: state => (id) => {
+    return state.data.studies.filter((s) => {
+      return s.procedure.some((p) => {
+        return p.technique === id
+      })
+    })
+  },
 
   // Find techniques with potentially fully-qualified tactic ID references
   // by short ID

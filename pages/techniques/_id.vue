@@ -30,6 +30,52 @@
     </v-card-text>
   </v-card>
 
+  <div v-if="'subtechniques' in info">
+    <page-section-title
+      :text="`${info.subtechniques.length} Subtechniques`"
+      />
+
+    <v-list>
+      <div
+        v-for="(subtechnique,i) in info.subtechniques"
+        :key="i">
+        <v-list-item
+          :nuxt="true"
+          :to="`/techniques/${subtechnique.id}`"
+          >
+          <v-list-item-title
+            :class="[subtechnique.id.startsWith('AML') ? 'teal--text text--darken-2' : '']"
+            >
+            {{ subtechnique.name }}
+          </v-list-item-title>
+        </v-list-item>
+
+      </div>
+    </v-list>
+  </div>
+
+  <div v-if="relevantStudies.length > 0">
+    <page-section-title
+      :text="`${relevantStudies.length} Case Studies`"
+      />
+
+    <v-list>
+      <div
+        v-for="(study,i) in relevantStudies"
+        :key="i">
+        <v-list-item
+          :nuxt="true"
+          :to="`/studies/${study.id}`"
+          >
+          <v-list-item-title>
+            {{ study.name }}
+          </v-list-item-title>
+        </v-list-item>
+
+      </div>
+    </v-list>
+  </div>
+
   <!--
   <div v-if="info.external_references.length > 1">
     <page-section-title text="Sources" />
@@ -72,6 +118,9 @@ export default {
       return tacticsList.map((fullId) => {
         return this.$store.getters.getTacticWhereIdIn(fullId)
       })
+    },
+    relevantStudies () {
+      return this.$store.getters.getStudiesWhereTechniqueIdIn(this.$route.params.id)
     }
   },
   methods: {

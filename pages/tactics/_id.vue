@@ -13,15 +13,72 @@
   <v-divider />
 
   <div class="text-h5">{{ techniques.length }} Techniques</div>
+  <v-list>
+    <div
+      v-for="(technique,i) in techniques"
+      :key="i">
+      <v-list-item
+        :nuxt="true"
+        :to="`/techniques/${technique.id}`"
+        >
+        <v-list-item-title
+          :class="[technique.id.startsWith('AML') ? 'teal--text text--darken-3' : '']"
+          >
+          {{ technique.name }}
+        </v-list-item-title>
+      </v-list-item>
+      <div v-if="'subtechniques' in technique">
+        <v-list-item
+          v-for="(subtechnique, j) in technique.subtechniques"
+          :key="j"
+          :nuxt="true"
+          :to="`/techniques/${subtechnique.id}`"
+          >
+          <v-list-item>
+            <v-list-item-subtitle
+            :class="[technique.id.startsWith('AML') ? 'teal--text text--darken-1' : '']"
+            >
+            {{ subtechnique.name }}
+          </v-list-item-subtitle>
+          </v-list-item>
+        </v-list-item>
+      </div>
+    </div>
+  </v-list>
+
+  <div v-if="relevantStudies.length > 0">
+    <page-section-title
+      :text="`${relevantStudies.length} Case Studies`"
+      />
+
+    <v-list>
+      <div
+        v-for="(study,i) in relevantStudies"
+        :key="i">
+        <v-list-item
+          :nuxt="true"
+          :to="`/studies/${study.id}`"
+          >
+          <v-list-item-title>
+            {{ study.name }}
+          </v-list-item-title>
+        </v-list-item>
+
+      </div>
+    </v-list>
+  </div>
+
+  <!--
   <v-row>
     <v-col
       v-for="(technique,i) in techniques"
       :key="i"
-      cols="4"
+      cols="6"
     >
       <technique-card :info="technique" />
     </v-col>
   </v-row>
+  -->
 </div>
 </template>
 
@@ -33,6 +90,9 @@ export default {
     },
     techniques () {
       return this.$store.getters.getTechniquesByTacticId(this.$route.params.id)
+    },
+    relevantStudies () {
+      return this.$store.getters.getStudiesWhereTacticIdIn(this.$route.params.id)
     }
   }
 }

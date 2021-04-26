@@ -14,12 +14,20 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn
+        <!-- <v-btn
           color="teal accent-4"
           text
           v-if="'subtechniques' in info"
         >
           Explore {{ info.subtechniques.length }} techniques
+        </v-btn> -->
+
+        <v-btn
+          color="deep-orange accent-4"
+          text
+          :href="`/techniques/$info.id}`"
+          >
+          Learn more
         </v-btn>
       </v-card-actions>
 
