@@ -208,12 +208,30 @@ export const actions = {
         // Build a populated version of the data, where tactics hold parent techniques
         // and parent techniques hold subtechniques
 
-        // Use only tactics referenced in case studies
-        const filteredTactics = tactics.filter((tactic) => {
-          return true // studyTactics.has(tactic.id)
-        })
+        // Build AdvML-relevant techniques and tactics for matrix use
         const filteredTechniques = techniques.filter((technique) => {
-          return true // studyTechniques.has(technique.id)
+          // studyTechniques.has(technique.id) // Use only techniques referenced in case studies
+          return technique.id.startsWith('AML') // is an AdvML technique
+          // return true // No filter
+        })
+
+        const tacticsIdsReferenced = new Set()
+        filteredTechniques.forEach((technique) => {
+          // This is a subtechnique
+          if (!('tactics' in technique)) {
+            return false
+          }
+          // Otherwise, collect distinct tactic IDs
+          technique.tactics.forEach((tacticId) => {
+            tacticsIdsReferenced.add(tacticId)
+          })
+        })
+
+        const filteredTactics = tactics.filter((tactic) => {
+          // return studyTactics.has(tactic.id) // Use only tactics referenced in case studies
+          // return tactic.id.startsWith('AML') // is an AdvML tactic
+          return tacticsIdsReferenced.has(tactic.id) // Only tactics referenced by the above techniques
+          // return true // No filter
         })
 
         // Split out subtechniques
@@ -257,8 +275,8 @@ export const actions = {
 
         // Create an object with some keys named the same as these vars
         const payload = {
-          tactics: filteredTactics,
-          techniques: filteredTechniques,
+          tactics,
+          techniques,
           studies,
           matrix
         }
