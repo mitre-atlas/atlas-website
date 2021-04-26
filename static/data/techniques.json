@@ -3,7 +3,7 @@
         "id": "AML.T0000",
         "object-type": "technique",
         "name": "Search for Victim's Publicly Available Research Materials",
-        "description": "Adversaries may search publicly available research to learn how and where machine learning is used within a victim organization.\nThe adversary can use this information to identify targets for attack, or to tailor an existing attack to make it more effective.\nOrganizations often use open source model architectures trained on additional proprietary data in production.\nKnowledge of this underlying architecture allows the adversary to craft more realistic [proxy models](/techniques/AML.T0005).\nResearch materials may exist as academic papers published in [journals and conference proceedings](/techniques/AML.T0000.000), or stored in pre-print repositories](/techniques/AML.T0000.001), as well as [technical blog posts](/techniques/AML.T0000.002).\n",
+        "description": "Adversaries may search publicly available research to learn how and where machine learning is used within a victim organization.\nThe adversary can use this information to identify targets for attack, or to tailor an existing attack to make it more effective.\nOrganizations often use open source model architectures trained on additional proprietary data in production.\nKnowledge of this underlying architecture allows the adversary to craft more realistic [proxy models](/techniques/AML.T0005).\nResearch materials may exist as academic papers published in [journals and conference proceedings](/techniques/AML.T0000.000), or stored in [pre-print repositories](/techniques/AML.T0000.001), as well as [technical blog posts](/techniques/AML.T0000.002).\n",
         "tactics": [
             "TA0043"
         ]

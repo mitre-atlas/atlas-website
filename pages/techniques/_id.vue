@@ -82,3 +82,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+div >>> a {
+  text-decoration: none;
+}
+</style>
