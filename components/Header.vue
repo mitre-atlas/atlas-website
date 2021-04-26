@@ -2,9 +2,13 @@
   <v-app-bar
     app
     dark
+    clipped-left
     color="grey darken-3"
     >
-    <v-toolbar-title v-text="title" />
+
+    <v-toolbar-title>
+      <nuxt-link to="/">{{ title }}</nuxt-link>
+    </v-toolbar-title>
 
     <v-spacer />
 
@@ -105,3 +109,10 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+.nuxt-link-active {
+  text-decoration: none;
+  color: inherit;
+}
+</style>

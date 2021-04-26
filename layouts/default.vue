@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <client-only>
+
       <Header />
+
+      <side-menu
+        v-if="doShow">
+      </side-menu>
 
       <v-main>
         <v-container>
@@ -11,3 +16,25 @@
       </client-only>
   </v-app>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      pathsWithNav: [
+        '/tactics',
+        '/techniques',
+        '/studies'
+      ]
+    }
+  },
+  computed: {
+    doShow () {
+      // Returns true if this route should show the navigation drawer
+      return this.pathsWithNav.some((path) => {
+        return this.$route.path.startsWith(path)
+      })
+    }
+  }
+}
+</script>
