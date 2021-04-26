@@ -3,19 +3,7 @@
     <div class="text-h2">{{ title }}</div>
     <p>{{ description }}</p>
 
-    <v-switch
-      v-model="useAttackStyle"
-      label="View in ATT&CK style"
-      />
-
-    <v-row v-if="!useAttackStyle">
-      <v-col v-for="(tactic, i) in getMatrix.tactics" :key="i" cols="3">
-        <matrix-tactic-toolbar :tactic="tactic" />
-        <matrix-technique-list :techniques="tactic.techniques" />
-      </v-col>
-    </v-row>
-
-    <v-row v-else>
+    <v-row>
       <matrix-attack-style :matrix="getMatrix" />
     </v-row>
   </div>
@@ -38,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-.v-col {
+.row {
   overflow: scroll;
 }
 </style>

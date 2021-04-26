@@ -1,3 +1,4 @@
+<!-- Translated from https://github.com/mitre-attack/attack-website/blob/master/attack-theme/templates/macros/matrix.html#L155-L226 -->
 <template>
   <div>
     <table class="matrix side">
@@ -34,55 +35,8 @@
             :key="i"
             >
             <table class="techniques-table">
-              <tbody>
-              <tr
-                class="technique-row"
-                v-for="(technique, j) in tactic.techniques"
-                :key="j"
-                >
-                <td
-                  class="sidebar"
-                  v-if="'subtechniques' in technique"
-                  >
-                  <div class="angle top">
-                    <svg width="12px" height="12px">
-                      <path d="M0 12H12V0Z"/>
-                    </svg>
-                  </div>
-                  <div class="handle"> = </div>
-                  <div class="angle bottom">
-                    <svg width="12px" height="12px">
-                      <path d="M0 0H12V12Z"/>
-                    </svg>
-                  </div>
-                </td>
-                <td
-                  v-else
-                  >
-                  <table class="supertechnique">
-                    <tr>
-                      <td class="technique">
-                        <!-- technique cell -->
-                        <div class="technique-cell">
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on, attrs }">
-                              <nuxt-link
-                                :to="`/techniques/${technique.id}`"
-                                style="text-decoration: none;"
-                                v-bind="attrs"
-                                v-on="on"
-                                >
-                                {{ technique.name }}
-                              </nuxt-link>
-                            </template>
-                            <span>{{ technique.id }}</span>
-                          </v-tooltip>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
+              <tbody v-for="(technique, j) in tactic.techniques" :key="j">
+                <attack-technique-row :technique="technique" />
               </tbody>
             </table>
           </td>
