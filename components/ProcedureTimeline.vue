@@ -7,7 +7,7 @@
       v-for="(p, i) in study.procedure"
       :key="i"
       small
-      :color="lookupTacticStyling(p).color"
+
       >
       <procedure-card :info="p" />
     </v-timeline-item>
@@ -19,10 +19,10 @@ export default {
   name: 'ProcedureTimeline',
   props: ['study'],
   methods: {
-    lookupTacticStyling (procedureItem) {
-      const tactic = this.$store.getters.getTacticWhereIdIn(procedureItem.tactic)
-      return this.$store.getters.getTacticStyling[tactic.name]
-    }
+    // lookupTacticStyling (procedureItem) {
+    //   const tactic = this.$store.getters.getTacticWhereIdIn(procedureItem.tactic)
+    //   return this.$store.getters.getTacticStyling[tactic.name]
+    // }
   }
 }
 </script>

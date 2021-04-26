@@ -37,8 +37,9 @@ export default {
   props: ['study'],
   computed: {
     formattedDate () {
+      const date = new Date(this.study['incident-date'])
       // i.e. January 1, 2021
-      return this.study['incident-date'].toLocaleDateString(
+      return date.toLocaleDateString(
         'default',
         { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }
       )

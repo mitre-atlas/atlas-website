@@ -82,6 +82,7 @@ export default {
 
   generate: {
     routes () {
+      // TODO Update to use JSON
       const getTactics = fs.readFile('static/data/tactics.yaml', 'utf-8')
       const getTechniques = fs.readFile('static/data/techniques.yaml', 'utf-8')
       const getCaseStudies = fs.readFile('static/data/case-studies.yaml', 'utf-8')

