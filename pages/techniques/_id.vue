@@ -1,10 +1,18 @@
 <template>
 <div>
   <breadcrumbs></breadcrumbs>
-  <div class="text-h2">{{info.name}}</div>
-  <div v-html="info.description" />
 
-  <v-card>
+  <div class="text-h4 pt-10">{{info.name}}</div>
+
+  <v-row>
+    <v-col cols="8">
+      <page-section-title text="Summary" />
+
+      <div class="mt-5" v-html="info.description" />
+    </v-col>
+    <v-col cols=4>
+
+  <v-card flat class="mt-10">
     <v-card-text>
       <p>
         <span class="font-weight-bold">ID:</span> {{info.id}}
@@ -23,12 +31,15 @@
         </span>
       </p>
 
-      <span>
-      <a href='#' @click="openNewTab">MITRE ATT&CK</a>
-      <v-icon small>mdi-open-in-new</v-icon>
+      <span v-if="info.id.startsWith('T')">
+        <a href='#' @click="openNewTab">View at MITRE ATT&CK</a>
+        <v-icon small>mdi-open-in-new</v-icon>
       </span>
     </v-card-text>
   </v-card>
+
+    </v-col>
+  </v-row>
 
   <div v-if="'subtechniques' in info">
     <page-section-title
