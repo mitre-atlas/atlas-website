@@ -12,6 +12,7 @@
     :items="items"
     :search="search"
     hide-default-footer
+    disable-pagination
     >
     <template v-slot:[`item.id`]="{ item }">
        <nuxt-link
@@ -33,6 +34,8 @@
       <span v-html="item.description" />
     </template>
   </v-data-table>
+
+  <scroll-to-top-button />
 </div>
 </template>
 
