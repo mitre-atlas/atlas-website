@@ -4,28 +4,7 @@
     <div class="text-h2">{{title}}</div>
     <div class="text-body-1">{{ description }}</div>
 
-    <v-data-iterator
-      :items="getStudies"
-      :items-per-page.sync="itemsPerPage"
-      :page.sync="page"
-      :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
-      >
-
-      <template v-slot:default="props">
-        <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="6"
-          >
-            <study-card :study="item" />
-          </v-col>
-        </v-row>
-      </template>
-
-    </v-data-iterator>
+    <info-table :items="mappedStudies" />
 
   </div>
 </template>
@@ -44,7 +23,14 @@ export default {
     sortBy: 'name'
   }),
   computed: {
-    ...mapGetters(['getStudies'])
+    ...mapGetters(['getStudies']),
+    mappedStudies () {
+      // Duplicate the 'summary' field into 'description' for use with InfoTable
+      return this.getStudies.map((study) => {
+        study.description = study.summary
+        return study
+      })
+    }
   }
 }
 </script>
