@@ -1,7 +1,7 @@
 <template>
   <div>
     <breadcrumbs></breadcrumbs>
-    <div class="text-h2">{{title}}</div>
+    <page-title>{{ title }}</page-title>
     <div class="text-body-1">{{ description }}</div>
 
     <info-table :items="mappedStudies" />

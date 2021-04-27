@@ -1,10 +1,5 @@
 <template>
-  <div class="text-h2 mt-10">{{ text }}</div>
+  <div class="text-h2 my-5">
+    <slot />
+  </div>
 </template>
-
-<script>
-export default {
-  name: 'PageTitle',
-  props: ['text']
-}
-</script>

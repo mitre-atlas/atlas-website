@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="text-h2">{{ title }}</div>
+    <!-- <div class="text-h2">{{ title }}</div> -->
+    <page-title>{{ title }}</page-title>
     <p>{{ description }}</p>
 
     <v-row>

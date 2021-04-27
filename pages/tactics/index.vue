@@ -1,7 +1,7 @@
 <template>
 <div>
   <breadcrumbs></breadcrumbs>
-  <div class="text-h2">{{title}}</div>
+  <page-title>{{ title }}</page-title>
   <info-table :items="getTactics" />
 </div>
 </template>
