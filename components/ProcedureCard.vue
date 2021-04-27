@@ -29,7 +29,7 @@ export default {
       console.log(this.info.tactic)
 
       if (tactic === undefined) {
-        return 'TBD Tactic'
+        return '(Name not found for technique ' + this.info.tactic + ')'
       }
       return tactic.name
     },
@@ -39,7 +39,7 @@ export default {
       console.log(this.info.technique)
 
       if (technique === undefined) {
-        return 'TBD Technique'
+        return '(Name not found for technique ' + this.info.technique + ')'
       }
       return technique.name
     }

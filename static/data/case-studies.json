@@ -23,7 +23,7 @@
             },
             {
                 "tactic": "TA0042",
-                "technique": "AML.TT0012",
+                "technique": "AML.T0012",
                 "description": "empty\n"
             },
             {
@@ -38,7 +38,7 @@
             },
             {
                 "tactic": "TA0040",
-                "technique": "AML.TA0015",
+                "technique": "AML.T0015",
                 "description": "With the crafted samples the attackers performed online evasion of the ML-based spyware detection model. The crafted packets were identified as benign with >80% confidence. This evaluation demonstrates that adversaries are able to bypass advanced ML detection techniques, by crafting samples that are misclassified by an ML model.\n"
             }
         ],
@@ -311,7 +311,7 @@
             },
             {
                 "tactic": "TA0040",
-                "technique": "AML.T0028",
+                "technique": "T1491",
                 "description": "As a result of this coordinated attack, Tay's training data was poisoned which led its conversation algorithms to generate more reprehensible material."
             }
         ],
