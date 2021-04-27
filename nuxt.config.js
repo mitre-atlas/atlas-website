@@ -1,5 +1,4 @@
 const fs = require('fs').promises
-const yaml = require('js-yaml')
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -83,14 +82,14 @@ export default {
   generate: {
     routes () {
       // TODO Update to use JSON
-      const getTactics = fs.readFile('static/data/tactics.yaml', 'utf-8')
-      const getTechniques = fs.readFile('static/data/techniques.yaml', 'utf-8')
-      const getCaseStudies = fs.readFile('static/data/case-studies.yaml', 'utf-8')
+      const getTactics = fs.readFile('static/data/tactics.json', 'utf-8')
+      const getTechniques = fs.readFile('static/data/techniques.json', 'utf-8')
+      const getCaseStudies = fs.readFile('static/data/case-studies.json', 'utf-8')
 
       return Promise.all([getTactics, getTechniques, getCaseStudies])
       .then((contents) => {
         // Parse YAML files
-        const [tactics, techniques, studies] = contents.map(yaml.load)
+        const [tactics, techniques, studies] = contents.map(JSON.parse)
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
@@ -105,10 +104,12 @@ export default {
 
         // Use only tactics referenced in case studies
         const filteredTactics = tactics.filter((tactic) => {
-          return studyTactics.has(tactic.id)
+          // return studyTactics.has(tactic.id) // Use only tactics referenced in case studies
+          return true
         })
         const filteredTechniques = techniques.filter((technique) => {
-          return studyTechniques.has(technique.id)
+          // return studyTechniques.has(technique.id)
+          return true // Use only techniques referenced in case studies
         })
 
         // Construct each dynamic route
