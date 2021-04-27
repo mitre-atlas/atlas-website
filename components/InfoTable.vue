@@ -8,7 +8,7 @@
     hide-details
   />
   <v-data-table
-    :headers="fields"
+    :headers="headers"
     :items="items"
     :search="search"
     hide-default-footer
@@ -19,7 +19,12 @@
         :to="`/${$route.name}/${item.id}`"
         style="text-decoration: none;"
         >
+        <span v-if="'subtechnique-of' in item">
+          {{ item.id.substring(item.id.lastIndexOf('.')) }}
+        </span>
+        <span v-else>
           {{ item.id }}
+        </span>
         </nuxt-link>
     </template>
     <template v-slot:[`item.name`]="{ item }">
@@ -44,8 +49,8 @@ export default {
   name: 'InfoTable',
   props: ['items'],
   data: () => ({
-    fields: [
-      { value: 'id', text: 'ID' },
+    headers: [
+      { value: 'id', text: 'ID', align: 'right' },
       { value: 'name', text: 'Name' },
       { value: 'description', text: 'Description' }
     ],
