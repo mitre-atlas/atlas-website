@@ -22,14 +22,9 @@
                 "description": "We built a model that was trained on a similar dataset as the production model. The team trained the model on ~ 33 million benign and ~ 27 million malicious HTTP packet headers.\nEvaluation showed a true positive rate of ~ 99% and false positive rate of ~0.01%, on average. Testing the model with a HTTP packet header from known malware command and control traffic samples was detected as malicious with high confidence (> 99%).\n"
             },
             {
-                "tactic": "TA0042",
-                "technique": "AML.T0012",
-                "description": "empty\n"
-            },
-            {
                 "tactic": "AML.TA0002",
-                "technique": "AML.T0043.002",
-                "description": "#\nThe attackers crafted evasion samples by removing fields from packet header which are typically not used for C&C communication (e.g. cache-control, connection, etc.)\n"
+                "technique": "AML.T0043.003",
+                "description": "We crafted evasion samples by removing fields from packet header which are typically not used for C&C communication (e.g. cache-control, connection, etc.)\n"
             },
             {
                 "tactic": "AML.TA0002",
@@ -39,7 +34,7 @@
             {
                 "tactic": "TA0040",
                 "technique": "AML.T0015",
-                "description": "With the crafted samples the attackers performed online evasion of the ML-based spyware detection model. The crafted packets were identified as benign with >80% confidence. This evaluation demonstrates that adversaries are able to bypass advanced ML detection techniques, by crafting samples that are misclassified by an ML model.\n"
+                "description": "With the crafted samples we performed online evasion of the ML-based spyware detection model. The crafted packets were identified as benign with >80% confidence. This evaluation demonstrates that adversaries are able to bypass advanced ML detection techniques, by crafting samples that are misclassified by an ML model.\n"
             }
         ],
         "reported-by": [
@@ -54,13 +49,18 @@
         "id": "AML.CS0001",
         "object-type": "case-study",
         "name": "Botnet Domain Generation Algorithm (DGA) Detection Evasion",
-        "summary": "Palo Alto Networks Security AI research team was able to bypass a Convolutional Neural Network (CNN)-based botnet Domain Generation Algorithm (DGA) detection [1] by domain name mutations. It is a generic domain mutation technique which can evade most ML-based DGA detection modules, and can also be used for testing against all DGA detection products in the security industry.",
+        "summary": "The Palo Alto Networks Security AI research team was able to bypass a Convolutional Neural Network (CNN)-based botnet Domain Generation Algorithm (DGA) detection [1] by domain name mutations. It is a generic domain mutation technique which can evade most ML-based DGA detection modules, and can also be used for testing against all DGA detection products in the security industry.",
         "incident-date": "2018-07-01",
         "procedure": [
             {
+                "tactic": "TA0042",
+                "technique": "AML.T0001",
+                "description": "DGA detection is a widely used technique to detect botnets in academia and industry. The researchers looked for publicly available models and datasets.\n"
+            },
+            {
                 "tactic": "TA0043",
                 "technique": "AML.T0004",
-                "description": "DGA detection is a widely used technique to detect botnets in academia and industry. The researchers look into a publicly available CNN-based DGA detection model [1] and tested against a well-known DGA generated domain name data sets, which includes ~50 million domain names from 64 botnet DGA families. The CNN-based DGA detection model shows more than 70% detection accuracy on 16 (~25%) botnet DGA families.\n"
+                "description": "The researchers acquired a publicly available CNN-based DGA detection model [1] and tested against a well-known DGA generated domain name data sets, which includes ~50 million domain names from 64 botnet DGA families. The CNN-based DGA detection model shows more than 70% detection accuracy on 16 (~25%) botnet DGA families.\n"
             },
             {
                 "tactic": "AML.TA0000",
@@ -69,7 +69,7 @@
             },
             {
                 "tactic": "TA0040",
-                "technique": "T1496",
+                "technique": "AML.T0015",
                 "description": "The mutation technique can evade almost all DGA detections, not limited to CNN-based DGA detection shown in this example. If the attackers add it on top of the existing DGA, most of the DGA detections might fail. The generic mutation techniques can also be used to test the effectiveness and robustness of all DGA detection methods developed by security companies in the industry before it is deployed to the production environment.\n"
             }
         ],
@@ -91,12 +91,12 @@
             {
                 "tactic": "AML.TA0000",
                 "technique": "AML.T0019",
-                "description": "The actor used a malware sample from a prevalent ransomware family\\ as a start to create 'mutant' variants. The actor uploaded 'mutant' samples to the platform."
+                "description": "The actor used a malware sample from a prevalent ransomware family as a start to create 'mutant' variants. The actor uploaded 'mutant' samples to the platform."
             },
             {
                 "tactic": "AML.TA0000",
                 "technique": "AML.T0015",
-                "description": "Several vendors started to classify the files as the ransomware\\ family even though most of them won't run. The 'mutant' samples poisoned the dataset the ML model(s)\\ use to identify and classify this ransomware family."
+                "description": "Several vendors started to classify the files as the ransomware family even though most of them won't run. The 'mutant' samples poisoned the dataset the ML model(s) use to identify and classify this ransomware family."
             }
         ],
         "reported-by": [
@@ -148,17 +148,17 @@
             {
                 "tactic": "TA0042",
                 "technique": "T1583",
-                "description": "The attackers bought customized low-end mobile phones, customized android ROMs, a specific virtual camera application, identity information and face photos.\n"
+                "description": "The attackers bought customized low-end mobile phones, customized android ROMs, a specific virtual camera application\n# T1213: data from information repositories\n, identity information and face photos.\n"
             },
             {
                 "tactic": "TA0042",
                 "technique": "T1587",
-                "description": "The attackers used software to turn static photos into videos, adding realistic effects such as blinking eyes. Then the attackers use the purchased low-end mobile phone to import the generated video into the virtual camera app."
+                "description": "# obtain/develop capability\n# create the fake data -- Craft Example? T1565\nThe attackers used software to turn static photos into videos, adding realistic effects such as blinking eyes. Then the attackers use the purchased low-end mobile phone to import the generated video into the virtual camera app.\n"
             },
             {
                 "tactic": "AML.TA0000",
-                "technique": "AML.T0017",
-                "description": "The attackers registered an account with the victim's identity information.  In the verification phase, the face recognition system called the camera API, but because the system was hooked or rooted, the video stream given to the face recognition system was actually provided by the virtual camera app. The attackers successfully evaded the face recognition system and impersonated the victim.\n"
+                "technique": "AML.T0015",
+                "description": "#  Exploitation for Credential Access\nThe attackers registered an account with the victim's identity information.\n# Verify Attack\nIn the verification phase, the face recognition system called the camera API, but because the system was hooked or rooted, the video stream given to the face recognition system was actually provided by the virtual camera app.\n# Evade ML Model\nThe attackers successfully evaded the face recognition system and impersonated the victim.\n"
             }
         ],
         "reported-by": [
@@ -179,17 +179,17 @@
             {
                 "tactic": "TA0043",
                 "technique": "AML.T0000",
-                "description": "Using published research papers, the researchers gathered similar datasets and model architectures that these translation services used"
+                "description": "Using published research papers, the researchers gathered similar datasets and model architectures that these translation services used\n"
             },
             {
-                "tactic": "TA0043",
+                "tactic": "TA0042",
                 "technique": "AML.T0004",
-                "description": "They abuse a public facing application to query the model and produce machine translated sentence pairs as training data"
+                "description": "They abuse a public facing application to query the model and produce machine translated sentence pairs as training data\n# ML Inference API Access\n#\n"
             },
             {
-                "tactic": "TA0043",
+                "tactic": "AML.TA0001",
                 "technique": "AML.T0006",
-                "description": "Using these translated sentence pairs, researchers trained a substitute model (model replication)"
+                "description": "Using these translated sentence pairs, researchers trained a substitute model (model replication)\n"
             },
             {
                 "tactic": "AML.TA0000",
