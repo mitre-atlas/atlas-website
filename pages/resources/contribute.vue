@@ -28,7 +28,7 @@
     <page-section-title>Contributors</page-section-title>
 
     <p>
-      Thank you to the ATT&CK team and those who have contributed to AdvML, including but not limited to:
+      Thank you to our many active contributors! Including, but not limited to:
     </p>
 
     <v-row>
