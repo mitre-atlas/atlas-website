@@ -1,18 +1,105 @@
 <template>
 <div>
   <breadcrumbs></breadcrumbs>
-  <div class="text-h2">{{info.name}}</div>
-  <div class="subtitle-1">{{info.id}}</div>
-  <p>{{info.description}}</p>
-  <!-- <v-card>
-    <v-card-text>
-      <span class="font-weight-bold">ID:</span> {{info.id}}
-    </v-card-text>
-  </v-card> -->
+  <div class="text-h2 ml-6">{{info.name}}</div>
+  <!-- <div class="subtitle-1">{{info.id}}</div> -->
 
-  <v-divider />
+  <v-row>
+    <v-col cols="8">
+      <page-section-title class="ml-7">Summary</page-section-title>
 
-  <div class="text-h5">{{ techniques.length }} Techniques</div>
+      <div class="my-5 ml-10" v-html="info.description" />
+    </v-col>
+    <v-col cols="4">
+      <v-card flat class="mt-10">
+        <v-card-text>
+          <p>
+            <span class="font-weight-bold">ID:</span> {{info.id}}
+          </p>
+
+          <p>
+            <span class="font-weight-bold">Techniques:</span> {{ numTotalTechniques }}
+          </p>
+
+          <p>
+            <span class="font-weight-bold">Case studies:</span> {{ relevantStudies.length }}
+          </p>
+
+          <span v-if="info.id.startsWith('T')">
+            <a href='#' @click="openNewTab">View at MITRE ATT&CK</a>
+            <v-icon small>mdi-open-in-new</v-icon>
+          </span>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
+
+  <!-- <v-divider /> -->
+
+  <v-expansion-panels multiple flat accordion>
+    <v-expansion-panel>
+      <v-expansion-panel-header>
+        <div class="text-h5">Techniques</div>
+      </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list>
+            <div
+              v-for="(technique,i) in techniques"
+              :key="i">
+              <v-list-item
+                :nuxt="true"
+                :to="`/techniques/${technique.id}`"
+                >
+                <v-list-item-title
+                  >
+                  {{ technique.name }}
+                </v-list-item-title>
+              </v-list-item>
+              <div v-if="'subtechniques' in technique">
+                <v-list-item
+                  v-for="(subtechnique, j) in technique.subtechniques"
+                  :key="j"
+                  :nuxt="true"
+                  :to="`/techniques/${subtechnique.id}`"
+                  >
+                  <v-list-item>
+                    <v-list-item-subtitle
+                    >
+                    {{ subtechnique.name }}
+                  </v-list-item-subtitle>
+                  </v-list-item>
+                </v-list-item>
+              </div>
+            </div>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel-header>
+    </v-expansion-panel>
+
+    <v-expansion-panel v-if="relevantStudies.length > 0">
+      <v-expansion-panel-header>
+        <div class="text-h5">Case studies</div>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-list>
+          <div
+            v-for="(study,i) in relevantStudies"
+            :key="i">
+            <v-list-item
+              :nuxt="true"
+              :to="`/studies/${study.id}`"
+              >
+              <v-list-item-title>
+                {{ study.name }}
+              </v-list-item-title>
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+
+  <!-- <page-section-title>{{ numTotalTechniques }} Techniques</page-section-title>
   <v-list>
     <div
       v-for="(technique,i) in techniques"
@@ -44,12 +131,10 @@
         </v-list-item>
       </div>
     </div>
-  </v-list>
+  </v-list> -->
 
-  <div v-if="relevantStudies.length > 0">
-    <page-section-title
-      :text="`${relevantStudies.length} Case Studies`"
-      />
+  <!-- <div v-if="relevantStudies.length > 0">
+    <page-section-title>{{ relevantStudies.length }} Case Studies</page-section-title>
 
     <v-list>
       <div
@@ -66,7 +151,7 @@
 
       </div>
     </v-list>
-  </div>
+  </div> -->
 
   <!--
   <v-row>
@@ -93,6 +178,22 @@ export default {
     },
     relevantStudies () {
       return this.$store.getters.getStudiesWhereTacticIdIn(this.$route.params.id)
+    },
+    numTotalTechniques () {
+      let count = 0
+      this.techniques.forEach((t) => {
+        count += 1
+        if ('subtechniques' in t) {
+          count += t.subtechniques.length
+        }
+      })
+      return count
+    }
+  },
+  methods: {
+    openNewTab () {
+      const url = this.info.external_references[0].url
+      window.open(url, '_blank')
     }
   }
 }

@@ -2,13 +2,13 @@
 <div>
   <breadcrumbs></breadcrumbs>
 
-  <div class="text-h4 pt-10">{{info.name}}</div>
+  <page-title class="ml-5">{{info.name}}</page-title>
 
   <v-row>
     <v-col cols="8">
-      <page-section-title text="Summary" />
+      <page-section-title class="ml-6">Summary</page-section-title>
 
-      <div class="mt-5" v-html="info.description" />
+      <div class="my-5 ml-10" v-html="info.description" />
     </v-col>
     <v-col cols=4>
 
@@ -21,6 +21,13 @@
       <p v-if="'subtechnique-of' in info">
         <span class="font-weight-bold">Sub-technique of:</span>
         <nuxt-link :to="`/techniques/${parentTechnique.id}`">{{ parentTechnique.name }}</nuxt-link>
+      </p>
+      <p v-if="'subtechniques' in info">
+        <span class="font-weight-bold" >Sub-techniques:</span> {{ info.subtechniques.length }}
+      </p>
+
+      <p>
+        <span class="font-weight-bold">Case studies:</span> {{ relevantStudies.length }}
       </p>
 
       <p>
@@ -42,9 +49,34 @@
   </v-row>
 
   <div v-if="'subtechniques' in info">
-    <page-section-title
-      :text="`${info.subtechniques.length} Subtechniques`"
-      />
+    <v-list-group
+      :value="true"
+      >
+      <template v-slot:activator>
+        <page-section-title>
+          Sub-techniques
+        </page-section-title>
+      </template>
+        <!-- <v-badge inline :content="relevantStudies.length" /> -->
+         <div
+        v-for="(subtechnique,i) in info.subtechniques"
+        :key="i">
+        <v-list-item
+          :nuxt="true"
+          :to="`/techniques/${subtechnique.id}`"
+          >
+          <v-list-item>
+          <v-list-item-title>
+            {{ subtechnique.name }}
+          </v-list-item-title>
+          </v-list-item>
+        </v-list-item>
+      </div>
+
+    </v-list-group>
+    <!-- <page-section-title>
+      {{ `${info.subtechniques.length} Subtechniques` }}
+    </page-section-title>
 
     <v-list>
       <div
@@ -53,22 +85,48 @@
         <v-list-item
           :nuxt="true"
           :to="`/techniques/${subtechnique.id}`"
-          >
-          <v-list-item-title
-            :class="[subtechnique.id.startsWith('AML') ? 'teal--text text--darken-2' : '']"
-            >
+          > -->
+          <!-- :class="[subtechnique.id.startsWith('AML') ? 'teal--text text--darken-2' : '']" -->
+          <!-- <v-list-item-title>
             {{ subtechnique.name }}
           </v-list-item-title>
         </v-list-item>
 
       </div>
-    </v-list>
+    </v-list> -->
   </div>
 
   <div v-if="relevantStudies.length > 0">
-    <page-section-title
-      :text="`${relevantStudies.length} Case Studies`"
-      />
+    <v-list-group
+      :value="true"
+      >
+      <template v-slot:activator>
+        <page-section-title>
+          Case studies
+        </page-section-title>
+        <!-- <v-badge inline :content="relevantStudies.length" /> -->
+      </template>
+
+      <div
+        v-for="(study,i) in relevantStudies"
+        :key="i">
+        <v-list-item
+          :nuxt="true"
+          :to="`/studies/${study.id}`"
+          >
+          <v-list-item>
+          <v-list-item-title>
+            {{ study.name }}
+          </v-list-item-title>
+        </v-list-item>
+        </v-list-item>
+
+      </div>
+    </v-list-group>
+
+    <!-- <page-section-title>
+      {{ `${relevantStudies.length} Case Studies` }}
+    </page-section-title>
 
     <v-list>
       <div
@@ -84,7 +142,7 @@
         </v-list-item>
 
       </div>
-    </v-list>
+    </v-list> -->
   </div>
 
   <!--

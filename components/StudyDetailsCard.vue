@@ -9,13 +9,7 @@
 
     <v-list subheader>
       <v-subheader>Incident date</v-subheader>
-      <!-- <v-list-item>
-        <v-list-item>
-          <v-list-item-content>
-            {{ formattedDate }}
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item> -->
+
       <study-details-list-item :itemList="formattedDate" />
 
       <v-subheader>Reported by</v-subheader>
@@ -26,6 +20,16 @@
 
       <!-- <v-subheader>Sources</v-subheader>
       <study-details-list-item :itemList="study.sources" /> -->
+
+      <!-- <v-subheader>ATT&CK Navigator</v-subheader>
+      <v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            TBD link to custom layer on ATT&CK Navigator
+          </v-list-item-content>
+          <v-icon small>mdi-open-in-new</v-icon>
+        </v-list-item>
+      </v-list-item> -->
 
     </v-list>
   </v-card>

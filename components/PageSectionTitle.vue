@@ -1,10 +1,11 @@
 <template>
-  <div class="text-h6 mt-10">{{ text }}</div>
+  <div class="text-h5 my-5">
+    <slot />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'PageSectionTitle',
-  props: ['text']
+  name: 'PageSectionTitle'
 }
 </script>

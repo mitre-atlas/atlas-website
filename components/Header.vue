@@ -6,6 +6,8 @@
     color="grey darken-3"
     >
 
+    <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
+
     <v-toolbar-title>
       <nuxt-link to="/">{{ title }}</nuxt-link>
     </v-toolbar-title>
@@ -15,6 +17,7 @@
     <v-toolbar-items
       v-for="(link, i) in links"
       :key="i"
+      class="hidden-sm-and-down"
       >
 
       <v-menu
@@ -62,7 +65,49 @@
         class="text-capitalize"
         nuxt
       ></v-btn>
+
     </v-toolbar-items>
+
+    <v-toolbar-items class="hidden-md-and-up">
+       <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <div
+            v-for="(link, i) in links"
+            :key="i"
+            >
+            <div v-if="link.isDropdown">
+              <v-list-item v-for="(childLink, j) in link.links" :key="j">
+                <v-btn
+                  v-text="childLink.name"
+                  :href="childLink.href"
+                  text
+                  class="text-capitalize"
+                  nuxt
+                />
+              </v-list-item>
+            </div>
+            <v-list-item v-else>
+              <v-btn
+                v-text="link.name"
+                :href="link.href"
+                text
+                class="text-capitalize"
+                nuxt
+              />
+            </v-list-item>
+          </div>
+        </v-list>
+       </v-menu>
+    </v-toolbar-items>
+
   </v-app-bar>
 </template>
 
@@ -97,11 +142,11 @@ export default {
           },
           {
             name: 'Contribute',
-            href: '/page/contributors'
+            href: '/resources/contribute'
           },
           {
             name: 'Feedback',
-            href: '/page/feedback'
+            href: '/resources/feedback'
           }
         ]
       }

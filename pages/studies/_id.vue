@@ -6,7 +6,7 @@
     <v-row>
 
       <v-col cols="8">
-        <page-section-title text="Summary" />
+        <page-section-title>Summary</page-section-title>
 
         <div class="text-body-1 mt-5">
         {{ study.summary }}
@@ -20,7 +20,11 @@
 
     <v-row>
       <v-col>
-        <page-section-title text="Procedure" />
+        <page-section-title>Procedure</page-section-title>
+          <span class="pink--text">
+            TODO link to custom layer on ATT&CK Navigator
+            <v-icon small>mdi-open-in-new</v-icon>
+          </span>
 
         <procedure-timeline :study="study" class="mt-5" />
       </v-col>
@@ -28,7 +32,7 @@
 
     <v-row>
       <v-col>
-        <page-section-title text="Sources" />
+        <page-section-title>Sources</page-section-title>
 
         <ol class="mt-2">
           <li v-for="(source, i) in study.sources" :key="i">
