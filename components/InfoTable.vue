@@ -6,7 +6,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search by ID or keywords"
+          label="Search for keywords"
           single-line
           hide-details
         />
@@ -77,14 +77,14 @@ export default {
         {
           value: 'id',
           text: 'ID',
-          align: 'right'
-          // filter: (value) => {
-          //   // TODO Allow ID to still be searchable via logic
-          //   if (this.showAdvMlOnly) {
-          //     return value.startsWith('AML') && value.includes(this.search)
-          //   }
-          //   return true
-          // }
+          align: 'right',
+          filter: (value) => {
+            // TODO Allow ID to still be searchable via logic
+            if (this.showAdvMlOnly) {
+              return value.startsWith('AML') && value.includes(this.search)
+            }
+            return true
+          }
         },
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }
