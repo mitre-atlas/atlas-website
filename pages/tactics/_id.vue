@@ -36,107 +36,60 @@
 
   <!-- <v-divider /> -->
 
-  <v-expansion-panels multiple flat accordion>
-    <v-expansion-panel>
-      <v-expansion-panel-header>
-        <div class="text-h5">Techniques</div>
-      </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-list>
-            <div
-              v-for="(technique,i) in techniques"
-              :key="i">
-              <v-list-item
-                :nuxt="true"
-                :to="`/techniques/${technique.id}`"
-                >
-                <v-list-item-title
-                  >
-                  {{ technique.name }}
-                </v-list-item-title>
-              </v-list-item>
-              <div v-if="'subtechniques' in technique">
-                <v-list-item
-                  v-for="(subtechnique, j) in technique.subtechniques"
-                  :key="j"
-                  :nuxt="true"
-                  :to="`/techniques/${subtechnique.id}`"
-                  >
-                  <v-list-item>
-                    <v-list-item-subtitle
-                    >
-                    {{ subtechnique.name }}
-                  </v-list-item-subtitle>
-                  </v-list-item>
-                </v-list-item>
-              </div>
-            </div>
-          </v-list>
-        </v-expansion-panel-content>
-      </v-expansion-panel-header>
-    </v-expansion-panel>
-
-    <v-expansion-panel v-if="relevantStudies.length > 0">
-      <v-expansion-panel-header>
-        <div class="text-h5">Case studies</div>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-list>
-          <div
-            v-for="(study,i) in relevantStudies"
-            :key="i">
-            <v-list-item
-              :nuxt="true"
-              :to="`/studies/${study.id}`"
-              >
-              <v-list-item-title>
-                {{ study.name }}
-              </v-list-item-title>
-            </v-list-item>
-          </div>
-        </v-list>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
-
-  <!-- <page-section-title>{{ numTotalTechniques }} Techniques</page-section-title>
-  <v-list>
-    <div
-      v-for="(technique,i) in techniques"
-      :key="i">
-      <v-list-item
-        :nuxt="true"
-        :to="`/techniques/${technique.id}`"
-        >
-        <v-list-item-title
-          :class="[technique.id.startsWith('AML') ? 'teal--text text--darken-3' : '']"
-          >
-          {{ technique.name }}
-        </v-list-item-title>
-      </v-list-item>
-      <div v-if="'subtechniques' in technique">
+  <div>
+    <v-list-group
+      :value="true"
+      >
+      <template v-slot:activator>
+        <page-section-title>
+          Techniques
+        </page-section-title>
+      </template>
+        <!-- <v-badge inline :content="relevantStudies.length" /> -->
+      <div
+        v-for="(technique,i) in techniques"
+        :key="i">
         <v-list-item
-          v-for="(subtechnique, j) in technique.subtechniques"
-          :key="j"
           :nuxt="true"
-          :to="`/techniques/${subtechnique.id}`"
+          :to="`/techniques/${technique.id}`"
           >
-          <v-list-item>
-            <v-list-item-subtitle
-            :class="[technique.id.startsWith('AML') ? 'teal--text text--darken-1' : '']"
+          <v-list-item-title
+
             >
-            {{ subtechnique.name }}
-          </v-list-item-subtitle>
-          </v-list-item>
+            {{ technique.name }}
+          </v-list-item-title>
         </v-list-item>
+        <div v-if="'subtechniques' in technique">
+          <v-list-item
+            v-for="(subtechnique, j) in technique.subtechniques"
+            :key="j"
+            :nuxt="true"
+            :to="`/techniques/${subtechnique.id}`"
+            >
+            <v-list-item>
+              <v-list-item-subtitle
+
+              >
+              {{ subtechnique.name }}
+            </v-list-item-subtitle>
+            </v-list-item>
+          </v-list-item>
+        </div>
       </div>
-    </div>
-  </v-list> -->
+    </v-list-group>
+  </div>
 
-  <!-- <div v-if="relevantStudies.length > 0">
-    <page-section-title>{{ relevantStudies.length }} Case Studies</page-section-title>
+  <div v-if="relevantStudies.length > 0">
+    <v-list-group
+      :value="true"
+      >
+      <template v-slot:activator>
+        <page-section-title>
+          Case studies
+        </page-section-title>
+        <!-- <v-badge inline :content="relevantStudies.length" /> -->
+      </template>
 
-    <v-list>
       <div
         v-for="(study,i) in relevantStudies"
         :key="i">
@@ -144,26 +97,16 @@
           :nuxt="true"
           :to="`/studies/${study.id}`"
           >
-          <v-list-item-title>
-            {{ study.name }}
-          </v-list-item-title>
+          <v-list-item>
+            <v-list-item-title>
+              {{ study.name }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list-item>
-
       </div>
-    </v-list>
-  </div> -->
+    </v-list-group>
+  </div>
 
-  <!--
-  <v-row>
-    <v-col
-      v-for="(technique,i) in techniques"
-      :key="i"
-      cols="6"
-    >
-      <technique-card :info="technique" />
-    </v-col>
-  </v-row>
-  -->
 </div>
 </template>
 
