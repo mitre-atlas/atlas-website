@@ -15,7 +15,7 @@
         <v-switch
           v-if="this.$route.name === 'tactics' || this.$route.name === 'techniques'"
           v-model="showAdvMlOnly"
-          label="Show only ML"
+          label="Show only AdvML"
           class="pa-3"
         />
       </v-col>
