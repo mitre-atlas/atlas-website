@@ -6,9 +6,9 @@
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please submit a pull request to <span class="pink--text">TODO link to GitHub data repository here.</span>
+    For immediate corrections to tactics, techniques, and case studies, please submit a pull request to the GitHub data repository.
     <br><br>
-    For a more hands-on feedback session, <span class="pink--text">TODO future events, consider adding an announcements section.</span>
+    <!-- For a more hands-on feedback session, <span class="pink--text">TODO future events, consider adding an announcements section.</span> -->
 
     <page-section-title>Contribute Case Studies</page-section-title>
 
@@ -23,7 +23,7 @@
     <br>
 
     You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and Adversarial ML Threat Matrix mapping.
-    <span class="pink--text">TODO Consider adding content format examples like <a href="https://attack.mitre.org/resources/contribute/">ATT&CK's</a>.</span>
+    <!-- <span class="pink--text">TODO Consider adding content format examples like <a href="https://attack.mitre.org/resources/contribute/">ATT&CK's</a>.</span> -->
 
     <page-section-title>Contributors</page-section-title>
 

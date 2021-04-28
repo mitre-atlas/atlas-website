@@ -21,10 +21,10 @@
     <v-row>
       <v-col>
         <page-section-title>Procedure</page-section-title>
-          <span class="pink--text">
+          <!-- <span class="pink--text">
             TODO link to custom layer on ATT&CK Navigator
             <v-icon small>mdi-open-in-new</v-icon>
-          </span>
+          </span> -->
 
         <procedure-timeline :study="study" class="mt-5" />
       </v-col>
