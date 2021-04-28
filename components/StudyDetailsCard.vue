@@ -15,8 +15,8 @@
       <v-subheader>Reported by</v-subheader>
       <study-details-list-item :itemList="study['reported-by']" />
 
-      <v-subheader>Verified by</v-subheader>
-      <study-details-list-item :itemList="study['verified-by']" />
+      <!-- <v-subheader>Verified by</v-subheader>
+      <study-details-list-item :itemList="study['verified-by']" /> -->
 
       <!-- <v-subheader>Sources</v-subheader>
       <study-details-list-item :itemList="study.sources" /> -->
