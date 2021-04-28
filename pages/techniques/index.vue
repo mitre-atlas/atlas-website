@@ -12,8 +12,8 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
-    title: 'Adversarial ML Techniques',
-    description: 'Lists all techniques.'
+    title: 'Techniques',
+    description: 'Lists techniques from AdvML and ATT&CK Enterprise.'
   }),
   computed: {
     ...mapGetters(['getTechniques'])

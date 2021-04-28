@@ -1,12 +1,26 @@
 <template>
 <div>
-    <v-text-field
-    v-model="search"
-    append-icon="mdi-magnify"
-    label="Search"
-    single-line
-    hide-details
-  />
+
+    <v-row>
+      <v-col cols="8">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        />
+      </v-col>
+      <v-col cols="4">
+        <v-switch
+          v-if="this.$route.name === 'tactics' || this.$route.name === 'techniques'"
+          v-model="showAdvMlOnly"
+          label="Show only ML"
+          class="pa-3"
+        />
+      </v-col>
+    </v-row>
+
   <v-data-table
     :headers="headers"
     :items="items"
@@ -49,13 +63,33 @@ export default {
   name: 'InfoTable',
   props: ['items'],
   data: () => ({
-    headers: [
-      { value: 'id', text: 'ID', align: 'right' },
-      { value: 'name', text: 'Name' },
-      { value: 'description', text: 'Description' }
-    ],
-    search: ''
-  })
+    // headers: [
+    //   { value: 'id', text: 'ID', align: 'right' },
+    //   { value: 'name', text: 'Name' },
+    //   { value: 'description', text: 'Description' }
+    // ],
+    search: '',
+    showAdvMlOnly: false
+  }),
+  computed: {
+    headers () {
+      return [
+        {
+          value: 'id',
+          text: 'ID',
+          align: 'right',
+          filter: (value) => {
+            if (this.showAdvMlOnly) {
+              return value.startsWith('AML')
+            }
+            return true
+          }
+        },
+        { value: 'name', text: 'Name' },
+        { value: 'description', text: 'Description' }
+      ]
+    }
+  }
 }
 </script>
 

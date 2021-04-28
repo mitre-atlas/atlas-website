@@ -2,6 +2,7 @@
 <div>
   <breadcrumbs></breadcrumbs>
   <page-title>{{ title }}</page-title>
+  <div class="text-body-1">{{ description }}</div>
   <info-table :items="getTactics" />
 </div>
 </template>
@@ -11,7 +12,8 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: () => ({
-    title: 'Adversarial ML Tactics'
+    title: 'Tactics',
+    description: 'Lists tactics from AdvML and ATT&CK Enterprise.'
   }),
   computed: {
     ...mapGetters(['getTactics'])
