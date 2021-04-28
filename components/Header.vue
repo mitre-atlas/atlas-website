@@ -145,7 +145,7 @@ export default {
             href: '/resources/contribute'
           },
           {
-            name: 'Feedback',
+            name: 'Contact Us',
             href: '/resources/feedback'
           }
         ]

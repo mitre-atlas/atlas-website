@@ -16,7 +16,7 @@
         <br>
         <NuxtLink to="/resources/contribute" style="text-decoration: none;">Contribute</NuxtLink>
         <br>
-        <NuxtLink to="/resources/feedback" style="text-decoration: none;">Feedback</NuxtLink>
+        <NuxtLink to="/resources/feedback" style="text-decoration: none;">Contact Us</NuxtLink>
         <br>
         <span><a href="https://navigator.lt.mitre.org" style="text-decoration: none;">View on ATT&CK Navigator</a><v-icon small>mdi-open-in-new</v-icon></span>
       </div>

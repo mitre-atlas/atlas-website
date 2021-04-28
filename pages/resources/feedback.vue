@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-title>Feedback</page-title>
+    <page-title>Contact Us</page-title>
 
-    <page-section-title>Contact Us</page-section-title>
+    <!-- <page-section-title>Contact Us</page-section-title> -->
 
     For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
     <br><br>
