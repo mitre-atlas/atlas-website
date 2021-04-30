@@ -275,11 +275,12 @@ export const actions = {
         })
 
         // Populate tactics with populated techniques
+        // TODO This seems to not include ATT&CK techniques
         const populatedTactics = filteredTactics.map((tactic) => {
           // Build up the top-level parent techniques
           const relevantFullTechniques = parentTechniques.filter((technique) => {
             // Must be a parent-level technique that is under this tactic
-            return technique.tactics.some(parentTacticId => tactic.id === parentTacticId)
+            return technique.tactics.includes(tactic.id)
           })
 
           tactic.techniques = relevantFullTechniques

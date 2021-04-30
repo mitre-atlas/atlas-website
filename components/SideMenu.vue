@@ -35,7 +35,7 @@
       multiple
     >
       <v-expansion-panel
-        v-for="(tactic, i) in this.getTactics"
+        v-for="(tactic, i) in items"
         :key="i"
       >
         <v-expansion-panel-header>
@@ -115,57 +115,6 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <!--
-    <v-list dense nav v-else>
-      <v-list-group
-        :value="true"
-        v-for="(tactic, i) in this.getTactics"
-        :key="i"
-      >
-        <template v-slot:activator>
-          <v-list-item-title>
-            {{ tactic.name }}
-          </v-list-item-title>
-        </template>
-
-        <div
-          v-for="(technique, j) in tactic.techniques"
-          :key="j"
-        >
-
-          <v-list-group
-            v-if="'subtechniques' in technique"
-            :value="true"
-            no-action
-            sub-group
-          >
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ technique.name }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </template>
-
-            <v-list-item
-              v-for="(subtechnique, k) in technique.subtechniques"
-              :key="k"
-            >
-              <v-list-item-title>
-                {{ subtechnique.name }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-group>
-
-          <v-list-item v-else>
-            <v-list-item-title>
-              {{ technique.name }}
-            </v-list-item-title>
-            </v-list-item>
-        </div>
-      </v-list-group>
-    </v-list>
-    -->
   </v-navigation-drawer>
 </template>
 
@@ -178,7 +127,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniques', 'getStudies']),
+    ...mapGetters(['getTactics', 'getTechniques', 'getStudies', 'getTechniquesByTacticId']),
     title () {
       if (this.$route.name.startsWith('tactics')) {
         return 'Tactics'
@@ -192,7 +141,13 @@ export default {
       if (this.$route.name.startsWith('tactics')) {
         return this.getTactics
       } else if (this.$route.name.startsWith('techniques')) {
-        return this.getTechniques
+        // Hierarchy of tactics with fully populated techniques
+        return this.getTactics.map((tactic) => {
+          return {
+            ...tactic,
+            techniques: this.getTechniquesByTacticId(tactic.id)
+          }
+        })
       } else {
         return this.getStudies
       }
