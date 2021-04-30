@@ -18,11 +18,11 @@
           </p>
 
           <p>
-            <span class="font-weight-bold">Techniques:</span> {{ numTotalTechniques }}
+            <span class="font-weight-bold">Number of techniques:</span> {{ numTotalTechniques }}
           </p>
 
           <p>
-            <span class="font-weight-bold">Case studies:</span> {{ relevantStudies.length }}
+            <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
           </p>
 
           <span v-if="info.id.startsWith('T')">
@@ -53,11 +53,11 @@
           :nuxt="true"
           :to="`/techniques/${technique.id}`"
           >
-          <v-list-item-title
-
-            >
-            {{ technique.name }}
-          </v-list-item-title>
+          <v-list-item>
+            <v-list-item-title>
+              {{ technique.name }}
+            </v-list-item-title>
+          </v-list-item>
         </v-list-item>
         <div v-if="'subtechniques' in technique">
           <v-list-item
@@ -67,11 +67,11 @@
             :to="`/techniques/${subtechnique.id}`"
             >
             <v-list-item>
-              <v-list-item-subtitle
-
-              >
-              {{ subtechnique.name }}
-            </v-list-item-subtitle>
+              <v-list-item>
+                <v-list-item-subtitle>
+                {{ subtechnique.name }}
+                </v-list-item-subtitle>
+              </v-list-item>
             </v-list-item>
           </v-list-item>
         </div>

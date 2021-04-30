@@ -18,24 +18,24 @@
         <span class="font-weight-bold">ID:</span> {{info.id}}
       </p>
 
-      <p v-if="'subtechnique-of' in info">
-        <span class="font-weight-bold">Sub-technique of:</span>
-        <nuxt-link :to="`/techniques/${parentTechnique.id}`">{{ parentTechnique.name }}</nuxt-link>
-      </p>
-      <p v-if="'subtechniques' in info">
-        <span class="font-weight-bold" >Sub-techniques:</span> {{ info.subtechniques.length }}
-      </p>
-
-      <p>
-        <span class="font-weight-bold">Case studies:</span> {{ relevantStudies.length }}
-      </p>
-
       <p>
         <span class="font-weight-bold">Tactics:</span>
         <span v-for="(tactic, i) in referencedTactics" :key="i">
           <span v-if="i != 0">,</span>
           <nuxt-link :to="`/tactics/${tactic.id}`">{{tactic.name}}</nuxt-link>
         </span>
+      </p>
+
+      <p v-if="'subtechnique-of' in info">
+        <span class="font-weight-bold">Sub-technique of:</span>
+        <nuxt-link :to="`/techniques/${parentTechnique.id}`">{{ parentTechnique.name }}</nuxt-link>
+      </p>
+      <p v-if="'subtechniques' in info">
+        <span class="font-weight-bold" >Number of sub-techniques:</span> {{ info.subtechniques.length }}
+      </p>
+
+      <p>
+        <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
       </p>
 
       <span v-if="info.id.startsWith('T')">
@@ -130,26 +130,6 @@
 
       </div>
     </v-list-group>
-
-    <!-- <page-section-title>
-      {{ `${relevantStudies.length} Case Studies` }}
-    </page-section-title>
-
-    <v-list>
-      <div
-        v-for="(study,i) in relevantStudies"
-        :key="i">
-        <v-list-item
-          :nuxt="true"
-          :to="`/studies/${study.id}`"
-          >
-          <v-list-item-title>
-            {{ study.name }}
-          </v-list-item-title>
-        </v-list-item>
-
-      </div>
-    </v-list> -->
   </div>
 
   <!--
