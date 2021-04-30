@@ -11,7 +11,7 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list dense nav>
+    <v-list dense nav v-if="title === 'Tactics' || title === 'Case Studies'">
       <v-list-item
         v-for="(item, i) in items"
         :key="i"
@@ -28,47 +28,157 @@
       </v-list-item>
     </v-list>
 
-  </v-navigation-drawer>
-  <!-- <div class="side-menu mt-8" style="height: 100%;">
-      <v-navigation-drawer permanent left>
-        <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            {{ title }}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list
-        dense
-        nav
+    <v-expansion-panels
+      v-else
+      accordion
+      flat
+      multiple
+    >
+      <v-expansion-panel
+        v-for="(tactic, i) in this.getTactics"
+        :key="i"
       >
-        <v-list-item
-          v-for="study in idGetter"
-          :key="study.name"
-          :link="true"
-          :nuxt="true"
-          :to="'/' + routeString + '/' + study.id"
+        <v-expansion-panel-header>
+          <NuxtLink
+            :to="`/tactics/${tactic.id}`"
+            style="text-decoration: none;"
+          >
+            {{ tactic.name }}
+          </NuxtLink>
+        </v-expansion-panel-header>
+
+        <v-expansion-panel-content>
+          <div
+            v-for="(technique, j) in tactic.techniques"
+            :key="j"
+          >
+
+            <v-expansion-panels
+              v-if="'subtechniques' in technique"
+              accordion
+              flat
+              multiple
+            >
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  <NuxtLink
+                      :to="`/techniques/${technique.id}`"
+                      style="text-decoration: none; font-size: 0.9375rem;"
+                    >
+                    {{ technique.name }}
+                  </NuxtLink>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-expansion-panel-header
+                    hide-actions
+                    v-for="(subtechnique, k) in technique.subtechniques"
+                    :key="k"
+                  >
+                    <NuxtLink
+                        :to="`/techniques/${subtechnique.id}`"
+                        style="text-decoration: none; font-size: 0.9375rem;"
+                      >
+                      {{ subtechnique.name }}
+                    </NuxtLink>
+                  </v-expansion-panel-header>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+
+            <!-- <v-expansion-panel-header
+              v-else
+              hide-actions
+            >
+              <NuxtLink
+                :to="`/techniques/${technique.id}`"
+                style="text-decoration: none;"
+              >
+                {{ technique.name }}
+              </NuxtLink>
+            </v-expansion-panel-header> -->
+            <div v-else class="mb-3 ml-6" style="line-height: 1;">
+              <!-- <v-btn
+                text
+                @click="$vuetify.goTo(`${technique.id}`)"
+                >
+                {{ technique.name }}
+                </v-btn> -->
+              <NuxtLink
+                  :to="`/techniques/${technique.id}`"
+                  style="text-decoration: none; font-size: 0.9375rem;"
+                >
+                {{ technique.name }}
+              </NuxtLink>
+            </div>
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+
+    <!--
+    <v-list dense nav v-else>
+      <v-list-group
+        :value="true"
+        v-for="(tactic, i) in this.getTactics"
+        :key="i"
+      >
+        <template v-slot:activator>
+          <v-list-item-title>
+            {{ tactic.name }}
+          </v-list-item-title>
+        </template>
+
+        <div
+          v-for="(technique, j) in tactic.techniques"
+          :key="j"
         >
 
-          <v-list-item>
-          <v-list-item-content>
-            <v-list-item-subtitle>{{ study.name }}</v-list-item-subtitle>
-          </v-list-item-content>
-          </v-list-item>
-        </v-list-item>
-      </v-list>
-      </v-navigation-drawer>
-  </div> -->
+          <v-list-group
+            v-if="'subtechniques' in technique"
+            :value="true"
+            no-action
+            sub-group
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ technique.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item
+              v-for="(subtechnique, k) in technique.subtechniques"
+              :key="k"
+            >
+              <v-list-item-title>
+                {{ subtechnique.name }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <v-list-item v-else>
+            <v-list-item-title>
+              {{ technique.name }}
+            </v-list-item-title>
+            </v-list-item>
+        </div>
+      </v-list-group>
+    </v-list>
+    -->
+  </v-navigation-drawer>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
     }
   },
   computed: {
+    ...mapGetters(['getTactics', 'getTechniques', 'getStudies']),
     title () {
       if (this.$route.name.startsWith('tactics')) {
         return 'Tactics'
@@ -80,16 +190,21 @@ export default {
     },
     items () {
       if (this.$route.name.startsWith('tactics')) {
-        return this.$store.getters.getTactics
+        return this.getTactics
       } else if (this.$route.name.startsWith('techniques')) {
-        return this.$store.getters.getTechniques
+        return this.getTechniques
       } else {
-        return this.$store.getters.getStudies
+        return this.getStudies
       }
     },
     basePath () {
       // i.e. tactics, techniques, studies
       return this.$route.path.split('/')[1]
+    }
+  },
+  methods: {
+    scrollTo (elementId) {
+      this.$emit('scroll-to', elementId)
     }
   },
   watch: {

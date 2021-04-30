@@ -25,6 +25,7 @@ export default {
         '/tactics',
         '/techniques',
         '/studies'
+        // 'studies-id'
       ]
     }
   },
@@ -34,6 +35,7 @@ export default {
       return this.pathsWithNav.some((path) => {
         return this.$route.path.startsWith(path)
       })
+      // return this.pathsWithNav.includes(this.$route.name)
     }
   }
 }
