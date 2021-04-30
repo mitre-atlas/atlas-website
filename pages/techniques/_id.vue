@@ -72,28 +72,35 @@
           </v-list-item>
         </v-list-item>
       </div>
-
     </v-list-group>
-    <!-- <page-section-title>
-      {{ `${info.subtechniques.length} Subtechniques` }}
-    </page-section-title>
+  </div>
 
-    <v-list>
-      <div
-        v-for="(subtechnique,i) in info.subtechniques"
+  <div v-if="'subtechnique-of' in info">
+    <v-list-group
+      :value="true"
+      >
+      <template v-slot:activator>
+        <page-section-title>
+          Other sub-techniques
+        </page-section-title>
+      </template>
+        <!-- <v-badge inline :content="relevantStudies.length" /> -->
+         <div
+        v-for="(subtechnique,i) in parentTechnique.subtechniques"
         :key="i">
         <v-list-item
           :nuxt="true"
           :to="`/techniques/${subtechnique.id}`"
-          > -->
-          <!-- :class="[subtechnique.id.startsWith('AML') ? 'teal--text text--darken-2' : '']" -->
-          <!-- <v-list-item-title>
+          v-if="subtechnique.id !== info.id"
+          >
+          <v-list-item>
+          <v-list-item-title>
             {{ subtechnique.name }}
           </v-list-item-title>
+          </v-list-item>
         </v-list-item>
-
       </div>
-    </v-list> -->
+    </v-list-group>
   </div>
 
   <div v-if="relevantStudies.length > 0">
