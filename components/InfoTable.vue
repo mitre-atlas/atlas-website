@@ -32,6 +32,7 @@
        <nuxt-link
         :to="`/${$route.name}/${item.id}`"
         style="text-decoration: none;"
+        :id="item.id"
         >
         <span v-if="'subtechnique-of' in item">
           {{ item.id.substring(item.id.lastIndexOf('.')) }}
@@ -50,7 +51,10 @@
         </nuxt-link>
     </template>
     <template v-slot:[`item.description`]="{ item }">
-      <span v-html="item.description" />
+      <div
+        v-html="item.description"
+        class="my-3"
+      />
     </template>
   </v-data-table>
 

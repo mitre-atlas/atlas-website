@@ -123,5 +123,9 @@ export default {
         return dynamicRoutes
       })
     }
+  },
+
+  publicRuntimeConfig: {
+    name: 'AdvML'
   }
 }
