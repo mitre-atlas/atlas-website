@@ -47,7 +47,7 @@
           >
             <v-btn
               v-text="childLink.name"
-              :href="childLink.href"
+              :to="childLink.href"
               text
               class="text-capitalize"
               nuxt
@@ -60,7 +60,7 @@
       <v-btn
         v-else
         v-text="link.name"
-        :href="link.href"
+        :to="link.href"
         text
         class="text-capitalize"
         nuxt
@@ -87,7 +87,7 @@
               <v-list-item v-for="(childLink, j) in link.links" :key="j">
                 <v-btn
                   v-text="childLink.name"
-                  :href="childLink.href"
+                  :to="childLink.href"
                   text
                   class="text-capitalize"
                   nuxt
@@ -97,7 +97,7 @@
             <v-list-item v-else>
               <v-btn
                 v-text="link.name"
-                :href="link.href"
+                :to="link.href"
                 text
                 class="text-capitalize"
                 nuxt

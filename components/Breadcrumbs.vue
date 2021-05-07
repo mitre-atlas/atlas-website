@@ -28,19 +28,19 @@ export default {
   },
   mounted () {
     const pathItems = this.$route.path.split('/').slice(1)
-    const homeItem = { href: '/', text: 'Home', exact: true }
+    const homeItem = { to: '/', text: 'Home', exact: true }
     let indexItem = null
     if (pathItems.length === 1) {
-      indexItem = { href: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true, disabled: true }
+      indexItem = { to: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true, disabled: true }
     } else {
-      indexItem = { href: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true }
+      indexItem = { to: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true }
     }
     this.items.push(homeItem)
     this.items.push(indexItem)
     if (pathItems.length > 1) {
       this.setStoreGetter(pathItems[0])
       const pathItemText = this.idGetter(pathItems[1])
-      const idItem = { href: '/' + pathItems[0] + '/' + pathItems[1], text: pathItemText.name, exact: true, disabled: true }
+      const idItem = { to: '/' + pathItems[0] + '/' + pathItems[1], text: pathItemText.name, exact: true, disabled: true }
       this.items.push(idItem)
     }
   }
