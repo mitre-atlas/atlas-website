@@ -40,9 +40,9 @@
     },
     {
         "id": "AML.TA0000",
-        "object-type": "tactic",
         "name": "ML Model Access",
-        "description": "An adversary is trying to gain some access to a machine learning model."
+        "object-type": "tactic",
+        "description": "An adversary is attempting to gain some level of access to a machine learning model.\n\nML Model Access consists of techniques that use various types of access to the machine learning model that can be used by the adversary to gain information, develop attacks, and as a means to input data to the model.\nThe level of access can range from the full knowledge of the internals of the model to access to the physical environment where data is collected for use in the machine learning model.\nThe adversary may use varying levels of model access during the course of their attack, from staging the attack to impacting the target system..\n"
     },
     {
         "id": "TA0002",
@@ -74,7 +74,7 @@
         "id": "TA0004",
         "object-type": "tactic",
         "name": "Privilege Escalation",
-        "description": "The adversary is trying to gain higher-level permissions.\n\nPrivilege Escalation consists of techniques that adversaries use to gain higher-level permissions on a system or network. Adversaries can often enter and explore a network with unprivileged access but require elevated permissions to follow through on their objectives. Common approaches are to take advantage of system weaknesses, misconfigurations, and vulnerabilities. Examples of elevated access include: \n•\tSYSTEM/root level\n•\tlocal administrator\n•\tuser account with admin-like access \n•\tuser accounts with access to specific system or perform specific function\nThese techniques often overlap with Persistence techniques, as OS features that let an adversary persist can execute in an elevated context.  ",
+        "description": "The adversary is trying to gain higher-level permissions.\n\nPrivilege Escalation consists of techniques that adversaries use to gain higher-level permissions on a system or network. Adversaries can often enter and explore a network with unprivileged access but require elevated permissions to follow through on their objectives. Common approaches are to take advantage of system weaknesses, misconfigurations, and vulnerabilities. Examples of elevated access include: \n\n* SYSTEM/root level\n* local administrator\n* user account with admin-like access \n* user accounts with access to specific system or perform specific function\n\nThese techniques often overlap with Persistence techniques, as OS features that let an adversary persist can execute in an elevated context.  ",
         "external_references": [
             {
                 "external_id": "TA0004",
@@ -163,9 +163,9 @@
     },
     {
         "id": "AML.TA0001",
-        "object-type": "tactic",
         "name": "ML Attack Staging",
-        "description": "An adversary is using their access and information gained to stage the attack."
+        "object-type": "tactic",
+        "description": "An adversary is leveraging their knowledge of and access to the target system to tailor the attack.\n\nML Attack Staging consists of techniques adversaries use to prepare their attack on the target ML model.\nTechniques can include training proxy models, poisoning the target model, and crafting adversarial data to feed the target model.\nSome of these techniques can be performed in an offline manor and are thus difficult to mitigate.\nThese techniques are often used to achieve the adversary's end goal.\n"
     },
     {
         "id": "TA0010",
