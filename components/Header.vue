@@ -114,7 +114,7 @@
 <script>
 export default {
   data: () => ({
-    title: `MITRE | ${this.$config.name}`,
+    title: 'MITRE | AdvML',
     links: [
       {
         name: 'Matrix',
