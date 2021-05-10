@@ -3,7 +3,7 @@
         "id": "AML.T0000",
         "name": "Search for Victim's Publicly Available Research Materials",
         "object-type": "technique",
-        "description": "Adversaries may search publicly available research to learn how and where machine learning is used within a victim organization.\nThe adversary can use this information to identify targets for attack, or to tailor an existing attack to make it more effective.\nOrganizations often use open source model architectures trained on additional proprietary data in production.\nKnowledge of this underlying architecture allows the adversary to craft more realistic proxy models ([*name_train_proxy_model](/techniques/*id_train_proxy_model)).\n\nResearch materials may exist as academic papers published in [journals and conference proceedings](/techniques/AML.T0000.000), or stored in [pre-print repositories](/techniques/AML.T0000.001), as well as [technical blog posts](/techniques/AML.T0000.002).\n",
+        "description": "Adversaries may search publicly available research to learn how and where machine learning is used within a victim organization.\nThe adversary can use this information to identify targets for attack, or to tailor an existing attack to make it more effective.\nOrganizations often use open source model architectures trained on additional proprietary data in production.\nKnowledge of this underlying architecture allows the adversary to craft more realistic proxy models ([Train Proxy ML Model](/techniques/AML.T0005)).\n\nResearch materials may exist as academic papers published in [journals and conference proceedings](/techniques/AML.T0000.000), or stored in [pre-print repositories](/techniques/AML.T0000.001), as well as [technical blog posts](/techniques/AML.T0000.002).\n",
         "tactics": [
             "TA0043"
         ]
@@ -19,14 +19,14 @@
         "id": "AML.T0000.001",
         "name": "Pre-Print Repositories",
         "object-type": "technique",
-        "description": "Pre-Print repositories, such as arXiv, contain the latest academic research papers that haven't been peer reviewed.\nThey may contain research notes, or technical reports that aren't typically published in journals or conference proceedings.\nPre-print repositories also serve as a central location to share papers that have been accepted to journals.\nAn adversary can search these repositories for authors at the victim organization.\nThis will give an adversary a relatively up to date view of what researchers in the victim organization are working on.\n",
+        "description": "Pre-Print repositories, such as arXiv, contain the latest academic research papers that haven't been peer reviewed.\nThey may contain research notes, or technical reports that aren't typically published in journals or conference proceedings.\nPre-print repositories also serve as a central location to share papers that have been accepted to journals.\nAn adversary can search these repositories for authors at the victim organization.\nThis will give an adversary a relatively up-to-date view of what researchers in the victim organization are working on.\n",
         "subtechnique-of": "AML.T0000"
     },
     {
         "id": "AML.T0000.002",
         "name": "Technical Blogs",
         "object-type": "technique",
-        "description": "Research labs at academic institutions and Company R&D divisions often have blogs that highlight their use of machine learning and its application to the organizations unique problems.\nIndividual researchers also frequently document their work in blogposts.\nAn adversary may search for posts made by the target victim organization or its employees.\nIn comparison to [journals and conference proceedings](/techniques/AML.T0000.000) and [pre-print repositories](/techniques/AML.T0000.001) this material will often contain more practical aspects of the machine learning system.\nThis could include underlying technologies and frameworks used, and possibly some information about the API access and use case.\nThis will help the adversary better understand how that organization is using machine learning internally and the details of their approach that could aid in tailoring an attack.\n",
+        "description": "Research labs at academic institutions and Company R&D divisions often have blogs that highlight their use of machine learning and its application to the organizations unique problems.\nIndividual researchers also frequently document their work in blogposts.\nAn adversary may search for posts made by the target victim organization or its employees.\nIn comparison to [Journals and Conference Proceedings](/techniques/AML.T0000.000) and [Pre-Print Repositories](/techniques/AML.T0000.001) this material will often contain more practical aspects of the machine learning system.\nThis could include underlying technologies and frameworks used, and possibly some information about the API access and use case.\nThis will help the adversary better understand how that organization is using machine learning internally and the details of their approach that could aid in tailoring an attack.\n",
         "subtechnique-of": "AML.T0000"
     },
     {
@@ -42,7 +42,7 @@
         "id": "AML.T0002",
         "name": "Acquire Public ML Artifacts",
         "object-type": "technique",
-        "description": "Adversaries may acquire the machine learning related artifacts that were identified during Reconnaissance.\nThese ML artifacts often provide adversaries with details of the ML task and approach.\nThis will aid in an adversaries ability to [create and train proxy models](/techniques/AML.T0005).\nIf these artifacts include pieces of the actual model in production, they can be used to directly [optimize attacks](/techniques/AML.T0043).\nAcquiring some artifacts requires registration (providing user details such email/name), AWS keys, or written requests, and may require the adversary to [Establish Accounts](/techniques/T1585).\nArtifacts might be hosted on victim-controlled infrastructure, providing the victim with some information on who has accessed that data.\n\nAdversaries may search public sources, including cloud storage, public-facing services, and software or data repositories, to identify machine learning artifacts.\nThese machine learning artifacts may include the software stack used to train and deploy models, training and testing data, model configurations and parameters.\nAn adversary will be particularly interested in artifacts hosted by or associated with the victim organization as they may represent what that organization uses in a production environment.\nAdversaries may identify artifact repositories via other resources associated with the victim organization (e.g. [Search Victim-Owned Websites](/techniques/T1594) or [Search for Victim's Publicly Available Research Materials](/techniques/AML.T0000)).\n",
+        "description": "Adversaries may acquire the machine learning related artifacts that were identified during Reconnaissance.\nThese ML artifacts often provide adversaries with details of the ML task and approach.\nThis will aid in an adversaries ability to [Train Proxy ML Model](/techniques/AML.T0005).\nIf these artifacts include pieces of the actual model in production, they can be used to directly [Craft Adversarial Data](/techniques/AML.T0043).\nAcquiring some artifacts requires registration (providing user details such email/name), AWS keys, or written requests, and may require the adversary to [Establish Accounts](/techniques/T1585).\nArtifacts might be hosted on victim-controlled infrastructure, providing the victim with some information on who has accessed that data.\n\nAdversaries may search public sources, including cloud storage, public-facing services, and software or data repositories, to identify machine learning artifacts.\nThese machine learning artifacts may include the software stack used to train and deploy models, training and testing data, model configurations and parameters.\nAn adversary will be particularly interested in artifacts hosted by or associated with the victim organization as they may represent what that organization uses in a production environment.\nAdversaries may identify artifact repositories via other resources associated with the victim organization (e.g. [Search Victim-Owned Websites](/techniques/T1594) or [Search for Victim's Publicly Available Research Materials](/techniques/AML.T0000)).\n",
         "tactics": [
             "TA0042"
         ]
@@ -51,14 +51,14 @@
         "id": "AML.T0002.000",
         "name": "Representative Datasets",
         "object-type": "technique",
-        "description": "Adversaries may collect datasets similar to those used by the victim organization.\nCollecting a dataset will either require the manual creation of the dataset from scratch, or modifying publicly available datasets in order to more closely match the victim system.\n\nThis is often a requirement for the [creation of a proxy model](/techniques/AML.T0005).\nAn adversary may also acquire a dataset for the purposes of poisoning it and [releasing the poisoned version of the dataset publicly](/techniques/AML.T0019).\nThis could [compromise the victim organization's ML supply chain](), and enable adversary goals such as [reducing ML model integrity]() and [evading ML models]().\n",
+        "description": "Adversaries may collect datasets similar to those used by the victim organization.\nCollecting a dataset will either require the manual creation of the dataset from scratch, or modifying publicly available datasets in order to more closely match the victim system.\n\nThis is often a requirement for [Train Proxy ML Model](/techniques/AML.T0005).\nAn adversary may also acquire a dataset for the purposes of poisoning it and [Publish Poisoned Datasets](/techniques/AML.T0019).\nThis could [ML Supply Chain Compromise](/techniques/AML.T0010), and enable adversary goals such as [Erode ML Model Integrity](/techniques/{'id': 'AML.T0031', 'name': 'Erode ML Model Integrity', 'object-type': 'technique', 'description': \"Adversaries may degrade the target model's performance with adversarial data inputs to erode confidence in the system over time.\nThis can lead to the victim organization wasting time and money both attempting to fix the system and performing the tasks it was meant to automate by hand.\n\", 'tactics': ['TA0040']}) and [Evade ML Model](/techniques/AML.T0015).\n",
         "subtechnique-of": "AML.T0002"
     },
     {
         "id": "AML.T0002.001",
         "name": "Representative Models",
         "object-type": "technique",
-        "description": "Adversaries may acquire models that are representative of those used by the victim.\nThey can be used to tailor attacks to the victim model.\n\nRepresentative models may include model architectures, or pre-trained models which define the architecture as well as model parameters from training on a dataset.\nIf the adversary only has a representative model architecture, they may create a [proxy model]() by training it on [representative data](), to produce a model that mimics the functionality of a private model.\n\nThe adversary may use a [representative dataset]() to evaluate the acquired model and verify it performs well on the target data distribution.\n\nThe adversary may search public sources for common model architecture configuration file formats such as yaml or python configuration files, and common model storage file formats such as ONNX, H5, Pickle (.pkl), PyTorch (.pth), or TensorFlow (.pb).\n",
+        "description": "Adversaries may acquire models that are representative of those used by the victim.\nThey can be used to tailor attacks to the victim model.\n\nRepresentative models may include model architectures, or pre-trained models which define the architecture as well as model parameters from training on a dataset.\nIf the adversary only has a representative model architecture, they may create a [Train Proxy ML Model](/techniques/AML.T0005) by training it on [Representative Datasets](/techniques/AML.T0002.000), to produce a model that mimics the functionality of a private model.\n\nThe adversary may use a [Representative Datasets](/techniques/AML.T0002.000) to evaluate the acquired model and verify it performs well on the target data distribution.\n\nThe adversary may search public sources for common model architecture configuration file formats such as yaml or python configuration files, and common model storage file formats such as ONNX, H5, Pickle (.pkl), PyTorch (.pth), or TensorFlow (.pb).\n",
         "subtechnique-of": "AML.T0002"
     },
     {
@@ -92,7 +92,7 @@
         "id": "AML.T0019",
         "name": "Publish Poisoned Datasets",
         "object-type": "technique",
-        "description": "Adversaries may publish poisoned datasets.\nThis data can be introduced via the adversary releasing it publicly, compromising a pre-existing published dataset via a [ML Supply Chain Compromise]() or a private dataset may be poisoned after the adversary gains access to the system.\n",
+        "description": "Adversaries may publish poisoned datasets.\nThis data can be introduced via the adversary releasing it publicly, compromising a pre-existing published dataset via a [ML Supply Chain Compromise](/techniques/AML.T0010) or a private dataset may be poisoned after the adversary gains access to the system.\n",
         "tactics": [
             "TA0042"
         ]
@@ -108,7 +108,7 @@
     },
     {
         "id": "AML.T0010.000",
-        "name": "GPU Supply Chain",
+        "name": "GPU",
         "object-type": "technique",
         "description": "Most machine learning systems require access to certain specialized hardware, typically GPUs.\nAdversaries can target machine learning systems by specifically targeting the GPU supply chain.\n",
         "subtechnique-of": "AML.T0010"
@@ -124,7 +124,7 @@
         "id": "AML.T0010.002",
         "name": "Data",
         "object-type": "technique",
-        "description": "Data is a key vector of supply chain compromise for adversaries.\nEvery machine learning project will require some form of data.\nMany rely, to some extent, on large open source datasets that are publicly available.\nAn adversary could rely on compromising these sources of data to some extent.\nThis compromise can come in the form of [data poisioning]() or more traditional malware.\n\nAn adversary can also target private datasets in the labeling phase.\nThe creation of private datasets will often require the hiring of outside labeling services.\nAn adversary can poison a dataset by modifying the labels being generated by the labeling service.\n",
+        "description": "Data is a key vector of supply chain compromise for adversaries.\nEvery machine learning project will require some form of data.\nMany rely, to some extent, on large open source datasets that are publicly available.\nAn adversary could rely on compromising these sources of data to some extent.\nThis compromise can come in the form of [Poison Training Data](/techniques/AML.T0020) or more traditional malware.\n\nAn adversary can also target private datasets in the labeling phase.\nThe creation of private datasets will often require the hiring of outside labeling services.\nAn adversary can poison a dataset by modifying the labels being generated by the labeling service.\n",
         "subtechnique-of": "AML.T0010"
     },
     {
@@ -138,7 +138,7 @@
         "id": "AML.T0040",
         "name": "ML Model Inference API Access",
         "object-type": "technique",
-        "description": "An adversary's may gain access to a model via legitimate access to the inference API.\nThis form of black-box access may allow the adversary to successfully [replicate the model](), or perform an [evasion](), or [integrity]() attack with only inference API access.\n",
+        "description": "An adversary's may gain access to a model via legitimate access to the inference API.\nThis form of black-box access may allow the adversary to successfully [Replicate ML Model](/techniques/AML.T0006), or perform an [Evade ML Model](/techniques/AML.T0015), or [Erode ML Model Integrity](/techniques/AML.T0031) attack with only inference API access.\n",
         "tactics": [
             "AML.TA0000"
         ]
@@ -192,7 +192,7 @@
         "id": "AML.T0020",
         "name": "Poison Training Data",
         "object-type": "technique",
-        "description": "Adversaries may attempt to poison datasets used by a ML system by modifying the underlying data or its labels.\nThis allows the adversary to embed vulnerabilities in ML models trained on the data that may not be easily detectable.\nThe embedded vulnerability is activated at a later time by data samples with an [*name_insert_backdoor](/techniques/*id_insert_backdoor)\n\nPoisoned data can be introduced via [*name_ml_supply_chain](/techniques/*id_ml_supply_chain) or the data may be poisoned after the adversary gains [Initial Access](/tactics/*id_initial_access) to the system.\n",
+        "description": "Adversaries may attempt to poison datasets used by a ML system by modifying the underlying data or its labels.\nThis allows the adversary to embed vulnerabilities in ML models trained on the data that may not be easily detectable.\nThe embedded vulnerability is activated at a later time by data samples with an [Insert Backdoor Trigger](/techniques/AML.T0043.004)\n\nPoisoned data can be introduced via [ML Supply Chain Compromise](/techniques/AML.T0010) or the data may be poisoned after the adversary gains [Initial Access](/tactics/*id_initial_access) to the system.\n",
         "tactics": [
             "TA0042",
             "TA0003"
@@ -211,7 +211,7 @@
         "id": "AML.T0006",
         "name": "Replicate ML Model",
         "object-type": "technique",
-        "description": "Adversaries may replicate a private model.\nBy repeatedly querying the victim's [*name_ml_inference_api](id_ml_inference_api), the adversary can collect the target model's inferences into a dataset.\nThe inferences are used as labels for training a separate model offline that will mimic the behavior and performance of the target model.\n\nA replicated model that closely mimic's the target model is a valuable resource in staging the attack.\nThe adversary can use the replicated model to [*name_craft_adv_data](*id_craft_adv_data) for various purposes (e.g. [*name_evade_ml_model](*id_evade_ml_model), [*name_chaff_data](*id_evade_ml_model).\n",
+        "description": "Adversaries may replicate a private model.\nBy repeatedly querying the victim's [ML Model Inference API Access](/techniques/AML.T0040), the adversary can collect the target model's inferences into a dataset.\nThe inferences are used as labels for training a separate model offline that will mimic the behavior and performance of the target model.\n\nA replicated model that closely mimic's the target model is a valuable resource in staging the attack.\nThe adversary can use the replicated model to [Craft Adversarial Data](/techniques/AML.T0043) for various purposes (e.g. [Evade ML Model](/techniques/AML.T0015), [Spamming ML System with Chaff Data](/techniques/AML.T0046).\n",
         "tactics": [
             "AML.TA0001"
         ]
@@ -229,7 +229,7 @@
         "id": "AML.T0011",
         "name": "User Execution: Unsafe ML Artifacts",
         "object-type": "technique",
-        "description": "Adversaries may develop unsafe ML artifacts that when executed have a deleterious effect.\nThe adversary can use this technique to establish persistent access to systems.\nThese models may be introduced via a [*name_ml_supply_chain](/techniques/*id_ml_supply_chain).\n\nSerialization of models is a popular technique for model storage, transfer, and loading.\nHowever, this format without proper checking presents an opportunity for code execution.\n",
+        "description": "Adversaries may develop unsafe ML artifacts that when executed have a deleterious effect.\nThe adversary can use this technique to establish persistent access to systems.\nThese models may be introduced via a [ML Supply Chain Compromise](/techniques/AML.T0010).\n\nSerialization of models is a popular technique for model storage, transfer, and loading.\nHowever, this format without proper checking presents an opportunity for code execution.\n",
         "tactics": [
             "TA0002"
         ]
@@ -238,7 +238,7 @@
         "id": "AML.T0015",
         "name": "Evade ML Model",
         "object-type": "technique",
-        "description": "Adversaries can [*name_craft_adv_data](/techniques/*id_craft_adv_data) that prevent a machine learning model from correctly identifying the contents of the data.\nThis technique can be used to evade a downstream task where machine learning is utilized.\nThe adversary may evade machine learning based virus/malware detection, or network scanning towards the goal of a traditional cyber attack.\nEvasion can also be used to degrade the general confidence in the model.\n",
+        "description": "Adversaries can [Craft Adversarial Data](/techniques/AML.T0043) that prevent a machine learning model from correctly identifying the contents of the data.\nThis technique can be used to evade a downstream task where machine learning is utilized.\nThe adversary may evade machine learning based virus/malware detection, or network scanning towards the goal of a traditional cyber attack.\nEvasion can also be used to degrade the general confidence in the model.\n",
         "tactics": [
             "TA0005",
             "TA0040"
@@ -248,7 +248,7 @@
         "id": "AML.T0018",
         "name": "Poison ML Model",
         "object-type": "technique",
-        "description": "Adversaries may poison the model by training it on poisoned data, or by interfering with its training process.\nThe poisoned model provides the adversary with a persistent artifact on the victim system.\nThe embedded vulnerability is activated at a later time by data samples with an [*name_insert_backdoor](/techniques/*id_insert_backdoor)\n",
+        "description": "Adversaries may poison the model by training it on poisoned data, or by interfering with its training process.\nThe poisoned model provides the adversary with a persistent artifact on the victim system.\nThe embedded vulnerability is activated at a later time by data samples with an [Insert Backdoor Trigger](/techniques/AML.T0043.004)\n",
         "tactics": [
             "TA0003",
             "AML.TA0001"
@@ -258,7 +258,7 @@
         "id": "AML.T0024",
         "name": "Exfiltration via ML Inference API",
         "object-type": "technique",
-        "description": "Adversaries may exfiltrate private information via [*name_ml_inference_api](*/techniques/name_ml_inference_api).\nML Models have been shown leak private information about their training data (e.g.  [*name_infer_data_membership](/techniques/*id_infer_data_membership), [*name_invert_model](/techniques/*id_invert_model).\nThe model itself may also be extracted ([*name_extract_model](*id_extract_model]) for the purposes of [*name_ml_ip_theft](*id_ml_ip_theft).\n\nExfiltration of information relating to private training data raises privacy concerns.\nPrivate training data may include personally identifiable information, or other protected data.\n",
+        "description": "Adversaries may exfiltrate private information via [ML Model Inference API Access](/techniques/AML.T0040).\nML Models have been shown leak private information about their training data (e.g.  [Infer Training Data Membership](/techniques/AML.T0024.000), [Invert ML Model](/techniques/AML.T0024.001).\nThe model itself may also be extracted ([Extract ML Model](/techniques/AML.T0024.002) for the purposes of [ML Intellectual Property Theft](/techniques/AML.T0045).\n\nExfiltration of information relating to private training data raises privacy concerns.\nPrivate training data may include personally identifiable information, or other protected data.\n",
         "tactics": [
             "TA0010"
         ]
@@ -267,7 +267,7 @@
         "id": "AML.T0024.000",
         "name": "Infer Training Data Membership",
         "object-type": "technique",
-        "description": "Adversaries can infer the membership of a data sample in its training set, which raises privacy concerns.\nSome strategies make use of a shadow model that could be obtained via [*name_replicate_ml_model](*id_replicate_ml_model), others use statistics of model prediction scores.\n\nThis can cause the victim model to leak private information, such as PII of those in the training set or other forms of protected IP.\n",
+        "description": "Adversaries can infer the membership of a data sample in its training set, which raises privacy concerns.\nSome strategies make use of a shadow model that could be obtained via [Replicate ML Model](/techniques/AML.T0006), others use statistics of model prediction scores.\n\nThis can cause the victim model to leak private information, such as PII of those in the training set or other forms of protected IP.\n",
         "subtechnique-of": "AML.T0024"
     },
     {
@@ -281,7 +281,7 @@
         "id": "AML.T0024.002",
         "name": "Extract ML Model",
         "object-type": "technique",
-        "description": "Adversaries may extract a functional copy of a private model.\nBy repeatedly querying the victim's [*name_ml_inference_api](id_ml_inference_api), the adversary can collect the target model's inferences into a dataset.\nThe inferences are used as labels for training a separate model offline that will mimic the behavior and performance of the target model.\n\nAdversaries may extract the model to avoid paying per query in a machine learning as a service setting.\nModel extraction is used in [*name_ml_ip_theft](/techniques/*id_ml_ip_theft).\n",
+        "description": "Adversaries may extract a functional copy of a private model.\nBy repeatedly querying the victim's [ML Model Inference API Access](/techniques/AML.T0040), the adversary can collect the target model's inferences into a dataset.\nThe inferences are used as labels for training a separate model offline that will mimic the behavior and performance of the target model.\n\nAdversaries may extract the model to avoid paying per query in a machine learning as a service setting.\nModel extraction is used in [ML Intellectual Property Theft](/techniques/AML.T0045).\n",
         "subtechnique-of": "AML.T0024"
     },
     {
@@ -324,7 +324,7 @@
         "id": "AML.T0035",
         "name": "ML Artifact Collection",
         "object-type": "technique",
-        "description": "After identifying machine learning artifacts existing on the network, adversaries may collect them for [Exfiltration](/techniques/*_id_exfiltration) or in [*name_ml_attack_staging](/techniques/*id_ml_attack_staging).\n",
+        "description": "After identifying machine learning artifacts existing on the network, adversaries may collect them for [Exfiltration](/techniques/*_id_exfiltration) or in [ML Attack Staging](/techniques/AML.TA0001).\n",
         "tactics": [
             "TA0009"
         ]
@@ -333,7 +333,7 @@
         "id": "AML.T0042",
         "name": "Verify Attack",
         "object-type": "technique",
-        "description": "Adversaries can verify the efficacy of their attack via an inference API or access to an offline copy of the target model.\nThis gives the adversary confidence that their approach works and allows them to carry out the attack at a later time of their choosing.\nThe adversary may verify the attack once but use it against many edge devices running copies of the target model.\nThe adversary may verify their attack digitally, then deploy it in the [Physical Environment]() at a later time.\nVerifying the attack may be hard to detect since the adversary can use a minimal number of queries or an offline copy of the model.\n",
+        "description": "Adversaries can verify the efficacy of their attack via an inference API or access to an offline copy of the target model.\nThis gives the adversary confidence that their approach works and allows them to carry out the attack at a later time of their choosing.\nThe adversary may verify the attack once but use it against many edge devices running copies of the target model.\nThe adversary may verify their attack digitally, then deploy it in the [Physical Environment Access](/techniques/AML.T0041) at a later time.\nVerifying the attack may be hard to detect since the adversary can use a minimal number of queries or an offline copy of the model.\n",
         "tactics": [
             "AML.TA0001"
         ]
@@ -342,7 +342,7 @@
         "id": "AML.T0043",
         "name": "Craft Adversarial Data",
         "object-type": "technique",
-        "description": "Adversarial data are inputs to a machine learning model that have been modified such that they cause the adversary's desired effect in the target model.\nEffects can range from misclassification, to missed detections, to maximising energy consumption.\nTypically, the modification is constrained in magnitude or location so that a human still perceives the data as if it were unmodified, but human perceptibility may not always be a concern depending on the adversary's intended effect.\nFor example, an adversarial input for an image classification task is an image the machine learning model would misclassify, but a human would still recognize as containing the correct class.\nAn adversary may optimize adversarial examples for [ML Model Evasion](), or to [Erode ML Model Integrity]().\nDepending on the adversary's knowledge of and access to the target model, the adversary may use different classes of algorithms to develop the adversarial example such as [White-Box Optimization](/techniques/AML.T0043.000), [Black-Box Optimization](/techniques/AML.T0043.001), [Black-Box Transfer](/techniques/AML.T0043.002), [Manual Modification](/techniques/AML.T0043.003), or ...\n\nThe adversary may [verify]() their approach works if they have white-box or inference API access to the model.\nThis allows the adversary to gain confidence their attack is effective \"live\" environment where their attack may be noticed.\nThey can then use the attack at a later time to accomplish their goals.\n",
+        "description": "Adversarial data are inputs to a machine learning model that have been modified such that they cause the adversary's desired effect in the target model.\nEffects can range from misclassification, to missed detections, to maximising energy consumption.\nTypically, the modification is constrained in magnitude or location so that a human still perceives the data as if it were unmodified, but human perceptibility may not always be a concern depending on the adversary's intended effect.\nFor example, an adversarial input for an image classification task is an image the machine learning model would misclassify, but a human would still recognize as containing the correct class.\nAn adversary may optimize adversarial examples for [Evade ML Model](/techniques/AML.T0015), or to [Erode ML Model Integrity](/techniques/AML.T0031).\nDepending on the adversary's knowledge of and access to the target model, the adversary may use different classes of algorithms to develop the adversarial example such as [White-Box Optimization](/techniques/AML.T0043.000), [Black-Box Optimization](/techniques/AML.T0043.001), [Black-Box Transfer](/techniques/AML.T0043.002), [Manual Modification](/techniques/AML.T0043.003), or ...\n\nThe adversary may [Verify Attack](/techniques/AML.T0042) their approach works if they have white-box or inference API access to the model.\nThis allows the adversary to gain confidence their attack is effective \"live\" environment where their attack may be noticed.\nThey can then use the attack at a later time to accomplish their goals.\n",
         "tactics": [
             "AML.TA0001"
         ]
@@ -358,14 +358,14 @@
         "id": "AML.T0043.001",
         "name": "Black-Box Optimization",
         "object-type": "technique",
-        "description": "In Black-Box attacks, the adversary has black-box (i.e. [ML Inference API Access]() via API access) access to the target model.\nWith black-box attacks, the adversary may be using an inference API that the victim is monitoring.\nThese attacks are generally less effective and require more inferences than [White-Box Optimization](/techniques/AML.T0043.000) attacks, but they require much less access.\n",
+        "description": "In Black-Box attacks, the adversary has black-box (i.e. [ML Model Inference API Access](/techniques/AML.T0040) via API access) access to the target model.\nWith black-box attacks, the adversary may be using an inference API that the victim is monitoring.\nThese attacks are generally less effective and require more inferences than [White-Box Optimization](/techniques/AML.T0043.000) attacks, but they require much less access.\n",
         "subtechnique-of": "AML.T0043"
     },
     {
-        "id": "AML.T0043.002",
+        "id": "T0043.002",
         "name": "Black-Box Transfer",
         "object-type": "technique",
-        "description": "In Black-Box Transfer attacks, the adversary uses a set of [proxy]() or [replicated]() models they have full access to and are representative of the target model.\nThe adversary uses [White-Box Optimation]() on the proxy models to generate adversarial examples.\nIf the set of proxy models are close enough to the target model, the adversarial example should generalize from one to another.\nThis means that an attack that works for the proxy models will likely then work for the target model.\nIf the adversary has [ML Model Inference API Access](), they may use this [verify]() that the attack is working and incorporate that information into their training process.\n",
+        "description": "In Black-Box Transfer attacks, the adversary uses a set of [Train Proxy ML Model](/techniques/AML.T0005) or [Replicate ML Model](/techniques/AML.T0006) models they have full access to and are representative of the target model.\nThe adversary uses [White-Box Optimization](/techniques/AML.T0043.000) on the proxy models to generate adversarial examples.\nIf the set of proxy models are close enough to the target model, the adversarial example should generalize from one to another.\nThis means that an attack that works for the proxy models will likely then work for the target model.\nIf the adversary has [ML Model Inference API Access](/techniques/AML.T0040), they may use this [Verify Attack](/techniques/AML.T0042) that the attack is working and incorporate that information into their training process.\n",
         "subtechnique-of": "AML.T0043"
     },
     {
@@ -379,14 +379,14 @@
         "id": "AML.T0043.004",
         "name": "Insert Backdoor Trigger",
         "object-type": "technique",
-        "description": "The adversary may add a perceptual trigger into inference data.\nThis technique is used in conjunction with [*name_poison_ml_model](/techniques/*id_poison_ml_model) and allows the adversary to produce their desired effect in the target model.\n",
+        "description": "The adversary may add a perceptual trigger into inference data.\nThis technique is used in conjunction with [Poison ML Model](/techniques/AML.T0018) and allows the adversary to produce their desired effect in the target model.\n",
         "subtechnique-of": "AML.T0043"
     },
     {
         "id": "AML.T0045",
         "name": "ML Intellectual Property Theft",
         "object-type": "technique",
-        "description": "Adversaries may exfiltrate ML artifacts to steal intellectual property and cause economic harm to the victim organization.\n\nProprietary training data is costly to collect and annotate and may be a target for [*name_exfiltration](/tactics/*id_exfiltration) and theft.\n\nMLaaS providers charge for use of their API.\nAn adversary who has stolen a model via [*name_exfiltration](/tactics/*id_exfiltration) or via [*name_extract_model](/techniques/*name_extract_model) now has unlimited use of that service without paying the owner of the intellectual property.\n",
+        "description": "Adversaries may exfiltrate ML artifacts to steal intellectual property and cause economic harm to the victim organization.\n\nProprietary training data is costly to collect and annotate and may be a target for [*name_exfiltration](/tactics/*id_exfiltration) and theft.\n\nMLaaS providers charge for use of their API.\nAn adversary who has stolen a model via [*name_exfiltration](/tactics/*id_exfiltration) or via [Extract ML Model](/techniques/AML.T0024.002) now has unlimited use of that service without paying the owner of the intellectual property.\n",
         "tactics": [
             "TA0040"
         ]
