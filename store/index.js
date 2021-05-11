@@ -134,7 +134,7 @@ export const getters = {
         return false
       }
       // Returns true when at least 1 of the referenced tactic matches the query
-      return t.tactics.some(fullTacticId => fullTacticId.includes(tacticId))
+      return t.tactics.includes(tacticId)
     })
   }
 }
