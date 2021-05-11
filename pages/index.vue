@@ -61,3 +61,9 @@ export default {
   // }
 }
 </script>
+
+<style scoped>
+.row {
+  overflow: auto;
+}
+</style>

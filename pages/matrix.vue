@@ -34,6 +34,6 @@ export default {
 
 <style scoped>
 .row {
-  overflow: scroll;
+  overflow: auto;
 }
 </style>
