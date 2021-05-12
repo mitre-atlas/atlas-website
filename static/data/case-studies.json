@@ -248,7 +248,7 @@
             },
             {
                 "tactic": "AML.TA0001",
-                "technique": "T0043.002",
+                "technique": "AML.T0043.002",
                 "description": "The replicated models were used to generate adversarial examples that successfully transferred to the black-box translation services.\n"
             },
             {
@@ -359,7 +359,7 @@
             },
             {
                 "tactic": "AML.TA0001",
-                "technique": "T0043.002",
+                "technique": "AML.T0043.002",
                 "description": "Finally, these insights from the offline model allowed the researchers to create malicious emails that received preferable scores from the real ProofPoint email protection system, hence bypassing it.\n"
             }
         ],
