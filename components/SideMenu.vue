@@ -33,7 +33,9 @@
       accordion
       flat
       multiple
-    >
+      style="z-index: 0"
+    > <!-- Set z-index lower than default of 1 to show menu border -->
+
       <v-expansion-panel
         v-for="(tactic, i) in items"
         :key="i"
