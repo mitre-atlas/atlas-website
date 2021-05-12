@@ -5,7 +5,7 @@
     <v-row>
       <v-col cols="8">
     <p class="mb-10">
-    The AdvML Threat Matrix is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on <a href="https://attack.mitre.org" style="text-decoration: none;">the ATT&CK framework</a>.
+    The {{ $config.name }} Threat Matrix is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on <a href="https://attack.mitre.org" style="text-decoration: none;">the ATT&CK framework</a>.
     Along with case studies demonstrating attacks on machine learning systems, this knowledge base is for both the ML and security communities to better understand ML threats.
     </p>
       </v-col>

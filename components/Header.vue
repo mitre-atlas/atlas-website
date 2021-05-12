@@ -113,8 +113,8 @@
 
 <script>
 export default {
-  data: () => ({
-    title: 'MITRE | AdvML',
+  data: ({ $config: { name }}) => ({
+    title: `MITRE | ${name}`,
     links: [
       {
         name: 'Matrix',

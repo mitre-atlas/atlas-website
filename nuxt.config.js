@@ -80,9 +80,9 @@ export default {
   hooks: {},
 
   generate: {
+    // dir: 'dist-warp',
     fallback: true,
     routes () {
-      // TODO Update to use JSON
       const getTactics = fs.readFile('static/data/tactics.json', 'utf-8')
       const getTechniques = fs.readFile('static/data/techniques.json', 'utf-8')
       const getCaseStudies = fs.readFile('static/data/case-studies.json', 'utf-8')
@@ -126,6 +126,12 @@ export default {
   },
 
   publicRuntimeConfig: {
-    name: 'AdvML'
+    name: 'AdvML',
+    navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org'
+
+  },
+
+  router: {
+    // base: '/advml/'
   }
 }

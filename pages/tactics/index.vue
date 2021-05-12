@@ -11,9 +11,9 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({
+  data: ({ $config: { name } }) => ({
     title: 'Tactics',
-    description: 'Lists tactics from AdvML and ATT&CK Enterprise.'
+    description: 'Lists tactics from ' + name + ' and ATT&CK Enterprise.'
   }),
   computed: {
     ...mapGetters(['getTactics'])
