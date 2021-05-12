@@ -226,6 +226,28 @@ export const actions = {
         // Build a populated version of the data, where tactics hold parent techniques
         // and parent techniques hold subtechniques
 
+        // Split out subtechniques
+        const parentTechniques = techniques.filter((technique) => {
+          return !('subtechnique-of' in technique)
+        })
+        const subtechniques = techniques.filter((technique) => {
+          return ('subtechnique-of' in technique)
+        })
+
+        // Populate parent techniques with subtechniques
+        subtechniques.forEach((subtechnique) => {
+          const parentTechniqueId = subtechnique['subtechnique-of']
+          const parentTechniqueIndex = parentTechniques.findIndex(t => t.id === parentTechniqueId)
+          const parentTechnique = parentTechniques[parentTechniqueIndex]
+
+          // Associate subtechnique with the parent technique
+          if ('subtechniques' in parentTechnique) {
+            parentTechnique.subtechniques.push(subtechnique)
+          } else {
+            parentTechnique.subtechniques = [subtechnique]
+          }
+        })
+
         // Build AdvML-relevant techniques and tactics for matrix use
         const filteredTechniques = techniques.filter((technique) => {
           // studyTechniques.has(technique.id) // Use only techniques referenced in case studies
@@ -252,35 +274,12 @@ export const actions = {
           // return true // No filter
         })
 
-        // Split out subtechniques
-        const parentTechniques = filteredTechniques.filter((technique) => {
-          return !('subtechnique-of' in technique)
-        })
-        const subtechniques = filteredTechniques.filter((technique) => {
-          return ('subtechnique-of' in technique)
-        })
-
-        // Populate parent techniques with subtechniques
-        subtechniques.forEach((subtechnique) => {
-          const parentTechniqueId = subtechnique['subtechnique-of']
-          const parentTechniqueIndex = parentTechniques.findIndex(t => t.id === parentTechniqueId)
-          const parentTechnique = parentTechniques[parentTechniqueIndex]
-
-          // Associate subtechnique with the parent technique
-          if ('subtechniques' in parentTechnique) {
-            parentTechnique.subtechniques.push(subtechnique)
-          } else {
-            parentTechnique.subtechniques = [subtechnique]
-          }
-        })
-
         // Populate tactics with populated techniques
-        // TODO This seems to not include ATT&CK techniques
         const populatedTactics = filteredTactics.map((tactic) => {
           // Build up the top-level parent techniques
-          const relevantFullTechniques = parentTechniques.filter((technique) => {
+          const relevantFullTechniques = filteredTechniques.filter((technique) => {
             // Must be a parent-level technique that is under this tactic
-            return technique.tactics.includes(tactic.id)
+            return !('subtechnique-of' in technique) && technique.tactics.includes(tactic.id)
           })
 
           tactic.techniques = relevantFullTechniques
