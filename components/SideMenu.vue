@@ -63,7 +63,7 @@
             >
               <v-list-item>
                 <v-list-item>
-              <v-list-item-title class="font-weight-normal">
+              <v-list-item-title style="font-weight: 400;">
                 <!-- Font size and color to match v-expansion-panel-header style -->
                 {{ technique.name }}
               </v-list-item-title>
@@ -84,9 +84,9 @@
             <v-list-item>
               <!-- <v-list-item> -->
             <v-list-item>
-              <v-list-item-subtitle class="pl-3">
+              <v-list-item-title class="pl-3" style="font-weight: 400;">
                 {{ subtechnique.name }}
-              </v-list-item-subtitle>
+              </v-list-item-title >
               <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
                   &
               </v-list-item-icon>
