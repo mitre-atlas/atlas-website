@@ -113,7 +113,7 @@
 
 <script>
 export default {
-  data: ({ $config: { name }}) => ({
+  data: ({ $config: { name } }) => ({
     title: `MITRE | ${name}`,
     links: [
       {
@@ -138,7 +138,7 @@ export default {
         links: [
           {
             name: 'Adversarial ML 101',
-            href: '/page/adversarial-ml-101'
+            href: '/resources/adversarial-ml-101'
           },
           {
             name: 'Contribute',
