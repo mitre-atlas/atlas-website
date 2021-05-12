@@ -17,22 +17,51 @@
         :key="i"
         :nuxt="true"
         :to="`/${basePath}/${item.id}`"
+        :ripple="false"
         >
         <v-list-item>
-          <v-list-item-content>
-            <v-list-item-subtitle>
-              {{ item.name }}
-            </v-list-item-subtitle>
+          <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
+            <!-- Font size and color to match v-expansion-panel-header style -->
+            {{ item.name }}
+
           </v-list-item-content>
         </v-list-item>
       </v-list-item>
     </v-list>
+
+     <!-- <v-expansion-panels
+      v-if="title === 'Tactics' || title === 'Case Studies'"
+      accordion
+      flat
+      active-class='none'
+      style="z-index: 0"
+    >  -->
+    <!--
+      Set active class to empty to prevent auto padding
+      Set z-index lower than default of 1 to show menu border
+    -->
+
+      <!-- <v-expansion-panel
+        v-for="(item, i) in items"
+        :key="i"
+      >
+        <v-expansion-panel-header hide-actions>
+          <NuxtLink
+            :to="`/${basePath}/${item.id}`"
+            style="text-decoration: none;"
+          >
+            {{ item.name }}
+          </NuxtLink>
+        </v-expansion-panel-header>
+      </v-expansion-panel>
+     </v-expansion-panels> -->
 
     <v-expansion-panels
       v-else
       accordion
       flat
       multiple
+      hover
       style="z-index: 0"
     > <!-- Set z-index lower than default of 1 to show menu border -->
 
