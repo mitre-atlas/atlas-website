@@ -36,9 +36,15 @@
         >
         <span v-if="'subtechnique-of' in item">
           {{ item.id.substring(item.id.lastIndexOf('.')) }}
+          <sup v-if="item.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+            &
+          </sup>
         </span>
         <span v-else>
           {{ item.id }}
+          <sup v-if="item.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+            &
+          </sup>
         </span>
         </nuxt-link>
     </template>

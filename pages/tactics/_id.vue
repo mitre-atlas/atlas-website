@@ -57,6 +57,9 @@
             <v-list-item-title>
               {{ technique.name }}
             </v-list-item-title>
+            <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+                  &
+              </v-list-item-icon>
           </v-list-item>
         </v-list-item>
         <div v-if="'subtechniques' in technique">
@@ -67,12 +70,15 @@
             :to="`/techniques/${subtechnique.id}`"
             >
             <v-list-item>
-              <v-list-item>
-                <v-list-item-subtitle>
+
+                <v-list-item-subtitle class="pl-3">
                 {{ subtechnique.name }}
                 </v-list-item-subtitle>
+                <v-list-item-icon v-if="subtechnique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+                    &
+                </v-list-item-icon>
               </v-list-item>
-            </v-list-item>
+
           </v-list-item>
         </div>
       </div>
@@ -143,22 +149,7 @@ export default {
 </script>
 
 <style scoped>
-
-.nuxt-content {
-  margin: 3rem;
+div >>> a {
+  text-decoration: none;
 }
-
-.nuxt-content h1 {
-  text-align: center;
-  font-weight: bold;
-}
-
-.nuxt-content h2 {
-
-}
-
-.nuxt-content a {
-  color: gray;
-}
-
 </style>

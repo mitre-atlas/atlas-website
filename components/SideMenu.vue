@@ -21,7 +21,8 @@
         >
         <v-list-item>
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
-            <!-- Font size and color to match v-expansion-panel-header style -->
+            <!-- Font size and color to match v-expansion-panel-header style
+            class="blue--text text--darken-2" style="font-size: 0.9375rem;" -->
             {{ item.name }}
 
           </v-list-item-content>
@@ -29,33 +30,75 @@
       </v-list-item>
     </v-list>
 
-     <!-- <v-expansion-panels
-      v-if="title === 'Tactics' || title === 'Case Studies'"
-      accordion
-      flat
-      active-class='none'
-      style="z-index: 0"
-    >  -->
-    <!--
-      Set active class to empty to prevent auto padding
-      Set z-index lower than default of 1 to show menu border
-    -->
-
-      <!-- <v-expansion-panel
-        v-for="(item, i) in items"
+    <v-list
+      v-else-if="title === 'Techniques'"
+      dense
+      nav
+    >
+      <v-list-group
+        v-for="(tactic, i) in items"
         :key="i"
+        no-action
       >
-        <v-expansion-panel-header hide-actions>
-          <NuxtLink
-            :to="`/${basePath}/${item.id}`"
-            style="text-decoration: none;"
-          >
-            {{ item.name }}
-          </NuxtLink>
-        </v-expansion-panel-header>
-      </v-expansion-panel>
-     </v-expansion-panels> -->
+        <template v-slot:activator>
+          <v-list-item>
+            <NuxtLink
+              :to="`/tactics/${tactic.id}`"
+              style="text-decoration: none; font-size: 0.9375rem;"
+            >
+              <!-- Smaller font size, similar to v-expansion-panel-header -->
+              {{ tactic.name }}
+            </NuxtLink>
+          </v-list-item>
+        </template>
 
+        <div
+            v-for="(technique, j) in tactic.techniques"
+            :key="j"
+          >
+          <v-list-item
+            :nuxt="true"
+            :to="`/${basePath}/${technique.id}`"
+            :ripple="false"
+            >
+              <v-list-item>
+                <v-list-item>
+              <v-list-item-title class="font-weight-normal">
+                <!-- Font size and color to match v-expansion-panel-header style -->
+                {{ technique.name }}
+              </v-list-item-title>
+              <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+                  &
+              </v-list-item-icon>
+              </v-list-item>
+              </v-list-item>
+          </v-list-item>
+
+            <v-list-item
+              v-for="(subtechnique, k) in technique.subtechniques"
+              :key="k"
+              :nuxt="true"
+              :to="`/${basePath}/${subtechnique.id}`"
+              :ripple="false"
+            >
+            <v-list-item>
+              <!-- <v-list-item> -->
+            <v-list-item>
+              <v-list-item-subtitle class="pl-3">
+                {{ subtechnique.name }}
+              </v-list-item-subtitle>
+              <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+                  &
+              </v-list-item-icon>
+            </v-list-item>
+              <!-- </v-list-item> -->
+            </v-list-item>
+            </v-list-item>
+
+        </div>
+      </v-list-group>
+    </v-list>
+<!--
     <v-expansion-panels
       v-else
       accordion
@@ -63,7 +106,7 @@
       multiple
       hover
       style="z-index: 0"
-    > <!-- Set z-index lower than default of 1 to show menu border -->
+    >
 
       <v-expansion-panel
         v-for="(tactic, i) in items"
@@ -89,6 +132,7 @@
               accordion
               flat
               multiple
+              hover
             >
               <v-expansion-panel>
                 <v-expansion-panel-header>
@@ -116,24 +160,8 @@
               </v-expansion-panel>
             </v-expansion-panels>
 
-            <!-- <v-expansion-panel-header
-              v-else
-              hide-actions
-            >
-              <NuxtLink
-                :to="`/techniques/${technique.id}`"
-                style="text-decoration: none;"
-              >
-                {{ technique.name }}
-              </NuxtLink>
-            </v-expansion-panel-header> -->
             <div v-else class="mb-3 ml-6" style="line-height: 1;">
-              <!-- <v-btn
-                text
-                @click="$vuetify.goTo(`${technique.id}`)"
-                >
-                {{ technique.name }}
-                </v-btn> -->
+
               <NuxtLink
                   :to="`/techniques/${technique.id}`"
                   style="text-decoration: none; font-size: 0.9375rem;"
@@ -145,7 +173,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-
+-->
   </v-navigation-drawer>
 </template>
 
@@ -213,6 +241,9 @@ export default {
 </script>
 
 <style scoped>
+.v-list-item__title {
+  white-space: normal;
+}
 .v-list-item__subtitle {
   white-space: normal;
 }
