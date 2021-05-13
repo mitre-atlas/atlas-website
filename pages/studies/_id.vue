@@ -30,12 +30,12 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="study.references">
       <v-col>
         <page-section-title>Sources</page-section-title>
 
         <ol class="mt-2">
-          <li v-for="(source, i) in study.sources" :key="i">
+          <li v-for="(source, i) in study.references" :key="i">
             <p v-linkified>{{ source }}</p>
           </li>
         </ol>
