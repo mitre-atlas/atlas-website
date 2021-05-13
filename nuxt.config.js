@@ -141,6 +141,6 @@ export default {
   },
 
   router: {
-    base: '/advml/'
+    base: '/advmlthreatmatrix/'
   }
 }
