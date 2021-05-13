@@ -125,6 +125,7 @@ export default {
   },
 
   publicRuntimeConfig: {
+    router_base: process.env.ROUTER_BASE || '/',
     name: {
       short: process.env.NAME_SHORT || 'AdvML',
       long: process.env.NAME_LONG || 'Adversarial Machine Learning'
@@ -141,6 +142,6 @@ export default {
   },
 
   router: {
-    base: '/advmlthreatmatrix/'
+    base: process.env.ROUTER_BASE || '/'
   }
 }

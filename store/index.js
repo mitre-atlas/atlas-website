@@ -1,4 +1,5 @@
 const fs = require('fs').promises
+const path = require('path')
 
 export const state = () => ({
   data: {
@@ -149,7 +150,7 @@ export const actions = {
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
-  async nuxtServerInit ({ commit }) {
+  async nuxtServerInit ({ commit }, context) {
     // Retrieve the threat matrix YAML data and populate store upon start
     const getTactics = await fs.readFile('static/data/tactics.json', 'utf-8')
     const getTechniques = await fs.readFile('static/data/techniques.json', 'utf-8')
@@ -164,7 +165,17 @@ export const actions = {
         // Internal links start with / and are converted to nuxt-links
         // TODO nuxt-links do not resolve when using v-html, replacing with regular relative links
         const internalLinkRegex = /\[([^[]+?)\]\((\/.*?)\)/gm
-        contents[1] = contents[1].replace(internalLinkRegex, "<a href='$2'>$1</a>") // '<nuxt-link to="$2">$1</nuxt-link>')
+
+        // Replace Markdown link syntax with HTML link for internal pages
+        // [name](relPath), where relPath is /techniques/123, for example
+        contents[1] = contents[1].replace(internalLinkRegex, (match, name, relPath) => {
+          // Construct the href, taking into consideration the router base
+          // Normalize to resolve possible //
+          const fullPath = path.normalize(context.$config.router_base + relPath)
+          // Construct the HTML link
+          const link = "<a href='" + fullPath + "'>" + name + '</a>'
+          return link
+        })
 
         // External links start with http and are converted to HTML links
         const externalLinkRegex = /\[([^[]+?)\]\((http.*?)\)/gm
