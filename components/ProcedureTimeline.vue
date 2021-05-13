@@ -20,7 +20,7 @@ export default {
   props: ['study'],
   methods: {
     // lookupTacticStyling (procedureItem) {
-    //   const tactic = this.$store.getters.getTacticWhereIdIn(procedureItem.tactic)
+    //   const tactic = this.$store.getters.getTacticById(procedureItem.tactic)
     //   return this.$store.getters.getTacticStyling[tactic.name]
     // }
   }

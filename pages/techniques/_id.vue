@@ -154,7 +154,7 @@ export default {
     },
     parentTechnique () {
       const fullId = this.info['subtechnique-of']
-      return this.$store.getters.getTechniqueWhereIdIn(fullId)
+      return this.$store.getters.getTechniqueById(fullId)
     },
     referencedTactics () {
       let tacticsList = []
@@ -172,7 +172,7 @@ export default {
 
       // Return the list of tactics
       return tacticsList.map((fullId) => {
-        return this.$store.getters.getTacticWhereIdIn(fullId)
+        return this.$store.getters.getTacticById(fullId)
       })
     },
     relevantStudies () {
