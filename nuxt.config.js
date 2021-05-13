@@ -80,7 +80,6 @@ export default {
   hooks: {},
 
   generate: {
-    // dir: 'dist-warp',
     fallback: true,
     routes () {
       const getTactics = fs.readFile('static/data/tactics.json', 'utf-8')
@@ -142,6 +141,6 @@ export default {
   },
 
   router: {
-    // base: '/advml/'
+    base: '/advml/'
   }
 }
