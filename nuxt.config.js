@@ -127,8 +127,15 @@ export default {
 
   publicRuntimeConfig: {
     name: 'AdvML',
-    navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org'
-
+    navigator_url: process.env.NAVIGATOR_URL || '#',
+    advml: {
+      repo_url: process.env.ADVML_DATA_URL || '#',
+      version: process.env.ADVML_DATA_VERSION || 2
+    },
+    attack: {
+      repo_url: process.env.ATTACK_ENTERPRISE_URL || 'https://github.com/mitre/cti/tree/master/enterprise-attack',
+      version: process.env.ATTACK_ENTERPRISE_VERSION || 9
+    }
   },
 
   router: {
