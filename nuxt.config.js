@@ -108,8 +108,8 @@ export default {
           return true
         })
         const filteredTechniques = techniques.filter((technique) => {
-          // return studyTechniques.has(technique.id)
-          return true // Use only techniques referenced in case studies
+          // return studyTechniques.has(technique.id) // Use only techniques referenced in case studies
+          return true
         })
 
         // Construct each dynamic route

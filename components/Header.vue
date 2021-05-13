@@ -137,6 +137,10 @@ export default {
         isDropdown: true,
         links: [
           {
+            name: 'General information',
+            href: '/resources/info'
+          },
+          {
             name: 'Adversarial ML 101',
             href: '/resources/adversarial-ml-101'
           },
