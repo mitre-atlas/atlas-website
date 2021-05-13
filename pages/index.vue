@@ -18,7 +18,7 @@
           <br>
           <NuxtLink to="/resources/feedback" style="text-decoration: none;">Contact Us</NuxtLink>
           <br>
-          <span><a :href="`${$config.navigator_url}`" style="text-decoration: none;">View on ATT&CK Navigator</a><v-icon small>mdi-open-in-new</v-icon></span>
+          <span><a :href="`${$config.navigator_url}`" target="_blank" style="text-decoration: none;">View on ATT&CK Navigator</a><v-icon small>mdi-open-in-new</v-icon></span>
         </div>
       </v-col>
     </v-row>

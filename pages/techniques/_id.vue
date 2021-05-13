@@ -39,7 +39,7 @@
       </p>
 
       <span v-if="info.id.startsWith('T')">
-        <a href='#' @click="openNewTab">View at MITRE ATT&CK</a>
+        <a @click="openNewTab">View at MITRE ATT&CK</a>
         <v-icon small>mdi-open-in-new</v-icon>
       </span>
     </v-card-text>
