@@ -175,6 +175,9 @@ export const actions = {
         const externalLinkRegex = /\[([^[]+?)\]\((http.*?)\)/gm
         contents[1] = contents[1].replace(externalLinkRegex, "<a href='$2'>$1</a>")
 
+        // Convert any external links in the case studies as well
+        contents[2] = contents[2].replace(externalLinkRegex, "<a href='$2'>$1</a>")
+
         // Parse YAML files
         const data = contents.map(JSON.parse)
         let { 1: techniques } = data
