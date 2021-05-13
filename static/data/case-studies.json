@@ -253,7 +253,7 @@
             },
             {
                 "tactic": "TA0040",
-                "technique": "{'id': 'AML.T0015', 'name': 'Evade ML Model', 'object-type': 'technique', 'description': 'Adversaries can [{{craft_adv.name}}](/techniques/{{craft_adv.id}}) that prevent a machine learning model from correctly identifying the contents of the data.\nThis technique can be used to evade a downstream task where machine learning is utilized.\nThe adversary may evade machine learning based virus/malware detection, or network scanning towards the goal of a traditional cyber attack.\n', 'tactics': ['TA0005', 'TA0040']}",
+                "technique": "AML.T0015",
                 "description": "The adversarial examples were used to evade the machine translation services.\n"
             }
         ],
