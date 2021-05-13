@@ -114,7 +114,7 @@
 <script>
 export default {
   data: ({ $config: { name } }) => ({
-    title: `MITRE | ${name}`,
+    title: `MITRE | ${name.short}`,
     links: [
       {
         name: 'Matrix',

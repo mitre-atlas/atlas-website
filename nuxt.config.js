@@ -126,7 +126,10 @@ export default {
   },
 
   publicRuntimeConfig: {
-    name: 'AdvML',
+    name: {
+      short: process.env.NAME_SHORT || 'AdvML',
+      long: process.env.NAME_LONG || 'Adversarial Machine Learning'
+    },
     navigator_url: process.env.NAVIGATOR_URL || '#',
     advml: {
       repo_url: process.env.ADVML_DATA_URL || '#',
