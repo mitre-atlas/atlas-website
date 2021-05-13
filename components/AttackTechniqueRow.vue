@@ -62,5 +62,5 @@ export default {
 }
 </script>
 
-<style scoped src="@/static/matrix.css">
+<style scoped src="~/assets/matrix.css">
 </style>
