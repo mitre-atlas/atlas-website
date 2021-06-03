@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Adversarial ML Threat Matrix',
+    title: 'MITRE | ATLAS',
     htmlAttrs: {
       lang: 'en'
     },

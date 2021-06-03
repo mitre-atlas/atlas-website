@@ -110,7 +110,7 @@
   <page-section-title>Next Recommended Reading</page-section-title>
 
   <p>
-    Head over to the <NuxtLink to="/matrix">Adversarial ML Threat Matrix</NuxtLink> page to see a compendium of attacks in ATT&CK style.
+    Head over to the <NuxtLink to="/matrix">{{ $config.name.short}} Threat Matrix</NuxtLink> page to see a compendium of attacks in ATT&CK style.
   </p>
 
   </div>

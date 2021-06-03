@@ -2,7 +2,7 @@
   <div>
     <page-title>Contribution</page-title>
 
-    The Adversarial ML Threat Matrix is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    {{ $config.name.short }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
@@ -22,7 +22,7 @@
 
     <br>
 
-    You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and Adversarial ML Threat Matrix mapping.
+    You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and {{ $config.name.short }} mapping.
     <!-- <span class="pink--text">TODO Consider adding content format examples like <a href="https://attack.mitre.org/resources/contribute/">ATT&CK's</a>.</span> -->
 
     <page-section-title>Contributors</page-section-title>

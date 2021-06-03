@@ -1,11 +1,12 @@
 <template>
   <div>
-    <page-title>{{ title }}</page-title>
+    <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>
+    <div class="text-h4 mb-5 text-center">{{ $config.name.long }}</div>
 
     <v-row>
       <v-col cols="8">
         <p class="mb-10">
-        The {{ $config.name.short }} Threat Matrix is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on <a href="https://attack.mitre.org" style="text-decoration: none;">the ATT&CK framework</a>.
+        {{ $config.name.short }} is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on <a href="https://attack.mitre.org" style="text-decoration: none;">the ATT&CK framework</a>.
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p>
       </v-col>
@@ -31,8 +32,8 @@
 
 <script>
 export default {
-  data: () => ({
-    title: 'Adversarial Machine Learning Threat Matrix'
+  data: ({ $config: { name } }) => ({
+    title: `${name.long}`
   })
 }
 </script>

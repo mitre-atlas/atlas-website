@@ -4,7 +4,7 @@
 
   <page-section-title>Data</page-section-title>
 
-  The tactics and techniques referenced in the {{ $config.name.short }} Threat Matrix are drawn from:
+  The tactics and techniques referenced in {{ $config.name.short }} are drawn from:
   <ul>
     <!-- <a :href="$config.advml.repo_url">Adversarial machine learning</a> -->
     <li>Adversarial Machine Learning v{{ $config.advml.version }}</li>

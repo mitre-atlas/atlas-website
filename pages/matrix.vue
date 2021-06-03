@@ -4,9 +4,9 @@
     <page-title>{{ title }}</page-title>
 
     <p class="mb-10">
-    The {{ $config.name.short }} Threat Matrix emphasizes adversarial attacks and attacks against ML systems. The {{ $config.name.short }} Threat Matrix recognizes that ML is an embedded technology and
+    {{ $config.name.long }}, or {{ $config.name.short }}, emphasizes adversarial attacks and attacks against ML systems. {{ $config.name.short }} recognizes that ML is an embedded technology and
     retains the high-level Technique and Tactic categories found in the <a href="https://attack.mitre.org/matrices/enterprise/">ATT&CK Enterprise</a> matrix. The definitions
-    have been amended to emphasize the ML security aspects of each Technique. This enables the {{ $config.name.short }} Threat Matrix to adequately describe attacks against ML systems.
+    have been amended to emphasize the ML security aspects of each Technique. This enables {{ $config.name.short }} to adequately describe attacks against ML systems.
     Additionally, relevant TTPs from the ATT&CK Enterprise have been included in this knowledge base.
     </p>
 
@@ -20,8 +20,8 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({
-    title: 'Adversarial ML Matrix',
+  data: ({ $config: { name } }) => ({
+    title: `${name.short} Matrix`,
     description:
       'Below are the tactics and techniques representing the adversarial machine learning threat matrix.',
     useAttackStyle: false
