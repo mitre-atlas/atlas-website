@@ -6,8 +6,8 @@
       text
       type="info"
     >
-      MITRE & Microsoft will host the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning.
-      Learn more under <nuxt-link to='/resources/info'>General Information</nuxt-link>!
+      MITRE & Microsoft are hosting the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning on June 29th.
+      Learn more under <nuxt-link to='/resources/info'>annoucements</nuxt-link>!
     </v-alert>
 
     <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>

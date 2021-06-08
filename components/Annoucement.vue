@@ -7,7 +7,7 @@
         {{ description }}
       </p>
       <p>
-        For more information, contact <a href="contactEmail">{{ contactEmail }}</a>
+        For more information, contact <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
       </p>
     </v-card-text>
   </v-card>
