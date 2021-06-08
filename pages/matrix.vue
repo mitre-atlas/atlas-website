@@ -21,13 +21,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
-    title: `${name.short} Matrix`,
-    description:
-      'Below are the tactics and techniques representing the adversarial machine learning threat matrix.',
-    useAttackStyle: false
+    title: `${name.short} ML Matrix`
   }),
   computed: {
-    ...mapGetters(['getMatrix', 'getTacticStyling'])
+    ...mapGetters(['getMatrix'])
   }
 }
 </script>
