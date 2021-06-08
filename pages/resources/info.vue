@@ -2,6 +2,10 @@
 <div>
   <page-title>General information</page-title>
 
+  <page-section-title>Announcements</page-section-title>
+
+  <annoucement />
+
   <page-section-title>Data</page-section-title>
 
   The tactics and techniques referenced in {{ $config.name.short }} are drawn from:
