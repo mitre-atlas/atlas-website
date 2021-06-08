@@ -1,5 +1,15 @@
 <template>
   <div>
+    <v-alert
+      color="blue"
+      dismissible
+      text
+      type="info"
+    >
+      MITRE & Microsoft will host the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning.
+      Learn more under <nuxt-link to='/resources/info'>General Information</nuxt-link>!
+    </v-alert>
+
     <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>
     <div class="text-h4 mb-5 text-center">{{ $config.name.long }}</div>
 
@@ -9,6 +19,10 @@
         {{ $config.name.short }} is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on <a href="https://attack.mitre.org" style="text-decoration: none;">the ATT&CK framework</a>.
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p>
+
+        <!-- <p class="mb-10">
+          MITRE & Microsoft will host the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning. Learn more <nuxt-link to='/resources/info'>here</nuxt-link>.
+        </p> -->
       </v-col>
 
       <v-col>
