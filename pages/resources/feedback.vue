@@ -6,7 +6,7 @@
 
     For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
     <br><br>
-    For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:ram.shankar@microsoft.com,mikel@mitre.org">ram.shankar@microsoft.com and mikel@mitre.org</a>.
+    For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
     <br><br>
     For threat matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribution</NuxtLink> page.
 
