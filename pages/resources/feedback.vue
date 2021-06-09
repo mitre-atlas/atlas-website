@@ -13,7 +13,7 @@
     <page-section-title>Mailing List</page-section-title>
 
     <p>
-    For discussions around {{ $config.name.short }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
+    For discussions around MITRE {{ $config.name.short }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
     </p>
 
     <v-alert text type="info">

@@ -2,11 +2,11 @@
   <div>
     <page-title>Contribution</page-title>
 
-    {{ $config.name.short }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    MITRE {{ $config.name.short }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please submit a pull request to the GitHub data repository.
+    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
     <br><br>
     <!-- For a more hands-on feedback session, <span class="pink--text">TODO future events, consider adding an announcements section.</span> -->
 
@@ -16,7 +16,7 @@
 
     <ol>
       <li>Exploits one or more vulnerabilities that compromises the confidentiality, integrity or availability of ML system.</li>
-      <li>The attack was against a production, commercial ML system. This can be on MLaaS like Amazon, Microsoft Azure, Google Cloud AI, IBM Watson etc or ML systems embedded in client/edge.</li>
+      <li>The attack was against a production, commercial ML system. This can be on MLaaS like Amazon, Microsoft Azure, Google Cloud AI, IBM Watson, or ML systems embedded in client/edge.</li>
       <li>You have permission to share the information/published this research. Please follow the proper channels before reporting a new attack and make sure you are practicing responsible disclosure.</li>
     </ol>
 

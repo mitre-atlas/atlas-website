@@ -13,7 +13,7 @@ import { mapGetters } from 'vuex'
 export default {
   data: ({ $config: { name } }) => ({
     title: 'Tactics',
-    description: 'Lists tactics from ' + name.short + ' and ATT<span class="red--text text--darken-3">&</span>CK Enterprise.'
+    description: 'Lists tactics from MITRE ' + name.short + ' and ATT<span class="red--text text--darken-3">&</span>CK<sup>&reg;</sup> Enterprise.'
   }),
   computed: {
     ...mapGetters(['getTactics'])
