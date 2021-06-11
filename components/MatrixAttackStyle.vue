@@ -23,7 +23,7 @@
             v-for="(tactic, i) in matrix.tactics"
             :key="i"
             >
-            {{ tactic.techniques.length }} techniques
+            {{ tactic.techniques.length + " " + (tactic.techniques.length == 1 ? "technique" : "techniques") }}
           </td>
         </tr>
       </thead>
