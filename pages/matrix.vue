@@ -11,6 +11,9 @@
     </p>
 
     <v-row>
+      <v-col>
+        <p>Placeholder to briefly introduce the matrix.</p>
+      </v-col>
       <matrix-attack-style :matrix="getMatrix" />
     </v-row>
   </div>
