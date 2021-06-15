@@ -8,10 +8,10 @@
     Tactics are treated as “tags” where a technique is associated with one or more tactic categories depending on the different results that can be achieved by using a technique.
   </p>
   <p>
-  In some cases, the ATT&CK tactic definitions are stretched to include machine learning (ML) concepts. For example, poisoning training data leads to a different sort of persistence on a system.
+  In some cases, the MITRE ATT&CK<sup>&reg;</sup> tactic definitions are stretched to include machine learning (ML) concepts. For example, poisoning training data leads to a different sort of persistence on a system.
   </p>
   <p>
-    We list ATLAS tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
+    We list MITRE ATLAS<sup>&trade;</sup> tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
   </p>
   <div v-html="description" />
   <info-table :items="getTactics" />
@@ -24,7 +24,7 @@ import { mapGetters } from 'vuex'
 export default {
   data: ({ $config: { name } }) => ({
     title: 'Tactics',
-    description: 'The table below lists tactics from MITRE ' + name.short + ' and ATT<span class="red--text text--darken-3">&</span>CK<sup>&reg;</sup> Enterprise.  Scroll through the table or use the filters to narrow down the information.'
+    description: 'The table below lists tactics from ' + name.short + ' and ATT<span class="red--text text--darken-3">&</span>CK Enterprise.  Scroll through the table or use the filters to narrow down the information.'
   }),
   computed: {
     ...mapGetters(['getTactics'])

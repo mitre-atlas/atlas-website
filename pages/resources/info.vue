@@ -8,7 +8,7 @@
 
   <page-section-title>Data</page-section-title>
 
-  The tactics and techniques referenced in MITRE {{ $config.name.short }} are drawn from:
+  The tactics and techniques referenced in MITRE {{ $config.name.short }}<sup>&trade;</sup> are drawn from:
   <ul>
     <!-- <a :href="$config.advml.repo_url">Adversarial machine learning</a> -->
     <li>Adversarial Machine Learning v{{ $config.advml.version }}</li>

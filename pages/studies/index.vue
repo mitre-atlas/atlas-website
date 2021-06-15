@@ -10,8 +10,8 @@
       The case-studies were selected because of the impact to production ML systems, and each demonstrates one of the following characteristics:
 
       <ol>
-        <li>Range of Attacks: evasion, poisoning, model replication and exploiting traditional software flaws.</li>
-        <li>Range of Personas: Average user, Security researchers, ML Researchers and Fully equipped Red team.</li>
+        <li>Range of Attacks: Evasion, poisoning, model replication and exploiting traditional software flaws.</li>
+        <li>Range of Personas: Average user, security researchers, ML researchers and fully-equipped Red team.</li>
         <li>Range of ML Paradigms: Attacks on MLaaS, ML models hosted on cloud, hosted on-premise, ML models on edge.</li>
         <li>Range of Use case: Attacks on ML systems used in both "security-sensitive" applications like cybersecurity and non-security-sensitive applications like chatbots.</li>
       </ol>

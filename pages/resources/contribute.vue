@@ -2,7 +2,7 @@
   <div>
     <page-title>Contribution</page-title>
 
-    MITRE {{ $config.name.short }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    MITRE {{ $config.name.short }}<sup>&trade;</sup> is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
