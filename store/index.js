@@ -72,7 +72,8 @@ export const state = () => ({
       icon: 'mdi-fire',
       color: 'red darken-4'
     }
-  }
+  },
+  caseStudy: null
 })
 
 export const getters = {
@@ -137,10 +138,21 @@ export const getters = {
 export const mutations = {
   SET_THREAT_MATRIX_DATA (state, payload) {
     state.data = { ...state.data, ...payload }
+  },
+  SET_CASE_STUDY (state, inputCase) {
+    state.caseStudy = inputCase
+    console.log(state.caseStudy)
   }
 }
 
 export const actions = {
+  submitCaseStudy ({ commit }, study) {
+    commit('SET_CASE_STUDY', study)
+  },
+
+  createStudyFile ({ commit }, study) {
+    console.log('output json obj here')
+  },
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await

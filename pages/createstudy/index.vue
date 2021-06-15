@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
@@ -151,7 +151,7 @@ export default {
     reported: '',
     procedure: [],
     references: [],
-    study: [],
+    // study: [],
     errorMsg: '',
     submissionMsg: ''
   }),
@@ -159,6 +159,7 @@ export default {
     ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
   },
   methods: {
+    ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
@@ -201,9 +202,12 @@ export default {
           'reported-by': this.reported,
           references: this.references
         }
-        this.study = study
+        // this.study = study
+        this.submitCaseStudy(study)
+        this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been submitted!'
-        console.log(this.study)
+        // console.log(this.study)
+        // console.log(state.caseStudy)
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
