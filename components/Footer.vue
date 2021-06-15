@@ -6,7 +6,7 @@
       </v-card-text>
       <v-card-actions class="justify-center">
         <span>
-        <a href="#">Privacy Policy</a>
+        <NuxtLink to="/resources/privacy-policy">Privacy Policy</NuxtLink>
         &nbsp; &nbsp;
         <a href="#">Terms of Use</a>
         </span>
