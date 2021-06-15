@@ -12,26 +12,30 @@
 
     <!-- <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>
     <div class="text-h4 mb-5 text-center">{{ $config.name.long }}</div> -->
-    <page-title>{{ $config.name.short }}</page-title>
+    <!-- <page-title>{{ $config.name.short }}</page-title> -->
 
     <v-row>
       <v-col cols="12">
-        <div class="mb-10">
+        <div class="my-10">
         <!-- <p>
         MITRE {{ $config.name.short }} is a knowledge base of adversarial tactics and techniques for machine learning (ML) security based on the
         <a href="https://attack.mitre.org" style="text-decoration: none;">MITRE ATT&CK<sup>&reg;</sup> framework</a>.
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p> -->
         <p>
-        MITRE ATLAS<sup>&trade;</sup> is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" style="text-decoration: none;">MITRE ATT&CK<sup>&reg;</sup> framework</a> framework and its tactics and techniques are complementary to those in ATT&CK.
+        MITRE {{ $config.name.short }}<sup>&trade;</sup>, {{ $config.name.long }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" style="text-decoration: none;">MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
         </p>
+
         <p>
-        ATLAS enables researchers to navigate the landscape of threats to machine learning systems. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed ATLAS to raise awareness of these threats and present them in a way familiar to security researchers.
+        ATLAS enables researchers to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed ATLAS to raise awareness of these threats and present them in a way familiar to security researchers.
         </p>
+        <!-- <homepage-links /> -->
+         <!-- <page-title class="mt-10 text-center">{{ $config.name.short }}</page-title> -->
+          <!-- <v-img :src="require('../assets/MITRE-brand_ATLAS_tm_black.png')" contain max-height="50px" position="center"/> -->
       </div>
       <div>
         <p>
-          The ATLAS ML Matrix below shows the progression of tactics used in attacks as columns from left to right,
+          The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
           with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
           the combined ATLAS and ATT&CK tactics and techniques using the links at the top navigation bar.
         </p>

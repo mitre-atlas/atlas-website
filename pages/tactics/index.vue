@@ -5,7 +5,6 @@
   <p>
     Tactics are tactical adversary goals during an attack. They represent the “why” of a technique: the reason for performing an action.
     Tactics serve as useful contextual categories for individual techniques and cover standard notations for things adversaries do during an operation.
-    Tactics are treated as “tags” where a technique is associated with one or more tactic categories depending on the different results that can be achieved by using a technique.
   </p>
   <p>
   In some cases, the MITRE ATT&CK<sup>&reg;</sup> tactic definitions are stretched to include machine learning (ML) concepts. For example, poisoning training data leads to a different sort of persistence on a system.

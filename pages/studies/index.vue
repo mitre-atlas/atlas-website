@@ -8,7 +8,7 @@
       attacks are being seen in-the-wild. In production settings ML systems are trained on personally identifiable information (PII),
       trusted to make critical decisions with little oversight, and have little to no logging and alerting attached to their use.
       The case-studies were selected because of the impact to production ML systems, and each demonstrates one of the following characteristics:
-
+      <br>
       <ol>
         <li>Range of Attacks: Evasion, poisoning, model replication and exploiting traditional software flaws.</li>
         <li>Range of Personas: Average user, security researchers, ML researchers and fully-equipped Red team.</li>
