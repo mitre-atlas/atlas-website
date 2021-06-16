@@ -20,7 +20,6 @@
       <matrix-attack-style :matrix="getMatrix" />
     </v-row>
 
-      <p> Point to the Navigator (floating box to the right?) </p>
   </div>
 
 </template>
