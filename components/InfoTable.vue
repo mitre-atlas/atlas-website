@@ -1,6 +1,5 @@
 <template>
 <div>
-
     <v-row>
       <v-col cols="8">
         <v-text-field
@@ -41,7 +40,7 @@
           </sup>
         </span>
         <span v-else>
-          {{ item.id }}
+          <div v-html="queryHighlight(item.id)"/>
           <sup v-if="item.id.startsWith('T')" class="red--text text--darken-3 text-caption">
             &
           </sup>
@@ -52,13 +51,13 @@
        <nuxt-link
         :to="`/${$route.name}/${item.id}`"
         style="text-decoration: none;"
+        v-html="queryHighlight(item.name)"
         >
-          {{ item.name }}
         </nuxt-link>
     </template>
     <template v-slot:[`item.description`]="{ item }">
       <div
-        v-html="item.description"
+        v-html="queryHighlight(item.description)"
         class="my-3"
       />
     </template>
@@ -73,11 +72,6 @@ export default {
   name: 'InfoTable',
   props: ['items'],
   data: () => ({
-    // headers: [
-    //   { value: 'id', text: 'ID', align: 'right' },
-    //   { value: 'name', text: 'Name' },
-    //   { value: 'description', text: 'Description' }
-    // ],
     search: '',
     showAdvMlOnly: false
   }),
@@ -88,10 +82,11 @@ export default {
           value: 'id',
           text: 'ID',
           align: 'right',
-          filter: (value) => {
-            // TODO Allow ID to still be searchable via logic
-            if (this.showAdvMlOnly) {
-              return value.startsWith('AML') && value.includes(this.search)
+          filter: (value, search, item) => {
+            if (this.showAdvMlOnly && search) {
+              const rx = new RegExp(search, 'i')
+              const includesQuery = (str) => { return str.search(rx) !== -1 }
+              return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
             }
             return true
           }
@@ -100,12 +95,29 @@ export default {
         { value: 'description', text: 'Description', sortable: false }
       ]
     }
+  },
+  methods: {
+    queryHighlight (text) {
+      let query = this.search
+      if (!text || !query) { return text }
+      query = query.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1') // makes it safe for a regex constructor by escaping special chars
+      const rx = new RegExp(query, 'gi')
+      const hText = text.replace(rx, '<span class="qHighlight">$&</span>')
+
+      return hText
+    }
   }
 }
 </script>
 
-<style scoped>
+<style>
+/* <style scoped>  why style scoped? (highlight class wasn't working with it on) */
 span >>> a {
   text-decoration: none;
 }
+
+.qHighlight {
+  background-color: yellow;
+}
+
 </style>
