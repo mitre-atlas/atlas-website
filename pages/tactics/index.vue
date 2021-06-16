@@ -5,12 +5,14 @@
   <p>
     Tactics are tactical adversary goals during an attack. They represent the “why” of a technique: the reason for performing an action.
     Tactics serve as useful contextual categories for individual techniques and cover standard notations for things adversaries do during an operation.
+    <sup><a href="https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf">[1]</a></sup>
+
   </p>
   <p>
   In some cases, the MITRE ATT&CK<sup>&reg;</sup> tactic definitions are stretched to include machine learning (ML) concepts. For example, poisoning training data leads to a different sort of persistence on a system.
   </p>
   <p>
-    We list MITRE ATLAS<sup>&trade;</sup> tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
+    We include MITRE ATLAS<sup>&trade;</sup> tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
   </p>
   <div v-html="description" />
   <info-table :items="getTactics" />
@@ -30,3 +32,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>

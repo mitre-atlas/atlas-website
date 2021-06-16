@@ -10,7 +10,7 @@
 
     <v-toolbar-title>
       <nuxt-link to="/">
-        <v-img :src="require('../assets/MITRE-brand_ATLAS_tm_white.png')" contain max-height="25px" position="left"/>
+        <img src="~/assets/MITRE-brand_ATLAS_tm_white.png" height="25" />
       </nuxt-link>
     </v-toolbar-title>
 
