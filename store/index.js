@@ -178,7 +178,7 @@ export const actions = {
         // Convert any external links in the case studies as well
         contents[2] = contents[2].replace(externalLinkRegex, "<a href='$2'>$1</a>")
 
-        // Parse YAML files
+        // Parse JSON files
         const data = contents.map(JSON.parse)
         let { 1: techniques } = data
         const { 0: tactics, 2: studies } = data

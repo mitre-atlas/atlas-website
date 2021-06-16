@@ -13,6 +13,8 @@
           <Nuxt />
         </v-container>
       </v-main>
+
+      <Footer />
       </client-only>
   </v-app>
 </template>
