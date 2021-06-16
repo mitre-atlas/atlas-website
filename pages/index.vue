@@ -71,7 +71,20 @@ export default {
 </script>
 
 <style scoped>
+
 .row {
   overflow: auto;
 }
+/* .attack-style {
+  color: #c63f1f;
+  white-space: pre;
+}
+
+span.link-box {
+  background-color: transparent;
+}
+
+.link-box {
+  background-color: black;
+} */
 </style>
