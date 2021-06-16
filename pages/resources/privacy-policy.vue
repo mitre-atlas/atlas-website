@@ -6,7 +6,7 @@
       The MITRE Corporation (“MITRE”) respects the privacy of its website users.
     </p>
     <p>
-      This Privacy Policy explains the types of information collected by MITRE ATLAS<sup>&trade;</sup> from website visitors (“Users”) or that you provide to MITRE through other
+      This Privacy Policy explains the types of information collected by MITRE ATLAS from website visitors (“Users”) or that you provide to MITRE through other
       means, such as via e-mail and web forms (collectively “Site”), and how MITRE uses, shares, protects, and retains that information.
       By visiting the Site, you understand and agree to terms outlined in this Privacy Policy.
     </p>
