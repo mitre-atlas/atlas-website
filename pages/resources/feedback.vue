@@ -11,7 +11,7 @@
     <page-section-title>Mailing List</page-section-title>
 
     <p>
-    For discussions around MITRE {{ $config.name.short }}<sup>&trade;</sup>, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
+    For discussions around MITRE {{ $config.name.short }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
     </p>
 
      For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
