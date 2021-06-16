@@ -8,7 +8,7 @@
         <span>
         <NuxtLink to="/resources/privacy-policy">Privacy Policy</NuxtLink>
         &nbsp; &nbsp;
-        <a href="#">Terms of Use</a>
+        <NuxtLink to="/resources/terms">Terms of Use</NuxtLink>
         </span>
       </v-card-actions>
     </v-card>
