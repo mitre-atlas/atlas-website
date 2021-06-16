@@ -62,7 +62,7 @@
             :items="getTactics"
             label="Tactic"
             item-text="name"
-            item-value="id"
+            return-object
             @input="updateValue(selectTactic)"
           />
 
@@ -70,17 +70,17 @@
 
           <v-select
             v-model="selectTechnique"
-            :items="getTechniquesByTacticId(selectTactic)"
+            :items="mapTechniqueById"
             label="Technique"
             item-text="name"
-            item-value="id"
-            :disabled="selectTactic === null"
+            return-object
+            :disabled="selectTactic === { id: null }"
             @input="updateValue(selectTechnique)"
           />
         </v-card-actions>
 
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-textarea v-model="description" :disabled="selectTactic === null" label="Description" required @input="updateValue(description)" />
+          <v-textarea v-model="description" :disabled="selectTactic === { id: null }" label="Description" required @input="updateValue(description)" />
         </v-card-actions>
         <v-card-actions>
           <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
@@ -136,7 +136,9 @@ export default {
     valid: true,
     date: new Date().toISOString().substr(0, 10),
     dateMenu: false,
-    selectTactic: null,
+    selectTactic: {
+      id: null
+    },
     selectTechnique: null,
     description: '',
     titleStudy: '',
@@ -156,12 +158,17 @@ export default {
     submissionMsg: ''
   }),
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
+    ...mapGetters(['getTactics', 'getTechniquesByTacticId']),
+    mapTechniqueById () {
+      return this.getTechniquesByTacticId(this.selectTactic.id)
+    }
   },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
+      console.log(this.inputVal)
+      // console.log(this.inputVal.id)
     },
     addProcedureStep () {
       const newStep = {
@@ -171,9 +178,10 @@ export default {
       }
       this.procedure.push(newStep)
       this.clearStepInput()
+      console.log(this.procedure)
     },
     clearStepInput () {
-      this.selectTactic = null
+      this.selectTactic = { id: null }
       this.selectTechnique = null
       this.description = ''
     },
