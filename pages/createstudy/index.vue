@@ -62,7 +62,7 @@
             :items="getTactics"
             label="Tactic"
             item-text="name"
-            return-object
+            item-value="id"
             @input="updateValue(selectTactic)"
           />
 
@@ -70,17 +70,17 @@
 
           <v-select
             v-model="selectTechnique"
-            :items="mapTechniqueById"
+            :items="getTechniquesByTacticId(selectTactic)"
             label="Technique"
             item-text="name"
-            return-object
-            :disabled="selectTactic === { id: null }"
+            item-value="id"
+            :disabled="selectTactic === null"
             @input="updateValue(selectTechnique)"
           />
         </v-card-actions>
 
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-textarea v-model="description" :disabled="selectTactic === { id: null }" label="Description" required @input="updateValue(description)" />
+          <v-textarea v-model="description" :disabled="selectTactic === null" label="Description" required @input="updateValue(description)" />
         </v-card-actions>
         <v-card-actions>
           <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
@@ -90,7 +90,18 @@
             Clear
           </v-btn>
         </v-card-actions>
+        <v-col sm="6">
+          <v-alert v-if="addStepErr" color="red" outlined type="error" dense>
+            {{ addStepErr }}
+          </v-alert>
+        </v-col>
       </v-card>
+
+      <v-timeline v-if="procedure.length" align-top dense>
+        <v-timeline-item v-for="(p, i) in procedure" :key="i" small>
+          <procedure-card :info="p" />
+        </v-timeline-item>
+      </v-timeline>
 
       <v-card outlined class="my-5">
         <v-card-title>Add Sources:</v-card-title>
@@ -110,7 +121,23 @@
             Clear
           </v-btn>
         </v-card-actions>
+        <v-col sm="6">
+          <v-alert v-if="addSourceErr" color="red" outlined type="error" dense>
+            {{ addSourceErr }}
+          </v-alert>
+        </v-col>
       </v-card>
+
+      <div v-if="references.length" class="mx-8">
+        <ol>
+          <li v-for="(value, key) in references" :key="key">
+            {{ value.source }}
+            <p v-linkified>
+              {{ value.sourceLink }}
+            </p>
+          </li>
+        </ol>
+      </div>
 
       <v-btn class="my-5" outlined :disabled="!valid" x-large @click="submitStudy">
         Submit Case Study
@@ -136,9 +163,7 @@ export default {
     valid: true,
     date: new Date().toISOString().substr(0, 10),
     dateMenu: false,
-    selectTactic: {
-      id: null
-    },
+    selectTactic: null,
     selectTechnique: null,
     description: '',
     titleStudy: '',
@@ -153,49 +178,54 @@ export default {
     reported: '',
     procedure: [],
     references: [],
-    // study: [],
     errorMsg: '',
+    addStepErr: '',
+    addSourceErr: '',
     submissionMsg: ''
   }),
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId']),
-    mapTechniqueById () {
-      return this.getTechniquesByTacticId(this.selectTactic.id)
-    }
+    ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
   },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
-      console.log(this.inputVal)
-      // console.log(this.inputVal.id)
     },
     addProcedureStep () {
-      const newStep = {
-        tactic: this.selectTactic,
-        technique: this.selectTechnique,
-        description: this.description
+      if (this.selectTactic && this.selectTechnique && this.description) {
+        const newStep = {
+          tactic: this.selectTactic,
+          technique: this.selectTechnique,
+          description: this.description
+        }
+        this.procedure.push(newStep)
+        this.clearStepInput()
+      } else {
+        this.addStepErr = 'Please complete all fields'
       }
-      this.procedure.push(newStep)
-      this.clearStepInput()
-      console.log(this.procedure)
     },
     clearStepInput () {
-      this.selectTactic = { id: null }
+      this.selectTactic = null
       this.selectTechnique = null
       this.description = ''
+      this.addStepErr = ''
     },
     addSource () {
-      const newSource = {
-        source: this.source,
-        sourceLink: this.sourceLink
+      if (this.source || this.sourceLink) {
+        const newSource = {
+          source: this.source,
+          sourceLink: this.sourceLink
+        }
+        this.references.push(newSource)
+        this.clearSource()
+      } else {
+        this.addSourceErr = 'Please complete at least one field'
       }
-      this.references.push(newSource)
-      this.clearSource()
     },
     clearSource () {
       this.source = ''
       this.sourceLink = ''
+      this.addSourceErr = ''
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
@@ -214,8 +244,6 @@ export default {
         this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been submitted!'
-        // console.log(this.study)
-        // console.log(state.caseStudy)
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
