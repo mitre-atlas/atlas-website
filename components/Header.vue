@@ -9,7 +9,9 @@
     <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
 
     <v-toolbar-title>
-      <nuxt-link to="/">{{ title }}</nuxt-link>
+      <nuxt-link to="/">
+        <img src="~/assets/MITRE-brand_ATLAS_tm_white.png" height="25" />
+      </nuxt-link>
     </v-toolbar-title>
 
     <v-spacer />

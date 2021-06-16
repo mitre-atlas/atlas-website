@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Adversarial ML Threat Matrix',
+    title: 'MITRE | ATLAS',
     htmlAttrs: {
       lang: 'en'
     },
@@ -127,8 +127,8 @@ export default {
   publicRuntimeConfig: {
     router_base: process.env.ROUTER_BASE || '/',
     name: {
-      short: process.env.NAME_SHORT || 'AdvML',
-      long: process.env.NAME_LONG || 'Adversarial Machine Learning'
+      short: process.env.NAME_SHORT || 'ATLAS',
+      long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems'
     },
     navigator_url: process.env.NAVIGATOR_URL || '#',
     advml: {

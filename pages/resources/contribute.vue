@@ -2,11 +2,11 @@
   <div>
     <page-title>Contribution</page-title>
 
-    The Adversarial ML Threat Matrix is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    MITRE {{ $config.name.short }}<sup>&trade;</sup> is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please submit a pull request to the GitHub data repository.
+    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
     <br><br>
     <!-- For a more hands-on feedback session, <span class="pink--text">TODO future events, consider adding an announcements section.</span> -->
 
@@ -16,14 +16,18 @@
 
     <ol>
       <li>Exploits one or more vulnerabilities that compromises the confidentiality, integrity or availability of ML system.</li>
-      <li>The attack was against a production, commercial ML system. This can be on MLaaS like Amazon, Microsoft Azure, Google Cloud AI, IBM Watson etc or ML systems embedded in client/edge.</li>
+      <li>The attack was against a production, commercial ML system. This can be on MLaaS like Amazon, Microsoft Azure, Google Cloud AI, IBM Watson, or ML systems embedded in client/edge.</li>
       <li>You have permission to share the information/published this research. Please follow the proper channels before reporting a new attack and make sure you are practicing responsible disclosure.</li>
     </ol>
 
     <br>
 
-    You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and Adversarial ML Threat Matrix mapping.
+    You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and {{ $config.name.short }} mapping.
+    See an example of the format below.
     <!-- <span class="pink--text">TODO Consider adding content format examples like <a href="https://attack.mitre.org/resources/contribute/">ATT&CK's</a>.</span> -->
+
+    <page-section-title>Case study example</page-section-title>
+    <case-study-example />
 
     <page-section-title>Contributors</page-section-title>
 
