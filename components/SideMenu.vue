@@ -198,7 +198,7 @@ export default {
     },
     items () {
       if (this.$route.name.startsWith('tactics')) {
-        return this.getTactics
+        return this.getFilteredTactics
       } else if (this.$route.name.startsWith('techniques')) {
         // Hierarchy of tactics with fully populated techniques
         return this.getFilteredTactics.map((tactic) => {
