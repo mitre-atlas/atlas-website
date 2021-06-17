@@ -23,7 +23,7 @@
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p> -->
         <p>
-        MITRE {{ $config.name.short }}<sup>&trade;</sup>, {{ $config.name.long }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" style="text-decoration: none;">MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
+        MITRE {{ $config.name.short }}, {{ $config.name.long }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" style="text-decoration: none;">MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
         </p>
 
         <p>
@@ -31,13 +31,13 @@
         </p>
         <!-- <homepage-links /> -->
          <!-- <page-title class="mt-10 text-center">{{ $config.name.short }}</page-title> -->
-        <img src="~/assets/ATLAS_tm_black.png" height="40" class="d-block mx-auto" />
+        <img src="~/assets/ATLAS_black.png" height="40" class="d-block mx-auto" />
       </div>
       <div>
         <p>
           The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
           with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
-          the combined ATLAS and ATT&CK tactics and techniques using the links at the top navigation bar.
+           ATLAS tactics and techniques using the links at the top navigation bar.
         </p>
 
         </div>
@@ -71,7 +71,20 @@ export default {
 </script>
 
 <style scoped>
+
 .row {
   overflow: auto;
 }
+/* .attack-style {
+  color: #c63f1f;
+  white-space: pre;
+}
+
+span.link-box {
+  background-color: transparent;
+}
+
+.link-box {
+  background-color: black;
+} */
 </style>
