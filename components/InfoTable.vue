@@ -10,14 +10,14 @@
           hide-details
         />
       </v-col>
-      <v-col cols="4">
+      <!-- <v-col cols="4">
         <v-switch
           v-if="this.$route.name === 'tactics' || this.$route.name === 'techniques'"
           v-model="showAdvMlOnly"
           :label="`Show only ${$config.name.short}`"
           class="pa-3"
         />
-      </v-col>
+      </v-col> -->
     </v-row>
 
   <v-data-table

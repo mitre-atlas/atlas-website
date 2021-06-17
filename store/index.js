@@ -75,13 +75,29 @@ export const state = () => ({
   }
 })
 
+// defines the logic for all the "filtered" getters
+const isFiltered = t => t.id.startsWith('AML')
+
 export const getters = {
   // Simple getters
   getTactics: (state) => {
     return state.data.tactics
   },
+  getTrueFilteredTactics: (state) => {
+    return state.data.tactics.filter(isFiltered)
+  },
+  getFilteredTactics: (state) => {
+    return state.data.tactics.filter((t) => {
+      const isOfTactic = te => (('tactics') in te) && te.tactics.includes(t.id)
+      const filteredTechniquesOfTactic = state.data.techniques.filter(isFiltered).filter(isOfTactic)
+      return filteredTechniquesOfTactic.length > 0
+    })
+  },
   getTechniques: (state) => {
     return state.data.techniques
+  },
+  getFilteredTechniques: (state) => {
+    return state.data.techniques.filter(isFiltered)
   },
   getStudies: (state) => {
     return state.data.studies
@@ -131,6 +147,10 @@ export const getters = {
       // Returns true when at least 1 of the referenced tactic matches the query
       return t.tactics.includes(tacticId)
     })
+  },
+
+  getFilteredTechniquesByTacticId: state => (tacticId) => {
+    return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
   }
 }
 

@@ -15,7 +15,7 @@
     We include MITRE ATLAS tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
   </p>
   <div v-html="description" />
-  <info-table :items="getTactics" />
+  <info-table :items="getFilteredTactics" />
 </div>
 </template>
 
@@ -25,10 +25,10 @@ import { mapGetters } from 'vuex'
 export default {
   data: ({ $config: { name } }) => ({
     title: 'Tactics',
-    description: 'The table below lists tactics from ' + name.short + ' and ATT<span class="red--text text--darken-3">&</span>CK Enterprise.  Scroll through the table or use the filters to narrow down the information.'
+    description: 'The table below lists tactics from ' + name.short + ' and tactics from ATT<span class="red--text text--darken-3">&</span>CK Enterprise that contain ATLAS techniques.  Scroll through the table or use the filter to narrow down the information.'
   }),
   computed: {
-    ...mapGetters(['getTactics'])
+    ...mapGetters(['getFilteredTactics'])
   }
 }
 </script>
