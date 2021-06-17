@@ -1,7 +1,9 @@
 <template>
   <v-navigation-drawer
     app
+    absolute
     clipped
+    style="height: calc(100% - 170px)"
     >
     <v-list-item class="mt-10">
       <v-list-item-content>
