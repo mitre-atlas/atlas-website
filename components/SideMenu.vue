@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer
     app
+    absolute
     clipped
     >
     <v-list-item class="mt-10">
