@@ -13,7 +13,7 @@
     <p>
       The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
       with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
-      the combined ATLAS and ATT&CK tactics and techniques using the links at the top navigation bar.
+     ATLAS tactics and techniques using the links at the top navigation bar.
     </p>
 
     <v-row  class="mt-10">
