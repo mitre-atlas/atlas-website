@@ -8,16 +8,16 @@
           label="Search for keywords"
           single-line
           hide-details
+          class="pt-3 pb-2"
         />
       </v-col>
-      <!-- <v-col cols="4">
+      <v-col v-if="showFilterButton" cols="4">
         <v-switch
           v-if="this.$route.name === 'tactics' || this.$route.name === 'techniques'"
           v-model="showAdvMlOnly"
           :label="`Show only ${$config.name.short}`"
-          class="pa-3"
         />
-      </v-col> -->
+      </v-col>
     </v-row>
 
   <v-data-table
@@ -69,7 +69,7 @@
 <script>
 export default {
   name: 'InfoTable',
-  props: ['items'],
+  props: ['items', 'showFilterButton'],
   data: () => ({
     search: '',
     showAdvMlOnly: false
@@ -81,16 +81,34 @@ export default {
           value: 'id',
           text: 'ID',
           align: 'right',
-          filter: (value, search, item) => {
-            if (this.showAdvMlOnly && search) {
-              const rx = new RegExp(search, 'i')
-              const includesQuery = (str) => { return str.search(rx) !== -1 }
-              return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
-            } else if (this.showAdvMlOnly) {
-              return value.startsWith('AML')
-            }
-            return true
+          filter: (value, search, time) => {
+            return this.showAdvMlOnly ? value.startsWith('AML') : true
           }
+          // filter: (value, search, item) => {
+          //   // if (this.showFilterButton) {
+          //   //   if (this.showAdvMlOnly && search) {
+          //   //     const rx = new RegExp(search, 'i')
+          //   //     const includesQuery = (str) => { return str.search(rx) !== -1 }
+          //   //     return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
+          //   //   } else if (this.showAdvMlOnly) {
+          //   //     return value.startsWith('AML')
+          //   //   }
+          //   // } else if (search) {
+          //   //   const rx = new RegExp(search, 'i')
+          //   //   const includesQuery = (str) => { return str.search(rx) !== -1 }
+          //   //   return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
+          //   // } else {
+          //   //   return true
+          //   // }
+          //   // if (this.showAdvMlOnly && search) {
+          //   //   const rx = new RegExp(search, 'i')
+          //   //   const includesQuery = (str) => { return str.search(rx) !== -1 }
+          //   //   return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
+          //   // } else if (this.showAdvMlOnly) {
+          //   //   return value.startsWith('AML')
+          //   // }
+          //   // return true
+          // }
         },
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }

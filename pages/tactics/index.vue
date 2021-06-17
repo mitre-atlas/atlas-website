@@ -15,7 +15,7 @@
     We include MITRE ATLAS tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
   </p>
   <div v-html="description" />
-  <info-table :items="getFilteredTactics" />
+  <info-table :show-filter-button="true" :items="getFilteredTactics" />
 </div>
 </template>
 

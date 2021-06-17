@@ -83,10 +83,10 @@ export const getters = {
   getTactics: (state) => {
     return state.data.tactics
   },
-  getTrueFilteredTactics: (state) => {
+  getTrueFilteredTactics: (state) => { // the tactic has no att&ck techniques
     return state.data.tactics.filter(isFiltered)
   },
-  getFilteredTactics: (state) => {
+  getFilteredTactics: (state) => { // the tactic has atleast one atlas technique
     return state.data.tactics.filter((t) => {
       const isOfTactic = te => (('tactics') in te) && te.tactics.includes(t.id)
       const filteredTechniquesOfTactic = state.data.techniques.filter(isFiltered).filter(isOfTactic)
