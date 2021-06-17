@@ -2,7 +2,17 @@
   <v-card>
     <v-card-title>
       <!-- {{ getTechniqueById(info.technique).name }} -->
+      <span
+      v-if="techniqueId.startsWith('T')">
+        <a @click=openNewTab(techniqueId) style="text-decoration:none; color: inherit;">
+          {{techniqueName}}
+        </a>
+         <sup v-if="techniqueId.startsWith('T')" class="red--text text--darken-3 text-caption">
+            &
+          </sup>
+          </span>
       <nuxt-link
+        v-else
         :to="`/techniques/${techniqueId}`"
         style="text-decoration: none; color: inherit;"
         >
@@ -73,6 +83,12 @@ export default {
     // tactic () {
     //   return this.getTacticById(this.info.tactic)
     // }
+  },
+  methods: {
+    openNewTab (id) {
+      const url = 'https://attack.mitre.org/techniques/' + id
+      window.open(url, '_blank')
+    }
   }
 }
 </script>
