@@ -9,7 +9,7 @@
       </v-col>
       <v-col cols="8">
       <v-card-text class="text-center">
-        MITRE ATLAS and MITRE ATT&CK are registered trademarks of The MITRE Corporation.
+        MITRE ATT&CK is a registered trademark of The MITRE Corporation.
       </v-card-text>
       <v-card-actions class="justify-center">
         <span>

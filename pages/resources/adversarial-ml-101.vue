@@ -110,7 +110,7 @@
   <page-section-title>Next Recommended Reading</page-section-title>
 
   <p>
-    Head over to the <NuxtLink to="/matrix">MITRE {{ $config.name.short}}<sup>&trade;</sup> ML Matrix</NuxtLink> page to see a compendium of attacks in ATT&CK style.
+    Head over to the <NuxtLink to="/matrix">MITRE {{ $config.name.short}} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
   </p>
 
   </div>

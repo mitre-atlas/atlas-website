@@ -12,7 +12,7 @@
   </p>
   <!--
   <p>
-    We include MITRE ATLAS<sup>&trade;</sup> techniques alongside MITRE ATT&CK<sup>&reg;</sup> techniques because an adversary may use an ATLAS or ATT&CK technique to achieve a particular objective and may use both ATLAS and ATT&CK techniques during an operation. For example, and adversary may exfiltrate  ML artifacts via traditional means (e.g. via physical medium or transfer to cloud account) or via techniques enabled by the presence of ML subsystems such as an inference API.
+    We include MITRE ATLAS techniques alongside MITRE ATT&CK<sup>&reg;</sup> techniques because an adversary may use an ATLAS or ATT&CK technique to achieve a particular objective and may use both ATLAS and ATT&CK techniques during an operation. For example, and adversary may exfiltrate  ML artifacts via traditional means (e.g. via physical medium or transfer to cloud account) or via techniques enabled by the presence of ML subsystems such as an inference API.
   </p>
   -->
   <div v-html="description" />
