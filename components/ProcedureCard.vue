@@ -7,7 +7,7 @@
         <a @click=openNewTab(techniqueId) style="text-decoration:none; color: inherit;">
           {{techniqueName}}
         </a>
-         <sup v-if="techniqueId.startsWith('T')" class="red--text text--darken-3 text-caption">
+          <sup class="red--text text--darken-3 text-caption">
             &
           </sup>
           </span>
@@ -86,7 +86,12 @@ export default {
   },
   methods: {
     openNewTab (id) {
-      const url = 'https://attack.mitre.org/techniques/' + id
+      let url
+      if (id.includes('.')) {
+        url = 'https://attack.mitre.org/techniques/' + id.split('.')[0] + '/' + id.split('.')[1]
+      } else {
+        url = 'https://attack.mitre.org/techniques/' + id
+      }
       window.open(url, '_blank')
     }
   }
