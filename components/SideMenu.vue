@@ -41,7 +41,7 @@
         no-action
       >
         <template v-slot:activator>
-          <v-list-item>
+          <v-list-item v-if="tactic.techniques.length > 0">
             <NuxtLink
               :to="`/tactics/${tactic.id}`"
               style="text-decoration: none; font-size: 0.9375rem;"
@@ -186,7 +186,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniques', 'getStudies', 'getTechniquesByTacticId']),
+    ...mapGetters(['getTactics', 'getTechniques', 'getStudies', 'getTechniquesByTacticId', 'getFilteredTechniquesByTacticId', 'getFilteredTactics']),
     title () {
       if (this.$route.name.startsWith('tactics')) {
         return 'Tactics'
@@ -201,10 +201,10 @@ export default {
         return this.getTactics
       } else if (this.$route.name.startsWith('techniques')) {
         // Hierarchy of tactics with fully populated techniques
-        return this.getTactics.map((tactic) => {
+        return this.getFilteredTactics.map((tactic) => {
           return {
             ...tactic,
-            techniques: this.getTechniquesByTacticId(tactic.id)
+            techniques: this.getFilteredTechniquesByTacticId(tactic.id)
           }
         })
       } else {
