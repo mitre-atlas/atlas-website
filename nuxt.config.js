@@ -1,5 +1,8 @@
 const fs = require('fs').promises
 
+// defines the logic for all the "filtered" getters
+const isFiltered = t => t.id.startsWith('AML')
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -109,7 +112,8 @@ export default {
         })
         const filteredTechniques = techniques.filter((technique) => {
           // return studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          return true
+          // return true
+          return isFiltered(technique)
         })
 
         // Construct each dynamic route
