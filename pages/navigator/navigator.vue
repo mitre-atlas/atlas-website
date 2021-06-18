@@ -11,7 +11,7 @@
     </p> -->
 
     <p>
-        To view MITRE ATLAS data alongside MITRE ATT&CK<sup>&reg;</sup> Enterprise tactics and techniques, visit the ATLAS customized version of the ATT&CK Navigator here: <br><br><v-btn target="_blank" href="https://navigator.lt.mitre.org/">Interactive Navigator</v-btn>
+        To view MITRE ATLAS data alongside MITRE ATT&CK<sup>&reg;</sup> Enterprise tactics and techniques, visit the ATLAS customized version of the ATT&CK Navigator here: <br><br><v-btn target="_blank" :href=$config.navigator_url>Interactive Navigator</v-btn>
     </p>
 
     <p>

@@ -130,7 +130,7 @@ export default {
       short: process.env.NAME_SHORT || 'ATLAS',
       long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems'
     },
-    navigator_url: process.env.NAVIGATOR_URL || '#',
+    navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org',
     advml: {
       repo_url: process.env.ADVML_DATA_URL || '#',
       version: process.env.ADVML_DATA_VERSION || 2
