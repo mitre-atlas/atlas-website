@@ -12,13 +12,13 @@
     <p>
       <v-card-actions class="justify-center">
         <v-btn target="_blank" :href=$config.navigator_url>
-          Interactive Navigator
+          ATLAS Navigator
         </v-btn>
       </v-card-actions>
     </p>
 
     <p>
-      This customized Navigator encodes the ATLAS techniques as a separate platform called "ATLAS", and allows users to create complex visualizations containing both machine learning and enterprise techniques. For more information on the standard ATT&CK Navigator and how to use it, you can visit the <a target="_blank" href="https://github.com/mitre-attack/attack-navigator">project’s GitHub page here</a> as well as watch a short <a target="_blank" href="https://www.youtube.com/watch?v=pcclNdwG8Vs.">demo video on YouTube</a>.
+      This customized Navigator encodes the ATLAS techniques as an additional platform in ATT&CK, and allows users to create complex visualizations containing both machine learning and enterprise techniques. For more information on the standard ATT&CK Navigator and how to use it, visit the <a target="_blank" href="https://github.com/mitre-attack/attack-navigator">project’s GitHub page here</a> as well as watch a short <a target="_blank" href="https://www.youtube.com/watch?v=pcclNdwG8Vs.">demo video on YouTube</a>.
     </p>
 
     <!-- <v-row  class="mt-10">
