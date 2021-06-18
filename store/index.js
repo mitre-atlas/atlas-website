@@ -1,3 +1,4 @@
+import * as tools from 'static/data/tools.js'
 const fs = require('fs').promises
 const path = require('path')
 
@@ -151,7 +152,9 @@ export const actions = {
   },
 
   createStudyFile ({ commit }, study) {
-    console.log('output json obj here')
+    const studyJSON = tools.createJSON(study)
+    console.log(studyJSON)
+    tools.download(`${studyJSON.name}-JSON.json`, studyJSON)
   },
 
   // Note that this function is called for every dynamic route generated via nuxt generate
