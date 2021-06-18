@@ -6,7 +6,7 @@
 
     For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
     <br><br>
-    For threat matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribution</NuxtLink> page.
+    For ATLAS matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribution</NuxtLink> page.
 
     <page-section-title>Mailing List</page-section-title>
 
