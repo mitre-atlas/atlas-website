@@ -123,6 +123,10 @@ export default {
         href: '/matrix'
       },
       {
+        name: 'Navigator',
+        href: '/navigator/navigator'
+      },
+      {
         name: 'Tactics',
         href: '/tactics'
       },
