@@ -7,9 +7,9 @@
         <a @click=openNewTab(techniqueId) style="text-decoration:none; color: inherit;">
           {{techniqueName}}
         </a>
-          <sup class="red--text text--darken-3 text-caption">
+          <!-- <sup class="red--text text--darken-3 text-caption">
             &
-          </sup>
+          </sup> -->
           </span>
       <nuxt-link
         v-else
