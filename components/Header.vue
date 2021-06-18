@@ -124,7 +124,7 @@ export default {
       },
       {
         name: 'Navigator',
-        href: '/navigator/navigator'
+        href: '/navigator'
       },
       {
         name: 'Tactics',
