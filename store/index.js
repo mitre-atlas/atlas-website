@@ -154,7 +154,7 @@ export const actions = {
   createStudyFile ({ commit }, study) {
     const studyJSON = tools.createJSON(study)
     console.log(studyJSON)
-    tools.download(`${studyJSON.name}-JSON.json`, studyJSON)
+    tools.download(`${study.name}-JSON.json`, studyJSON)
   },
 
   // Note that this function is called for every dynamic route generated via nuxt generate
