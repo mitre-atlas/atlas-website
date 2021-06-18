@@ -23,9 +23,15 @@
     <!-- <v-row  class="mt-10">
       <matrix-attack-style :matrix="getMatrix" />
     </v-row> -->
-
+    <div style="text-align: center;">
+      <iframe
+        :src="`${$config.navigator_url}`"
+        width="1100"
+        height="600"
+        frameBorder="0"
+      />
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -47,5 +53,8 @@ export default {
 }
 a {
   text-decoration: none;
+}
+iframe {
+    overflow: auto;
 }
 </style>
