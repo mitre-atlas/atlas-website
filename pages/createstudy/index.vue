@@ -3,6 +3,17 @@
     <breadcrumbs></breadcrumbs>
     <page-title>{{ title }}</page-title>
 
+    <v-row>
+      <v-col sm="5">
+        <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
+      </v-col>
+      <v-col>
+        <v-btn @click="readJSON">
+          Populate Form
+        </v-btn>
+      </v-col>
+    </v-row>
+
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container>
         <v-row>
@@ -10,19 +21,19 @@
         </v-row>
 
         <v-row>
-          <v-col sm="4">
+          <v-col sm="6">
             <v-text-field v-model="email" :rules="emailRules" label="E-mail" required @input="updateValue(email)" />
           </v-col>
 
           <v-spacer />
 
-          <v-col sm="4">
+          <v-col sm="6">
             <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by:" required @input="updateValue(reported)" />
           </v-col>
+        </v-row>
 
-          <v-spacer />
-
-          <v-col sm="3">
+        <v-row>
+          <v-col sm="4">
             <v-menu
               v-model="dateMenu"
               :close-on-content-click="false"
@@ -34,7 +45,7 @@
               <template #activator="{ on, attrs }">
                 <v-text-field
                   v-model="date"
-                  label="Date reported:"
+                  label="Incident date:"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
@@ -161,6 +172,7 @@ export default {
   data: ({ $config: { name } }) => ({
     title: 'Create A Case Study',
     valid: true,
+    chosenFile: null,
     date: new Date().toISOString().substr(0, 10),
     dateMenu: false,
     selectTactic: null,
@@ -190,6 +202,28 @@ export default {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
+    },
+    readJSON () {
+      if (!this.chosenFile) {
+        // this.data = "No File Chosen"
+        console.log('nothing inputted')
+      }
+      const reader = new FileReader()
+
+      // Use the javascript reader object to load the contents
+      // of the file in the v-model prop
+      reader.readAsText(this.chosenFile)
+      reader.onload = () => {
+        // this.data = reader.result;
+        console.log(reader.result)
+        const inputStudy = JSON.parse(reader.result)
+        this.titleStudy = inputStudy.name
+        this.summary = inputStudy.summary
+        this.date = inputStudy['incident-date']
+        this.procedure = inputStudy.procedure
+        this.reported = inputStudy['reported-by']
+        this.references = inputStudy.references // doesn't work for now because missing key names
+      }
     },
     addProcedureStep () {
       if (this.selectTactic && this.selectTechnique && this.description) {
