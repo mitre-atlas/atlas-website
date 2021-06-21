@@ -26,7 +26,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    'plugins/vue-linkify.client.js'
+    'plugins/vue-gtag.client.js',
+    'plugins/vue-linkify.client.js',
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -139,7 +141,8 @@ export default {
     attack: {
       repo_url: process.env.ATTACK_ENTERPRISE_URL || 'https://github.com/mitre/cti/tree/master/enterprise-attack',
       version: process.env.ATTACK_ENTERPRISE_VERSION || 9
-    }
+    },
+    analytics_id: process.env.ANALYTICS_ID || ''
   },
 
   router: {
