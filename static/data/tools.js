@@ -1,5 +1,5 @@
 const getScope = key => scopeDictionary[key]
-//const sentenceRegex = /(?<=[.!?]) \b(?=[A-Z]|[0-9])/g
+// const sentenceRegex = /(?<=[.!?]) \b(?=[A-Z]|[0-9])/g
 const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
 const reportedByDelim = ','
 const TAB_LENGTH = 2
@@ -17,23 +17,23 @@ const scopeDictionary = {
   references: 2
 }
 
-function sentenceNewline(text, escape = false) {
+function sentenceNewline (text, escape = false) {
   return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + '\n'
 }
 
-function sentenceSplit(text, removeNewlines) {
+function sentenceSplit (text, removeNewlines) {
   if (removeNewlines) {
     text = text.replaceAll('\n', ' ')
   }
-  let split = text.split(sentenceRegex)
-  split = sp.map((e, i, a) => { //element, index, array
-  	if ('?!.'.split('').includes(e)) { 
-    	return null 
-    } else if (i + 1 == a.length) {
-    	return e
+  const split = text.split(sentenceRegex).map((e, i, a) => { // element, index, array
+    if ('?!.'.split('').includes(e)) {
+      return null
+    } else if (i + 1 === a.length) {
+      return e
     } else {
-    	return e + a[i + 1]}
-    }).filter(e => e)
+      return e + a[i + 1]
+    }
+  }).filter(e => e)
   return split
 }
 
@@ -55,24 +55,36 @@ function generateID (name) {
   return `AML.CS${pad(name.length, 5)}`
 }
 
-function flattenReferences (refArray) {
+// function flattenReferences (refArray) {
+//   const outArray = []
+
+//   if (refArray.length === 0) {
+//     return null
+//   }
+
+//   for (const index in refArray) {
+//     const sourceObj = refArray[index]
+//     const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
+//     outArray[index] = flat
+//   }
+//   return outArray
+// }
+
+function referenceFormat (refArray) {
   const outArray = []
-
-  if (refArray.length === 0) {
-    return null
-  }
-
   for (const index in refArray) {
-    const sourceObj = refArray[index]
-    const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
-    outArray[index] = flat
+    const sourceObject = refArray[index]
+    outArray[index] = {
+      sourceDescription: sourceObject.source,
+      url: sourceObject.sourceLink
+    }
   }
   return outArray
 }
 
 function dateToString (dateObj) {
-  const date = pad(dateObj.getDate(), 2) + 1
-  const month = pad(dateObj.getMonth(), 2) + 1
+  const date = +pad(dateObj.getDate() + 1, 2)
+  const month = +pad(dateObj.getMonth() + 1, 2)
   const year = dateObj.getFullYear()
 
   return `${year}-${month}-${date}`
@@ -94,9 +106,16 @@ function appendLine (text, scope = 0) {
 
 function reviver (key, value) {
   if (key === 'reported-by') {
-    return value.split(reportedByDelim + ' ')
+    console.log(value)
+    return value.split(reportedByDelim).map(e => e.trim())
+    // console.log('type is ', typeof value)
+    // if (typeof value === 'string') {
+    //   return value.split(reportedByDelim).map(e => e.trim())
+    // } else if (typeof value === 'object') {
+    //   return value[0].split(reportedByDelim).map(e => e.trim())
+    // }
   } else if (key === 'references') {
-    return flattenReferences(value)
+    return referenceFormat(value)
   } else if (key === 'incident-date') {
     return dateToString(new Date(value))
   } else if (key === 'procedure') {
@@ -111,8 +130,9 @@ function reviver (key, value) {
 function createYAML (obj) {
   const yaml = { text: '', appendLine }
   const procedure = obj.procedure
-  const reportedBy = obj['reported-by'].split(reportedByDelim + ' ')
-  const references = flattenReferences(obj.references)
+  const reportedBy = obj['reported-by'].split(reportedByDelim).map(e => e.trim())
+  // const references = flattenReferences(obj.references)
+  const references = referenceFormat(obj.references)
 
   function appendArray (array, scopeName, omitDash) {
     for (const value of array) {
