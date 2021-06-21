@@ -118,10 +118,10 @@
         <v-card-title>Add Sources:</v-card-title>
 
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-text-field v-model="source" label="Source" @input="updateValue(source)" />
+          <v-text-field v-model="sourceDescription" label="Source Description" @input="updateValue(sourceDescription)" />
         </v-card-actions>
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-text-field v-model="sourceLink" label="Link" @input="updateValue(sourceLink)" />
+          <v-text-field v-model="url" label="URL" @input="updateValue(url)" />
         </v-card-actions>
 
         <v-card-actions>
@@ -142,9 +142,9 @@
       <div v-if="references.length" class="mx-8">
         <ol>
           <li v-for="(value, key) in references" :key="key">
-            {{ value.source }}
+            {{ value.sourceDescription }}
             <p v-linkified>
-              {{ value.sourceLink }}
+              {{ value.url }}
             </p>
           </li>
         </ol>
@@ -185,8 +185,8 @@ export default {
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
     ],
     summary: '',
-    source: '',
-    sourceLink: '',
+    sourceDescription: '',
+    url: '',
     reported: '',
     procedure: [],
     references: [],
@@ -218,9 +218,9 @@ export default {
           this.summary = inputStudy.summary
           this.date = inputStudy['incident-date']
           this.procedure = inputStudy.procedure
-          this.reported = inputStudy['reported-by']
-          // this['reported-by'] = inputStudy['reported-by']
+          this.reported = inputStudy['reported-by'][0]
           this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
+          console.log(this.references)
         }
       }
     },
@@ -228,11 +228,11 @@ export default {
       const structuredRefs = []
       for (let i = 0; i < refs.length; i++) {
         const matches = refs[i].match(/(https?:\/\/[^ ]*)/)
-        let thisRef = { source: '', sourceLink: '' }
+        let thisRef = { sourceDescription: '', url: '' }
         if (matches) {
-          thisRef = { source: refs[i].replace(matches[1], ''), sourceLink: matches[1] }
+          thisRef = { sourceDescription: refs[i].replace(matches[1], ''), url: matches[1] }
         } else {
-          thisRef = { source: refs[i], sourceLink: '' }
+          thisRef = { sourceDescription: refs[i], url: '' }
         }
         structuredRefs.push(thisRef)
       }
@@ -258,10 +258,10 @@ export default {
       this.addStepErr = ''
     },
     addSource () {
-      if (this.source || this.sourceLink) {
+      if (this.sourceDescription || this.url) {
         const newSource = {
-          source: this.source,
-          sourceLink: this.sourceLink
+          sourceDescription: this.sourceDescription,
+          url: this.url
         }
         this.references.push(newSource)
         this.clearSource()
@@ -270,8 +270,8 @@ export default {
       }
     },
     clearSource () {
-      this.source = ''
-      this.sourceLink = ''
+      this.sourceDescription = ''
+      this.url = ''
       this.addSourceErr = ''
     },
     submitStudy () {
