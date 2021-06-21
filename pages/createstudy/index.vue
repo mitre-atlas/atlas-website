@@ -205,25 +205,37 @@ export default {
     },
     readJSON () {
       if (!this.chosenFile) {
-        // this.data = "No File Chosen"
         console.log('nothing inputted')
-      }
-      const reader = new FileReader()
+      } else {
+        const reader = new FileReader()
 
-      // Use the javascript reader object to load the contents
-      // of the file in the v-model prop
-      reader.readAsText(this.chosenFile)
-      reader.onload = () => {
-        // this.data = reader.result;
-        console.log(reader.result)
-        const inputStudy = JSON.parse(reader.result)
-        this.titleStudy = inputStudy.name
-        this.summary = inputStudy.summary
-        this.date = inputStudy['incident-date']
-        this.procedure = inputStudy.procedure
-        this.reported = inputStudy['reported-by']
-        this.references = inputStudy.references // doesn't work for now because missing key names
+        // Use the javascript reader object to load the contents
+        // of the file in the v-model prop
+        reader.readAsText(this.chosenFile)
+        reader.onload = () => {
+          const inputStudy = JSON.parse(reader.result)
+          this.titleStudy = inputStudy.name
+          this.summary = inputStudy.summary
+          this.date = inputStudy['incident-date']
+          this.procedure = inputStudy.procedure
+          this.reported = inputStudy['reported-by']
+          this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
+        }
       }
+    },
+    editReferences (refs) {
+      const structuredRefs = []
+      for (let i = 0; i < refs.length; i++) {
+        const matches = refs[i].match(/(https?:\/\/[^ ]*)/)
+        let thisRef = { source: '', sourceLink: '' }
+        if (matches) {
+          thisRef = { source: refs[i].replace(matches[1], ''), sourceLink: matches[1] }
+        } else {
+          thisRef = { source: refs[i], sourceLink: '' }
+        }
+        structuredRefs.push(thisRef)
+      }
+      return structuredRefs
     },
     addProcedureStep () {
       if (this.selectTactic && this.selectTechnique && this.description) {
@@ -274,7 +286,6 @@ export default {
           'reported-by': this.reported,
           references: this.references
         }
-        // this.study = study
         this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been submitted!'
