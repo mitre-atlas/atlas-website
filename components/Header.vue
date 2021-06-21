@@ -166,8 +166,3 @@ export default {
 </script>
 
 <style scoped>
-.nuxt-link-active {
-  text-decoration: none;
-  color: inherit;
-}
-</style>

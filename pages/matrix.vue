@@ -41,7 +41,4 @@ export default {
 .row {
   overflow: auto;
 }
-a {
-  text-decoration: none;
-}
 </style>

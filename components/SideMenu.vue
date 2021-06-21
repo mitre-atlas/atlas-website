@@ -46,7 +46,7 @@
           <v-list-item v-if="tactic.techniques.length > 0">
             <NuxtLink
               :to="`/tactics/${tactic.id}`"
-              style="text-decoration: none; font-size: 0.9375rem;"
+              style="font-size: 0.9375rem;"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ tactic.name }}
