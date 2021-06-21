@@ -1,5 +1,6 @@
 const getScope = key => scopeDictionary[key]
-const sentenceRegex = /(?<=[.!?]) \b(?=[A-Z]|[0-9])/g
+//const sentenceRegex = /(?<=[.!?]) \b(?=[A-Z]|[0-9])/g
+const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
 const reportedByDelim = ','
 const TAB_LENGTH = 2
 const scopeDictionary = {
@@ -16,14 +17,34 @@ const scopeDictionary = {
   references: 2
 }
 
-function sentenceNewline (text, escape = false) {
-  return text.replaceAll(sentenceRegex, !escape ? '\n' : '\\n') + '\n'
+function sentenceNewline(text, escape = false) {
+  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + '\n'
 }
 
-function sentenceSplit (text, removeNewlines) {
-  if (removeNewlines) { text = text.replaceAll('\n', ' ') }
-  return text.split(sentenceRegex)
+function sentenceSplit(text, removeNewlines) {
+  if (removeNewlines) {
+    text = text.replaceAll('\n', ' ')
+  }
+  let split = text.split(sentenceRegex)
+  split = sp.map((e, i, a) => { //element, index, array
+  	if ('?!.'.split('').includes(e)) { 
+    	return null 
+    } else if (i + 1 == a.length) {
+    	return e
+    } else {
+    	return e + a[i + 1]}
+    }).filter(e => e)
+  return split
 }
+
+// function sentenceNewline (text, escape = false) {
+//   return text.replaceAll(sentenceRegex, '$&'[0] + !escape ? '\n' : '\\n') + '\n'
+// }
+
+// function sentenceSplit (text, removeNewlines) {
+//   if (removeNewlines) { text = text.replaceAll('\n', ' ') }
+//   return text.split(sentenceRegex)
+// }
 
 function pad (value, max, padChar = '0') {
   return String(value).padStart(max, padChar)
