@@ -28,8 +28,8 @@
     <div style="text-align: center;">
       <iframe
         :src="`${$config.navigator_url}`"
-        width="1100"
-        height="600"
+        width="90%"
+        height="700px"
         frameBorder="0"
       />
     </div>
