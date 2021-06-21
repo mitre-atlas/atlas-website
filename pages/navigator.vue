@@ -53,9 +53,6 @@ export default {
 .row {
   overflow: auto;
 }
-a {
-  text-decoration: none;
-}
 iframe {
     overflow: auto;
 }

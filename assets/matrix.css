@@ -280,7 +280,6 @@
 }
 .matrix-controls .layout-button:active {
   color: #16181b;
-  text-decoration: none;
   background-color: #f8f9fa;
 }
 

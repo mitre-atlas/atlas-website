@@ -11,7 +11,6 @@
             >
             <nuxt-link
               :to="`/tactics/${tactic.id}`"
-              style="text-decoration: none;"
               >
               {{ tactic.name }}
             </nuxt-link>

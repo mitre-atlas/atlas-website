@@ -30,7 +30,6 @@
     <template v-slot:[`item.id`]="{ item }">
        <nuxt-link
         :to="`/${$route.name}/${item.id}`"
-        style="text-decoration: none;"
         :id="item.id"
         >
         <span v-if="'subtechnique-of' in item">
@@ -50,7 +49,6 @@
     <template v-slot:[`item.name`]="{ item }">
        <nuxt-link
         :to="`/${$route.name}/${item.id}`"
-        style="text-decoration: none;"
         > {{ item.name }}
         </nuxt-link>
     </template>
@@ -129,14 +127,3 @@ export default {
   // }
 }
 </script>
-
-<style scoped>
-span >>> a {
-  text-decoration: none;
-}
-
-/* .qHighlight {
-  background-color: yellow;
-} */
-
-</style>

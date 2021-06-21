@@ -31,8 +31,3 @@ export default {
   name: 'Footer'
 }
 </script>
-<style scoped>
-a {
-  text-decoration: none;
-}
-</style>

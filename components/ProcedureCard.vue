@@ -4,7 +4,7 @@
       <!-- {{ getTechniqueById(info.technique).name }} -->
       <span
       v-if="techniqueId.startsWith('T')">
-        <a @click=openNewTab(techniqueId) style="text-decoration:none; color: inherit;">
+        <a @click=openNewTab(techniqueId) style="color: inherit;">
           {{techniqueName}}
         </a>
           <!-- <sup class="red--text text--darken-3 text-caption">
@@ -14,7 +14,7 @@
       <nuxt-link
         v-else
         :to="`/techniques/${techniqueId}`"
-        style="text-decoration: none; color: inherit;"
+        style="color: inherit;"
         >
           {{ techniqueName }}
       </nuxt-link>
@@ -23,7 +23,7 @@
       <!-- {{ getTacticById(info.tactic).name }} -->
       <nuxt-link
         :to="`/tactics/${tacticId}`"
-        style="text-decoration: none; color: inherit;"
+        style="color: inherit;"
         >
           {{ tacticName }}
       </nuxt-link>
