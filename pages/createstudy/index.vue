@@ -218,7 +218,7 @@ export default {
           this.summary = inputStudy.summary
           this.date = inputStudy['incident-date']
           this.procedure = inputStudy.procedure
-          this.reported = inputStudy['reported-by'][0]
+          this.reported = inputStudy['reported-by']
           this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
           console.log(this.references)
         }
