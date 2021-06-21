@@ -71,6 +71,7 @@ function generateID (name) {
 // }
 
 function referenceFormat (refArray) {
+  console.log(refArray)
   const outArray = []
   for (const index in refArray) {
     const sourceObject = refArray[index]
@@ -107,15 +108,15 @@ function appendLine (text, scope = 0) {
 function reviver (key, value) {
   if (key === 'reported-by') {
     console.log(value)
-    return value.split(reportedByDelim).map(e => e.trim())
-    // console.log('type is ', typeof value)
-    // if (typeof value === 'string') {
-    //   return value.split(reportedByDelim).map(e => e.trim())
-    // } else if (typeof value === 'object') {
-    //   return value[0].split(reportedByDelim).map(e => e.trim())
-    // }
-  } else if (key === 'references') {
-    return referenceFormat(value)
+    // return value.split(reportedByDelim).map(e => e.trim())
+    console.log('type is ', typeof value)
+    if (typeof value === 'string') {
+      return value.split(reportedByDelim).map(e => e.trim())
+    } else if (typeof value === 'object') {
+      return value[0].split(reportedByDelim).map(e => e.trim())
+    }
+  // } else if (key === 'references') {
+  //   return referenceFormat(value)
   } else if (key === 'incident-date') {
     return dateToString(new Date(value))
   } else if (key === 'procedure') {
