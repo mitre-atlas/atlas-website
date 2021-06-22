@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Adversarial ML Threat Matrix',
+    title: 'MITRE | ATLAS',
     htmlAttrs: {
       lang: 'en'
     },
@@ -26,7 +26,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    'plugins/vue-linkify.client.js'
+    'plugins/vue-gtag.client.js',
+    'plugins/vue-linkify.client.js',
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -109,7 +111,8 @@ export default {
         })
         const filteredTechniques = techniques.filter((technique) => {
           // return studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          return true
+          // return true
+          return technique.id.startsWith('AML') // Use only ATLAS techniques
         })
 
         // Construct each dynamic route
@@ -127,10 +130,10 @@ export default {
   publicRuntimeConfig: {
     router_base: process.env.ROUTER_BASE || '/',
     name: {
-      short: process.env.NAME_SHORT || 'AdvML',
-      long: process.env.NAME_LONG || 'Adversarial Machine Learning'
+      short: process.env.NAME_SHORT || 'ATLAS',
+      long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems'
     },
-    navigator_url: process.env.NAVIGATOR_URL || '#',
+    navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org',
     advml: {
       repo_url: process.env.ADVML_DATA_URL || '#',
       version: process.env.ADVML_DATA_VERSION || 2
@@ -138,7 +141,8 @@ export default {
     attack: {
       repo_url: process.env.ATTACK_ENTERPRISE_URL || 'https://github.com/mitre/cti/tree/master/enterprise-attack',
       version: process.env.ATTACK_ENTERPRISE_VERSION || 9
-    }
+    },
+    analytics_id: process.env.ANALYTICS_ID || ''
   },
 
   router: {

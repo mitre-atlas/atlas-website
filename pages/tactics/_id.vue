@@ -123,7 +123,7 @@ export default {
       return this.$store.getters.getTacticById(this.$route.params.id)
     },
     techniques () {
-      return this.$store.getters.getTechniquesByTacticId(this.$route.params.id)
+      return this.$store.getters.getFilteredTechniquesByTacticId(this.$route.params.id)
     },
     relevantStudies () {
       return this.$store.getters.getStudiesWhereTacticIdIn(this.$route.params.id)
@@ -147,9 +147,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-div >>> a {
-  text-decoration: none;
-}
-</style>

@@ -4,7 +4,6 @@
       <template v-slot:activator="{ on, attrs }">
         <nuxt-link
           :to="`/techniques/${technique.id}`"
-          style="text-decoration: none;"
           v-bind="attrs"
           v-on="on"
           >

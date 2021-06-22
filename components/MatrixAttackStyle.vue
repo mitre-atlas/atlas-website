@@ -11,7 +11,6 @@
             >
             <nuxt-link
               :to="`/tactics/${tactic.id}`"
-              style="text-decoration: none;"
               >
               {{ tactic.name }}
             </nuxt-link>
@@ -23,7 +22,7 @@
             v-for="(tactic, i) in matrix.tactics"
             :key="i"
             >
-            {{ tactic.techniques.length }} techniques
+            {{ tactic.techniques.length + " " + (tactic.techniques.length == 1 ? "technique" : "techniques") }}
           </td>
         </tr>
       </thead>

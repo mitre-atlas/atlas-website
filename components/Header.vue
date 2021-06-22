@@ -9,7 +9,9 @@
     <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
 
     <v-toolbar-title>
-      <nuxt-link to="/">{{ title }}</nuxt-link>
+      <nuxt-link to="/">
+        <img src="~/assets/MITRE-brand_ATLAS_white.png" height="25" />
+      </nuxt-link>
     </v-toolbar-title>
 
     <v-spacer />
@@ -121,6 +123,10 @@ export default {
         href: '/matrix'
       },
       {
+        name: 'Navigator',
+        href: '/navigator'
+      },
+      {
         name: 'Tactics',
         href: '/tactics'
       },
@@ -160,8 +166,3 @@ export default {
 </script>
 
 <style scoped>
-.nuxt-link-active {
-  text-decoration: none;
-  color: inherit;
-}
-</style>

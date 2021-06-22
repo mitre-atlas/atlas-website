@@ -77,13 +77,29 @@ export const state = () => ({
   caseStudy: null
 })
 
+// defines the logic for all the "filtered" getters
+const isFiltered = t => t.id.startsWith('AML')
+
 export const getters = {
   // Simple getters
   getTactics: (state) => {
     return state.data.tactics
   },
+  getTrueFilteredTactics: (state) => { // the tactic has no att&ck techniques
+    return state.data.tactics.filter(isFiltered)
+  },
+  getFilteredTactics: (state) => { // the tactic has atleast one atlas technique
+    return state.data.tactics.filter((t) => {
+      const isOfTactic = te => (('tactics') in te) && te.tactics.includes(t.id)
+      const filteredTechniquesOfTactic = state.data.techniques.filter(isFiltered).filter(isOfTactic)
+      return filteredTechniquesOfTactic.length > 0
+    })
+  },
   getTechniques: (state) => {
     return state.data.techniques
+  },
+  getFilteredTechniques: (state) => {
+    return state.data.techniques.filter(isFiltered)
   },
   getStudies: (state) => {
     return state.data.studies
@@ -133,6 +149,10 @@ export const getters = {
       // Returns true when at least 1 of the referenced tactic matches the query
       return t.tactics.includes(tacticId)
     })
+  },
+
+  getFilteredTechniquesByTacticId: state => (tacticId) => {
+    return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
   }
 }
 
@@ -193,7 +213,7 @@ export const actions = {
         // Convert any external links in the case studies as well
         contents[2] = contents[2].replace(externalLinkRegex, "<a href='$2'>$1</a>")
 
-        // Parse YAML files
+        // Parse JSON files
         const data = contents.map(JSON.parse)
         let { 1: techniques } = data
         const { 0: tactics, 2: studies } = data
