@@ -42,7 +42,12 @@
 export default {
   data: ({ $config: { name } }) => ({
     title: `${name.short} Navigator`
-  })
+  }),
+  head () {
+    return {
+      title: 'Navigator | MITRE ATLAS'
+    }
+  }
 //   computed: {
 //     ...mapGetters(['getMatrix'])
 //   }

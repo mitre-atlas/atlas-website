@@ -26,6 +26,12 @@
 <script>
 export default {
   data: () => ({
-  })
+  }),
+  head () {
+    return {
+      title: 'General Information | MITRE ATLAS'
+    }
+  }
+
 }
 </script>

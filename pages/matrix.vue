@@ -33,6 +33,11 @@ export default {
   }),
   computed: {
     ...mapGetters(['getMatrix'])
+  },
+  head () {
+    return {
+      title: 'Matrix | MITRE ATLAS'
+    }
   }
 }
 </script>

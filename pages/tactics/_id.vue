@@ -118,6 +118,11 @@
 
 <script>
 export default {
+  head () {
+    return {
+      title: this.$store.getters.getTacticById(this.$route.params.id).name + ', Tactic: ' + this.$route.params.id + ' | MITRE ATLAS'
+    }
+  },
   computed: {
     info () {
       return this.$store.getters.getTacticById(this.$route.params.id)
