@@ -151,14 +151,14 @@
       </div>
 
       <v-btn class="my-5" outlined :disabled="!valid" x-large @click="submitStudy">
-        Submit Case Study
+        Download Case Study
       </v-btn>
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
         </v-alert>
         <v-alert v-if="submissionMsg" color="green" outlined type="success" dense>
-          {{ submissionMsg }}
+          {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
         </v-alert>
       </v-col>
     </v-form>
@@ -193,7 +193,8 @@ export default {
     errorMsg: '',
     addStepErr: '',
     addSourceErr: '',
-    submissionMsg: ''
+    submissionMsg: '',
+    contactEmail: 'atlas@mitre.org'
   }),
   computed: {
     ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
@@ -219,8 +220,13 @@ export default {
           this.date = inputStudy['incident-date']
           this.procedure = inputStudy.procedure
           this.reported = inputStudy['reported-by']
-          this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
-          console.log(this.references)
+          if (inputStudy.references === [] || !(inputStudy.references)) {
+            this.references = []
+          } else if (typeof inputStudy.references[0] === 'string') {
+            this.references = this.editReferences(inputStudy.references)
+          } else if (typeof inputStudy.references[0] === 'object') {
+            this.references = inputStudy.references
+          }
         }
       }
     },
@@ -289,7 +295,7 @@ export default {
         }
         this.submitCaseStudy(study)
         this.createStudyFile(study)
-        this.submissionMsg = 'Your case study has been submitted!'
+        this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
