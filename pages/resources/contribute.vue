@@ -67,6 +67,11 @@ export default {
     const contributorsB = contributors.splice(-splitIndex)
 
     return { contributorsA, contributorsB }
+  },
+  head () {
+    return {
+      title: 'Contribute | MITRE ATLAS'
+    }
   }
 }
 </script>

@@ -23,3 +23,13 @@
     </v-alert>
   </div>
 </template>
+<script>
+export default {
+  head () {
+    return {
+      title: 'Contact Us | MITRE ATLAS'
+    }
+  }
+
+}
+</script>

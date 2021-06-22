@@ -30,6 +30,11 @@ export default {
   }),
   computed: {
     ...mapGetters(['getFilteredTechniques'])
+  },
+  head () {
+    return {
+      title: 'Techniques List | MITRE ATLAS'
+    }
   }
 }
 </script>
