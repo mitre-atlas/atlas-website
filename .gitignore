@@ -91,3 +91,6 @@ sw.*
 
 # Deplpy scripts
 *.sh
+
+package-lock.json
+package.json

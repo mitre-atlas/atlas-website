@@ -70,7 +70,7 @@
         <v-card-actions class="px-md-4 mx-lg-auto">
           <v-select
             v-model="selectTactic"
-            :items="getTactics"
+            :items="this.$store.getters.getTactics"
             label="Tactic"
             item-text="name"
             item-value="id"
@@ -162,6 +162,14 @@
         </v-alert>
       </v-col>
     </v-form>
+    <v-snackbar
+      class="mt-4"
+      top
+      text
+      color="error"
+      outlined
+      timeout=3000
+      v-model="uploadError">{{ errorMessage }}</v-snackbar>
   </div>
 </template>
 
@@ -193,7 +201,9 @@ export default {
     errorMsg: '',
     addStepErr: '',
     addSourceErr: '',
-    submissionMsg: ''
+    submissionMsg: '',
+    errorMessage: '',
+    uploadError: false
   }),
   computed: {
     ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
@@ -207,6 +217,10 @@ export default {
       if (!this.chosenFile) {
         console.log('nothing inputted')
       } else {
+        if (!this.validateFile(this.chosenFile)) {
+          this.uploadError = true
+          return
+        }
         const reader = new FileReader()
 
         // Use the javascript reader object to load the contents
@@ -224,6 +238,42 @@ export default {
         }
       }
     },
+    validateFile (file) {
+      // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
+      // does that mean we're fully safe from XSS attacks?
+      const expectedTypes = ['application/json', 'text/json']
+      const KB_TO_B = 1000
+      const MB_TO_B = 1000000
+      const maxSize = MB_TO_B * 20 // the last number is in megabytes, the first converts it to bytes
+
+      const fileType = file.type
+      const fileSize = file.size
+
+      this.errorMessage = ''
+      const addError = (s) => { this.errorMessage += s + ', ' }
+
+      if (expectedTypes.includes(fileType)) { // nominal
+        console.log(`fileType OK: (${fileType})`)
+      } else {
+        console.log(`fileType mismatch: (${fileType})`)
+        addError('invalid file type')
+      }
+
+      if (fileSize <= 0) {
+        console.log(`fileSize empty: (${fileSize} bytes)`)
+        addError('invalid file')
+      } else if (fileSize <= maxSize) { // nominal
+        console.log(`fileSize OK: (${fileSize / KB_TO_B} kilobytes)`)
+      } else {
+        console.log(`fileSize overflow: (${fileSize / KB_TO_B} kilobytes)`)
+        addError('file too large')
+      }
+
+      this.errorMessage = this.errorMessage ? this.errorMessage.charAt(0).toUpperCase() + this.errorMessage.slice(1, -2) : ''
+
+      return !this.errorMessage
+    },
+
     editReferences (refs) {
       const structuredRefs = []
       for (let i = 0; i < refs.length; i++) {
