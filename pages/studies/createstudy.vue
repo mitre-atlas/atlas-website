@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs></breadcrumbs>
+    <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
     <v-row>
@@ -68,7 +68,7 @@
       <v-card outlined class="my-5">
         <v-card-title>Add Procedure Steps:</v-card-title>
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-select
+          <v-autocomplete
             v-model="selectTactic"
             :items="this.$store.getters.getTactics"
             label="Tactic"
@@ -79,7 +79,7 @@
 
           <v-spacer />
 
-          <v-select
+          <v-autocomplete
             v-model="selectTechnique"
             :items="getTechniquesByTacticId(selectTactic)"
             label="Technique"
@@ -151,14 +151,14 @@
       </div>
 
       <v-btn class="my-5" outlined :disabled="!valid" x-large @click="submitStudy">
-        Submit Case Study
+        Download Case Study
       </v-btn>
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
         </v-alert>
         <v-alert v-if="submissionMsg" color="green" outlined type="success" dense>
-          {{ submissionMsg }}
+          {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
         </v-alert>
       </v-col>
     </v-form>
@@ -177,7 +177,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data: ({ $config: { name } }) => ({
+  data: () => ({
     title: 'Create A Case Study',
     valid: true,
     chosenFile: null,
@@ -203,7 +203,8 @@ export default {
     addSourceErr: '',
     submissionMsg: '',
     errorMessage: '',
-    uploadError: false
+    uploadError: false,
+    contactEmail: 'atlas@mitre.org'
   }),
   computed: {
     ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
@@ -357,7 +358,7 @@ export default {
         }
         this.submitCaseStudy(study)
         this.createStudyFile(study)
-        this.submissionMsg = 'Your case study has been submitted!'
+        this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
