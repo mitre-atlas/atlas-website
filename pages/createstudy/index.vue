@@ -213,32 +213,36 @@ export default {
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
-    readJSON () {
+    async readJSON () {
       if (!this.chosenFile) {
         console.log('nothing inputted')
       } else {
-        if (!this.validateFile(this.chosenFile)) {
+        const isValidFile = await this.validateFile(this.chosenFile)
+
+        if (!isValidFile) {
           this.uploadError = true
           return
         }
-        const reader = new FileReader()
+        // const reader = new FileReader()
 
         // Use the javascript reader object to load the contents
         // of the file in the v-model prop
-        reader.readAsText(this.chosenFile)
-        reader.onload = () => {
-          const inputStudy = JSON.parse(reader.result)
-          this.titleStudy = inputStudy.name
-          this.summary = inputStudy.summary
-          this.date = inputStudy['incident-date']
-          this.procedure = inputStudy.procedure
-          this.reported = inputStudy['reported-by']
-          this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
-          console.log(this.references)
-        }
+        // reader.readAsText(this.chosenFile)
+        // reader.onload = () => {
+        const inputStudyText = await this.chosenFile.text()
+        const inputStudy = JSON.parse(inputStudyText)
+        // const inputStudy = JSON.parse(reader.result)
+        this.titleStudy = inputStudy.name
+        this.summary = inputStudy.summary
+        this.date = inputStudy['incident-date']
+        this.procedure = inputStudy.procedure
+        this.reported = inputStudy['reported-by']
+        // this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
+        console.log(this.references)
+        // }
       }
     },
-    validateFile (file) {
+    async validateFile (file) {
       // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
       // does that mean we're fully safe from XSS attacks?
       const expectedTypes = ['application/json', 'text/json']
@@ -267,6 +271,20 @@ export default {
       } else {
         console.log(`fileSize overflow: (${fileSize / KB_TO_B} kilobytes)`)
         addError('file too large')
+      }
+
+      // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
+      // below will try to see if it can get a json out
+      // only check if the other tests pass
+      if (!this.errorMessage) {
+        const tryJSONText = await file.text()
+        try {
+          JSON.parse(tryJSONText)
+          console.log('fileJSON OK')
+        } catch (e) {
+          console.log('fileJSON error')
+          addError('invalid JSON')
+        }
       }
 
       this.errorMessage = this.errorMessage ? this.errorMessage.charAt(0).toUpperCase() + this.errorMessage.slice(1, -2) : ''
