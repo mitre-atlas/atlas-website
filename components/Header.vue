@@ -144,7 +144,7 @@ export default {
           },
           {
             name: 'Build Case Study',
-            href: 'studies/createStudy'
+            href: '/studies/createStudy'
           }
         ]
       },

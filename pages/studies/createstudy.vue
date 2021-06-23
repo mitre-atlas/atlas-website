@@ -68,7 +68,7 @@
       <v-card outlined class="my-5">
         <v-card-title>Add Procedure Steps:</v-card-title>
         <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-select
+          <v-autocomplete
             v-model="selectTactic"
             :items="getTactics"
             label="Tactic"
@@ -79,7 +79,7 @@
 
           <v-spacer />
 
-          <v-select
+          <v-autocomplete
             v-model="selectTechnique"
             :items="getTechniquesByTacticId(selectTactic)"
             label="Technique"
