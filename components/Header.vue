@@ -136,7 +136,17 @@ export default {
       },
       {
         name: 'Case Studies',
-        href: '/studies'
+        isDropdown: true,
+        links: [
+          {
+            name: 'Explore Case Studies',
+            href: '/studies'
+          },
+          {
+            name: 'Build Case Study',
+            href: 'studies/createStudy'
+          }
+        ]
       },
       {
         name: 'Resources',

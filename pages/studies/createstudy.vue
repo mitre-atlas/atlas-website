@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs></breadcrumbs>
+    <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
     <v-row>
@@ -169,7 +169,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data: ({ $config: { name } }) => ({
+  data: () => ({
     title: 'Create A Case Study',
     valid: true,
     chosenFile: null,
