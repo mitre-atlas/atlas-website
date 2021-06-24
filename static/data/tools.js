@@ -55,33 +55,34 @@ function generateID (name) {
   return `AML.CS${pad(name.length, 5)}`
 }
 
-// function flattenReferences (refArray) {
-//   const outArray = []
-
-//   if (refArray.length === 0) {
-//     return null
-//   }
-
-//   for (const index in refArray) {
-//     const sourceObj = refArray[index]
-//     const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
-//     outArray[index] = flat
-//   }
-//   return outArray
-// }
-
-function referenceFormat (refArray) {
-  console.log(refArray)
+function flattenReferences (refArray) {
   const outArray = []
+
+  if (refArray.length === 0) {
+    return null
+  }
+
   for (const index in refArray) {
-    const sourceObject = refArray[index]
-    outArray[index] = {
-      sourceDescription: sourceObject.source,
-      url: sourceObject.sourceLink
-    }
+    const sourceObj = refArray[index]
+    const flat = `${sourceObj.sourceDescription}` + (sourceObj.url ? ` (${sourceObj.url})` : '')
+    // const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
+    outArray[index] = flat
   }
   return outArray
 }
+
+// function referenceFormat (refArray) {
+//   console.log(refArray)
+//   const outArray = []
+//   for (const index in refArray) {
+//     const sourceObject = refArray[index]
+//     outArray[index] = {
+//       sourceDescription: sourceObject.source,
+//       url: sourceObject.sourceLink
+//     }
+//   }
+//   return outArray
+// }
 
 function dateToString (dateObj) {
   const date = +pad(dateObj.getDate() + 1, 2)
@@ -107,9 +108,8 @@ function appendLine (text, scope = 0) {
 
 function reviver (key, value) {
   if (key === 'reported-by') {
-    console.log(value)
-    // return value.split(reportedByDelim).map(e => e.trim())
-    console.log('type is ', typeof value)
+    // console.log(value)
+    // console.log('type is ', typeof value)
     if (typeof value === 'string') {
       return value.split(reportedByDelim).map(e => e.trim())
     } else if (typeof value === 'object') {
@@ -131,9 +131,9 @@ function reviver (key, value) {
 function createYAML (obj) {
   const yaml = { text: '', appendLine }
   const procedure = obj.procedure
-  const reportedBy = obj['reported-by'].split(reportedByDelim).map(e => e.trim())
-  // const references = flattenReferences(obj.references)
-  const references = referenceFormat(obj.references)
+  const reportedBy = obj['reported-by'][0].split(reportedByDelim).map(e => e.trim())
+  const references = flattenReferences(obj.references)
+  // const references = referenceFormat(obj.references)
 
   function appendArray (array, scopeName, omitDash) {
     for (const value of array) {
@@ -145,8 +145,9 @@ function createYAML (obj) {
   yaml.appendLine(`name: ${obj.name}`, getScope('name'))
   yaml.appendLine('object-type: case-study', getScope('objectType'))
   yaml.appendLine('summary: |', getScope('summary') - 1)
-  yaml.appendLine(obj.summary, getScope('summary'))
-  yaml.appendLine(`incident-date: ${dateToString(obj['incident-date'])}`, getScope('incidentDate'))
+  yaml.appendLine(obj.summary.slice(0, -2), getScope('summary')) // slice removes newline
+  // yaml.appendLine(`incident-date: ${dateToString(obj['incident-date'])}`, getScope('incidentDate'))
+  yaml.appendLine(`incident-date: ${obj['incident-date']}`, getScope('incidentDate'))
   yaml.appendLine('procedure:', getScope('procedure'))
 
   for (const step of procedure) {
