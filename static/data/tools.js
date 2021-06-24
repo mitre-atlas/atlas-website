@@ -85,11 +85,12 @@ function flattenReferences (refArray) {
 // }
 
 function deepCopy (object) {
-  // can't include functions, symbols, undefined
+  // expensive, not recommened for large objects
+  // can't include functions, symbols, undefined, circular references
   // infinity, NaN will be turned to null
   // dates -> string
   try {
-    JSON.parse(JSON.stringify(object))
+    return JSON.parse(JSON.stringify(object))
   } catch (e) {
     console.log('Can\'t deepcopy invalid object')
   }
