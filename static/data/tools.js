@@ -84,6 +84,18 @@ function flattenReferences (refArray) {
 //   return outArray
 // }
 
+function deepCopy (object) {
+  // expensive, not recommened for large objects
+  // can't include functions, symbols, undefined, circular references
+  // infinity, NaN will be turned to null
+  // dates -> string
+  try {
+    return JSON.parse(JSON.stringify(object))
+  } catch (e) {
+    console.log('Can\'t deepcopy invalid object')
+  }
+}
+
 function dateToString (dateObj) {
   const date = +pad(dateObj.getDate() + 1, 2)
   const month = +pad(dateObj.getMonth() + 1, 2)
@@ -189,4 +201,4 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-export { createJSON, createYAML, download }
+export { createJSON, createYAML, download, deepCopy }
