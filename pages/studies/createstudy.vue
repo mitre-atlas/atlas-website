@@ -99,6 +99,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { deepCopy } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -189,9 +190,9 @@ export default {
           // object-type: 'case-study',
           summary: this.summary,
           'incident-date': this.date,
-          procedure: this.procedure,
+          procedure: deepCopy(this.procedure),
           'reported-by': this.reported,
-          references: this.references
+          references: deepCopy(this.references)
         }
         // next 2 lines call actions to create store case study object and download file
         this.submitCaseStudy(study)
