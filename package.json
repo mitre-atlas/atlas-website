@@ -17,7 +17,8 @@
     "core-js": "^3.11.0",
     "nuxt": "^2.15.4",
     "vue-gtag": "^1.16.1",
-    "vue-linkify": "^1.0.1"
+    "vue-linkify": "^1.0.1",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.0",

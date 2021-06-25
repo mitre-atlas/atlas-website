@@ -1,3 +1,4 @@
+import * as tools from 'static/data/tools.js'
 const fs = require('fs').promises
 const path = require('path')
 
@@ -72,7 +73,8 @@ export const state = () => ({
       icon: 'mdi-fire',
       color: 'red darken-4'
     }
-  }
+  },
+  caseStudy: null
 })
 
 // defines the logic for all the "filtered" getters
@@ -157,10 +159,27 @@ export const getters = {
 export const mutations = {
   SET_THREAT_MATRIX_DATA (state, payload) {
     state.data = { ...state.data, ...payload }
+  },
+  SET_CASE_STUDY (state, inputCase) {
+    state.caseStudy = inputCase
+    console.log(state.caseStudy)
   }
 }
 
 export const actions = {
+  submitCaseStudy ({ commit }, study) {
+    commit('SET_CASE_STUDY', { ...study })
+  },
+
+  createStudyFile ({ commit }, study) {
+    const studyJSON = tools.createJSON(study)
+    console.log(studyJSON)
+    tools.download(`${study.name}-JSON.json`, studyJSON)
+
+    // const studyYAML = tools.createYAML(study)
+    // console.log(studyYAML)
+    // tools.download(`${study.name}-YAML.yaml`, studyYAML)
+  },
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
