@@ -175,6 +175,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { generateID } from 'static/data/tools.js'
 
 export default {
   data: () => ({
@@ -259,6 +260,10 @@ export default {
 
       if (expectedTypes.includes(fileType)) { // nominal
         console.log(`fileType OK: (${fileType})`)
+        Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
+          writable: true,
+          value: generateID() + '.json'
+        })
       } else {
         console.log(`fileType mismatch: (${fileType})`)
         addError('invalid file type')
