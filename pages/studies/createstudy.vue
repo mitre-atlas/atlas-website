@@ -67,7 +67,7 @@
       </v-container>
 
       <add-procedure-step :selectTactic="selectTactic" :selectTechnique="selectTechnique" :description="description" @clicked="addProcedureStep" />
-      <edit-procedure :procedure="procedure" />
+      <edit-procedure :procedure="procedure" :key="procedure" />
 
       <add-source :sourceDescription="sourceDescription" :url="url" @clicked="addSource" />
 
