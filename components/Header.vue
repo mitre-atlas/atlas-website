@@ -1,64 +1,168 @@
 <template>
-    <div class="header">
-        <div>
-            <b-navbar toggleable="lg" type="dark" variant="dark">
-                <b-navbar-brand href="#">
-                    <NuxtLink to="/">MITRE | AdvML</NuxtLink>
-                </b-navbar-brand>
+  <v-app-bar
+    app
+    dark
+    clipped-left
+    color="grey darken-3"
+    >
 
-                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
 
-                <b-collapse id="nav-collapse" is-nav>
+    <v-toolbar-title>
+      <nuxt-link to="/">
+        <img src="~/assets/MITRE-brand_ATLAS_white.png" height="25" />
+      </nuxt-link>
+    </v-toolbar-title>
 
-                    <!-- Right aligned nav items -->
-                    <b-navbar-nav class="ml-auto">
-                        <b-navbar-nav>
-                        <b-nav-item href="">
-                            <NuxtLink to="/matrixpage">Matrix</NuxtLink>
-                        </b-nav-item>
-                        <b-nav-item href="">
-                            <NuxtLink to="/casestudiespage">Case Studies</NuxtLink>
-                        </b-nav-item>
-                        <b-nav-item-dropdown text="Resources" class="resources-list">
-                            <b-dropdown-item href="">
-                                <NuxtLink to="/advesarialml101">Adversarial ML 101</NuxtLink>
-                            </b-dropdown-item>
-                            <b-dropdown-item href="">
-                                <NuxtLink to="/contribute">Contribute</NuxtLink>
-                            </b-dropdown-item>
-                        </b-nav-item-dropdown>
-                    </b-navbar-nav>
-                        <b-nav-form>
-                            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-                            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                        </b-nav-form>
-                    </b-navbar-nav>
-                </b-collapse>
-            </b-navbar>
-        </div>
-    </div>
+    <v-spacer />
+
+    <v-toolbar-items
+      v-for="(link, i) in links"
+      :key="i"
+      class="hidden-sm-and-down"
+      >
+
+      <v-menu
+        v-if="link.isDropdown"
+        offset-y
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            text
+            class="text-capitalize"
+            nuxt
+          >
+            {{ link.name }}
+            <v-icon right>
+              mdi-menu-down
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(childLink, j) in link.links"
+            :key="j"
+          >
+            <v-btn
+              v-text="childLink.name"
+              :to="childLink.href"
+              text
+              class="text-capitalize"
+              nuxt
+            />
+          </v-list-item>
+
+        </v-list>
+      </v-menu>
+
+      <v-btn
+        v-else
+        v-text="link.name"
+        :to="link.href"
+        text
+        class="text-capitalize"
+        nuxt
+      ></v-btn>
+
+    </v-toolbar-items>
+
+    <v-toolbar-items class="hidden-md-and-up">
+       <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <div
+            v-for="(link, i) in links"
+            :key="i"
+            >
+            <div v-if="link.isDropdown">
+              <v-list-item v-for="(childLink, j) in link.links" :key="j">
+                <v-btn
+                  v-text="childLink.name"
+                  :to="childLink.href"
+                  text
+                  class="text-capitalize"
+                  nuxt
+                />
+              </v-list-item>
+            </div>
+            <v-list-item v-else>
+              <v-btn
+                v-text="link.name"
+                :to="link.href"
+                text
+                class="text-capitalize"
+                nuxt
+              />
+            </v-list-item>
+          </div>
+        </v-list>
+       </v-menu>
+    </v-toolbar-items>
+
+  </v-app-bar>
 </template>
 
 <script>
 export default {
-
+  data: ({ $config: { name } }) => ({
+    title: `MITRE | ${name.short}`,
+    links: [
+      {
+        name: 'Matrix',
+        href: '/matrix'
+      },
+      {
+        name: 'Navigator',
+        href: '/navigator'
+      },
+      {
+        name: 'Tactics',
+        href: '/tactics'
+      },
+      {
+        name: 'Techniques',
+        href: '/techniques'
+      },
+      {
+        name: 'Case Studies',
+        href: '/studies'
+      },
+      {
+        name: 'Resources',
+        isDropdown: true,
+        links: [
+          {
+            name: 'General information',
+            href: '/resources/info'
+          },
+          {
+            name: 'Adversarial ML 101',
+            href: '/resources/adversarial-ml-101'
+          },
+          {
+            name: 'Contribute',
+            href: '/resources/contribute'
+          },
+          {
+            name: 'Contact Us',
+            href: '/resources/feedback'
+          }
+        ]
+      }
+    ]
+  })
 }
 </script>
 
-<style>
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.resources-list a  {
-    text-decoration: none;
-    color: black;
-}
-
-NuxtLink {
-    color: blue;
-}
-
-</style>
+<style scoped>

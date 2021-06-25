@@ -10,5 +10,9 @@ pages:
       - public
   tags:
     - docker
+<<<<<<< HEAD
   only:
     - main
+=======
+  when: manual
+>>>>>>> origin/develop

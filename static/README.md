@@ -1,11 +1,5 @@
-# STATIC
+# ATLAS
 
-**This directory is not required, you can delete it if you don't want to use it.**
+MITRE ATLAS, Adversarial Threat Landscape for Artificial-Intelligence Systems, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the MITRE ATT&CK® framework and its tactics and techniques are complementary to those in ATT&CK.  Machine learning is increasingly used across a variety of industries and there are a growing number of vulnerabilities.  We developed ATLAS to raise awareness of these threats and present them in a way familiar to security researchers.
 
-This directory contains your static files.
-Each file inside this directory is mapped to `/`.
-Thus you'd want to delete this README.md before deploying to production.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/assets#static).
+Visit the ATLAS website at https://atlas.mitre.org!
