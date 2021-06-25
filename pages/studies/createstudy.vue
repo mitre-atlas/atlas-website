@@ -3,10 +3,10 @@
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
-    <p> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </p>
+    <p> To build your case study, either upload a JSON/YAML file below and edit as needed, or fill out the following form. </p>
     <v-row>
       <v-col sm="5" class="mb-5">
-        <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
+        <v-file-input v-model="chosenFile" small-chips accept=".json,.yml,.yaml" label="Upload JSON or YAML File" />
       </v-col>
       <v-col>
         <v-btn @click="readJSON">
@@ -99,7 +99,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { deepCopy } from 'static/data/tools.js'
+import { deepCopy, yamlParse } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -138,13 +138,15 @@ export default {
       if (!this.chosenFile) {
         console.log('nothing inputted')
       } else {
+        const ext = this.chosenFile.name.slice(this.chosenFile.name.lastIndexOf('.'))
         const reader = new FileReader()
 
         // Use the javascript reader object to load the contents
         // of the file in the v-model prop
         reader.readAsText(this.chosenFile)
         reader.onload = () => {
-          const inputStudy = JSON.parse(reader.result)
+          const inputStudy = ext.startsWith('.j') ? JSON.parse(reader.result) : yamlParse(reader.result)
+
           this.titleStudy = inputStudy.name
           this.summary = inputStudy.summary
           this.date = inputStudy['incident-date']

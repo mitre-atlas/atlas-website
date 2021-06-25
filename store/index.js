@@ -173,12 +173,13 @@ export const actions = {
 
   createStudyFile ({ commit }, study) {
     const studyJSON = tools.createJSON(study)
-    console.log(studyJSON)
-    tools.download(`${study.name}-JSON.json`, studyJSON)
+    const studyYAML = tools.createYAML(study)
 
-    // const studyYAML = tools.createYAML(study)
-    // console.log(studyYAML)
-    // tools.download(`${study.name}-YAML.yaml`, studyYAML)
+    console.log(studyYAML)
+    console.log(studyJSON)
+
+    tools.download(`${study.name}-JSON.json`, studyJSON)
+    tools.download(`${study.name}-YAML.yaml`, studyYAML)
   },
 
   // Note that this function is called for every dynamic route generated via nuxt generate
