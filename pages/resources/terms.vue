@@ -25,6 +25,11 @@
 </template>
 <script>
 export default {
-  name: 'Terms'
+  name: 'Terms',
+  head () {
+    return {
+      title: 'Terms of Use | MITRE ATLAS'
+    }
+  }
 }
 </script>

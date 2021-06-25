@@ -146,6 +146,11 @@ export default {
         type: 'Both'
       }
     ]
-  })
+  }),
+  head () {
+    return {
+      title: 'Adversarial Machine Learning 101 | MITRE ATLAS'
+    }
+  }
 }
 </script>
