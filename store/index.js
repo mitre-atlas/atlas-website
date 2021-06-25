@@ -168,7 +168,7 @@ export const mutations = {
 
 export const actions = {
   submitCaseStudy ({ commit }, study) {
-    commit('SET_CASE_STUDY', study)
+    commit('SET_CASE_STUDY', { ...study })
   },
 
   createStudyFile ({ commit }, study) {
