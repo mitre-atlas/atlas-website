@@ -54,7 +54,12 @@ export default {
             description: 'The team gained access via a valid account.'
           }
         ],
-        references: 'Links to public references'
+        references: [
+          {
+            description: '(Optional) Brief description or citation',
+            url: '(Optional) Link to reference URL'
+          }
+        ]
       }
     }
   }

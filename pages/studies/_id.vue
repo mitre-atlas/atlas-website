@@ -47,6 +47,11 @@
 
 <script>
 export default {
+  head () {
+    return {
+      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ' | MITRE ATLAS'
+    }
+  },
   computed: {
     study () {
       return this.$store.getters.getStudyById(this.$route.params.id)

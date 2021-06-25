@@ -1,6 +1,6 @@
 <template>
 <div>
-  <page-title>General information</page-title>
+  <page-title>General Information</page-title>
 
   <page-section-title>Announcements</page-section-title>
 
@@ -26,6 +26,12 @@
 <script>
 export default {
   data: () => ({
-  })
+  }),
+  head () {
+    return {
+      title: 'General Information | MITRE ATLAS'
+    }
+  }
+
 }
 </script>
