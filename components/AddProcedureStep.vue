@@ -1,32 +1,15 @@
 <template>
   <v-card outlined class="my-5">
     <v-card-title>Add Procedure Steps:</v-card-title>
-    <v-card-actions class="px-md-4 mx-lg-auto">
-      <v-autocomplete
-        v-model="selectTacticData"
-        :items="getTactics"
-        label="Tactic"
-        item-text="name"
-        item-value="id"
-        @input="updateValue(selectTacticData)"
-      />
-
-      <v-spacer />
-
-      <v-autocomplete
-        v-model="selectTechniqueData"
-        :items="getTechniquesByTacticId(selectTacticData)"
-        label="Technique"
-        item-text="name"
-        item-value="id"
-        :disabled="selectTacticData === null"
-        @input="updateValue(selectTechniqueData)"
-      />
-    </v-card-actions>
-
-    <v-card-actions class="px-md-4 mx-lg-auto">
-      <v-textarea v-model="descriptionData" :disabled="selectTacticData === null" label="Description" required @input="updateValue(descriptionData)" />
-    </v-card-actions>
+    <procedure-form
+      :key="selectTacticData"
+      :select-tactic-data="selectTacticData"
+      :select-technique-data="selectTechniqueData"
+      :description-data="descriptionData"
+      @tacticUpdate="selectTacticData = $event"
+      @techniqueUpdate="selectTechniqueData = $event"
+      @descriptionUpdate="descriptionData = $event"
+    />
     <v-card-actions>
       <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
         Add Step
@@ -44,8 +27,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'AddProcedureStep',
   props: ['selectTactic', 'selectTechnique', 'description'],
@@ -57,13 +38,7 @@ export default {
       addStepErr: ''
     }
   },
-  computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
-  },
   methods: {
-    updateValue (inputVal) {
-      this.inputVal = inputVal
-    },
     addProcedureStep () {
       if (this.selectTacticData && this.selectTechniqueData && this.descriptionData) {
         const newStep = {

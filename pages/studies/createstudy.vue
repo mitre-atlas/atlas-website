@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="mx-8">
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
-    <p> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </p>
+    <subtitle-2> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </subtitle-2>
     <v-row>
-      <v-col sm="5" class="mb-5">
+      <v-col sm="5" class="my-5">
         <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
       </v-col>
       <v-col>
-        <v-btn @click="readJSON">
+        <v-btn class="my-5" @click="readJSON">
           Populate Form
         </v-btn>
       </v-col>
@@ -66,10 +66,10 @@
         </v-row>
       </v-container>
 
-      <add-procedure-step :selectTactic="selectTactic" :selectTechnique="selectTechnique" :description="description" @clicked="addProcedureStep" />
-      <edit-procedure :procedure="procedure" :key="procedure" />
+      <add-procedure-step :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
+      <edit-procedure :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
 
-      <add-source :sourceDescription="sourceDescription" :url="url" @clicked="addSource" />
+      <add-source :source-description="sourceDescription" :url="url" @clicked="addSource" />
 
       <div v-if="references.length" class="mx-8">
         <ol>
