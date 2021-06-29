@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { deepCopy } from 'static/data/tools.js'
 
 export default {
@@ -129,35 +129,53 @@ export default {
       contactEmail: 'atlas@mitre.org'
     }
   },
+  computed: {
+    ...mapGetters(['getCaseStudyBuilderData'])
+  },
+  // mounted () { //Restores case study data from store
+  //   // this.$nextTick(function () {
+  //   //   // todo: fix getter, shouldn't have to do this?
+  //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
+  //   //   if (storedCaseStudy) {
+  //   //     console.log('Case study found in store. Loading...')
+  //   //     this.loadData(storedCaseStudy)
+  //   //   } else {
+  //   //     console.log('No case study found in store')
+  //   //   }
+  //   // })
+  // },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
+    loadData (data) {
+      console.log('loading:', data)
+      const inputStudy = (typeof data === 'object') ? data : JSON.parse(data)
+      this.titleStudy = inputStudy.name
+      this.summary = inputStudy.summary
+      this.date = inputStudy['incident-date']
+      this.procedure = inputStudy.procedure
+      this.reported = inputStudy['reported-by']
+      if (inputStudy.references === [] || !(inputStudy.references)) {
+        this.references = []
+      } else if (typeof inputStudy.references[0] === 'string') {
+        this.references = this.editReferences(inputStudy.references)
+      } else if (typeof inputStudy.references[0] === 'object') {
+        this.references = inputStudy.references
+      }
+    },
     readJSON () {
-      if (!this.chosenFile) {
+      if (!(this.chosenFile)) {
         console.log('nothing inputted')
       } else {
         const reader = new FileReader()
 
         // Use the javascript reader object to load the contents
         // of the file in the v-model prop
+
         reader.readAsText(this.chosenFile)
-        reader.onload = () => {
-          const inputStudy = JSON.parse(reader.result)
-          this.titleStudy = inputStudy.name
-          this.summary = inputStudy.summary
-          this.date = inputStudy['incident-date']
-          this.procedure = inputStudy.procedure
-          this.reported = inputStudy['reported-by']
-          if (inputStudy.references === [] || !(inputStudy.references)) {
-            this.references = []
-          } else if (typeof inputStudy.references[0] === 'string') {
-            this.references = this.editReferences(inputStudy.references)
-          } else if (typeof inputStudy.references[0] === 'object') {
-            this.references = inputStudy.references
-          }
-        }
+        reader.onload = () => { this.loadData(reader.result) }
       }
     },
     editReferences (refs) {
@@ -195,7 +213,6 @@ export default {
           references: deepCopy(this.references)
         }
         // next 2 lines call actions to create store case study object and download file
-        this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
       } else if (!this.$refs.form.validate()) {
