@@ -132,18 +132,18 @@ export default {
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  mounted () {
-    this.$nextTick(function () {
-      // todo: fix getter, shouldn't have to do this?
-      const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
-      if (storedCaseStudy) {
-        console.log('Case study found in store. Loading...')
-        this.loadData(storedCaseStudy)
-      } else {
-        console.log('No case study found in store')
-      }
-    })
-  },
+  // mounted () { //Restores case study data from store
+  //   // this.$nextTick(function () {
+  //   //   // todo: fix getter, shouldn't have to do this?
+  //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
+  //   //   if (storedCaseStudy) {
+  //   //     console.log('Case study found in store. Loading...')
+  //   //     this.loadData(storedCaseStudy)
+  //   //   } else {
+  //   //     console.log('No case study found in store')
+  //   //   }
+  //   // })
+  // },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
@@ -213,7 +213,6 @@ export default {
           references: deepCopy(this.references)
         }
         // next 2 lines call actions to create store case study object and download file
-        this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
       } else if (!this.$refs.form.validate()) {
