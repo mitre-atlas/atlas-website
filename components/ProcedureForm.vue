@@ -7,14 +7,14 @@
         label="Tactic"
         item-text="name"
         item-value="id"
-        @input="$emit('tacticUpdate', selectTacticData2)"
+        @input="tacticUpdate(selectTacticData2)"
       />
 
       <v-spacer />
 
       <v-autocomplete
         v-model="selectTechniqueData2"
-        :items="getTechniquesByTacticId(selectTacticData2)"
+        :items="mapTechAndSub"
         label="Technique"
         item-text="name"
         item-value="id"
@@ -43,7 +43,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
+    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId']),
+    mapTechAndSub () {
+      const techs = this.getTechSubByTacticId(this.selectTacticData2)
+      for (let i = 0; i < techs.length; i++) {
+        if (techs[i].subtechniques) {
+          for (let j = 0; j < techs[i].subtechniques.length; j++) {
+            techs.push(techs[i].subtechniques[j])
+          }
+        }
+      }
+      return techs
+    }
   },
   methods: {
     // updateValue (inputVal) {
@@ -51,9 +62,10 @@ export default {
     //   console.log('here + ' + inputVal)
     //   this.$emit('inputFormData', inputVal)
     // },
-    // tacticUpdate (selectTacticData2) {
-    //   this.$emit('tacticUpdate', selectTacticData2)
-    // },
+    tacticUpdate (selectTacticData2) {
+      this.selectTacticData2 = selectTacticData2
+      this.$emit('tacticUpdate', selectTacticData2)
+    },
     // techniqueUpdate (selectTechniqueData2) {
     //   this.$emit('techniqueUpdate', selectTechniqueData2)
     // },
