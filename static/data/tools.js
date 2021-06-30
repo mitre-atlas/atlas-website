@@ -221,5 +221,4 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-
 export { createJSON, createYAML, download, deepCopy, generateID }

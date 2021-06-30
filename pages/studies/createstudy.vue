@@ -106,8 +106,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { deepCopy } from 'static/data/tools.js'
+import { mapActions, mapGetters } from 'vuex'
+import { deepCopy, generateID } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -139,13 +139,45 @@ export default {
       contactEmail: 'atlas@mitre.org'
     }
   },
+  computed: {
+    ...mapGetters(['getCaseStudyBuilderData'])
+  },
+  // mounted () { //Restores case study data from store
+  //   // this.$nextTick(function () {
+  //   //   // todo: fix getter, shouldn't have to do this?
+  //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
+  //   //   if (storedCaseStudy) {
+  //   //     console.log('Case study found in store. Loading...')
+  //   //     this.loadData(storedCaseStudy)
+  //   //   } else {
+  //   //     console.log('No case study found in store')
+  //   //   }
+  //   // })
+  // },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
+    loadData (data) {
+      console.log('loading:', data)
+      const inputStudy = (typeof data === 'object') ? data : JSON.parse(data)
+      this.titleStudy = inputStudy.name
+      this.summary = inputStudy.summary
+      this.date = inputStudy['incident-date']
+      this.procedure = inputStudy.procedure
+      this.reported = inputStudy['reported-by']
+      if (inputStudy.references === [] || !(inputStudy.references)) {
+        this.references = []
+      } else if (typeof inputStudy.references[0] === 'string') {
+        this.references = this.editReferences(inputStudy.references)
+      } else if (typeof inputStudy.references[0] === 'object') {
+        this.references = inputStudy.references
+      }
+      console.log('here')
+    },
     async readJSON () {
-      if (!this.chosenFile) {
+      if (!(this.chosenFile)) {
         console.log('nothing inputted')
       } else {
         const isValidFile = await this.validateFile(this.chosenFile)
@@ -154,23 +186,10 @@ export default {
           this.uploadError = true
           return
         }
-        // const reader = new FileReader()
 
-        // Use the javascript reader object to load the contents
-        // of the file in the v-model prop
-        // reader.readAsText(this.chosenFile)
-        // reader.onload = () => {
-        const inputStudyText = await this.chosenFile.text()
-        const inputStudy = JSON.parse(inputStudyText)
-        // const inputStudy = JSON.parse(reader.result)
-        this.titleStudy = inputStudy.name
-        this.summary = inputStudy.summary
-        this.date = inputStudy['incident-date']
-        this.procedure = inputStudy.procedure
-        this.reported = inputStudy['reported-by']
-        // this.references = this.editReferences(inputStudy.references) // doesn't work for now because missing key names
-        console.log(this.references)
-        // }
+        const reader = new FileReader()
+        reader.readAsText(this.chosenFile)
+        reader.onload = () => { this.loadData(reader.result) }
       }
     },
     async validateFile (file) {
@@ -262,7 +281,6 @@ export default {
           references: deepCopy(this.references)
         }
         // next 2 lines call actions to create store case study object and download file
-        this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
       } else if (!this.$refs.form.validate()) {
