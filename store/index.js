@@ -153,6 +153,10 @@ export const getters = {
 
   getFilteredTechniquesByTacticId: state => (tacticId) => {
     return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
+  },
+
+  getCaseStudyBuilderData: (state) => {
+    return state.caseStudy
   }
 }
 
@@ -168,7 +172,7 @@ export const mutations = {
 
 export const actions = {
   submitCaseStudy ({ commit }, study) {
-    commit('SET_CASE_STUDY', { ...study })
+    commit('SET_CASE_STUDY', { study })
   },
 
   createStudyFile ({ commit }, study) {
