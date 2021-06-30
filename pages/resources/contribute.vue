@@ -22,9 +22,8 @@
 
     <br>
 
-    You can email <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a> with summary of the incident and {{ $config.name.short }} mapping.
+    Please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> with summary of the incident and {{ $config.name.short }} mapping.
     See an example of the format below.
-    <!-- <span class="pink--text">TODO Consider adding content format examples like <a href="https://attack.mitre.org/resources/contribute/">ATT&CK's</a>.</span> -->
 
     <page-section-title>Case study example</page-section-title>
     <case-study-example />
@@ -67,6 +66,11 @@ export default {
     const contributorsB = contributors.splice(-splitIndex)
 
     return { contributorsA, contributorsB }
+  },
+  head () {
+    return {
+      title: 'Contribute | MITRE ATLAS'
+    }
   }
 }
 </script>

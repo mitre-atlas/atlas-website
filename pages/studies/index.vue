@@ -47,6 +47,11 @@ export default {
         return study
       })
     }
+  },
+  head () {
+    return {
+      title: 'Case Studies List | MITRE ATLAS'
+    }
   }
 }
 </script>

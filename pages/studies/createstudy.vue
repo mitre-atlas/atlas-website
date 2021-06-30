@@ -3,8 +3,9 @@
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
+    <p> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </p>
     <v-row>
-      <v-col sm="5">
+      <v-col sm="5" class="mb-5">
         <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
       </v-col>
       <v-col>
@@ -65,79 +66,10 @@
         </v-row>
       </v-container>
 
-      <v-card outlined class="my-5">
-        <v-card-title>Add Procedure Steps:</v-card-title>
-        <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-autocomplete
-            v-model="selectTactic"
-            :items="this.$store.getters.getTactics"
-            label="Tactic"
-            item-text="name"
-            item-value="id"
-            @input="updateValue(selectTactic)"
-          />
+      <add-procedure-step :selectTactic="selectTactic" :selectTechnique="selectTechnique" :description="description" @clicked="addProcedureStep" />
+      <edit-procedure :procedure="procedure" :key="procedure" />
 
-          <v-spacer />
-
-          <v-autocomplete
-            v-model="selectTechnique"
-            :items="getTechniquesByTacticId(selectTactic)"
-            label="Technique"
-            item-text="name"
-            item-value="id"
-            :disabled="selectTactic === null"
-            @input="updateValue(selectTechnique)"
-          />
-        </v-card-actions>
-
-        <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-textarea v-model="description" :disabled="selectTactic === null" label="Description" required @input="updateValue(description)" />
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
-            Add Step
-          </v-btn>
-          <v-btn class="ma-2" outlined color="red" @click="clearStepInput">
-            Clear
-          </v-btn>
-        </v-card-actions>
-        <v-col sm="6">
-          <v-alert v-if="addStepErr" color="red" outlined type="error" dense>
-            {{ addStepErr }}
-          </v-alert>
-        </v-col>
-      </v-card>
-
-      <v-timeline v-if="procedure.length" align-top dense>
-        <v-timeline-item v-for="(p, i) in procedure" :key="i" small>
-          <procedure-card :info="p" />
-        </v-timeline-item>
-      </v-timeline>
-
-      <v-card outlined class="my-5">
-        <v-card-title>Add Sources:</v-card-title>
-
-        <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-text-field v-model="sourceDescription" label="Source Description" @input="updateValue(sourceDescription)" />
-        </v-card-actions>
-        <v-card-actions class="px-md-4 mx-lg-auto">
-          <v-text-field v-model="url" label="URL" @input="updateValue(url)" />
-        </v-card-actions>
-
-        <v-card-actions>
-          <v-btn class="ma-2" outlined color="blue" @click="addSource">
-            Add Source
-          </v-btn>
-          <v-btn class="ma-2" outlined color="red" @click="clearSource">
-            Clear
-          </v-btn>
-        </v-card-actions>
-        <v-col sm="6">
-          <v-alert v-if="addSourceErr" color="red" outlined type="error" dense>
-            {{ addSourceErr }}
-          </v-alert>
-        </v-col>
-      </v-card>
+      <add-source :sourceDescription="sourceDescription" :url="url" @clicked="addSource" />
 
       <div v-if="references.length" class="mx-8">
         <ol>
@@ -169,46 +101,43 @@
       color="error"
       outlined
       timeout=3000
-      v-model="uploadError">{{ errorMessage }}</v-snackbar>
+      v-model="uploadError">{{uploadErrorMessage }}</v-snackbar>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { generateID } from 'static/data/tools.js'
+import { mapActions } from 'vuex'
+import { deepCopy } from 'static/data/tools.js'
 
 export default {
-  data: () => ({
-    title: 'Create A Case Study',
-    valid: true,
-    chosenFile: null,
-    date: new Date().toISOString().substr(0, 10),
-    dateMenu: false,
-    selectTactic: null,
-    selectTechnique: null,
-    description: '',
-    titleStudy: '',
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-    ],
-    summary: '',
-    sourceDescription: '',
-    url: '',
-    reported: '',
-    procedure: [],
-    references: [],
-    errorMsg: '',
-    addStepErr: '',
-    addSourceErr: '',
-    submissionMsg: '',
-    errorMessage: '',
-    uploadError: false,
-    contactEmail: 'atlas@mitre.org'
-  }),
-  computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId'])
+  data () {
+    return {
+      title: 'Create A Case Study',
+      valid: true,
+      chosenFile: null,
+      date: new Date().toISOString().substr(0, 10),
+      dateMenu: false,
+      selectTactic: null,
+      selectTechnique: null,
+      description: '',
+      titleStudy: '',
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      ],
+      summary: '',
+      sourceDescription: '',
+      url: '',
+      reported: '',
+      procedure: [],
+      references: [],
+      errorMsg: '',
+      uploadError: false,
+      uploadErrorMessage: '',
+      submissionMsg: '',
+      contactEmail: 'atlas@mitre.org'
+    }
   },
   methods: {
     ...mapActions(['submitCaseStudy', 'createStudyFile']),
@@ -255,8 +184,8 @@ export default {
       const fileType = file.type
       const fileSize = file.size
 
-      this.errorMessage = ''
-      const addError = (s) => { this.errorMessage += s + ', ' }
+      this.uploadErrorMessage = ''
+      const addError = (s) => { this.uploadErrorMessage += s + ', ' }
 
       if (expectedTypes.includes(fileType)) { // nominal
         console.log(`fileType OK: (${fileType})`)
@@ -282,7 +211,7 @@ export default {
       // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
       // below will try to see if it can get a json out
       // only check if the other tests pass
-      if (!this.errorMessage) {
+      if (!this.uploadErrorMessage) {
         const tryJSONText = await file.text()
         try {
           JSON.parse(tryJSONText)
@@ -293,12 +222,13 @@ export default {
         }
       }
 
-      this.errorMessage = this.errorMessage ? this.errorMessage.charAt(0).toUpperCase() + this.errorMessage.slice(1, -2) : ''
+      this.uploadErrorMessage = this.uploadErrorMessage ? this.uploadErrorMessage.charAt(0).toUpperCase() + this.uploadErrorMessage.slice(1, -2) : ''
 
-      return !this.errorMessage
+      return !this.uploadErrorMessage
     },
 
     editReferences (refs) {
+      // this function takes in an array of strings and converts them to an array of formatted objects
       const structuredRefs = []
       for (let i = 0; i < refs.length; i++) {
         const matches = refs[i].match(/(https?:\/\/[^ ]*)/)
@@ -312,41 +242,11 @@ export default {
       }
       return structuredRefs
     },
-    addProcedureStep () {
-      if (this.selectTactic && this.selectTechnique && this.description) {
-        const newStep = {
-          tactic: this.selectTactic,
-          technique: this.selectTechnique,
-          description: this.description
-        }
-        this.procedure.push(newStep)
-        this.clearStepInput()
-      } else {
-        this.addStepErr = 'Please complete all fields'
-      }
+    addProcedureStep (newStep) {
+      this.procedure.push(newStep)
     },
-    clearStepInput () {
-      this.selectTactic = null
-      this.selectTechnique = null
-      this.description = ''
-      this.addStepErr = ''
-    },
-    addSource () {
-      if (this.sourceDescription || this.url) {
-        const newSource = {
-          sourceDescription: this.sourceDescription,
-          url: this.url
-        }
-        this.references.push(newSource)
-        this.clearSource()
-      } else {
-        this.addSourceErr = 'Please complete at least one field'
-      }
-    },
-    clearSource () {
-      this.sourceDescription = ''
-      this.url = ''
-      this.addSourceErr = ''
+    addSource (newSource) {
+      this.references.push(newSource)
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
@@ -357,10 +257,11 @@ export default {
           // object-type: 'case-study',
           summary: this.summary,
           'incident-date': this.date,
-          procedure: this.procedure,
+          procedure: deepCopy(this.procedure),
           'reported-by': this.reported,
-          references: this.references
+          references: deepCopy(this.references)
         }
+        // next 2 lines call actions to create store case study object and download file
         this.submitCaseStudy(study)
         this.createStudyFile(study)
         this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
