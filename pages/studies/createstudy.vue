@@ -23,7 +23,7 @@
 
         <v-row>
           <v-col sm="6">
-            <v-text-field v-model="email" :rules="emailRules" label="E-mail" required @input="updateValue(email)" />
+            <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
           </v-col>
 
           <v-spacer />
@@ -99,7 +99,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy } from 'static/data/tools.js'
+import { deepCopy, dateToString } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -113,7 +113,7 @@ export default {
       selectTechnique: null,
       description: '',
       titleStudy: '',
-      email: '',
+      meta: { email: '' },
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
@@ -151,7 +151,9 @@ export default {
     },
     loadData (data) {
       console.log('loading:', data)
-      const inputStudy = (typeof data === 'object') ? data : JSON.parse(data)
+      const studyFileObj = (typeof data === 'object') ? data : JSON.parse(data)
+      const inputStudy = 'meta' in studyFileObj ? studyFileObj.study : studyFileObj
+      this.meta = studyFileObj.meta ?? this.meta
       this.titleStudy = inputStudy.name
       this.summary = inputStudy.summary
       this.date = inputStudy['incident-date']
@@ -164,6 +166,7 @@ export default {
       } else if (typeof inputStudy.references[0] === 'object') {
         this.references = inputStudy.references
       }
+      console.log('meta: ', this.meta)
     },
     readJSON () {
       if (!(this.chosenFile)) {
@@ -202,15 +205,22 @@ export default {
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
+        const nowDate = new Date()
+        const nowDateString = dateToString(nowDate, true)
+        this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
+        this.meta['date-updated'] = nowDateString
         const study = {
-          // id: ,
-          name: this.titleStudy,
-          // object-type: 'case-study',
-          summary: this.summary,
-          'incident-date': this.date,
-          procedure: deepCopy(this.procedure),
-          'reported-by': this.reported,
-          references: deepCopy(this.references)
+          meta: this.meta,
+          study: {
+            // id: ,
+            // object-type: 'case-study',
+            name: this.titleStudy,
+            summary: this.summary,
+            'incident-date': this.date,
+            procedure: deepCopy(this.procedure),
+            'reported-by': this.reported,
+            references: deepCopy(this.references)
+          }
         }
         // next 2 lines call actions to create store case study object and download file
         this.createStudyFile(study)

@@ -17,8 +17,10 @@ const scopeDictionary = {
   references: 2
 }
 
+const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
+
 function sentenceNewline (text, escape = false) {
-  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + '\n'
+  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + (text.endsWith('\n') ? '' : '\n')
 }
 
 function sentenceSplit (text, removeNewlines) {
@@ -96,12 +98,12 @@ function deepCopy (object) {
   }
 }
 
-function dateToString (dateObj) {
-  const date = +pad(dateObj.getDate() + 1, 2)
+function dateToString (dateObj, includeTime = false) {
+  const date = +pad(dateObj.getDate(), 2)
   const month = +pad(dateObj.getMonth() + 1, 2)
   const year = dateObj.getFullYear()
 
-  return `${year}-${month}-${date}`
+  return (`${year}-${month}-${date}`) + (includeTime ? ' ' + dateObj.toLocaleTimeString([], timezoneOptions) : '')
 }
 
 function procedureFormat (procedureArray) {
@@ -134,7 +136,7 @@ function reviver (key, value) {
   } else if (key === 'procedure') {
     return procedureFormat(value)
   } else if (key === 'summary') {
-    return value + '\n'
+    return value + (value.endsWith('\n') ? '' : '\n')
   } else {
     return value
   }
@@ -184,8 +186,8 @@ function createYAML (obj) {
 }
 
 function createJSON (obj) {
-  obj['object-type'] = 'case-study'
-  obj.id = generateID(obj.name)
+  obj.study['object-type'] = 'case-study'
+  obj.study.id = generateID(obj.study.name)
   const json = JSON.stringify(obj, reviver, TAB_LENGTH)
   return json
 }
@@ -201,4 +203,4 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-export { createJSON, createYAML, download, deepCopy }
+export { createJSON, createYAML, download, deepCopy, dateToString }

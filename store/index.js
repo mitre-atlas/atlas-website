@@ -177,8 +177,8 @@ export const actions = {
 
   createStudyFile ({ commit }, study) {
     const studyJSON = tools.createJSON(study)
-    // console.log(studyJSON)
-    tools.download(`${study.name}-JSON.json`, studyJSON)
+    console.log(studyJSON)
+    tools.download(`${study.study.name}-JSON.json`, studyJSON)
 
     // const studyYAML = tools.createYAML(study)
     // console.log(studyYAML)
