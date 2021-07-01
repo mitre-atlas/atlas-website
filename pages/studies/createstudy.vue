@@ -160,7 +160,6 @@ export default {
       this.inputVal = inputVal
     },
     loadData (data) {
-      console.log('loading:', data)
       const inputStudy = (typeof data === 'object') ? data : JSON.parse(data)
       this.titleStudy = inputStudy.name
       this.summary = inputStudy.summary
@@ -174,7 +173,6 @@ export default {
       } else if (typeof inputStudy.references[0] === 'object') {
         this.references = inputStudy.references
       }
-      console.log('here')
     },
     async readJSON () {
       if (!(this.chosenFile)) {
@@ -198,7 +196,8 @@ export default {
       const expectedTypes = ['application/json', 'text/json']
       const KB_TO_B = 1000
       const MB_TO_B = 1000000
-      const maxSize = MB_TO_B * 20 // the last number is in megabytes, the first converts it to bytes
+      const megabyteLimit = 20
+      const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
 
       const fileType = file.type
       const fileSize = file.size
@@ -207,24 +206,19 @@ export default {
       const addError = (s) => { this.uploadErrorMessage += s + ', ' }
 
       if (expectedTypes.includes(fileType)) { // nominal
-        console.log(`fileType OK: (${fileType})`)
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
           value: generateID() + '.json'
         })
       } else {
-        console.log(`fileType mismatch: (${fileType})`)
         addError('invalid file type')
       }
 
       if (fileSize <= 0) {
-        console.log(`fileSize empty: (${fileSize} bytes)`)
         addError('invalid file')
       } else if (fileSize <= maxSize) { // nominal
-        console.log(`fileSize OK: (${fileSize / KB_TO_B} kilobytes)`)
       } else {
-        console.log(`fileSize overflow: (${fileSize / KB_TO_B} kilobytes)`)
-        addError('file too large')
+        addError(`file too large (${megabyteLimit} MB limit)`)
       }
 
       // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
@@ -234,9 +228,7 @@ export default {
         const tryJSONText = await file.text()
         try {
           JSON.parse(tryJSONText)
-          console.log('fileJSON OK')
         } catch (e) {
-          console.log('fileJSON error')
           addError('invalid JSON')
         }
       }
