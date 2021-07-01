@@ -6,7 +6,7 @@
     <p> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </p>
     <v-row>
       <v-col sm="5" class="mb-5">
-        <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
+        <v-file-input :error-messages="uploadErrorMessage" v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
       </v-col>
       <v-col>
         <v-btn @click="readJSON">
@@ -94,14 +94,6 @@
         </v-alert>
       </v-col>
     </v-form>
-    <v-snackbar
-      class="mt-4"
-      top
-      text
-      color="error"
-      outlined
-      timeout=3000
-      v-model="uploadError">{{uploadErrorMessage }}</v-snackbar>
   </div>
 </template>
 
@@ -134,7 +126,7 @@ export default {
       references: [],
       errorMsg: '',
       uploadError: false,
-      uploadErrorMessage: '',
+      uploadErrorMessage: [],
       submissionMsg: '',
       contactEmail: 'atlas@mitre.org'
     }
@@ -202,8 +194,12 @@ export default {
       const fileType = file.type
       const fileSize = file.size
 
-      this.uploadErrorMessage = ''
-      const addError = (s) => { this.uploadErrorMessage += s + ', ' }
+      const errors = []
+      let isValid = true
+      const addError = (s) => {
+        isValid = false
+        errors.push(s)
+      }
 
       if (expectedTypes.includes(fileType)) { // nominal
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
@@ -211,31 +207,30 @@ export default {
           value: generateID() + '.json'
         })
       } else {
-        addError('invalid file type')
+        addError('Invalid file type')
       }
 
       if (fileSize <= 0) {
-        addError('invalid file')
+        addError('Invalid file')
       } else if (fileSize <= maxSize) { // nominal
       } else {
-        addError(`file too large (${megabyteLimit} MB limit)`)
+        addError(`File too large (${megabyteLimit} MB limit)`)
       }
 
       // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
       // below will try to see if it can get a json out
       // only check if the other tests pass
-      if (!this.uploadErrorMessage) {
+      if (isValid) {
         const tryJSONText = await file.text()
         try {
           JSON.parse(tryJSONText)
         } catch (e) {
-          addError('invalid JSON')
+          addError('Invalid JSON')
         }
       }
 
-      this.uploadErrorMessage = this.uploadErrorMessage ? this.uploadErrorMessage.charAt(0).toUpperCase() + this.uploadErrorMessage.slice(1, -2) : ''
-
-      return !this.uploadErrorMessage
+      this.uploadErrorMessage = errors
+      return isValid
     },
 
     editReferences (refs) {
