@@ -1,6 +1,6 @@
 <template>
   <div class="breadcrumbs">
-    <v-breadcrumbs :items="items" divider=">"></v-breadcrumbs>
+    <v-breadcrumbs :items="items" divider=">" />
   </div>
 </template>
 
@@ -12,22 +12,9 @@ export default {
       idGetter: null
     }
   },
-  methods: {
-    capitalizeFirstLetter (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    },
-    setStoreGetter (indexRoute) {
-      if (indexRoute === 'techniques') {
-        this.idGetter = this.$store.getters.getTechniqueById
-      } else if (indexRoute === 'tactics') {
-        this.idGetter = this.$store.getters.getTacticById
-      } else {
-        this.idGetter = this.$store.getters.getStudyById
-      }
-    }
-  },
   mounted () {
-    const pathItems = this.$route.path.split('/').slice(1)
+    const pathItems = this.$route.path.split('/').slice(1).filter(e => !!e)
+    // console.log(pathItems)
     const homeItem = { to: '/', text: 'Home', exact: true }
     let indexItem = null
     if (pathItems.length === 1) {
@@ -42,6 +29,20 @@ export default {
       const pathItemText = this.idGetter(pathItems[1])
       const idItem = { to: '/' + pathItems[0] + '/' + pathItems[1], text: pathItemText.name, exact: true, disabled: true }
       this.items.push(idItem)
+    }
+  },
+  methods: {
+    capitalizeFirstLetter (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    setStoreGetter (indexRoute) {
+      if (indexRoute === 'techniques') {
+        this.idGetter = this.$store.getters.getTechniqueById
+      } else if (indexRoute === 'tactics') {
+        this.idGetter = this.$store.getters.getTacticById
+      } else {
+        this.idGetter = this.$store.getters.getStudyById
+      }
     }
   }
 }

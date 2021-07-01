@@ -51,7 +51,7 @@ function pad (value, max, padChar = '0') {
 }
 
 // still need to figure out what this will be
-function generateID (name) {
+function getCaseStudyID (name) {
   return `AML.CS${pad(name.length, 5)}`
 }
 
@@ -82,6 +82,28 @@ function flattenReferences (refArray) {
 //     }
 //   }
 //   return outArray
+// }
+
+function generateID (template = 'xxxx-xxxx-xxxx') {
+  // *NOT* RFC compliant, use this where the uniqueness isn't so important
+  // adapted from stackoverflow
+  return template.replace(/x/g, function (c) {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
+// function referenceFormat (refArray) {
+//   console.log(refArray)
+//   const outArray = []
+//   for (const index in refArray) {
+//     const sourceObject = refArray[index]
+//     outArray[index] = {
+//       sourceDescription: sourceObject.source,
+//       url: sourceObject.sourceLink
+//     }
+//   }
 // }
 
 function deepCopy (object) {
@@ -127,8 +149,6 @@ function reviver (key, value) {
     } else if (typeof value === 'object') {
       return value[0].split(reportedByDelim).map(e => e.trim())
     }
-  // } else if (key === 'references') {
-  //   return referenceFormat(value)
   } else if (key === 'incident-date') {
     return dateToString(new Date(value))
   } else if (key === 'procedure') {
@@ -140,7 +160,7 @@ function reviver (key, value) {
   }
 }
 
-function createYAML (obj) {
+function createYAML (obj) { // probably broken
   const yaml = { text: '', appendLine }
   const procedure = obj.procedure
   const reportedBy = obj['reported-by'][0].split(reportedByDelim).map(e => e.trim())
@@ -153,7 +173,7 @@ function createYAML (obj) {
     }
   }
 
-  yaml.appendLine(`- id: ${generateID(obj.name)}`, getScope('id'))
+  yaml.appendLine(`- id: ${getCaseStudyID(obj.name)}`, getScope('id'))
   yaml.appendLine(`name: ${obj.name}`, getScope('name'))
   yaml.appendLine('object-type: case-study', getScope('objectType'))
   yaml.appendLine('summary: |', getScope('summary') - 1)
@@ -185,7 +205,7 @@ function createYAML (obj) {
 
 function createJSON (obj) {
   obj['object-type'] = 'case-study'
-  obj.id = generateID(obj.name)
+  obj.id = getCaseStudyID(obj.name)
   const json = JSON.stringify(obj, reviver, TAB_LENGTH)
   return json
 }
@@ -201,4 +221,4 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-export { createJSON, createYAML, download, deepCopy }
+export { createJSON, createYAML, download, deepCopy, generateID }
