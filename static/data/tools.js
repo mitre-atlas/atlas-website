@@ -35,21 +35,21 @@ function getCaseStudyID (name) {
   return `AML.CS${pad(name.length, 5)}`
 }
 
-function flattenReferences (refArray) {
-  const outArray = []
+// function flattenReferences (refArray) {
+//   const outArray = []
 
-  if (refArray.length === 0) {
-    return null
-  }
+//   if (refArray.length === 0) {
+//     return null
+//   }
 
-  for (const index in refArray) {
-    const sourceObj = refArray[index]
-    const flat = `${sourceObj.sourceDescription}` + (sourceObj.url ? ` (${sourceObj.url})` : '')
-    // const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
-    outArray[index] = flat
-  }
-  return outArray
-}
+//   for (const index in refArray) {
+//     const sourceObj = refArray[index]
+//     const flat = `${sourceObj.sourceDescription}` + (sourceObj.url ? ` (${sourceObj.url})` : '')
+//     // const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
+//     outArray[index] = flat
+//   }
+//   return outArray
+// }
 
 // function referenceFormat (refArray) {
 //   console.log(refArray)

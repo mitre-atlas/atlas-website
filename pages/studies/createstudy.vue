@@ -3,10 +3,10 @@
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
-    <p> To build your case study, either upload a JSON/YAML file below and edit as needed, or fill out the following form. </p>
+    <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
     <v-row>
       <v-col sm="5" class="mb-5">
-        <v-file-input :error-messages="uploadErrorMessage" v-model="chosenFile" small-chips accept=".yaml,.yml" label="Upload JSON File" />
+        <v-file-input :error-messages="uploadErrorMessage" v-model="chosenFile" small-chips accept=".yaml,.yml" label="Upload YAML File" />
       </v-col>
       <v-col>
         <v-btn @click="readJSON">
@@ -189,13 +189,12 @@ export default {
     async validateFile (file) {
       // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
       // does that mean we're fully safe from XSS attacks?
-      const expectedTypes = ['application/json', 'text/json']
+      const expectedTypes = ['.yaml', '.yml']
       // const KB_TO_B = 1000
       const MB_TO_B = 1000000
       const megabyteLimit = 20
       const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
-
-      const fileType = file.type
+      let fileType = ''
       const fileSize = file.size
 
       const errors = []
@@ -205,10 +204,16 @@ export default {
         errors.push(s)
       }
 
+      const extStartIndex = file.name.search(/\./)
+
+      if (extStartIndex >= 0) {
+        fileType = file.name.slice(extStartIndex)
+      }
+
       if (expectedTypes.includes(fileType)) { // nominal
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
-          value: generateID() + '.json'
+          value: generateID() + '.yaml'
         })
       } else {
         addError('Invalid file type')
@@ -225,11 +230,11 @@ export default {
       // below will try to see if it can get a json out
       // only check if the other tests pass
       if (isValid) {
-        const tryJSONText = await file.text()
+        const tryYamlText = await file.text()
         try {
-          JSON.parse(tryJSONText)
+          yamlParse(tryYamlText)
         } catch (e) {
-          addError('Invalid JSON')
+          addError('Invalid YAML')
         }
       }
 
@@ -280,7 +285,7 @@ export default {
         }
         // next 2 lines call actions to create store case study object and download file
         this.createStudyFile(study)
-        this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
+        this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
