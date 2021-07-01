@@ -4,8 +4,10 @@ const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
 const reportedByDelim = ','
 const TAB_LENGTH = 2
 
+const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
+
 function sentenceNewline (text, escape = false) {
-  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) // + '\n'
+  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + (text.endsWith('\n') ? '' : '\n')
 }
 
 // function sentenceSplit (text, removeNewlines) {
@@ -29,9 +31,60 @@ function pad (value, max, padChar = '0') {
 }
 
 // still need to figure out what this will be
-function generateID (name) {
+function getCaseStudyID (name) {
   return `AML.CS${pad(name.length, 5)}`
 }
+
+function flattenReferences (refArray) {
+  const outArray = []
+
+  if (refArray.length === 0) {
+    return null
+  }
+
+  for (const index in refArray) {
+    const sourceObj = refArray[index]
+    const flat = `${sourceObj.sourceDescription}` + (sourceObj.url ? ` (${sourceObj.url})` : '')
+    // const flat = `${sourceObj.source}` + (sourceObj.sourceLink ? ` (${sourceObj.sourceLink})` : '')
+    outArray[index] = flat
+  }
+  return outArray
+}
+
+// function referenceFormat (refArray) {
+//   console.log(refArray)
+//   const outArray = []
+//   for (const index in refArray) {
+//     const sourceObject = refArray[index]
+//     outArray[index] = {
+//       sourceDescription: sourceObject.source,
+//       url: sourceObject.sourceLink
+//     }
+//   }
+//   return outArray
+// }
+
+function generateID (template = 'xxxx-xxxx-xxxx') {
+  // *NOT* RFC compliant, use this where the uniqueness isn't so important
+  // adapted from stackoverflow
+  return template.replace(/x/g, function (c) {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
+// function referenceFormat (refArray) {
+//   console.log(refArray)
+//   const outArray = []
+//   for (const index in refArray) {
+//     const sourceObject = refArray[index]
+//     outArray[index] = {
+//       sourceDescription: sourceObject.source,
+//       url: sourceObject.sourceLink
+//     }
+//   }
+// }
 
 function deepCopy (object) {
   try {
@@ -41,12 +94,12 @@ function deepCopy (object) {
   }
 }
 
-function dateToString (dateObj) {
-  const date = +pad(dateObj.getDate() + 1, 2)
+function dateToString (dateObj, includeTime = false) {
+  const date = +pad(dateObj.getDate(), 2)
   const month = +pad(dateObj.getMonth() + 1, 2)
   const year = dateObj.getFullYear()
 
-  return `${year}-${month}-${date}`
+  return (`${year}-${month}-${date}`) + (includeTime ? ' ' + dateObj.toLocaleTimeString([], timezoneOptions) : '')
 }
 
 function procedureFormat (procedureArray) {
@@ -71,7 +124,7 @@ function reviver (key, value) {
   } else if (key === 'procedure') {
     return procedureFormat(value)
   } else if (key === 'summary') {
-    return value.trim() + '\n'
+    return value + (value.endsWith('\n') ? '' : '\n')
   } else {
     return value
   }
@@ -81,8 +134,8 @@ const createYAML = o => YAML.dump(o, { replacer: reviver })
 const yamlParse = t => YAML.load(t)
 
 function createJSON (obj) {
-  obj['object-type'] = 'case-study'
-  obj.id = generateID(obj.name)
+  obj.study['object-type'] = 'case-study'
+  obj.study.id = getCaseStudyID(obj.name)
   const json = JSON.stringify(obj, reviver, TAB_LENGTH)
   return json
 }
@@ -98,4 +151,4 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-export { createJSON, createYAML, download, deepCopy, yamlParse }
+export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse }

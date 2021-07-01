@@ -43,17 +43,11 @@
         </div>
       </v-col>
 
-      <!-- <v-col>
+      <v-col>
         <div class="text-center mb-10">
-        <NuxtLink to="/page/adversarial-ml-101" style="text-decoration: none;">Adversarial ML 101</NuxtLink>
-          <br>
-          <NuxtLink to="/resources/contribute" style="text-decoration: none;">Contribute</NuxtLink>
-          <br>
-          <NuxtLink to="/resources/feedback" style="text-decoration: none;">Contact Us</NuxtLink>
-          <br>
-          <span><a :href="`${$config.navigator_url}`" target="_blank" style="text-decoration: none;">View on ATT&CK Navigator</a><v-icon small>mdi-open-in-new</v-icon></span>
+          <NuxtLink to="/createStudy" style="text-decoration: none;">createStudy</NuxtLink>
         </div>
-      </v-col> -->
+      </v-col>
     </v-row>
 
     <v-row>
