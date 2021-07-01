@@ -6,7 +6,13 @@
     <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
     <v-row>
       <v-col sm="5" class="mb-5">
-        <v-file-input :error-messages="uploadErrorMessage" v-model="chosenFile" small-chips accept=".yaml,.yml" label="Upload YAML File" />
+        <v-file-input
+          :error="uploadError"
+          :error-messages="uploadErrorMessage"
+          v-model="chosenFile"
+          small-chips
+          accept=".yaml,.yml"
+          label="Upload YAML File" />
       </v-col>
       <v-col>
         <v-btn @click="readJSON">
@@ -99,7 +105,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy, dateToString, generateID, yamlParse } from 'static/data/tools.js'
+import { deepCopy, dateToString, generateID, yamlParse, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -147,12 +153,11 @@ export default {
   //   // })
   // },
   methods: {
-    ...mapActions(['submitCaseStudy', 'createStudyFile']),
+    ...mapActions(['submitCaseStudy']),
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
     loadData (data) {
-      console.log('loading:', data)
       const studyFileObj = (typeof data === 'object') ? data : yamlParse(data)
       const inputStudy = 'meta' in studyFileObj ? studyFileObj.study : studyFileObj
       this.meta = studyFileObj.meta ?? this.meta
@@ -168,19 +173,17 @@ export default {
       } else if (typeof inputStudy.references[0] === 'object') {
         this.references = inputStudy.references
       }
-      console.log('meta: ', this.meta)
     },
     async readJSON () {
       if (!(this.chosenFile)) {
         console.log('nothing inputted')
       } else {
+        this.uploadError = false
         const isValidFile = await this.validateFile(this.chosenFile)
-
         if (!isValidFile) {
           this.uploadError = true
           return
         }
-
         const reader = new FileReader()
         reader.readAsText(this.chosenFile)
         reader.onload = () => { this.loadData(reader.result) }
@@ -190,26 +193,21 @@ export default {
       // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
       // does that mean we're fully safe from XSS attacks?
       const expectedTypes = ['.yaml', '.yml']
-      // const KB_TO_B = 1000
       const MB_TO_B = 1000000
       const megabyteLimit = 20
       const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
-      let fileType = ''
       const fileSize = file.size
-
+      let fileType = ''
       const errors = []
       let isValid = true
       const addError = (s) => {
         isValid = false
         errors.push(s)
       }
-
-      const extStartIndex = file.name.search(/\./)
-
+      const extStartIndex = file.name.lastIndexOf('.')
       if (extStartIndex >= 0) {
         fileType = file.name.slice(extStartIndex)
       }
-
       if (expectedTypes.includes(fileType)) { // nominal
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
@@ -218,14 +216,12 @@ export default {
       } else {
         addError('Invalid file type')
       }
-
       if (fileSize <= 0) {
         addError('Invalid file')
       } else if (fileSize <= maxSize) { // nominal
       } else {
         addError(`File too large (${megabyteLimit} MB limit)`)
       }
-
       // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
       // below will try to see if it can get a json out
       // only check if the other tests pass
@@ -237,7 +233,6 @@ export default {
           addError('Invalid YAML')
         }
       }
-
       this.uploadErrorMessage = errors
       return isValid
     },
@@ -270,11 +265,10 @@ export default {
         const nowDateString = dateToString(nowDate, true)
         this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
         this.meta['date-updated'] = nowDateString
+        this.meta.uuid = this.meta.uuid ?? generateID()
         const study = {
           meta: this.meta,
           study: {
-            // id: ,
-            // object-type: 'case-study',
             name: this.titleStudy,
             summary: this.summary,
             'incident-date': this.date,
@@ -284,7 +278,8 @@ export default {
           }
         }
         // next 2 lines call actions to create store case study object and download file
-        this.createStudyFile(study)
+        // this.submitCaseStudy(study) // <-- stores case study in store
+        downloadStudyFile(study)
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'

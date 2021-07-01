@@ -175,16 +175,16 @@ export const actions = {
     commit('SET_CASE_STUDY', { study })
   },
 
-  createStudyFile ({ commit }, study) {
-    // const studyJSON = tools.createJSON(study)
-    const studyYAML = tools.createYAML(study)
+  // createStudyFile ({ commit }, study) {
+  //   // const studyJSON = tools.createJSON(study)
+  //   const studyYAML = tools.createYAML(study)
 
-    // console.log(studyYAML)
-    // console.log(studyJSON)
+  //   // console.log(studyYAML)
+  //   // console.log(studyJSON)
 
-    // tools.download(`${study.name}-JSON.json`, studyJSON)
-    tools.download(`${study.name}-YAML.yaml`, studyYAML)
-  },
+  //   // tools.download(`${study.name}-JSON.json`, studyJSON)
+  //   tools.download(`${study.name}-YAML.yaml`, studyYAML)
+
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await

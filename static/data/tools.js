@@ -90,7 +90,8 @@ function deepCopy (object) {
   try {
     return JSON.parse(JSON.stringify(object))
   } catch (e) {
-    console.log('Can\'t deepcopy invalid object')
+    return null
+    // console.log('Can\'t deepcopy invalid object')
   }
 }
 
@@ -151,4 +152,10 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse }
+function downloadStudyFile (study) {
+  const studyBody = study.study
+  const studyYAML = createYAML(study)
+  download(`${studyBody.name}-YAML.yaml`, studyYAML)
+}
+
+export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, downloadStudyFile }
