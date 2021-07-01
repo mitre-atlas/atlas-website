@@ -176,13 +176,13 @@ export const actions = {
   },
 
   createStudyFile ({ commit }, study) {
-    const studyJSON = tools.createJSON(study)
+    // const studyJSON = tools.createJSON(study)
     const studyYAML = tools.createYAML(study)
 
-    console.log(studyYAML)
-    console.log(studyJSON)
+    // console.log(studyYAML)
+    // console.log(studyJSON)
 
-    tools.download(`${study.name}-JSON.json`, studyJSON)
+    // tools.download(`${study.name}-JSON.json`, studyJSON)
     tools.download(`${study.name}-YAML.yaml`, studyYAML)
   },
 
