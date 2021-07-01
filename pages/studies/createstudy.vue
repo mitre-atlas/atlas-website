@@ -194,7 +194,7 @@ export default {
       // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
       // does that mean we're fully safe from XSS attacks?
       const expectedTypes = ['application/json', 'text/json']
-      const KB_TO_B = 1000
+      // const KB_TO_B = 1000
       const MB_TO_B = 1000000
       const megabyteLimit = 20
       const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
