@@ -160,6 +160,10 @@ export const getters = {
 
   getFilteredTechniquesByTacticId: state => (tacticId) => {
     return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
+  },
+
+  getCaseStudyBuilderData: (state) => {
+    return state.caseStudy
   }
 }
 
@@ -175,18 +179,19 @@ export const mutations = {
 
 export const actions = {
   submitCaseStudy ({ commit }, study) {
-    commit('SET_CASE_STUDY', { ...study })
+    commit('SET_CASE_STUDY', { study })
   },
 
-  createStudyFile ({ commit }, study) {
-    const studyJSON = tools.createJSON(study)
-    console.log(studyJSON)
-    tools.download(`${study.name}-JSON.json`, studyJSON)
+  // createStudyFile ({ commit }, study) {
+  //   // const studyJSON = tools.createJSON(study)
+  //   const studyYAML = tools.createYAML(study)
 
-    // const studyYAML = tools.createYAML(study)
-    // console.log(studyYAML)
-    // tools.download(`${study.name}-YAML.yaml`, studyYAML)
-  },
+  //   // console.log(studyYAML)
+  //   // console.log(studyJSON)
+
+  //   // tools.download(`${study.name}-JSON.json`, studyJSON)
+  //   tools.download(`${study.name}-YAML.yaml`, studyYAML)
+
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await

@@ -3,10 +3,16 @@
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
-    <subtitle-2> To build your case study, either upload a JSON file below and edit as needed, or fill out the following form. </subtitle-2>
+    <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
     <v-row>
-      <v-col sm="5" class="my-5">
-        <v-file-input v-model="chosenFile" small-chips accept=".json" label="Upload JSON File" />
+      <v-col sm="5" class="mb-5">
+        <v-file-input
+          :error="uploadError"
+          :error-messages="uploadErrorMessage"
+          v-model="chosenFile"
+          small-chips
+          accept=".yaml,.yml"
+          label="Upload YAML File" />
       </v-col>
       <v-col>
         <v-btn class="my-5" @click="readJSON">
@@ -23,7 +29,7 @@
 
         <v-row>
           <v-col sm="6">
-            <v-text-field v-model="email" :rules="emailRules" label="E-mail" required @input="updateValue(email)" />
+            <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
           </v-col>
 
           <v-spacer />
@@ -98,8 +104,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { deepCopy } from 'static/data/tools.js'
+import { mapActions, mapGetters } from 'vuex'
+import { deepCopy, dateToString, generateID, yamlParse, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -113,7 +119,7 @@ export default {
       selectTechnique: null,
       description: '',
       titleStudy: '',
-      email: '',
+      meta: { email: '' },
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
@@ -125,41 +131,112 @@ export default {
       procedure: [],
       references: [],
       errorMsg: '',
+      uploadError: false,
+      uploadErrorMessage: [],
       submissionMsg: '',
       contactEmail: 'atlas@mitre.org'
     }
   },
+  computed: {
+    ...mapGetters(['getCaseStudyBuilderData'])
+  },
+  // mounted () { //Restores case study data from store
+  //   // this.$nextTick(function () {
+  //   //   // todo: fix getter, shouldn't have to do this?
+  //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
+  //   //   if (storedCaseStudy) {
+  //   //     console.log('Case study found in store. Loading...')
+  //   //     this.loadData(storedCaseStudy)
+  //   //   } else {
+  //   //     console.log('No case study found in store')
+  //   //   }
+  //   // })
+  // },
   methods: {
-    ...mapActions(['submitCaseStudy', 'createStudyFile']),
+    ...mapActions(['submitCaseStudy']),
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
-    readJSON () {
-      if (!this.chosenFile) {
-        console.log('nothing inputted')
-      } else {
-        const reader = new FileReader()
-
-        // Use the javascript reader object to load the contents
-        // of the file in the v-model prop
-        reader.readAsText(this.chosenFile)
-        reader.onload = () => {
-          const inputStudy = JSON.parse(reader.result)
-          this.titleStudy = inputStudy.name
-          this.summary = inputStudy.summary
-          this.date = inputStudy['incident-date']
-          this.procedure = inputStudy.procedure
-          this.reported = inputStudy['reported-by']
-          if (inputStudy.references === [] || !(inputStudy.references)) {
-            this.references = []
-          } else if (typeof inputStudy.references[0] === 'string') {
-            this.references = this.editReferences(inputStudy.references)
-          } else if (typeof inputStudy.references[0] === 'object') {
-            this.references = inputStudy.references
-          }
-        }
+    loadData (data) {
+      const studyFileObj = (typeof data === 'object') ? data : yamlParse(data)
+      const inputStudy = 'meta' in studyFileObj ? studyFileObj.study : studyFileObj
+      this.meta = studyFileObj.meta ?? this.meta
+      this.titleStudy = inputStudy.name
+      this.summary = inputStudy.summary
+      this.date = inputStudy['incident-date']
+      this.procedure = inputStudy.procedure
+      this.reported = inputStudy['reported-by']
+      if (inputStudy.references === [] || !(inputStudy.references)) {
+        this.references = []
+      } else if (typeof inputStudy.references[0] === 'string') {
+        this.references = this.editReferences(inputStudy.references)
+      } else if (typeof inputStudy.references[0] === 'object') {
+        this.references = inputStudy.references
       }
     },
+    async readJSON () {
+      if (!(this.chosenFile)) {
+        console.log('nothing inputted')
+      } else {
+        this.uploadError = false
+        const isValidFile = await this.validateFile(this.chosenFile)
+        if (!isValidFile) {
+          this.uploadError = true
+          return
+        }
+        const reader = new FileReader()
+        reader.readAsText(this.chosenFile)
+        reader.onload = () => { this.loadData(reader.result) }
+      }
+    },
+    async validateFile (file) {
+      // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
+      // does that mean we're fully safe from XSS attacks?
+      const expectedTypes = ['.yaml', '.yml']
+      const MB_TO_B = 1000000
+      const megabyteLimit = 20
+      const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
+      const fileSize = file.size
+      let fileType = ''
+      const errors = []
+      let isValid = true
+      const addError = (s) => {
+        isValid = false
+        errors.push(s)
+      }
+      const extStartIndex = file.name.lastIndexOf('.')
+      if (extStartIndex >= 0) {
+        fileType = file.name.slice(extStartIndex)
+      }
+      if (expectedTypes.includes(fileType)) { // nominal
+        Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
+          writable: true,
+          value: generateID() + '.yaml'
+        })
+      } else {
+        addError('Invalid file type')
+      }
+      if (fileSize <= 0) {
+        addError('Invalid file')
+      } else if (fileSize <= maxSize) { // nominal
+      } else {
+        addError(`File too large (${megabyteLimit} MB limit)`)
+      }
+      // turns out file.type doesn't check the bytestream to ensure mime type (only looks at ext) so
+      // below will try to see if it can get a json out
+      // only check if the other tests pass
+      if (isValid) {
+        const tryYamlText = await file.text()
+        try {
+          yamlParse(tryYamlText)
+        } catch (e) {
+          addError('Invalid YAML')
+        }
+      }
+      this.uploadErrorMessage = errors
+      return isValid
+    },
+
     editReferences (refs) {
       // this function takes in an array of strings and converts them to an array of formatted objects
       const structuredRefs = []
@@ -184,20 +261,26 @@ export default {
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
+        const nowDate = new Date()
+        const nowDateString = dateToString(nowDate, true)
+        this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
+        this.meta['date-updated'] = nowDateString
+        this.meta.uuid = this.meta.uuid ?? generateID()
         const study = {
-          // id: ,
-          name: this.titleStudy,
-          // object-type: 'case-study',
-          summary: this.summary,
-          'incident-date': this.date,
-          procedure: deepCopy(this.procedure),
-          'reported-by': this.reported,
-          references: deepCopy(this.references)
+          meta: this.meta,
+          study: {
+            name: this.titleStudy,
+            summary: this.summary,
+            'incident-date': this.date,
+            procedure: deepCopy(this.procedure),
+            'reported-by': this.reported,
+            references: deepCopy(this.references)
+          }
         }
         // next 2 lines call actions to create store case study object and download file
-        this.submitCaseStudy(study)
-        this.createStudyFile(study)
-        this.submissionMsg = 'Your case study has been downloaded! Email your json file to '
+        // this.submitCaseStudy(study) // <-- stores case study in store
+        downloadStudyFile(study)
+        this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
