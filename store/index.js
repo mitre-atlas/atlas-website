@@ -7,6 +7,7 @@ export const state = () => ({
     // Represents the input threat matrix data
     tactics: [],
     techniques: [],
+    techandsubtechniques: [],
     studies: [],
     // Represents the populated tactics, techniques, and subtechniques
     matrix: []
@@ -147,6 +148,12 @@ export const getters = {
         return false
       }
       // Returns true when at least 1 of the referenced tactic matches the query
+      return t.tactics.includes(tacticId)
+    })
+  },
+
+  getTechSubByTacticId: state => (tacticId) => {
+    return state.data.techandsubtechniques.filter((t) => {
       return t.tactics.includes(tacticId)
     })
   },
@@ -347,6 +354,7 @@ export const actions = {
         const payload = {
           tactics,
           techniques,
+          techandsubtechniques: parentTechniques,
           studies,
           matrix
         }

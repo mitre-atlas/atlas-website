@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-8">
     <!-- <breadcrumbs></breadcrumbs> -->
     <page-title>{{ title }}</page-title>
 
@@ -15,7 +15,7 @@
           label="Upload YAML File" />
       </v-col>
       <v-col>
-        <v-btn @click="readJSON">
+        <v-btn class="my-5" @click="readJSON">
           Populate Form
         </v-btn>
       </v-col>
@@ -72,10 +72,10 @@
         </v-row>
       </v-container>
 
-      <add-procedure-step :selectTactic="selectTactic" :selectTechnique="selectTechnique" :description="description" @clicked="addProcedureStep" />
-      <edit-procedure :procedure="procedure" :key="procedure" />
+      <add-procedure-step :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
+      <edit-procedure :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
 
-      <add-source :sourceDescription="sourceDescription" :url="url" @clicked="addSource" />
+      <add-source :source-description="sourceDescription" :url="url" @clicked="addSource" />
 
       <div v-if="references.length" class="mx-8">
         <ol>

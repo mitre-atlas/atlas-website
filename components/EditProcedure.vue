@@ -1,19 +1,19 @@
 <template>
   <v-timeline v-if="procedureData.length" align-top dense>
-    <draggable :list="procedureData">
+    <draggable :list="procedureData" :disabled="editing">
       <v-timeline-item v-for="(p, i) in procedureData" :key="i" small>
-        <v-row align="center" justify="center">
-          <v-col sm="10">
-            <procedure-card :info="p" />
-          </v-col>
-          <v-col sm="2">
-            <v-btn color="blue" icon @click="editStep"> <v-icon>mdi-pencil</v-icon> </v-btn>
-            <v-btn color="red" icon @click="deleteStep(i)"> <v-icon>mdi-delete</v-icon> </v-btn>
-          </v-col>
-        </v-row>
+        <edit-procedure-card
+          :key="p"
+          :info="p"
+          :editing="editing"
+          @deleteClick="deleteStep(i)"
+          @editClick="editStep"
+          @replace="replace(i)"
+          @updateEdit="updateEdit"
+        />
       </v-timeline-item>
     </draggable>
-    </v-timeline>
+  </v-timeline>
 </template>
 
 <script>
@@ -25,12 +25,21 @@ export default {
   props: ['procedure'],
   data () {
     return {
-      procedureData: this.procedure
+      procedureData: this.procedure,
+      editedObj: {},
+      editing: false
     }
   },
   methods: {
-    editStep () {
-      console.log('edit step')
+    editStep (editedObj) {
+      this.editedObj = editedObj
+    },
+    updateEdit () {
+      this.editing = !this.editing
+    },
+    replace (i) {
+      this.procedureData.splice(i, 1, this.editedObj)
+      this.$emit('updateProcedure', this.procedureData)
     },
     deleteStep (i) {
       this.procedureData.splice(i, 1)
