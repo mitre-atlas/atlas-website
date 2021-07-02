@@ -28,19 +28,19 @@
         </v-row>
 
         <v-row>
-          <v-col sm="6">
+          <v-col sm="5" class="pl-0">
             <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
           </v-col>
 
           <v-spacer />
 
-          <v-col sm="6">
-            <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by:" required @input="updateValue(reported)" />
+          <v-col sm="7">
+            <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by" required @input="updateValue(reported)" />
           </v-col>
         </v-row>
 
         <v-row>
-          <v-col sm="4">
+          <v-col sm="4" class="pl-0">
             <v-menu
               v-model="dateMenu"
               :close-on-content-click="false"
@@ -52,7 +52,7 @@
               <template #activator="{ on, attrs }">
                 <v-text-field
                   v-model="date"
-                  label="Incident date:"
+                  label="Incident date"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"

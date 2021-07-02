@@ -1,4 +1,3 @@
-import * as tools from 'static/data/tools.js'
 const fs = require('fs').promises
 const path = require('path')
 
@@ -181,17 +180,6 @@ export const actions = {
   submitCaseStudy ({ commit }, study) {
     commit('SET_CASE_STUDY', { study })
   },
-
-  // createStudyFile ({ commit }, study) {
-  //   // const studyJSON = tools.createJSON(study)
-  //   const studyYAML = tools.createYAML(study)
-
-  //   // console.log(studyYAML)
-  //   // console.log(studyJSON)
-
-  //   // tools.download(`${study.name}-JSON.json`, studyJSON)
-  //   tools.download(`${study.name}-YAML.yaml`, studyYAML)
-
 
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await

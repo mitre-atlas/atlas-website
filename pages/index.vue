@@ -42,12 +42,6 @@
 
         </div>
       </v-col>
-
-      <v-col>
-        <div class="text-center mb-10">
-          <NuxtLink to="/createStudy" style="text-decoration: none;">createStudy</NuxtLink>
-        </div>
-      </v-col>
     </v-row>
 
     <v-row>
