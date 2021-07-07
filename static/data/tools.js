@@ -134,6 +134,59 @@ function reviver (key, value) {
 const createYAML = o => YAML.dump(o, { replacer: reviver })
 const yamlParse = t => YAML.load(t)
 
+function validFormatYAML (yamlObj) {
+  const required = {
+    email: false,
+    'incident-date': false,
+    name: false,
+    'reported-by': false,
+    summary: false,
+    procedure: false,
+    description: false,
+    tactic: false,
+    technique: false
+  }
+  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'sourceDescription', 'url']
+  if (!(yamlObj.meta && yamlObj.study)) { return false }
+  // check meta data
+  for (const metaKey in yamlObj.meta) {
+    if (metaKey in required) {
+      required[metaKey] = true
+    } else if (!notRequired.includes(metaKey)) { return false }
+  }
+  // check study data
+  for (const studyKey in yamlObj.study) {
+    if (studyKey in required) {
+      required[studyKey] = true
+      // make sure each procedure step is correctly formatted
+      if (studyKey === 'procedure') {
+        const procObj = yamlObj.study[studyKey]
+        if (procObj === null) { return false }
+        for (let i = 0; i < procObj.length; i++) {
+          if ('tactic' in procObj[i] && 'technique' in procObj[i] && 'description' in procObj[i] && procObj[i].length === 3) {
+            required.description = true
+            required.technique = true
+            required.tactic = true
+          } else { return false }
+        }
+      }
+    } else if (notRequired.includes(studyKey)) {
+      // ensure references are correctly formatted
+      if (studyKey === 'references') {
+        const refObj = yamlObj.study[studyKey]
+        if (refObj === null) { return false }
+        for (let i = 0; i < refObj.length; i++) {
+          if (!('sourceDescription' in refObj[i] || 'url' in refObj[i])) {
+            return false
+          }
+        }
+      }
+    } else { return false }
+  }
+  // return whether all required fields are true
+  return Object.keys(required).every(k => required[k])
+}
+
 function createJSON (obj) {
   obj.study['object-type'] = 'case-study'
   obj.study.id = getCaseStudyID(obj.name)
@@ -158,4 +211,4 @@ function downloadStudyFile (study) {
   download(`${studyBody.name}-YAML.yaml`, studyYAML)
 }
 
-export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, downloadStudyFile }
+export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
