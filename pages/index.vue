@@ -23,11 +23,11 @@
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p> -->
         <p>
-        MITRE {{ $config.name.short }}, {{ $config.name.long }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" >MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
+        {{ shortName }}, {{ longName }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. {{ shortName }} is modeled after the <a href="https://attack.mitre.org" >MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
         </p>
 
         <p>
-        ATLAS enables researchers to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed ATLAS to raise awareness of these threats and present them in a way familiar to security researchers.
+        {{ shortName }} enables researchers to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed {{ shortName }} to raise awareness of these threats and present them in a way familiar to security researchers.
         </p>
         <!-- <homepage-links /> -->
          <!-- <page-title class="mt-10 text-center">{{ $config.name.short }}</page-title> -->
@@ -35,9 +35,9 @@
       </div>
       <div>
         <p>
-          The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
+          The {{ shortName }} Matrix below shows the progression of tactics used in attacks as columns from left to right,
           with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
-           ATLAS tactics and techniques using the links at the top navigation bar.
+          {{ shortName }} tactics and techniques using the links at the top navigation bar.
         </p>
 
         </div>
@@ -53,6 +53,9 @@
 <script>
 export default {
   data: ({ $config: { name } }) => ({
+    shortName: name.short,
+    longName: name.long,
+    mitreTitle: name.mitre,
     title: `${name.long}`
   })
 }

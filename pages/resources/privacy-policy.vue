@@ -1,12 +1,12 @@
 <template>
   <div>
-    <page-title>Privacy Policy</page-title>
+    <page-title>{{ title }}</page-title>
     <page-section-title>Effective Date: June 17, 2021</page-section-title>
     <p>
       The MITRE Corporation (“MITRE”) respects the privacy of its website users.
     </p>
     <p>
-      This Privacy Policy explains the types of information collected by MITRE ATLAS from website visitors (“Users”) or that you provide to MITRE through other
+      This Privacy Policy explains the types of information collected by {{ mitreTitle }} from website visitors (“Users”) or that you provide to MITRE through other
       means, such as via e-mail and web forms (collectively “Site”), and how MITRE uses, shares, protects, and retains that information.
       By visiting the Site, you understand and agree to terms outlined in this Privacy Policy.
     </p>
@@ -18,7 +18,7 @@
       MITRE does not employ cookies for this Site.
     </p>
     <p>
-      However, the MITRE ATLAS website is hosted on GitHub®.
+      However, the {{ mitreTitle }} website is hosted on GitHub®.
       GitHub uses a free third-party software service called Google Analytics® to capture and analyze non-personally identifiable website usage information.
       Cookies will be implemented by GitHub. For more information about GitHub’s collection and use of information,
       such as IP address, date and time of access, the requested URL, the referring URL (if provided by the Web browser),
@@ -48,3 +48,20 @@
     </p>
   </div>
 </template>
+
+<script>
+export default {
+  data: ({$config: {name} }) => ({
+    shortName: name.short,
+    title: 'Privacy Policy',
+    mitreTitle: name.mitre
+  }),
+  head () {
+    return {
+      title: `${this.title} | ${this.mitreTitle}`
+    }
+  }
+
+}
+</script>
+

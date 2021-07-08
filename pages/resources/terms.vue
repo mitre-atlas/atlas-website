@@ -1,6 +1,6 @@
 <template>
 <div>
-  <page-title>Terms of Use</page-title>
+  <page-title>{{ title }}</page-title>
   <page-section-title>License</page-section-title>
   <p>
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,14 @@
 </template>
 <script>
 export default {
-  name: 'Terms',
+  data: ({$config: {name} }) => ({
+    shortName: name.short,
+    title: 'Terms of Use',
+    mitreTitle: name.mitre
+  }),
   head () {
     return {
-      title: 'Terms of Use | MITRE ATLAS'
+      title: `${this.title} | ${this.mitreTitle}`
     }
   }
 }

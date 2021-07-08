@@ -29,8 +29,9 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({
+  data: ({ $config: { name } }) => ({
     title: 'Case Studies',
+    mitreTitle: name.mitre,
     description: 'Browse the list of case studies below.',
     itemsPerPage: '20',
     page: 1,
@@ -50,7 +51,7 @@ export default {
   },
   head () {
     return {
-      title: 'Case Studies List | MITRE ATLAS'
+      title: `${this.title} List | ${this.mitreTitle}`
     }
   }
 }

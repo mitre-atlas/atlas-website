@@ -25,6 +25,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
+    mitreTitle: name.mitre,
     title: 'Techniques',
     description: 'The table below lists techniques from MITRE ' + name.short + '. Scroll through the table or use the filter to narrow down the information.'
   }),
@@ -33,7 +34,7 @@ export default {
   },
   head () {
     return {
-      title: 'Techniques List | MITRE ATLAS'
+      title: `${this.title} List | ${this.mitreTitle}`
     }
   }
 }

@@ -120,7 +120,7 @@
 export default {
   head () {
     return {
-      title: this.$store.getters.getTacticById(this.$route.params.id).name + ', Tactic: ' + this.$route.params.id + ' | MITRE ATLAS'
+      title: this.$store.getters.getTacticById(this.$route.params.id).name + ', Tactic: ' + this.$route.params.id + ` | ${this.$config.name.mitre}`
     }
   },
   computed: {

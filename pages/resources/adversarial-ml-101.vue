@@ -1,6 +1,6 @@
 <template>
 <div>
-  <page-title>Adversarial Machine Learning 101</page-title>
+  <page-title>{{ title }}</page-title>
 
   <p>
     Informally, Adversarial ML is "subverting machine learning systems for fun and profit.""
@@ -110,7 +110,7 @@
   <page-section-title>Next Recommended Reading</page-section-title>
 
   <p>
-    Head over to the <NuxtLink to="/matrix">MITRE {{ $config.name.short}} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
+    Head over to the <NuxtLink to="/matrix">{{ mitreTitle }} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
   </p>
 
   </div>
@@ -118,7 +118,9 @@
 
 <script>
 export default {
-  data: () => ({
+  data: ({$config: { name }}) => ({
+    title: 'Adversarial Machine Learning 101',
+    mitreTitle: name.mitre,
     attacksTableData: [
       {
         attack: 'Model Evasion',
@@ -149,7 +151,7 @@ export default {
   }),
   head () {
     return {
-      title: 'Adversarial Machine Learning 101 | MITRE ATLAS'
+      title: `${this.title} | ${this.mitreTitle}`
     }
   }
 }

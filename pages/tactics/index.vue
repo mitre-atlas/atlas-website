@@ -24,15 +24,16 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
+    mitreTitle: name.mitre,
     title: 'Tactics',
-    description: 'The table below lists tactics from ' + name.short + ' and tactics from ATT<span class="red--text text--darken-3">&</span>CK Enterprise that contain ATLAS techniques.  Scroll through the table or use the filter to narrow down the information.'
+    description: `The table below lists tactics from ${name.short} and tactics from ATT<span class="red--text text--darken-3">&</span>CK Enterprise that contain ${name.short} techniques.  Scroll through the table or use the filter to narrow down the information.`
   }),
   computed: {
     ...mapGetters(['getFilteredTactics'])
   },
   head () {
     return {
-      title: 'Tactics List | MITRE ATLAS'
+      title: `${this.title} List | ${this.mitreTitle}`
     }
   }
 }

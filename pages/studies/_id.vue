@@ -47,9 +47,13 @@
 
 <script>
 export default {
+  data: ({ $config: { name } }) => ({
+    mitreTitle: name.mitre
+  }),
+
   head () {
     return {
-      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ' | MITRE ATLAS'
+      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ` | ${this.mitreTitle}`
     }
   },
   computed: {
