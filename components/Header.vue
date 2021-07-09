@@ -3,6 +3,7 @@
     app
     dark
     clipped-left
+    elevate-on-scroll
     color="grey darken-3"
     >
 
@@ -26,6 +27,9 @@
         v-if="link.isDropdown"
         offset-y
         bottom
+        rounded="b-lg t-0"
+        transition="slide-y-transition"
+        content-class="elevation-2"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -42,18 +46,14 @@
           </v-btn>
         </template>
 
-        <v-list>
+        <v-list flat>
           <v-list-item
             v-for="(childLink, j) in link.links"
             :key="j"
+            nuxt
+            :to="childLink.href"
           >
-            <v-btn
-              v-text="childLink.name"
-              :to="childLink.href"
-              text
-              class="text-capitalize"
-              nuxt
-            />
+          <span text class="text-capitalize">{{ childLink.name }}</span>
           </v-list-item>
 
         </v-list>
