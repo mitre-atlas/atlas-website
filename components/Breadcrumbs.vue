@@ -29,13 +29,13 @@ export default {
     const homeItem = { to: '/', text: homeName }
     const idStemItems = ['tactics', 'techniques', 'studies']
 
-    // ('TA0434', 'tactics') -> true; ('create-study', 'studies') -> false
+    // ('TA0434', 'tactics') -> true; ('AML.CS98434', 'studies') -> true; ('create-study', 'studies') -> false
     const isIDItem = (location, lastLocation) => idStemItems.includes(lastLocation) && (location.search(/\d/g) > -1)
     let lastLocation = null
     this.items.push(homeItem)
 
     let pathStem = ''
-    for (const location of pathItems) {
+    for (const location of pathItems) { // ['this', 'is', 'path'] -> [{to: '/this', text: 'This'}, {to: '/this/is', text: 'Is'}, {to: '/this/is/path', text: 'Path'}]
       const locationPath = '/' + location
       const to = pathStem + locationPath
       let text = this.formatLocation(location)
@@ -43,7 +43,7 @@ export default {
       if (isIDItem(location, lastLocation)) { // 'AML.CS03245' -> 'Failure of Domain Bypass'
         const name = this.getNameFromID(location, lastLocation)
         const id = text
-        if ((id.split('.').length - 1) > 1) {
+        if ((id.split('.').length - 1) > 1) { // 'Home > Techniques > SubTechnique' -> 'Home > Techniques > ParentTechnique > SubTechnique'
           console.log('noooo')
           const parentID = id.slice(0, id.lastIndexOf('.'))
           const parentName = this.getNameFromID(parentID, lastLocation)
@@ -53,7 +53,6 @@ export default {
           this.items.push(parentItem)
           pathStem += parentPath
         }
-
         text = name
       }
 
