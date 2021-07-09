@@ -1,6 +1,6 @@
 <template>
   <div>
-    <breadcrumbs></breadcrumbs>
+    <breadcrumbs />
     <div class="text-h4 pt-10">{{ study.name }}</div>
 
     <v-row>

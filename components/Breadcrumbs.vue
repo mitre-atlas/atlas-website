@@ -1,39 +1,79 @@
 <template>
   <div class="breadcrumbs">
-    <v-breadcrumbs :items="items" divider=">" />
+    <v-breadcrumbs :items="items" large class="pl-0">
+        <template v-slot:divider>
+            <v-icon>mdi-chevron-right</v-icon>
+        </template>
+    </v-breadcrumbs>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
+  props: ['setPath'],
   data () {
     return {
       items: [],
       idGetter: null
     }
   },
+  computed: {
+    ...mapGetters(['isSubTechnique'])
+  },
   mounted () {
-    const pathItems = this.$route.path.split('/').slice(1).filter(e => !!e)
-    // console.log(pathItems)
-    const homeItem = { to: '/', text: 'Home', exact: true }
-    let indexItem = null
-    if (pathItems.length === 1) {
-      indexItem = { to: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true, disabled: true }
-    } else {
-      indexItem = { to: '/' + pathItems[0], text: this.capitalizeFirstLetter(pathItems[0]), exact: true }
-    }
+    const pathItems = this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
+    const homeName = 'Home'
+    const homeItem = { to: '/', text: homeName }
+    const idStemItems = ['tactics', 'techniques', 'studies']
+
+    // ('TA0434', 'tactics') -> true; ('create-study', 'studies') -> false
+    const isIDItem = (location, lastLocation) => idStemItems.includes(lastLocation) && (location.search(/\d/g) > -1)
+    let lastLocation = null
     this.items.push(homeItem)
-    this.items.push(indexItem)
-    if (pathItems.length > 1) {
-      this.setStoreGetter(pathItems[0])
-      const pathItemText = this.idGetter(pathItems[1])
-      const idItem = { to: '/' + pathItems[0] + '/' + pathItems[1], text: pathItemText.name, exact: true, disabled: true }
-      this.items.push(idItem)
+
+    let pathStem = ''
+    for (const location of pathItems) {
+      const locationPath = '/' + location
+      const to = pathStem + locationPath
+      let text = this.formatLocation(location)
+
+      if (isIDItem(location, lastLocation)) { // 'AML.CS03245' -> 'Failure of Domain Bypass'
+        const name = this.getNameFromID(location, lastLocation)
+        const id = text
+        if ((id.split('.').length - 1) > 1) {
+          console.log('noooo')
+          const parentID = id.slice(0, id.lastIndexOf('.'))
+          const parentName = this.getNameFromID(parentID, lastLocation)
+          const parentPath = '/' + parentID
+          const parentTo = pathStem + parentPath
+          const parentItem = { to: parentTo, text: parentName, exact: true }
+          this.items.push(parentItem)
+          pathStem += parentPath
+        }
+
+        text = name
+      }
+
+      const item = { to, text, exact: true }
+      this.items.push(item)
+      pathStem += locationPath
+      lastLocation = location
     }
+
+    const lastItem = this.items[this.items.length - 1]
+    lastItem.disabled = true
   },
   methods: {
-    capitalizeFirstLetter (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
+    formatLocation (str) { // hello-there-world -> Hello There World
+      const reg = /-(\w)/g
+      str = str.charAt(0).toUpperCase() + str.slice(1)
+      for (const match of str.matchAll(reg)) {
+        str = str.replace(match[0], ' ' + match[1].toUpperCase())
+      }
+      return str
     },
     setStoreGetter (indexRoute) {
       if (indexRoute === 'techniques') {
@@ -43,6 +83,10 @@ export default {
       } else {
         this.idGetter = this.$store.getters.getStudyById
       }
+    },
+    getNameFromID (id, idStem) {
+      this.setStoreGetter(idStem)
+      return this.idGetter(id).name
     }
   }
 }
