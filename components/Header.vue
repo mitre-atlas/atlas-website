@@ -46,16 +46,18 @@
           </v-btn>
         </template>
 
-        <v-list flat>
+        <v-list>
+          <v-list-item-group :value="selection">
           <v-list-item
             v-for="(childLink, j) in link.links"
             :key="j"
             nuxt
             :to="childLink.href"
+            class="text-capitalize px-6 text-md-body-1"
           >
-          <span text class="text-capitalize">{{ childLink.name }}</span>
+          {{ childLink.name }}
           </v-list-item>
-
+          </v-list-item-group>
         </v-list>
       </v-menu>
 
@@ -144,7 +146,7 @@ export default {
           },
           {
             name: 'Build Case Study',
-            href: '/studies/createStudy'
+            href: '/createstudy'
           }
         ]
       },
