@@ -2,9 +2,10 @@
 <div>
   <page-title>General Information</page-title>
 
-  <page-section-title>Announcements</page-section-title>
-
-  <annoucement />
+  <!--
+    <page-section-title>Announcements</page-section-title>
+    <annoucement />
+  -->
 
   <page-section-title>Data</page-section-title>
 
