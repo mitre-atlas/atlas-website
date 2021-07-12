@@ -1,14 +1,15 @@
 <template>
   <div>
+    <!--
     <v-alert
       color="blue"
       dismissible
       text
       type="info"
     >
-      MITRE & Microsoft are hosting the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning on June 29th.
-      Learn more under <nuxt-link to='/resources/info'>general information</nuxt-link>!
+
     </v-alert>
+    -->
 
     <!-- <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>
     <div class="text-h4 mb-5 text-center">{{ $config.name.long }}</div> -->
