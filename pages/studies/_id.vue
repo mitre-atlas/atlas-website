@@ -17,52 +17,16 @@
       </v-col>
     </v-row>
 
-      <v-row >
-        <v-col>
+  <v-container>
+      <v-row>
+        <v-col >
           <page-section-title> Procedure </page-section-title>
         </v-col>
         <v-col
         md="4"
-        offset-md="4">
-          <page-section-title>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                flat
-                elevation="0"
-                color="inherit"
-                depressed
-                v-bind="attrs"
-                v-on="on"
-              >
-                ATLAS Navigator Layer
-                <v-icon right>mdi-menu-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item>
-                  <a
-                  @click="saveFile($config.individual_case_study.raw_link, study.id, $config.individual_case_study.suffix)"
-                  style="color: inherit"
-                  >Download</a><v-icon
-                      small
-                    >mdi-arrow-collapse-down</v-icon>
-              </v-list-item>
-              <v-list-item>
-                <a
-                  :href="
-                    $config.individual_case_study.navigator_link +
-                    study.id +
-                    $config.individual_case_study.suffix
-                  "
-                  target="_blank"
-                  style="color: inherit"
-                  >View<v-icon small>mdi-open-in-new</v-icon></a
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          </page-section-title>
+        offset-md="4"
+        >
+          <navigator-layer-dropdown :study="study" class='mt-5'></navigator-layer-dropdown>
         </v-col>
         <!-- <span class="pink--text">
             TODO link to custom layer on ATT&CK Navigator
@@ -82,6 +46,7 @@
         </ol>
       </v-col>
     </v-row>
+  </v-container>
   </div>
 </template>
 
@@ -99,25 +64,6 @@ export default {
   computed: {
     study () {
       return this.$store.getters.getStudyById(this.$route.params.id)
-    }
-  },
-  methods: {
-    saveFile (rawLink, id, suffix) {
-      const url = rawLink + id + suffix
-      // Get file name from url.
-      const xhr = new XMLHttpRequest()
-      xhr.responseType = 'blob'
-      xhr.onload = function () {
-        let a = document.createElement('a')
-        a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
-        a.download = id + suffix // Set the file name.
-        a.style.display = 'none'
-        document.body.appendChild(a)
-        a.click()
-        a = null
-      }
-      xhr.open('GET', url)
-      xhr.send()
     }
   }
 }
