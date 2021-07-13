@@ -5,6 +5,7 @@
     clipped-left
     elevate-on-scroll
     color="grey darken-3"
+    style="z-index:2000;"
     >
 
     <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
