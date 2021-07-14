@@ -163,7 +163,7 @@ function validFormatYAML (yamlObj) {
         const procObj = yamlObj.study[studyKey]
         if (procObj === null) { return false }
         for (let i = 0; i < procObj.length; i++) {
-          if ('tactic' in procObj[i] && 'technique' in procObj[i] && 'description' in procObj[i] && procObj[i].length === 3) {
+          if ('tactic' in procObj[i] && 'technique' in procObj[i] && 'description' in procObj[i] && Object.keys(procObj[i]).length === 3) {
             required.description = true
             required.technique = true
             required.tactic = true
@@ -176,9 +176,7 @@ function validFormatYAML (yamlObj) {
         const refObj = yamlObj.study[studyKey]
         if (refObj === null) { return false }
         for (let i = 0; i < refObj.length; i++) {
-          if (!('sourceDescription' in refObj[i] || 'url' in refObj[i])) {
-            return false
-          }
+          if (!('sourceDescription' in refObj[i] || 'url' in refObj[i])) { return false }
         }
       }
     } else { return false }
