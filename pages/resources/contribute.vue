@@ -1,8 +1,8 @@
 <template>
   <div>
-    <page-title>Contribution</page-title>
+    <page-title>{{ title }}</page-title>
 
-    MITRE {{ $config.name.short }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    {{ mitreTitle }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
@@ -67,9 +67,13 @@ export default {
 
     return { contributorsA, contributorsB }
   },
+  data: ({ $config: { name } }) => ({
+    mitreTitle: name.mitre,
+    title: 'Contribute'
+  }),
   head () {
     return {
-      title: 'Contribute | MITRE ATLAS'
+      title: `${this.title} | ${this.mitreTitle}`
     }
   }
 }

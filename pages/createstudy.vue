@@ -1,6 +1,6 @@
 <template>
   <div class="mx-8">
-    <!-- <breadcrumbs></breadcrumbs> -->
+    <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
     <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
@@ -102,6 +102,12 @@
     </v-form>
   </div>
 </template>
+
+<router>
+  {
+    path: '/studies/create'
+  }
+</router>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
