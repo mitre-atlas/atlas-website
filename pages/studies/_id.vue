@@ -56,13 +56,12 @@
 
 <script>
 export default {
-  data: ({ $config: { name } }) => ({
-    mitreTitle: name.mitre,
+  data: () => ({
     charactersThreshold: 300
   }),
   head () {
     return {
-      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ` | ${this.mitreTitle}`
+      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ` | ${this.$config.name.mitre}`
     }
   },
   computed: {

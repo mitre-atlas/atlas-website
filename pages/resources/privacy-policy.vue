@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  data: ({$config: {name} }) => ({
+  data: ({ $config: { name } }) => ({
     shortName: name.short,
     title: 'Privacy Policy',
     mitreTitle: name.mitre
@@ -64,4 +64,3 @@ export default {
 
 }
 </script>
-

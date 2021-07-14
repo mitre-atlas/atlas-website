@@ -110,7 +110,7 @@
   <page-section-title>Next Recommended Reading</page-section-title>
 
   <p>
-    Head over to the <NuxtLink to="/matrix">{{ mitreTitle }} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
+    Head over to the <NuxtLink to="/matrix">{{ shortName }} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
   </p>
 
   </div>
@@ -118,8 +118,9 @@
 
 <script>
 export default {
-  data: ({$config: { name }}) => ({
+  data: ({ $config: { name } }) => ({
     title: 'Adversarial Machine Learning 101',
+    shortName: name.short,
     mitreTitle: name.mitre,
     attacksTableData: [
       {

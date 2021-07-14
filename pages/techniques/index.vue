@@ -25,16 +25,15 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
-    mitreTitle: name.mitre,
     title: 'Techniques',
-    description: 'The table below lists techniques from MITRE ' + name.short + '. Scroll through the table or use the filter to narrow down the information.'
+    description: 'The table below lists techniques from ' + name.mitre + '. Scroll through the table or use the filter to narrow down the information.'
   }),
   computed: {
     ...mapGetters(['getFilteredTechniques'])
   },
   head () {
     return {
-      title: `${this.title} List | ${this.mitreTitle}`
+      title: `${this.title} List | ${this.$config.name.mitre}`
     }
   }
 }

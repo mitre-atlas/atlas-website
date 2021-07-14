@@ -25,14 +25,13 @@
 </template>
 <script>
 export default {
-  data: ({$config: {name} }) => ({
+  data: ({ $config: { name } }) => ({
     shortName: name.short,
-    title: 'Terms of Use',
-    mitreTitle: name.mitre
+    title: 'Terms of Use'
   }),
   head () {
     return {
-      title: `${this.title} | ${this.mitreTitle}`
+      title: `${this.title} | ${this.$config.name.mitre}`
     }
   }
 }
