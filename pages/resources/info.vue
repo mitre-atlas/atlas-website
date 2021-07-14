@@ -2,9 +2,10 @@
 <div>
   <page-title>{{ title }}</page-title>
 
-  <page-section-title>Announcements</page-section-title>
-
-  <annoucement />
+  <!--
+    <page-section-title>Announcements</page-section-title>
+    <annoucement />
+  -->
 
   <page-section-title>Data</page-section-title>
 

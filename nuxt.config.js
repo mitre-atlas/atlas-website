@@ -135,7 +135,7 @@ export default {
       long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems',
       mitre: 'MITRE ATLAS' //process.env?
     },
-    navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org',
+    navigator_url: process.env.NAVIGATOR_URL || 'https://mitre.github.io/atlas-navigator/',
     advml: {
       repo_url: process.env.ADVML_DATA_URL || '#',
       version: process.env.ADVML_DATA_VERSION || 2
@@ -144,8 +144,13 @@ export default {
       repo_url: process.env.ATTACK_ENTERPRISE_URL || 'https://github.com/mitre/cti/tree/master/enterprise-attack',
       version: process.env.ATTACK_ENTERPRISE_VERSION || 9
     },
-    analytics_id: process.env.ANALYTICS_ID || ''
-  },
+    analytics_id: process.env.ANALYTICS_ID || '',
+    individual_case_study:{
+      navigator_link:process.env.CASE_STUDY_DATA_URL || 'https://mitre.github.io/atlas-navigator/#layerURL=https%3A%2F%2Fraw.githubusercontent.com%2Fmitre%2Fadvmlthreatmatrix%2Fgh-pages%2Fdata%2Fcase-study-layers%2F',
+      raw_link:process.env.RAW_CASE_STUDY_DATA_URL || 'https://raw.githubusercontent.com/mitre/advmlthreatmatrix/gh-pages/data/case-study-layers/',
+      suffix:process.env.CASE_STUDY_DATA_SUFFIX || '-case_study_layer.json'
+    }
+    },
 
   router: {
     base: process.env.ROUTER_BASE || '/'
