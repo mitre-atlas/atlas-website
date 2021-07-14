@@ -131,7 +131,8 @@ export default {
     router_base: process.env.ROUTER_BASE || '/',
     name: {
       short: process.env.NAME_SHORT || 'ATLAS',
-      long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems'
+      long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems',
+      mitre: 'MITRE ATLAS' //process.env?
     },
     navigator_url: process.env.NAVIGATOR_URL || 'https://navigator.lt.mitre.org',
     advml: {

@@ -61,7 +61,7 @@ export default {
   }),
   head () {
     return {
-      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ' | MITRE ATLAS'
+      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ` | ${this.$config.name.mitre}`
     }
   },
   computed: {
