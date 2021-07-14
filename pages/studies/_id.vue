@@ -4,12 +4,11 @@
     <div class="text-h4 pt-10">{{ study.name }}</div>
 
     <v-row>
-
       <v-col cols="8">
         <page-section-title>Summary</page-section-title>
 
         <div class="text-body-1 mt-5">
-        {{ study.summary }}
+          {{ study.summary }}
         </div>
       </v-col>
 
@@ -18,18 +17,24 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col>
-        <page-section-title>Procedure</page-section-title>
-          <!-- <span class="pink--text">
+  <v-container>
+      <v-row>
+        <v-col >
+          <page-section-title> Procedure </page-section-title>
+        </v-col>
+        <v-col
+        md="4"
+        offset-md="4"
+        >
+          <navigator-layer-dropdown :study="study" class='mt-5'></navigator-layer-dropdown>
+        </v-col>
+        <!-- <span class="pink--text">
             TODO link to custom layer on ATT&CK Navigator
             <v-icon small>mdi-open-in-new</v-icon>
           </span> -->
 
         <procedure-timeline :study="study" class="mt-5" />
-      </v-col>
-    </v-row>
-
+      </v-row>
     <v-row v-if="study.references">
       <v-col>
         <page-section-title>Sources</page-section-title>
@@ -41,7 +46,7 @@
         </ol>
       </v-col>
     </v-row>
-
+  </v-container>
   </div>
 </template>
 
@@ -49,7 +54,11 @@
 export default {
   head () {
     return {
-      title: this.$store.getters.getStudyById(this.$route.params.id).name + ', Case Study: ' + this.$route.params.id + ' | MITRE ATLAS'
+      title:
+        this.$store.getters.getStudyById(this.$route.params.id).name +
+        ', Case Study: ' +
+        this.$route.params.id +
+        ' | MITRE ATLAS'
     }
   },
   computed: {
