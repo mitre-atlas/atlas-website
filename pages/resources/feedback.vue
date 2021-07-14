@@ -6,12 +6,12 @@
 
     For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
     <br><br>
-    For {{ shortName }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribution</NuxtLink> page.
+    For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
 
     <page-section-title>Mailing List</page-section-title>
 
     <p>
-    For discussions around {{ mitreTitle }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
+    For discussions around {{ shortName }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
     </p>
 
      For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
@@ -25,7 +25,7 @@
 </template>
 <script>
 export default {
-  data: ({$config: {name} }) => ({
+  data: ({ $config: { name } }) => ({
     shortName: name.short,
     title: 'Contact Us',
     mitreTitle: name.mitre

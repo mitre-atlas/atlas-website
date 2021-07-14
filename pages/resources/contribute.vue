@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title>Contribution</page-title>
+    <page-title>{{ title }}</page-title>
 
     {{ mitreTitle }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
