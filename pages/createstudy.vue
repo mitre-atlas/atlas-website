@@ -111,7 +111,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy, dateToString, generateID, yamlParse, downloadStudyFile } from 'static/data/tools.js'
+import { deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -235,10 +235,21 @@ export default {
         const tryYamlText = await file.text()
         try {
           yamlParse(tryYamlText)
+          // can i add if !object here?
+          if (!(typeof tryYamlText === 'object' || typeof yamlParse(tryYamlText) === 'object')) {
+            addError('Invalid YAML')
+          }
         } catch (e) {
           addError('Invalid YAML')
         }
+        // PSEUDO FOR YAML VALIDATE
+        // if (!correct yaml)
+        // addError('Incorrectly formatted YAML')
+        if (!validFormatYAML(yamlParse(tryYamlText))) {
+          addError('Incorrectly formatted YAML')
+        }
       }
+
       this.uploadErrorMessage = errors
       return isValid
     },
