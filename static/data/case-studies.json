@@ -119,7 +119,8 @@
                 "description": "Several vendors started to classify the files as the ransomware family even though most of them won't run.\nThe \"mutant\" samples poisoned the dataset the ML model(s) use to identify and classify this ransomware family.\n"
             }
         ],
-        "reported-by": "Christiaan Beek (@ChristiaanBeek) - McAfee Advanced Threat Research"
+        "reported-by": "Christiaan Beek (@ChristiaanBeek) - McAfee Advanced Threat Research",
+        "references": null
     },
     {
         "id": "AML.CS0003",
