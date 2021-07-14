@@ -239,8 +239,9 @@ export default {
         // PSEUDO FOR YAML VALIDATE
         // if (!correct yaml)
         // addError('Incorrectly formatted YAML')
-        if (!validFormatYAML(yamlParse(tryYamlText))) {
-          addError('Incorrectly formatted YAML')
+        const yamlErr = validFormatYAML(yamlParse(tryYamlText))
+        if (yamlErr !== '') {
+          addError(yamlErr)
         }
       }
 
