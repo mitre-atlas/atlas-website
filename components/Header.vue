@@ -10,7 +10,7 @@
 
     <v-toolbar-title>
       <nuxt-link to="/">
-        <img src="~/assets/MITRE-brand_ATLAS_white.png" height="25" />
+        <img src="~/assets/MITRE-brand_ATLAS_white.svg" height="27" />
       </nuxt-link>
     </v-toolbar-title>
 
