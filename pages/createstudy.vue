@@ -3,26 +3,31 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
+    <!-- <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p> -->
+    <subtitle-2 class="font-weight-medium">1. If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
     <v-row>
-      <v-col sm="5" class="mb-5">
+      <v-col sm="5">
         <v-file-input
+          v-model="chosenFile"
+          class="mb-10"
           :error="uploadError"
           :error-messages="uploadErrorMessage"
-          v-model="chosenFile"
           small-chips
           accept=".yaml,.yml"
-          label="Upload YAML File" />
+          label="Upload YAML File"
+          @change="readJSON"
+        />
       </v-col>
-      <v-col>
+      <!-- <v-col>
         <v-btn class="my-5" @click="readJSON">
           Populate Form
         </v-btn>
-      </v-col>
+      </v-col> -->
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container>
+      <subtitle-2 class="font-weight-medium">2. Fill out each field with case study data.</subtitle-2>
+      <v-container  class="mb-10">
         <v-row>
           <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
         </v-row>
@@ -72,11 +77,11 @@
         </v-row>
       </v-container>
 
-      <add-procedure-step :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
-      <edit-procedure :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+      <subtitle-2 class="font-weight-medium">3. Add procedure steps to your case study.</subtitle-2>
+      <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+      <add-procedure-step class="mb-16 mx-8" :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
 
-      <add-source :source-description="sourceDescription" :url="url" @clicked="addSource" />
-
+      <subtitle-2 class="font-weight-medium">4. Add references to your case study.</subtitle-2>
       <div v-if="references.length" class="mx-8">
         <ol>
           <li v-for="(value, key) in references" :key="key">
@@ -87,10 +92,24 @@
           </li>
         </ol>
       </div>
+      <add-source class="mx-8" :source-description="sourceDescription" :url="url" @clicked="addSource" />
 
-      <v-btn class="my-5" outlined :disabled="!valid" x-large @click="submitStudy">
-        Download Case Study
-      </v-btn>
+      <v-tooltip right color="light-blue lighten-4">
+        <template #activator="{ on, attrs }">
+          <v-btn
+            class="my-5"
+            outlined
+            :disabled="!valid"
+            v-bind="attrs"
+            x-large
+            v-on="on"
+            @click="submitStudy"
+          >
+            Download Case Study
+          </v-btn>
+        </template>
+        <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
+      </v-tooltip>
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
