@@ -79,7 +79,17 @@
 
       <subtitle-2 class="font-weight-medium">3. Add procedure steps to your case study.</subtitle-2>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
-      <add-procedure-step class="mb-16 mx-8" :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
+      <add-procedure-step
+        class="mb-16 mx-8"
+        v-if="addingStep"
+        :select-tactic="selectTactic"
+        :select-technique="selectTechnique"
+        :description="description"
+        @clicked="addProcedureStep"
+      />
+      <div v-else>
+        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
+      </div>
 
       <subtitle-2 class="font-weight-medium">4. Add references to your case study.</subtitle-2>
       <div v-if="references.length" class="mx-8">
@@ -92,7 +102,10 @@
           </li>
         </ol>
       </div>
-      <add-source class="mx-8" :source-description="sourceDescription" :url="url" @clicked="addSource" />
+      <add-source class="mx-8" v-if="addingSource" :source-description="sourceDescription" :url="url" @clicked="addSource" />
+      <div v-else>
+        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
+      </div>
 
       <v-tooltip right color="light-blue lighten-4">
         <template #activator="{ on, attrs }">
@@ -154,7 +167,9 @@ export default {
       url: '',
       reported: '',
       procedure: [],
+      addingStep: true,
       references: [],
+      addingSource: true,
       errorMsg: '',
       uploadError: false,
       uploadErrorMessage: [],
@@ -291,9 +306,11 @@ export default {
     },
     addProcedureStep (newStep) {
       this.procedure.push(newStep)
+      this.addingStep = false
     },
     addSource (newSource) {
       this.references.push(newSource)
+      this.addingSource = false
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
