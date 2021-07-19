@@ -32,7 +32,7 @@
                 "description": "We queried the model with our adversarial examples and adjusted them until the model was evaded.\n"
             },
             {
-                "tactic": "TA0040",
+                "tactic": "TA0005",
                 "technique": "AML.T0015",
                 "description": "With the crafted samples we performed online evasion of the ML-based spyware detection model.\nThe crafted packets were identified as benign with >80% confidence.\nThis evaluation demonstrates that adversaries are able to bypass advanced ML detection techniques, by crafting samples that are misclassified by an ML model.\n"
             }
@@ -119,7 +119,8 @@
                 "description": "Several vendors started to classify the files as the ransomware family even though most of them won't run.\nThe \"mutant\" samples poisoned the dataset the ML model(s) use to identify and classify this ransomware family.\n"
             }
         ],
-        "reported-by": "Christiaan Beek (@ChristiaanBeek) - McAfee Advanced Threat Research"
+        "reported-by": "Christiaan Beek (@ChristiaanBeek) - McAfee Advanced Threat Research",
+        "references": null
     },
     {
         "id": "AML.CS0003",
@@ -149,7 +150,7 @@
                 "description": "Using this knowledge, the researchers fused attributes of known good files with malware to manually create adversarial malware.\n"
             },
             {
-                "tactic": "TA0040",
+                "tactic": "TA0005",
                 "technique": "AML.T0015",
                 "description": "Due to the secondary model overriding the primary, the researchers were effectively able to bypass the ML model.\n"
             }
@@ -483,12 +484,7 @@
             {
                 "tactic": "TA0042",
                 "technique": "AML.T0002",
-                "description": "The team identified and obtained the publically available base model.\n"
-            },
-            {
-                "tactic": "TA0042",
-                "technique": "AML.T0002",
-                "description": "The team identified and obtained the publically dataset used by the model\n"
+                "description": "The team identified and obtained the publicly available base model.\n"
             },
             {
                 "tactic": "AML.TA0000",
