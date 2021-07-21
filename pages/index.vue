@@ -29,7 +29,6 @@
         <!-- <v-fade-transition> -->
         <!-- <v-scroll-y-reverse-transition> -->
         <hover-preview
-          :t="hoverTargetID"
           :target-id="hoverTargetID"
           :parent-event="mouseEvent"
         ></hover-preview>
