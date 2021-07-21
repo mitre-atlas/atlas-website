@@ -1,6 +1,6 @@
 <template>
   <div class="mx-8">
-    <!-- <breadcrumbs></breadcrumbs> -->
+    <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
     <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
@@ -102,6 +102,12 @@
     </v-form>
   </div>
 </template>
+
+<router>
+  {
+    path: '/studies/create'
+  }
+</router>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -239,8 +245,9 @@ export default {
         // PSEUDO FOR YAML VALIDATE
         // if (!correct yaml)
         // addError('Incorrectly formatted YAML')
-        if (!validFormatYAML(yamlParse(tryYamlText))) {
-          addError('Incorrectly formatted YAML')
+        const yamlErr = validFormatYAML(yamlParse(tryYamlText))
+        if (yamlErr !== '') {
+          addError(yamlErr)
         }
       }
 

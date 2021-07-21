@@ -29,7 +29,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({
+  data: ({ $config: { name } }) => ({
     title: 'Case Studies',
     description: 'Browse the list of case studies below.',
     itemsPerPage: '20',
@@ -50,7 +50,7 @@ export default {
   },
   head () {
     return {
-      title: 'Case Studies List | MITRE ATLAS'
+      title: `${this.title} List | ${this.$config.name.mitre}`
     }
   }
 }

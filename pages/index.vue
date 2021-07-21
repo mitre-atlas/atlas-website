@@ -1,14 +1,15 @@
 <template>
   <div>
+    <!--
     <v-alert
       color="blue"
       dismissible
       text
       type="info"
     >
-      MITRE & Microsoft are hosting the 6th Annual Security Data Science Colloquium on Adversarial Machine Learning on June 29th.
-      Learn more under <nuxt-link to='/resources/info'>general information</nuxt-link>!
+
     </v-alert>
+    -->
 
     <!-- <div class="text-h2 my-5 text-center">{{ $config.name.short }}</div>
     <div class="text-h4 mb-5 text-center">{{ $config.name.long }}</div> -->
@@ -23,7 +24,7 @@
         Along with case studies demonstrating attacks on ML systems, this knowledge base enables machine learning and security communities to better understand ML threats.
         </p> -->
         <p>
-        MITRE {{ $config.name.short }}, {{ $config.name.long }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. ATLAS is modeled after the <a href="https://attack.mitre.org" >MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
+        {{ mitreTitle }}, {{ longName }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. {{ shortName }} is modeled after the <a href="https://attack.mitre.org" >MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
         </p>
         <!-- <v-expand-transition> -->
         <!-- <v-fade-transition> -->
@@ -37,7 +38,7 @@
         <!-- </v-expand-transition> -->
         <div @mousemove="passMouse" @mouseenter="passMouse" @mouseleave="passMouse" @wheel="passMouse">HELLO WORLD</div>
         <p>
-        ATLAS enables <span @mousemove="passMouse" @mouseenter="passMouse" @mouseleave="passMouse" @wheel="passMouse">researchers</span> to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. <span @mousemove="passMouse" @mouseenter="passMouse" @mouseleave="passMouse" @wheel="passMouse">There are a</span> growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed ATLAS to raise awareness of these threats and present them in a way familiar to security researchers.
+        {{ shortName }} enables researchers to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed {{ shortName }} to raise awareness of these threats and present them in a way familiar to security researchers.
         </p>
         <!-- <homepage-links /> -->
          <!-- <page-title class="mt-10 text-center">{{ $config.name.short }}</page-title> -->
@@ -45,9 +46,9 @@
       </div>
       <div>
         <p>
-          The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
+          The {{ shortName }} Matrix below shows the progression of tactics used in attacks as columns from left to right,
           with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
-           ATLAS tactics and techniques using the links at the top navigation bar.
+          {{ shortName }} tactics and techniques using the links at the top navigation bar.
         </p>
 
         </div>
@@ -66,51 +67,11 @@ import HoverPreview from '../components/HoverPreview.vue'
 export default {
   components: { HoverPreview },
   data: ({ $config: { name } }) => ({
-    title: `${name.long}`,
-
-    // enablePreview: false,
-    // keepPreviewEnabled: false,
-    // hoverPosition: { x: 0, y: 0 },
-    // mousePosition: { x: 0, y: 0 },
-    // isHovering: false,
-    // hoverDelay: 500,
-    // lastElementHTML: null, // change to diff by targetID
-    mouseEvent: null,
-    hoverTargetID: 'AML.T0010.000'
-  }),
-  methods: {
-    passMouse (event) {
-      // console.log(event)
-      // console.log('mouse event sent')
-      this.mouseEvent = event
-    }
-    // setPreview (event) {
-    //   const eventName = event.type
-    //   const element = event.target
-    //   const elementPos = element.getBoundingClientRect()
-    //   const elementHTML = element.innerHTML
-    //   const disablePreviewEvents = ['mouseleave', 'wheel']
-    //   const enablePreview = !disablePreviewEvents.includes(eventName)
-    //   if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
-    //   this.isHovering = enablePreview
-    //   this.lastElementHTML = element.innerHTML
-    //   console.log(`${eventName} set hover status to ${this.isHovering}`)
-    //   setTimeout(function (that, event) {
-    //     console.log(`${eventName} wants to set ${enablePreview}, hover status at ${that.isHovering}`)
-    //     if ((this.lastElementHTML === elementHTML) && enablePreview !== that.isHovering) { return }
-    //     if (enablePreview) {
-    //       const x = that.mousePosition.x // + window.scrollX
-    //       const y = elementPos.top + window.scrollY
-    //       const gmm = that.enablePreview
-    //       that.enablePreview = true
-    //       if (gmm) { return }
-    //       that.hoverPosition = { x, y }
-    //     } else {
-    //       that.enablePreview = false
-    //     }
-    //   }, this.hoverDelay, this, event)
-    // }
-  }
+    shortName: name.short,
+    longName: name.long,
+    mitreTitle: name.mitre,
+    title: `${name.long}`
+  })
 }
 </script>
 
