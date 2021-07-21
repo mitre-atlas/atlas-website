@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     passMouse (event, hoverItem = false) {
-      console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}`)
+      // console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}`)
       if (hoverItem) { this.hoverTargetID = hoverItem.id }
       if (hoverItem['object-type'] === 'technique') {
         this.appearRight = false
@@ -109,7 +109,7 @@ export default {
       } else {
         this.appearRight = true
         this.fromRight = false
-        this.hoverOffset = 40 // -(400 + 50)
+        this.hoverOffset = 40
       }
       this.mouseEvent = event
     },
