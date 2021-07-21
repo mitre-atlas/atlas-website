@@ -4,7 +4,8 @@
     <page-title>{{ title }}</page-title>
 
     <!-- <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p> -->
-    <subtitle-2 class="font-weight-medium">1. If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
+    <h3 class="font-weight-medium">1. Upload File</h3>
+    <subtitle-2 class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
     <v-row>
       <v-col sm="5">
         <v-file-input
@@ -26,7 +27,8 @@
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <subtitle-2 class="font-weight-medium">2. Fill out each field with case study data.</subtitle-2>
+      <h3 class="font-weight-medium">2. Complete Fields</h3>
+      <subtitle-2 class="ml-6">Fill out each field with case study data.</subtitle-2>
       <v-container  class="mb-10">
         <v-row>
           <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
@@ -44,40 +46,23 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col sm="4" class="pl-0">
-            <v-menu
-              v-model="dateMenu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template #activator="{ on, attrs }">
-                <v-text-field
-                  v-model="date"
-                  label="Incident date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                v-model="date"
-                @input="dateMenu = false"
-              />
-            </v-menu>
-          </v-col>
-        </v-row>
+        <date-select
+          :key="year"
+          :year="year"
+          :month="month"
+          :date="date"
+          @yearUpdate="year = $event"
+          @monthUpdate="month = $event"
+          @dateUpdate="date = $event"
+        />
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
         </v-row>
       </v-container>
 
-      <subtitle-2 class="font-weight-medium">3. Add procedure steps to your case study.</subtitle-2>
+      <h3 class="font-weight-medium">3. Procedure</h3>
+      <subtitle-2 class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</subtitle-2>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
         class="mb-16 mx-8"
@@ -91,7 +76,8 @@
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
       </div>
 
-      <subtitle-2 class="font-weight-medium">4. Add references to your case study.</subtitle-2>
+      <h3 class="font-weight-medium">4. References</h3>
+      <subtitle-2 class="ml-6">Add references to your case study, each containing a source and/or url.</subtitle-2>
       <div v-if="references.length" class="mx-8">
         <ol>
           <li v-for="(value, key) in references" :key="key">
@@ -151,8 +137,15 @@ export default {
       title: 'Create A Case Study',
       valid: true,
       chosenFile: null,
-      date: new Date().toISOString().substr(0, 10),
-      dateMenu: false,
+      year: null,
+      month: null,
+      date: null,
+      // year: new Date().toISOString().substr(0, 10),
+      // month: new Date().toISOString().substr(0, 10),
+      // date: new Date().toISOString().substr(0, 10),
+      // yearMenu: false,
+      // monthMenu: false,
+      // dateMenu: false,
       selectTactic: null,
       selectTechnique: null,
       description: '',
@@ -203,7 +196,14 @@ export default {
       this.meta = studyFileObj.meta ?? this.meta
       this.titleStudy = inputStudy.name
       this.summary = inputStudy.summary
-      this.date = inputStudy['incident-date']
+      if (inputStudy['incident-date'].length > 4) {
+        const dateParse = inputStudy['incident-date'].split('-')
+        this.year = parseInt(dateParse[0])
+        if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
+        if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
+      } else {
+        this.year = parseInt(inputStudy['incident-date'])
+      }
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']
       if (inputStudy.references === [] || !(inputStudy.references)) {
@@ -320,12 +320,15 @@ export default {
         this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
         this.meta['date-updated'] = nowDateString
         this.meta.uuid = this.meta.uuid ?? generateID()
+        let fullIncDate = '' + String(this.year)
+        if (this.month !== null) { fullIncDate += '-' + String(this.month) }
+        if (this.date !== null) { fullIncDate += '-' + String(this.date) }
         const study = {
           meta: this.meta,
           study: {
             name: this.titleStudy,
             summary: this.summary,
-            'incident-date': this.date,
+            'incident-date': fullIncDate,
             procedure: deepCopy(this.procedure),
             'reported-by': this.reported,
             references: deepCopy(this.references)
