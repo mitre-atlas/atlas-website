@@ -26,17 +26,7 @@
         <p>
         {{ mitreTitle }}, {{ longName }}, is a knowledge base of adversary tactics, techniques, and case studies for machine learning (ML) systems based on real-world observations, demonstrations from ML red teams and security groups, and the state of the possible from academic research. {{ shortName }} is modeled after the <a href="https://attack.mitre.org" >MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics and techniques are complementary to those in ATT&CK.
         </p>
-        <!-- <v-expand-transition> -->
-        <!-- <v-fade-transition> -->
-        <!-- <v-scroll-y-reverse-transition> -->
-        <hover-preview
-          :target-id="hoverTargetID"
-          :parent-event="mouseEvent"
-        ></hover-preview>
-        <!-- </v-scroll-y-reverse-transition> -->
-        <!-- </v-fade-transition> -->
-        <!-- </v-expand-transition> -->
-        <div @mousemove="passMouse" @mouseenter="passMouse" @mouseleave="passMouse" @wheel="passMouse">HELLO WORLD</div>
+
         <p>
         {{ shortName }} enables researchers to navigate the landscape of <NuxtLink to="resources/adversarial-ml-101">threats to machine learning systems</NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed {{ shortName }} to raise awareness of these threats and present them in a way familiar to security researchers.
         </p>
@@ -62,10 +52,8 @@
 </template>
 
 <script>
-import HoverPreview from '../components/HoverPreview.vue'
 
 export default {
-  components: { HoverPreview },
   data: ({ $config: { name } }) => ({
     shortName: name.short,
     longName: name.long,

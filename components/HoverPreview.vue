@@ -116,7 +116,6 @@ export default {
       const eventName = event.type
       const element = event.target
       const elementPos = element.getBoundingClientRect()
-      // const this.targetId = this.targetId // element.innerHTML
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const enablePreview = !disablePreviewEvents.includes(eventName)
       if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
