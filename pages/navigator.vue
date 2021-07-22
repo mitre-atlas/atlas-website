@@ -6,13 +6,13 @@
     <!-- Below is just placeholder text for future language, for now I just put some language to start with so that it was there -->
 
     <p>
-      To view MITRE ATLAS data alongside MITRE ATT&CK<sup>&reg;</sup> Enterprise tactics and techniques, visit the ATLAS customized version of the ATT&CK Navigator. It can be viewed on another page via the link below, or in the window further down this page.
+      To view {{ mitreTitle }} data alongside MITRE ATT&CK<sup>&reg;</sup> Enterprise tactics and techniques, visit the {{ shortName }} customized version of the ATT&CK Navigator. It can be viewed on another page via the link below, or in the window further down this page.
     </p>
 
     <p>
       <v-card-actions class="justify-center">
         <v-btn target="_blank" :href=$config.navigator_url>
-          ATLAS Navigator
+          {{ title }}
         </v-btn>
       </v-card-actions>
     </p>
@@ -41,11 +41,13 @@
 
 export default {
   data: ({ $config: { name } }) => ({
-    title: `${name.short} Navigator`
+    shortName: name.short,
+    title: `${name.short} Navigator`,
+    mitreTitle: name.mitre
   }),
   head () {
     return {
-      title: 'Navigator | MITRE ATLAS'
+      title: `${this.title} | ${this.mitreTitle}`
     }
   }
 //   computed: {
