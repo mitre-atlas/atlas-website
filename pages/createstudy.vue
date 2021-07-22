@@ -17,7 +17,9 @@
           accept=".yaml,.yml"
           label="Upload YAML File"
           @change="readJSON"
-        />
+        >
+          <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
+        </v-file-input>
       </v-col>
       <!-- <v-col>
         <v-btn class="my-5" @click="readJSON">
@@ -137,6 +139,7 @@ export default {
       title: 'Create A Case Study',
       valid: true,
       chosenFile: null,
+      initialFileName: '',
       year: null,
       month: null,
       date: null,
@@ -249,6 +252,7 @@ export default {
         fileType = file.name.slice(extStartIndex)
       }
       if (expectedTypes.includes(fileType)) { // nominal
+        this.initialFileName = file.name
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
           value: generateID() + '.yaml'
