@@ -14,10 +14,10 @@
     @mouseleave="setPreview"
     :style="cardCSS">
       <v-card-title>{{ targetInfo.name }}</v-card-title>
-      <v-card-subtitle>{{ targetInfo['object-type']}}</v-card-subtitle>
+      <v-card-subtitle>{{ targetInfo.id }}, {{ targetInfo['object-type']}}</v-card-subtitle>
       <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
-      <v-card-actions><v-icon>mdi-arrow-right</v-icon></v-card-actions>
+      <v-card-actions><v-icon :style="iconCSS">mdi-arrow-right</v-icon></v-card-actions>
     </v-card>
   </v-fade-transition>
 </template>
@@ -38,6 +38,7 @@ export default {
     delay: { default: 500, type: Number }
   },
   data: () => ({
+    iconLarge: false,
     targetId: null,
     isHoveringSelf: false,
     cardWidth: 400,
@@ -47,8 +48,10 @@ export default {
     isHovering: false,
     lastTargetId: null,
     self: null,
-    characterLimit: 350,
+    characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
+    maxLineHeight: 7,
 
+    iconCSS: {},
     cardCSS: { left: 0, top: 0 }
   }),
   watch: {
@@ -82,7 +85,8 @@ export default {
       const tagRegex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
       text = text.replace(tagRegex, '')
       if (text.length > this.characterLimit) {
-        text = text.slice(0, this.characterLimit) + '...'
+        // text = text.slice(0, this.characterLimit) + '...'
+        text = text + '...'
       }
       return text
     },
@@ -94,11 +98,13 @@ export default {
         this.isHoveringSelf = true
         // console.log('Emitting keep: TRUE', `delay at ${this.delay}`)
         // this.$emit('keep-preview', true)
+        this.iconCSS = { color: '#64B5F6' }
         this.keepPreviewEnabled = true
       } else {
+        this.iconCSS = {}
         this.isHoveringSelf = false
         setTimeout((that) => {
-          if (!this.isHoveringSelf) {
+          if (!this.isHoveringSelf && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
             that.keepPreviewEnabled = false
@@ -114,7 +120,7 @@ export default {
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const enablePreview = !disablePreviewEvents.includes(eventName)
       if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
-      if (eventName === 'click') { this.enablePreview = false; return }
+      if (eventName === 'click') { this.enablePreview = false; this.keepPreviewEnabled = false; return }
       this.isHovering = enablePreview
       this.lastTargetId = this.targetId
       // console.log(`${eventName} set hover status to ${this.isHovering}, lastHTML: ${this.targetId}`)
@@ -127,6 +133,10 @@ export default {
         // console.log((that.lastTargetId === this.targetId, enablePreview !== that.isHovering)
         if ((that.lastTargetId === that.targetId) && enablePreview !== that.isHovering) { return }
         if ((that.lastTargetId !== that.targetId) && enablePreview === false) { return }
+        // console.log((that.lastTargetId !== that.currentTargetId), that.keepPreviewEnabled, enablePreview)
+        // if ((that.targetId === that.currentTargetId) && that.keepPreviewEnabled && enablePreview) { return }
+        // console.log(eventName, !enablePreview, that.isHovering)
+        // if (!enablePreview && that.isHovering) { return }
 
         if (enablePreview) {
           that.enablePreview = true
@@ -192,6 +202,15 @@ export default {
     word-break: normal;
   }
 
+  .v-card__text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+  }
+
   .v-card-actions {
     position: relative;
   }
@@ -201,7 +220,8 @@ export default {
     right: 30px;
     bottom: 20px
   }
-
+  /* .icon-hover {
+  } */
   #text-fade {
     background:
       linear-gradient(to bottom,
