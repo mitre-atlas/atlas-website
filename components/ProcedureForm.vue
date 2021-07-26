@@ -1,10 +1,11 @@
 <template>
   <div>
     <hover-preview
+    :y-off="-24"
     :x-off="hoverOffset"
     :appear-right="appearRight"
     :from-right="fromRight"
-    :current-target-id="hoverTargetID"
+    :new-target-id="hoverTargetID"
     :parent-event="mouseEvent" />
 
     <v-card-actions class="px-md-4 mx-lg-auto">

@@ -14,10 +14,11 @@
     @mouseleave="setPreview"
     :style="cardCSS">
       <v-card-title>{{ targetInfo.name }}</v-card-title>
-      <v-card-subtitle>{{ targetInfo.id }}, {{ targetInfo['object-type']}}</v-card-subtitle>
+      <v-card-subtitle>{{ targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle>
       <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
-      <v-card-actions><v-icon :style="iconCSS">mdi-arrow-right</v-icon></v-card-actions>
+      <v-card-actions><v-icon id="icon">mdi-arrow-right</v-icon></v-card-actions> <!--  :style="iconCSS" -->
+      <div id="arrow"></div>
     </v-card>
   </v-fade-transition>
 </template>
@@ -28,17 +29,17 @@ export default {
   // props: ['x-off', 'y-off', 'delay', 'targetID', 'parentEvent'],
   props: {
     'x-off': { default: 0, type: Number },
-    'y-off': { default: 64 - 50, type: Number }, // the 64 is the height of the topbar, -30 is so it wont overlap the text
+    'y-off': { default: -50, type: Number }, // the 64 is the height of the topbar, -30 is so it wont overlap the text
     'parent-event': { default: null },
     appearRight: { default: false },
     fromRight: { default: false },
     appearBottom: { default: false },
     fromBottom: { default: false },
-    currentTargetId: { default: '', type: String },
+    newTargetId: { default: '', type: String },
     delay: { default: 500, type: Number }
   },
   data: () => ({
-    iconLarge: false,
+    // iconLarge: false,
     targetId: null,
     isHoveringSelf: false,
     cardWidth: 400,
@@ -46,13 +47,15 @@ export default {
     keepPreviewEnabled: false,
     mousePosition: { x: 0, y: 0 },
     isHovering: false,
-    lastTargetId: null,
+    baseYOffset: 64,
+    // lastTargetId: null,
     self: null,
-    characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
+    // characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
     maxLineHeight: 7,
-
-    iconCSS: {},
-    cardCSS: { left: 0, top: 0 }
+    thread: null,
+    // iconCSS: {},
+    cardCSS: { left: '-1px', top: '-1px' }
+    // lastPos: { left: 0, top: 0 }
   }),
   watch: {
     // watch x/y values for slide transition
@@ -71,6 +74,7 @@ export default {
     }
   },
   computed: {
+    characterLimit () { return this.maxLineHeight * 50 },
     targetLocation () {
       return `/${this.targetInfo['object-type']}s/${this.targetId}`
     },
@@ -94,23 +98,46 @@ export default {
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const eventName = event.type
       const enablePreview = !disablePreviewEvents.includes(eventName)
+      const icon = document.querySelector('#icon')
+      let iconSize = 24
+      // let iconOffset = iconSize * (-5/8) + 45
+      const factor = 1.2
       if (enablePreview) {
         this.isHoveringSelf = true
         // console.log('Emitting keep: TRUE', `delay at ${this.delay}`)
         // this.$emit('keep-preview', true)
-        this.iconCSS = { color: '#64B5F6' }
+        // const icon = document.querySelector('#icon')
+        // iconSize = 32
+        iconSize *= factor
+        // iconOffset = 25
+        icon.style.color = 'rgb(100, 181, 246)' // light blue
+        // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+        // icon.style.right = `${iconOffset}px`
+        // icon.style.bottom = `${iconOffset - 10}px`
+        // this.iconCSS = { color: '#64B5F6' }
         this.keepPreviewEnabled = true
       } else {
-        this.iconCSS = {}
         this.isHoveringSelf = false
+        icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
+        // this.iconCSS = {}
+        // iconSize = 24
+        // iconOffset = 30
+        // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+        // icon.style.right = `${iconOffset}px`
+        // icon.style.bottom = `${iconOffset - 10}px`
         setTimeout((that) => {
           if (!this.isHoveringSelf && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
+            // console.log(that.enablePreview, that.keepPreviewEnabled)
             that.keepPreviewEnabled = false
           }
         }, this.delay, this)
       }
+      const iconOffset = iconSize * (-5 / 8) + 45
+      icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+      icon.style.right = `${iconOffset}px`
+      icon.style.bottom = `${iconOffset - 10}px`
     },
     setPreviewParent (event) {
       const eventName = event.type
@@ -118,20 +145,25 @@ export default {
       const elementPos = element.getBoundingClientRect()
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const enablePreview = !disablePreviewEvents.includes(eventName)
+      const previouslyDisabled = !(this.enablePreview || this.keepPreviewEnabled)
       if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
       if (eventName === 'click') { this.enablePreview = false; this.keepPreviewEnabled = false; return }
       this.isHovering = enablePreview
-      this.lastTargetId = this.targetId
+      // this.lastTargetId = this.currentTargetId
+      // const intendedID = this.targetId
       // console.log(`${eventName} set hover status to ${this.isHovering}, lastHTML: ${this.targetId}`)
       // console.log(document.querySelector('#hcard'))
       // console.log('fru: ', h, this.elHeight, this.noE, document.querySelector('#hcard'))
-      setTimeout(function (that) {
+      // console.log(`BEFORE (enabling? ${enablePreview}): TargetID: ${this.targetId}, LastTargetID: ${this.lastTargetId}, CurrentTargetID: ${this.currentTargetId}`)
+      clearTimeout(this.thread)
+      this.thread = setTimeout(function (that) {
         // console.log('finished waiting,', eventName, element, elementPos, this.targetId, disablePreviewEvents, enablePreview, that.lastTargetId)
         // console.log(`${eventName} wants to set ${enablePreview}, hover status at ${that.isHovering}`)
         // console.log(this.lastTargetId === this.targetId, enablePreview !== that.isHovering, 'CONDS')
         // console.log((that.lastTargetId === this.targetId, enablePreview !== that.isHovering)
-        if ((that.lastTargetId === that.targetId) && enablePreview !== that.isHovering) { return }
-        if ((that.lastTargetId !== that.targetId) && enablePreview === false) { return }
+        // console.log(`AFTER (enabling? ${enablePreview}): TargetID: ${that.targetId}, LastTargetID: ${that.lastTargetId}, CurrentTargetID: ${that.currentTargetId}, intended: ${intendedID}`)
+        // if ((that.lastTargetId === that.targetId) && enablePreview !== that.isHovering) { return }
+        // if ((that.lastTargetId !== that.targetId) && enablePreview === false) { return }
         // console.log((that.lastTargetId !== that.currentTargetId), that.keepPreviewEnabled, enablePreview)
         // if ((that.targetId === that.currentTargetId) && that.keepPreviewEnabled && enablePreview) { return }
         // console.log(eventName, !enablePreview, that.isHovering)
@@ -139,7 +171,7 @@ export default {
 
         if (enablePreview) {
           that.enablePreview = true
-          that.targetId = that.currentTargetId
+          that.targetId = that.newTargetId
           // console.log('p:', that.mousePosition.x)
           setTimeout(function () { // spawn a new thread so we can render AND get rendering info at the same time >:)
             if (!that.self) { return }
@@ -147,7 +179,7 @@ export default {
             // console.log(`From right? ${that.fromRight}; From bottom? ${that.fromBottom}`)
             const [x, y] = [
               (that.xOff === 0) ? that.mousePosition.x : (that.appearRight ? elementPos.right : elementPos.left) + that.xOff,
-              (that.appearBottom ? elementPos.bottom : elementPos.top) + window.scrollY - that.yOff
+              (that.appearBottom ? elementPos.bottom : elementPos.top) + window.scrollY - (that.yOff + that.baseYOffset)
             ]
             let [left, top] = [`${x}px`, `${y}px`]
             const selfElement = that.self.$el // document.querySelector('#hcard')
@@ -162,29 +194,97 @@ export default {
             // console.log(`left: ${x + that.cardWidth} (o: ?>) bounds: ${window.innerWidth - offscreenMargin}`)
             // console.log(`top: ${y + selfHeight - window.scrollY} (o: ?>) bounds: ${window.innerHeight - offscreenMargin}`)
             // console.log(ele.getBoundingClientRect().height)
+            let onLeft = true
+            let onTop = true
+
             if (isOffscreenLeft) {
-              console.log('offscreen detected!')
+              // console.log('offscreen detected!')
+              onLeft = false
               left = `${x - that.cardWidth}px`
             }
             // console.log(this.$refs)
             // console.log(that.self.height)
             if (isOffscreenTop) {
+              onTop = false
               // console.log('offscreen detected!')
               // console.log(y, that.yOff, elementPos.height)
-              top = `${y - selfHeight - (5 * that.yOff)}px` // idk why but '5' just works lol
+              // top = `${y - selfHeight - (5 * (that.yOff + that.baseYOffset))}px` // idk why but '5' just works lol
+              top = `${y - selfHeight}px`
+              // console.log(top)
             }
             // console.log('width: ' + that.cardWidth)
             if (that.fromRight) {
+              onLeft = false
               // console.log(left, that.cardWidth, left - that.cardWidth)
               left = `${x - that.cardWidth}px`
               // console.log(left, x, that.cardWidth)
             }
-            that.cardCSS = { left, top }
+
+            const arrow = document.querySelector('#arrow')
+            const arrowSize = 15
+            const arrowCSS = {}
+            arrowCSS.width = `${arrowSize}px`
+            arrowCSS.height = `${arrowSize}px`
+            arrowCSS.display = 'block'
+            // top: 0px;  left: calc(-1 * var(--size) + 2px);
+            // arrow.style['--size'] = `${arrowSize}px`
+            if (onLeft && onTop) {
+              arrowCSS.inset = `0px auto auto ${-arrowSize + 2}px`
+              // arrowCSS.top = '0px'
+              // arrowCSS.left = `${-arrowSize + 2}px`
+              arrowCSS.transform = 'scaleX(1) scaleY(1)'
+              // console.log('Arrow pos: 1')
+            } else if (!onLeft && onTop) {
+              arrowCSS.inset = `0px ${-arrowSize + 2}px auto auto`
+              // arrowCSS.top = '0px'
+              // arrowCSS.right = `${-arrowSize + 2}px`
+              arrowCSS.transform = 'scaleX(-1) scaleY(1)'
+              // console.log('Arrow pos: 2')
+            } else if (onLeft && !onTop) {
+              arrowCSS.inset = `auto auto 0px ${-arrowSize + 2}px`
+              // arrowCSS.bottom = '0px'
+              // arrowCSS.left = `${-arrowSize + 2}px`
+              arrowCSS.transform = 'scaleX(1) scaleY(-1)'
+              // console.log('Arrow pos: 3')
+            } else {
+              arrowCSS.inset = `auto ${-arrowSize + 2}px 0px auto`
+              // arrowCSS.bottom = '0px'
+              // arrowCSS.right = `${-arrowSize + 2}px`
+              arrowCSS.transform = 'scaleX(-1) scaleY(-1)'
+              // console.log('Arrow pos: 4')
+            }
+
+            for (const key in arrowCSS) {
+              arrow.style[key] = arrowCSS[key]
+            }
+
+            // console.log(arrow, arrow.style, arrowCSS)
+
+            // console.log(left)
+            // selfElement.style.top = '1px'
+            // selfElement.style.transition = 'top 1s'
+            // console.log(selfElement.style.top)
+            // const currentTop = selfElement.style.top
+            // console.log(previouslyDisabled, currentTop, top)
+            // if (previouslyDisabled) {
+            //   that.cardCSS = { top, left }
+            // } else {
+            //   setTimeout(function () { // settimeout is literal black magic
+            //     selfElement.style.top = top
+            //   }, 50)
+            //   that.cardCSS = { left }
+            // }
+
+            setTimeout(function () { // settimeout is literal black magic
+              selfElement.style.top = top
+            }, previouslyDisabled ? 0 : 50)
+            that.cardCSS = { left }
+            // console.log(currentTop)
           }, 0)
         } else {
           // console.log('killed preview')
           that.enablePreview = false
-          this.lastTargetId = null
+          // this.lastTargetId = null
         }
       }, this.delay, this)
     }
@@ -195,6 +295,9 @@ export default {
 <style scoped>
   .v-card {
     position: absolute;
+    transition: top 0.5s;
+    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%, 5% 6%); */
+    /* top: 1px; */
   }
 
   .v-card__text, .v-card__title {
@@ -215,9 +318,20 @@ export default {
   }
 
   .v-icon {
+    transition: color 0.5s, font 0.5s, right 0.5s, bottom 0.5s;
     position: absolute;
     right: 30px;
-    bottom: 20px
+    bottom: 20px;
+  }
+
+  #arrow {
+    /* --size: 20px; */
+    display: none;
+    /* width: var(--size);
+    height: var(--size); */
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    background-color: white;
+    position: absolute;
   }
   /* .icon-hover {
   } */
