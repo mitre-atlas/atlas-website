@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     passMouse (event, hoverItem = false) {
-      // console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}`)
+      console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}`)
       if (hoverItem) { this.hoverTargetID = hoverItem.id }
       if (hoverItem['object-type'] === 'technique') {
         this.appearRight = false

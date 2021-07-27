@@ -117,6 +117,7 @@ export default {
         // icon.style.bottom = `${iconOffset - 10}px`
         // this.iconCSS = { color: '#64B5F6' }
         this.keepPreviewEnabled = true
+        console.log('Preview locked!')
       } else {
         this.isHoveringSelf = false
         icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
@@ -127,8 +128,9 @@ export default {
         // icon.style.right = `${iconOffset}px`
         // icon.style.bottom = `${iconOffset - 10}px`
         this.selfThread = setTimeout((that) => {
-          // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
-          if (!this.isHoveringSelf && !this.isHovering) {
+          this.selfThread = null
+          console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
+          if (!this.isHoveringSelf) { // && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
             // console.log(that.enablePreview, that.keepPreviewEnabled)
@@ -174,6 +176,7 @@ export default {
         if (enablePreview) {
           that.enablePreview = true
           that.targetId = that.newTargetId
+          that.keepPreviewEnabled = false
           // console.log('p:', that.mousePosition.x)
           setTimeout(function () { // spawn a new thread so we can render AND get rendering info at the same time >:)
             if (!that.self) { return }
@@ -287,12 +290,15 @@ export default {
           }, 0)
         } else {
           // console.log('killed preview')
-          // console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
+          console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
           that.enablePreview = false
 
-          if (that.keepPreviewEnabled && that.selfThread && that.selfThread._destroyed) {
-            // console.log('Killed a hanging persistence')
-            that.keepPreviewEnabled = false
+          if (that.keepPreviewEnabled) {
+            console.log("Couldn't kill;", that.selfThread, that.isHoveringSelf)
+            if (!that.selfThread && !that.isHoveringSelf) {
+              console.log('Killed a hanging persistence')
+              that.keepPreviewEnabled = false
+            }
           }
           // this.lastTargetId = null
         }
