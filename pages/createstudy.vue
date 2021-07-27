@@ -3,26 +3,35 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p>
+    <!-- <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p> -->
+    <h3 class="font-weight-medium">1. Upload File</h3>
+    <subtitle-2 class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
     <v-row>
-      <v-col sm="5" class="mb-5">
+      <v-col sm="5">
         <v-file-input
+          v-model="chosenFile"
+          class="mb-10"
           :error="uploadError"
           :error-messages="uploadErrorMessage"
-          v-model="chosenFile"
           small-chips
           accept=".yaml,.yml"
-          label="Upload YAML File" />
+          label="Upload YAML File"
+          @change="readJSON"
+        >
+          <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
+        </v-file-input>
       </v-col>
-      <v-col>
+      <!-- <v-col>
         <v-btn class="my-5" @click="readJSON">
           Populate Form
         </v-btn>
-      </v-col>
+      </v-col> -->
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container>
+      <h3 class="font-weight-medium">2. Complete Fields</h3>
+      <subtitle-2 class="ml-6">Fill out each field with case study data.</subtitle-2>
+      <v-container  class="mb-10">
         <v-row>
           <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
         </v-row>
@@ -39,44 +48,38 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col sm="4" class="pl-0">
-            <v-menu
-              v-model="dateMenu"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template #activator="{ on, attrs }">
-                <v-text-field
-                  v-model="date"
-                  label="Incident date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                v-model="date"
-                @input="dateMenu = false"
-              />
-            </v-menu>
-          </v-col>
-        </v-row>
+        <date-select
+          :key="year"
+          :year="year"
+          :month="month"
+          :date="date"
+          @yearUpdate="year = $event"
+          @monthUpdate="month = $event"
+          @dateUpdate="date = $event"
+        />
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
         </v-row>
       </v-container>
 
-      <add-procedure-step :select-tactic="selectTactic" :select-technique="selectTechnique" :description="description" @clicked="addProcedureStep" />
-      <edit-procedure :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+      <h3 class="font-weight-medium">3. Procedure</h3>
+      <subtitle-2 class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</subtitle-2>
+      <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+      <add-procedure-step
+        class="mb-16 mx-8"
+        v-if="addingStep"
+        :select-tactic="selectTactic"
+        :select-technique="selectTechnique"
+        :description="description"
+        @clicked="addProcedureStep"
+      />
+      <div v-else>
+        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
+      </div>
 
-      <add-source :source-description="sourceDescription" :url="url" @clicked="addSource" />
-
+      <h3 class="font-weight-medium">4. References</h3>
+      <subtitle-2 class="ml-6">Add references to your case study, each containing a source and/or url.</subtitle-2>
       <div v-if="references.length" class="mx-8">
         <ol>
           <li v-for="(value, key) in references" :key="key">
@@ -87,10 +90,27 @@
           </li>
         </ol>
       </div>
+      <add-source class="mx-8" v-if="addingSource" :source-description="sourceDescription" :url="url" @clicked="addSource" />
+      <div v-else>
+        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
+      </div>
 
-      <v-btn class="my-5" outlined :disabled="!valid" x-large @click="submitStudy">
-        Download Case Study
-      </v-btn>
+      <v-tooltip right color="light-blue lighten-4">
+        <template #activator="{ on, attrs }">
+          <v-btn
+            class="my-5"
+            outlined
+            :disabled="!valid"
+            v-bind="attrs"
+            x-large
+            v-on="on"
+            @click="submitStudy"
+          >
+            Download Case Study
+          </v-btn>
+        </template>
+        <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
+      </v-tooltip>
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -119,8 +139,16 @@ export default {
       title: 'Create A Case Study',
       valid: true,
       chosenFile: null,
-      date: new Date().toISOString().substr(0, 10),
-      dateMenu: false,
+      initialFileName: '',
+      year: null,
+      month: null,
+      date: null,
+      // year: new Date().toISOString().substr(0, 10),
+      // month: new Date().toISOString().substr(0, 10),
+      // date: new Date().toISOString().substr(0, 10),
+      // yearMenu: false,
+      // monthMenu: false,
+      // dateMenu: false,
       selectTactic: null,
       selectTechnique: null,
       description: '',
@@ -135,7 +163,9 @@ export default {
       url: '',
       reported: '',
       procedure: [],
+      addingStep: true,
       references: [],
+      addingSource: true,
       errorMsg: '',
       uploadError: false,
       uploadErrorMessage: [],
@@ -169,7 +199,14 @@ export default {
       this.meta = studyFileObj.meta ?? this.meta
       this.titleStudy = inputStudy.name
       this.summary = inputStudy.summary
-      this.date = inputStudy['incident-date']
+      if (inputStudy['incident-date'].length > 4) {
+        const dateParse = inputStudy['incident-date'].split('-')
+        this.year = parseInt(dateParse[0])
+        if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
+        if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
+      } else {
+        this.year = parseInt(inputStudy['incident-date'])
+      }
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']
       if (inputStudy.references === [] || !(inputStudy.references)) {
@@ -215,6 +252,7 @@ export default {
         fileType = file.name.slice(extStartIndex)
       }
       if (expectedTypes.includes(fileType)) { // nominal
+        this.initialFileName = file.name
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
           value: generateID() + '.yaml'
@@ -272,9 +310,11 @@ export default {
     },
     addProcedureStep (newStep) {
       this.procedure.push(newStep)
+      this.addingStep = false
     },
     addSource (newSource) {
       this.references.push(newSource)
+      this.addingSource = false
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
@@ -284,12 +324,15 @@ export default {
         this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
         this.meta['date-updated'] = nowDateString
         this.meta.uuid = this.meta.uuid ?? generateID()
+        let fullIncDate = '' + String(this.year)
+        if (this.month !== null) { fullIncDate += '-' + String(this.month) }
+        if (this.date !== null) { fullIncDate += '-' + String(this.date) }
         const study = {
           meta: this.meta,
           study: {
             name: this.titleStudy,
             summary: this.summary,
-            'incident-date': this.date,
+            'incident-date': fullIncDate,
             procedure: deepCopy(this.procedure),
             'reported-by': this.reported,
             references: deepCopy(this.references)
