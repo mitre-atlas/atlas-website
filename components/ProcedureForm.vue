@@ -103,16 +103,20 @@ export default {
   },
   methods: {
     passMouse (event, hoverItem = false) {
-      console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}`)
+      // console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}, Screen: ${this.$vuetify.breakpoint.name}`)
       if (hoverItem) { this.hoverTargetID = hoverItem.id }
+      const screenSize = this.$vuetify.breakpoint.name
+      const sizesForSidebar = ['xl', 'lg']
+      const sidebarOffset = sizesForSidebar.includes(screenSize) ? 256 : 0
+      const menuOffset = 40
       if (hoverItem['object-type'] === 'technique') {
         this.appearRight = false
         this.fromRight = true
-        this.hoverOffset = -50 - 256 // 256 is the size of the sidebar
+        this.hoverOffset = -menuOffset - sidebarOffset // 256 is the size of the sidebar
       } else {
         this.appearRight = true
         this.fromRight = false
-        this.hoverOffset = 40 - 256
+        this.hoverOffset = menuOffset - sidebarOffset
       }
       this.mouseEvent = event
     },

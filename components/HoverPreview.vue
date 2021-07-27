@@ -117,7 +117,7 @@ export default {
         // icon.style.bottom = `${iconOffset - 10}px`
         // this.iconCSS = { color: '#64B5F6' }
         this.keepPreviewEnabled = true
-        console.log('Preview locked!')
+        // console.log('Preview locked!')
       } else {
         this.isHoveringSelf = false
         icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
@@ -129,7 +129,7 @@ export default {
         // icon.style.bottom = `${iconOffset - 10}px`
         this.selfThread = setTimeout((that) => {
           this.selfThread = null
-          console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
+          // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
           if (!this.isHoveringSelf) { // && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
@@ -290,13 +290,13 @@ export default {
           }, 0)
         } else {
           // console.log('killed preview')
-          console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
+          // console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
           that.enablePreview = false
 
           if (that.keepPreviewEnabled) {
-            console.log("Couldn't kill;", that.selfThread, that.isHoveringSelf)
+            // console.log("Couldn't kill;", that.selfThread, that.isHoveringSelf)
             if (!that.selfThread && !that.isHoveringSelf) {
-              console.log('Killed a hanging persistence')
+              // console.log('Killed a hanging persistence')
               that.keepPreviewEnabled = false
             }
           }
@@ -335,7 +335,7 @@ export default {
 
   .v-icon {
     transition: color 0.5s, font 0.5s, right 0.5s, bottom 0.5s;
-    position: absolute;
+    position: absolute !important;
     right: 30px;
     bottom: 20px;
   }
