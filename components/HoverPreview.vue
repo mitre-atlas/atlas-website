@@ -6,12 +6,12 @@
     ref="hcard"
     v-if="(enablePreview || keepPreviewEnabled)"
     nuxt
-    target=""
+    target="_blank"
     :to="targetLocation"
     :width="cardWidth"
     elevation="24"
-    @mouseenter="setPreview"
-    @mouseleave="setPreview"
+    @mouseenter="setPreviewSelf"
+    @mouseleave="setPreviewSelf"
     :style="cardCSS">
       <v-card-title>{{ targetInfo.name }}</v-card-title>
       <v-card-subtitle>{{ targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle>
@@ -53,6 +53,7 @@ export default {
     // characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
     maxLineHeight: 7,
     thread: null,
+    selfThread: null,
     // iconCSS: {},
     cardCSS: { left: '-1px', top: '-1px' }
     // lastPos: { left: 0, top: 0 }
@@ -60,7 +61,7 @@ export default {
   watch: {
     // watch x/y values for slide transition
     parentEvent (mouseEvent) {
-      this.setPreviewParent(mouseEvent)
+      this.setPreview(mouseEvent)
     }
   },
 
@@ -94,7 +95,7 @@ export default {
       }
       return text
     },
-    setPreview (event) {
+    setPreviewSelf (event) {
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const eventName = event.type
       const enablePreview = !disablePreviewEvents.includes(eventName)
@@ -125,7 +126,8 @@ export default {
         // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
         // icon.style.right = `${iconOffset}px`
         // icon.style.bottom = `${iconOffset - 10}px`
-        setTimeout((that) => {
+        this.selfThread = setTimeout((that) => {
+          // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
           if (!this.isHoveringSelf && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
@@ -139,7 +141,7 @@ export default {
       icon.style.right = `${iconOffset}px`
       icon.style.bottom = `${iconOffset - 10}px`
     },
-    setPreviewParent (event) {
+    setPreview (event) {
       const eventName = event.type
       const element = event.target
       const elementPos = element.getBoundingClientRect()
@@ -221,41 +223,43 @@ export default {
             }
 
             const arrow = document.querySelector('#arrow')
-            const arrowSize = 15
-            const arrowCSS = {}
-            arrowCSS.width = `${arrowSize}px`
-            arrowCSS.height = `${arrowSize}px`
-            arrowCSS.display = 'block'
-            // top: 0px;  left: calc(-1 * var(--size) + 2px);
-            // arrow.style['--size'] = `${arrowSize}px`
-            if (onLeft && onTop) {
-              arrowCSS.inset = `0px auto auto ${-arrowSize + 2}px`
-              // arrowCSS.top = '0px'
-              // arrowCSS.left = `${-arrowSize + 2}px`
-              arrowCSS.transform = 'scaleX(1) scaleY(1)'
-              // console.log('Arrow pos: 1')
-            } else if (!onLeft && onTop) {
-              arrowCSS.inset = `0px ${-arrowSize + 2}px auto auto`
-              // arrowCSS.top = '0px'
-              // arrowCSS.right = `${-arrowSize + 2}px`
-              arrowCSS.transform = 'scaleX(-1) scaleY(1)'
-              // console.log('Arrow pos: 2')
-            } else if (onLeft && !onTop) {
-              arrowCSS.inset = `auto auto 0px ${-arrowSize + 2}px`
-              // arrowCSS.bottom = '0px'
-              // arrowCSS.left = `${-arrowSize + 2}px`
-              arrowCSS.transform = 'scaleX(1) scaleY(-1)'
-              // console.log('Arrow pos: 3')
-            } else {
-              arrowCSS.inset = `auto ${-arrowSize + 2}px 0px auto`
-              // arrowCSS.bottom = '0px'
-              // arrowCSS.right = `${-arrowSize + 2}px`
-              arrowCSS.transform = 'scaleX(-1) scaleY(-1)'
-              // console.log('Arrow pos: 4')
-            }
+            if (arrow) {
+              const arrowSize = 15
+              const arrowCSS = {}
+              arrowCSS.width = `${arrowSize}px`
+              arrowCSS.height = `${arrowSize}px`
+              arrowCSS.display = 'block'
+              // top: 0px;  left: calc(-1 * var(--size) + 2px);
+              // arrow.style['--size'] = `${arrowSize}px`
+              if (onLeft && onTop) {
+                arrowCSS.inset = `0px auto auto ${-arrowSize + 2}px`
+                // arrowCSS.top = '0px'
+                // arrowCSS.left = `${-arrowSize + 2}px`
+                arrowCSS.transform = 'scaleX(1) scaleY(1)'
+                // console.log('Arrow pos: 1')
+              } else if (!onLeft && onTop) {
+                arrowCSS.inset = `0px ${-arrowSize + 2}px auto auto`
+                // arrowCSS.top = '0px'
+                // arrowCSS.right = `${-arrowSize + 2}px`
+                arrowCSS.transform = 'scaleX(-1) scaleY(1)'
+                // console.log('Arrow pos: 2')
+              } else if (onLeft && !onTop) {
+                arrowCSS.inset = `auto auto 0px ${-arrowSize + 2}px`
+                // arrowCSS.bottom = '0px'
+                // arrowCSS.left = `${-arrowSize + 2}px`
+                arrowCSS.transform = 'scaleX(1) scaleY(-1)'
+                // console.log('Arrow pos: 3')
+              } else {
+                arrowCSS.inset = `auto ${-arrowSize + 2}px 0px auto`
+                // arrowCSS.bottom = '0px'
+                // arrowCSS.right = `${-arrowSize + 2}px`
+                arrowCSS.transform = 'scaleX(-1) scaleY(-1)'
+                // console.log('Arrow pos: 4')
+              }
 
-            for (const key in arrowCSS) {
-              arrow.style[key] = arrowCSS[key]
+              for (const key in arrowCSS) {
+                arrow.style[key] = arrowCSS[key]
+              }
             }
 
             // console.log(arrow, arrow.style, arrowCSS)
@@ -283,7 +287,13 @@ export default {
           }, 0)
         } else {
           // console.log('killed preview')
+          // console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
           that.enablePreview = false
+
+          if (that.keepPreviewEnabled && that.selfThread && that.selfThread._destroyed) {
+            // console.log('Killed a hanging persistence')
+            that.keepPreviewEnabled = false
+          }
           // this.lastTargetId = null
         }
       }, this.delay, this)
@@ -295,7 +305,7 @@ export default {
 <style scoped>
   .v-card {
     position: absolute;
-    transition: top 0.5s;
+    transition: top 0.5s, left 0.5s, height 0.5s;;
     /* clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%, 5% 6%); */
     /* top: 1px; */
   }
