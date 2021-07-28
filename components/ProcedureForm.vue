@@ -6,7 +6,7 @@
     :appear-right="appearRight"
     :from-right="fromRight"
     :new-target-id="hoverTargetID"
-    :parent-event="mouseEvent" />
+    :parent-event="mouseEvent"/>
 
     <v-card-actions class="px-md-4 mx-lg-auto">
 

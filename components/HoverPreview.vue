@@ -7,18 +7,24 @@
     v-if="(enablePreview || keepPreviewEnabled)"
     nuxt
     target="_blank"
-    :to="targetLocation"
+    :href="targetLocation"
     :width="cardWidth"
     elevation="24"
     @mouseenter="setPreviewSelf"
     @mouseleave="setPreviewSelf"
     :style="cardCSS">
       <v-card-title>{{ targetInfo.name }}</v-card-title>
-      <v-card-subtitle>{{ targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle>
+      <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type']}} | {{ targetInfo.id }}</v-card-subtitle>
       <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
-      <v-card-actions><v-icon id="icon">mdi-arrow-right</v-icon></v-card-actions> <!--  :style="iconCSS" -->
-      <div id="arrow"></div>
+      <v-card-actions>
+        <v-icon id="icon">mdi-arrow-right</v-icon>
+        <v-icon id="attack-icon">mdi-open-in-new</v-icon>
+        <!-- :href="!targetLocation.startsWith('/') ? targetLocation : ''"
+    :to="targetLocation.startsWith('/') ? targetLocation : ''" -->
+        <!-- <v-icon v-if="isHoveringSelf && isTargetATTACK" id="attack-icon">mdi-open-in-new</v-icon> targetLocation.startsWith('/') <v-card-subtitle>{{ isTargetATTACK ? 'ATT&CK ' : 'ATLAS ' + targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle> -->
+      </v-card-actions> <!--  :style="iconCSS" -->
+      <div id="caret"></div>
     </v-card>
   </v-fade-transition>
 </template>
@@ -40,6 +46,7 @@ export default {
   },
   data: () => ({
     // iconLarge: false,
+    // isTargetATTACK: false,
     targetId: null,
     isHoveringSelf: false,
     cardWidth: 400,
@@ -75,9 +82,15 @@ export default {
     }
   },
   computed: {
+    isTargetATTACK () { return !this.targetId.includes('AML.') },
+    isTargetATTACKTechnique () { return this.isTargetATTACK && this.targetInfo['object-type'] === 'technique' },
     characterLimit () { return this.maxLineHeight * 50 },
     targetLocation () {
-      return `/${this.targetInfo['object-type']}s/${this.targetId}`
+      if (this.isTargetATTACKTechnique) {
+        return this.targetInfo.external_references[0].url
+      } else {
+        return `/${this.targetInfo['object-type']}s/${this.targetId}`
+      }
     },
     targetInfo () {
       return (
@@ -100,18 +113,33 @@ export default {
       const eventName = event.type
       const enablePreview = !disablePreviewEvents.includes(eventName)
       const icon = document.querySelector('#icon')
+      const attackIcon = document.querySelector('#attack-icon')
       let iconSize = 24
       // let iconOffset = iconSize * (-5/8) + 45
       const factor = 1.2
       if (enablePreview) {
+        // this.icon = 'mdi-open-in-new'
         this.isHoveringSelf = true
         // console.log('Emitting keep: TRUE', `delay at ${this.delay}`)
         // this.$emit('keep-preview', true)
         // const icon = document.querySelector('#icon')
         // iconSize = 32
-        iconSize *= factor
         // iconOffset = 25
-        icon.style.color = 'rgb(100, 181, 246)' // light blue
+        // console.log(this.isTargetATTACK)
+        if (this.isTargetATTACKTechnique) {
+          // iconSize /= factor
+          icon.style.transform = 'rotate(180deg)'
+          icon.style.color = '#dc3545' // attack red
+          icon.style.opacity = 0
+          attackIcon.style.color = '#dc3545'
+          attackIcon.style.transform = 'rotate(360deg)'
+          attackIcon.style.opacity = 1
+          // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
+        } else {
+          icon.style.color = 'rgb(100, 181, 246)' // light blue
+        }
+
+        iconSize *= factor
         // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
         // icon.style.right = `${iconOffset}px`
         // icon.style.bottom = `${iconOffset - 10}px`
@@ -119,8 +147,21 @@ export default {
         this.keepPreviewEnabled = true
         // console.log('Preview locked!')
       } else {
+        // this.icon = 'mdi-arrow-right'
         this.isHoveringSelf = false
-        icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
+        // icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
+        if (this.isTargetATTACKTechnique) {
+          // iconSize /= factor
+          icon.style.transform = 'rotate(0deg)'
+          icon.style.color = 'rgba(0, 0, 0, 0.54)' // '#dc3545' // attack red
+          icon.style.opacity = 1
+          attackIcon.style.color = 'rgba(0, 0, 0, 0.54)' // '#dc3545'
+          attackIcon.style.transform = 'rotate(180deg)'
+          attackIcon.style.opacity = 0
+          // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
+        } else {
+          icon.style.color = 'rgba(0, 0, 0, 0.54)'
+        }
         // this.iconCSS = {}
         // iconSize = 24
         // iconOffset = 30
@@ -130,7 +171,7 @@ export default {
         this.selfThread = setTimeout((that) => {
           this.selfThread = null
           // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
-          if (!this.isHoveringSelf) { // && !this.isHovering) {
+          if (!this.isHoveringSelf && !this.isHovering) {
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
             // console.log(that.enablePreview, that.keepPreviewEnabled)
@@ -140,8 +181,11 @@ export default {
       }
       const iconOffset = iconSize * (-5 / 8) + 45
       icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+      attackIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
       icon.style.right = `${iconOffset}px`
+      attackIcon.style.right = `${iconOffset}px`
       icon.style.bottom = `${iconOffset - 10}px`
+      attackIcon.style.bottom = `${iconOffset - 10}px`
     },
     setPreview (event) {
       const eventName = event.type
@@ -225,47 +269,47 @@ export default {
               // console.log(left, x, that.cardWidth)
             }
 
-            const arrow = document.querySelector('#arrow')
-            if (arrow) {
-              const arrowSize = 15
-              const arrowCSS = {}
-              arrowCSS.width = `${arrowSize}px`
-              arrowCSS.height = `${arrowSize}px`
-              arrowCSS.display = 'block'
+            const caret = document.querySelector('#caret')
+            if (caret) {
+              const caretSize = 15
+              const caretCSS = {}
+              caretCSS.width = `${caretSize}px`
+              caretCSS.height = `${caretSize}px`
+              caretCSS.display = 'block'
               // top: 0px;  left: calc(-1 * var(--size) + 2px);
-              // arrow.style['--size'] = `${arrowSize}px`
+              // caret.style['--size'] = `${caretSize}px`
               if (onLeft && onTop) {
-                arrowCSS.inset = `0px auto auto ${-arrowSize + 2}px`
-                // arrowCSS.top = '0px'
-                // arrowCSS.left = `${-arrowSize + 2}px`
-                arrowCSS.transform = 'scaleX(1) scaleY(1)'
-                // console.log('Arrow pos: 1')
+                caretCSS.inset = `0px auto auto ${-caretSize + 2}px`
+                // caretCSS.top = '0px'
+                // caretCSS.left = `${-caretSize + 2}px`
+                caretCSS.transform = 'scaleX(1) scaleY(1)'
+                // console.log('caret pos: 1')
               } else if (!onLeft && onTop) {
-                arrowCSS.inset = `0px ${-arrowSize + 2}px auto auto`
-                // arrowCSS.top = '0px'
-                // arrowCSS.right = `${-arrowSize + 2}px`
-                arrowCSS.transform = 'scaleX(-1) scaleY(1)'
-                // console.log('Arrow pos: 2')
+                caretCSS.inset = `0px ${-caretSize + 2}px auto auto`
+                // caretCSS.top = '0px'
+                // caretCSS.right = `${-caretSize + 2}px`
+                caretCSS.transform = 'scaleX(-1) scaleY(1)'
+                // console.log('caret pos: 2')
               } else if (onLeft && !onTop) {
-                arrowCSS.inset = `auto auto 0px ${-arrowSize + 2}px`
-                // arrowCSS.bottom = '0px'
-                // arrowCSS.left = `${-arrowSize + 2}px`
-                arrowCSS.transform = 'scaleX(1) scaleY(-1)'
-                // console.log('Arrow pos: 3')
+                caretCSS.inset = `auto auto 0px ${-caretSize + 2}px`
+                // caretCSS.bottom = '0px'
+                // caretCSS.left = `${-caretSize + 2}px`
+                caretCSS.transform = 'scaleX(1) scaleY(-1)'
+                // console.log('caret pos: 3')
               } else {
-                arrowCSS.inset = `auto ${-arrowSize + 2}px 0px auto`
-                // arrowCSS.bottom = '0px'
-                // arrowCSS.right = `${-arrowSize + 2}px`
-                arrowCSS.transform = 'scaleX(-1) scaleY(-1)'
-                // console.log('Arrow pos: 4')
+                caretCSS.inset = `auto ${-caretSize + 2}px 0px auto`
+                // caretCSS.bottom = '0px'
+                // caretCSS.right = `${-caretSize + 2}px`
+                caretCSS.transform = 'scaleX(-1) scaleY(-1)'
+                // console.log('caret pos: 4')
               }
 
-              for (const key in arrowCSS) {
-                arrow.style[key] = arrowCSS[key]
+              for (const key in caretCSS) {
+                caret.style[key] = caretCSS[key]
               }
             }
 
-            // console.log(arrow, arrow.style, arrowCSS)
+            // console.log(caret, caret.style, caretCSS)
 
             // console.log(left)
             // selfElement.style.top = '1px'
@@ -333,14 +377,20 @@ export default {
     position: relative;
   }
 
+  #attack-icon {
+    opacity: 0;
+    color: '#dc3545';
+    transform: rotate(180deg)
+  }
+
   .v-icon {
-    transition: color 0.5s, font 0.5s, right 0.5s, bottom 0.5s;
+    transition: color 0.2s, font 0.2s, right 0.2s, bottom 0.2s, transform 0.2s, opacity 0.5s;
     position: absolute !important;
     right: 30px;
     bottom: 20px;
   }
 
-  #arrow {
+  #caret {
     /* --size: 20px; */
     display: none;
     /* width: var(--size);
