@@ -18,8 +18,8 @@
       <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-actions>
-        <v-icon id="icon">mdi-arrow-right</v-icon>
-        <v-icon id="attack-icon">mdi-open-in-new</v-icon>
+        <v-icon id="inactive-icon">mdi-arrow-right</v-icon>
+        <v-icon id="link-icon">mdi-open-in-new</v-icon>
         <!-- :href="!targetLocation.startsWith('/') ? targetLocation : ''"
     :to="targetLocation.startsWith('/') ? targetLocation : ''" -->
         <!-- <v-icon v-if="isHoveringSelf && isTargetATTACK" id="attack-icon">mdi-open-in-new</v-icon> targetLocation.startsWith('/') <v-card-subtitle>{{ isTargetATTACK ? 'ATT&CK ' : 'ATLAS ' + targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle> -->
@@ -118,91 +118,56 @@ export default {
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const eventName = event.type
       const enablePreview = !disablePreviewEvents.includes(eventName)
-      const icon = document.querySelector('#icon')
-      const attackIcon = document.querySelector('#attack-icon')
-      const selfElement = this.self.$el
-      // console.log(selfElement.style.top, selfElement.style.bottom)
-      const topOffset = selfElement.style.top
-      // const hasVertical = selfElement.style.top || selfElement.style.bottom
+      const inactiveIcon = document.querySelector('#inactive-icon')
+      const linkIcon = document.querySelector('#link-icon')
+      // const attackLinkColor = '#dc3545'
+      const linkColor = 'rgb(100, 181, 246)'
+      const inactiveColor = 'rgba(0, 0, 0, 0.54)'
       let iconSize = 24
-      // let iconOffset = iconSize * (-5/8) + 45
       const factor = 1.2
       if (enablePreview) {
-        // console.log(this.previewDebounce)
         if (this.previewDebounce) { return }
-        // console.log('Preview lock!')
-        selfElement.style.top = topOffset
-        // this.icon = 'mdi-open-in-new'
         this.isHoveringSelf = true
-        // console.log('Emitting keep: TRUE', `delay at ${this.delay}`)
-        // this.$emit('keep-preview', true)
-        // const icon = document.querySelector('#icon')
-        // iconSize = 32
-        // iconOffset = 25
-        // console.log(this.isTargetATTACK)
-        if (this.isTargetATTACKTechnique) {
-          // iconSize /= factor
-          icon.style.transform = 'rotate(180deg)'
-          icon.style.color = '#dc3545' // attack red
-          icon.style.opacity = 0
-          attackIcon.style.color = '#dc3545'
-          attackIcon.style.transform = 'rotate(360deg)'
-          attackIcon.style.opacity = 1
-          // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
-        } else {
-          icon.style.color = 'rgb(100, 181, 246)' // light blue
-        }
-
+        // if (this.isTargetATTACKTechnique) {
+        inactiveIcon.style.transform = 'rotate(180deg)'
+        inactiveIcon.style.color = linkColor
+        inactiveIcon.style.opacity = 0
+        linkIcon.style.color = linkColor
+        linkIcon.style.transform = 'rotate(360deg)'
+        linkIcon.style.opacity = 1
+        // } else {
+        // icon.style.color = linkColor // light blue
+        // }
         iconSize *= factor
-        // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-        // icon.style.right = `${iconOffset}px`
-        // icon.style.bottom = `${iconOffset - 10}px`
-        // this.iconCSS = { color: '#64B5F6' }
         this.keepPreviewEnabled = true
-        // console.log('Preview locked!')
       } else {
-        // this.icon = 'mdi-arrow-right'
-        // console.log('stopped self hover')
         this.isHoveringSelf = false
-        // icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
-        if (this.isTargetATTACKTechnique) {
-          // iconSize /= factor
-          icon.style.transform = 'rotate(0deg)'
-          icon.style.color = 'rgba(0, 0, 0, 0.54)' // '#dc3545' // attack red
-          icon.style.opacity = 1
-          attackIcon.style.color = 'rgba(0, 0, 0, 0.54)' // '#dc3545'
-          attackIcon.style.transform = 'rotate(180deg)'
-          attackIcon.style.opacity = 0
-          // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
-        } else {
-          icon.style.color = 'rgba(0, 0, 0, 0.54)'
-        }
-        // this.iconCSS = {}
-        // iconSize = 24
-        // iconOffset = 30
-        // icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-        // icon.style.right = `${iconOffset}px`
-        // icon.style.bottom = `${iconOffset - 10}px`
+        // if (this.isTargetATTACKTechnique) {
+        inactiveIcon.style.transform = 'rotate(0deg)'
+        inactiveIcon.style.color = inactiveColor
+        inactiveIcon.style.opacity = 1
+        linkIcon.style.color = inactiveColor
+        linkIcon.style.transform = 'rotate(180deg)'
+        linkIcon.style.opacity = 0
+        // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
+        // } else {
+        // inactiveIcon.style.color = inactiveColor
+        // }
         this.selfThread = setTimeout((that) => {
           this.selfThread = null
-          // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
           if (!this.isHoveringSelf && !this.isHovering) {
-            // console.log('Self pass')
-            // console.log('Emitting keep: FALSE')
-            // that.$emit('keep-preview', false)
-            // console.log(that.enablePreview, that.keepPreviewEnabled)
             that.keepPreviewEnabled = false
             that.setDebounce(that)
           }
         }, this.delay, this)
       }
       const iconOffset = iconSize * (-5 / 8) + 45
-      icon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-      attackIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-      icon.style.right = `${iconOffset}px`
-      attackIcon.style.right = `${iconOffset}px`
-      icon.style.bottom = `${iconOffset - 10}px`
-      attackIcon.style.bottom = `${iconOffset - 10}px`
+      inactiveIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+      linkIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+      inactiveIcon.style.right = `${iconOffset}px`
+      linkIcon.style.right = `${iconOffset}px`
+      inactiveIcon.style.bottom = `${iconOffset - 10}px`
+      linkIcon.style.bottom = `${iconOffset - 10}px`
     },
     setPreview (event) {
       const eventName = event.type
@@ -397,7 +362,7 @@ export default {
     position: relative;
   }
 
-  #attack-icon {
+  #link-icon {
     opacity: 0;
     color: '#dc3545';
     transform: rotate(180deg)
