@@ -47,6 +47,7 @@ export default {
   data: () => ({
     // iconLarge: false,
     // isTargetATTACK: false,
+    previewDebounce: false,
     targetId: null,
     isHoveringSelf: false,
     cardWidth: 400,
@@ -99,6 +100,11 @@ export default {
     }
   },
   methods: {
+    setDebounce (that = this) {
+      // console.log('debounce enabled!')
+      that.previewDebounce = true
+      setTimeout(function () { that.previewDebounce = false }, that.delay)
+    },
     formatDesc (text) {
       const tagRegex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
       text = text.replace(tagRegex, '')
@@ -114,10 +120,18 @@ export default {
       const enablePreview = !disablePreviewEvents.includes(eventName)
       const icon = document.querySelector('#icon')
       const attackIcon = document.querySelector('#attack-icon')
+      const selfElement = this.self.$el
+      // console.log(selfElement.style.top, selfElement.style.bottom)
+      const topOffset = selfElement.style.top
+      // const hasVertical = selfElement.style.top || selfElement.style.bottom
       let iconSize = 24
       // let iconOffset = iconSize * (-5/8) + 45
       const factor = 1.2
       if (enablePreview) {
+        // console.log(this.previewDebounce)
+        if (this.previewDebounce) { return }
+        // console.log('Preview lock!')
+        selfElement.style.top = topOffset
         // this.icon = 'mdi-open-in-new'
         this.isHoveringSelf = true
         // console.log('Emitting keep: TRUE', `delay at ${this.delay}`)
@@ -148,6 +162,7 @@ export default {
         // console.log('Preview locked!')
       } else {
         // this.icon = 'mdi-arrow-right'
+        // console.log('stopped self hover')
         this.isHoveringSelf = false
         // icon.style.color = 'rgba(0, 0, 0, 0.54)' // grey
         if (this.isTargetATTACKTechnique) {
@@ -172,10 +187,12 @@ export default {
           this.selfThread = null
           // console.log('Trying to kill; self,', that.enablePreview, that.keepPreviewEnabled, ';', this.isHoveringSelf, this.isHovering)
           if (!this.isHoveringSelf && !this.isHovering) {
+            // console.log('Self pass')
             // console.log('Emitting keep: FALSE')
             // that.$emit('keep-preview', false)
             // console.log(that.enablePreview, that.keepPreviewEnabled)
             that.keepPreviewEnabled = false
+            that.setDebounce(that)
           }
         }, this.delay, this)
       }
@@ -327,15 +344,18 @@ export default {
             // }
 
             setTimeout(function () { // settimeout is literal black magic
+              // console.log('hmmm', previouslyDisabled)
               selfElement.style.top = top
+              // that.cardCSS.top = top
             }, previouslyDisabled ? 0 : 50)
             that.cardCSS = { left }
             // console.log(currentTop)
           }, 0)
         } else {
           // console.log('killed preview')
-          // console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled)
+          // console.log('Trying to kill; parent,', that.enablePreview, that.keepPreviewEnabled, that.isHovering, that.isHoveringSelf)
           that.enablePreview = false
+          that.setDebounce(that)
 
           if (that.keepPreviewEnabled) {
             // console.log("Couldn't kill;", that.selfThread, that.isHoveringSelf)
