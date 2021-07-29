@@ -1,4 +1,5 @@
 import * as YAML from 'js-yaml'
+// import { makePPT } from 'static/data/ppt.js'
 
 const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
 const reportedByDelim = ','
@@ -209,6 +210,7 @@ function downloadStudyFile (study) {
   const studyBody = study.study
   const studyYAML = createYAML(study)
   download(`${studyBody.name}-YAML.yaml`, studyYAML)
+  // makePPT(study)
 }
 
 export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }

@@ -111,6 +111,17 @@
         </template>
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
+      <v-btn
+        class="my-5"
+        outlined
+        :disabled="!valid"
+        v-if="downloadedYaml"
+        x-large
+        v-on="on"
+        @click="getPPT"
+      >
+        Download Powerpoint
+      </v-btn>
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -125,13 +136,14 @@
 
 <router>
   {
-    path: '/studies/create'
+    path: '/create'
   }
 </router>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
+import { makePPT } from 'static/data/ppt.js'
 
 export default {
   data () {
@@ -154,6 +166,7 @@ export default {
       description: '',
       titleStudy: '',
       meta: { email: '' },
+      study: null,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
@@ -170,6 +183,7 @@ export default {
       uploadError: false,
       uploadErrorMessage: [],
       submissionMsg: '',
+      downloadedYaml: false,
       contactEmail: 'atlas@mitre.org'
     }
   },
@@ -341,12 +355,17 @@ export default {
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
         downloadStudyFile(study)
+        this.downloadedYaml = true
+        this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
       } else if (!this.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
+    },
+    getPPT () {
+      makePPT(this.study)
     }
   }
 }

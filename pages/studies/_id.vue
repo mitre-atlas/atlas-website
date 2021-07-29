@@ -16,6 +16,22 @@
         <study-details-card :study="study" class="mt-10" />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col
+        md="4"
+        offset-md="8"
+        >
+          <v-btn
+            elevation="0"
+            color="inherit"
+            v-bind="attrs"
+            v-on="on"
+            @click="getPPT()"
+          >
+          Download Powerpoint
+          </v-btn>
+        </v-col>
+    </v-row>
 
   <v-container>
       <v-row>
@@ -60,6 +76,7 @@
 </template>
 
 <script>
+import { makePPT } from 'static/data/ppt.js'
 export default {
   data: () => ({
     charactersThreshold: 300
@@ -79,6 +96,11 @@ export default {
   methods: {
     openNewTab (url) {
       window.open(url, '_blank')
+    },
+    getPPT () {
+      const yaml = { study: { } }
+      yaml.study = this.$store.getters.getStudyById(this.$route.params.id)
+      makePPT(yaml)
     }
   }
 }
