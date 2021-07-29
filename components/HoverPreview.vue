@@ -18,7 +18,7 @@
       <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
       <v-card-actions>
-        <v-icon id="inactive-icon">mdi-arrow-right</v-icon>
+        <v-icon id="arrow-icon">mdi-arrow-right</v-icon>
         <v-icon id="link-icon">mdi-open-in-new</v-icon>
         <!-- :href="!targetLocation.startsWith('/') ? targetLocation : ''"
     :to="targetLocation.startsWith('/') ? targetLocation : ''" -->
@@ -118,7 +118,7 @@ export default {
       const disablePreviewEvents = ['mouseleave', 'wheel']
       const eventName = event.type
       const enablePreview = !disablePreviewEvents.includes(eventName)
-      const inactiveIcon = document.querySelector('#inactive-icon')
+      const arrowIcon = document.querySelector('#arrow-icon')
       const linkIcon = document.querySelector('#link-icon')
       // const attackLinkColor = '#dc3545'
       const linkColor = 'rgb(100, 181, 246)'
@@ -129,9 +129,9 @@ export default {
         if (this.previewDebounce) { return }
         this.isHoveringSelf = true
         // if (this.isTargetATTACKTechnique) {
-        inactiveIcon.style.transform = 'rotate(180deg)'
-        inactiveIcon.style.color = linkColor
-        inactiveIcon.style.opacity = 0
+        arrowIcon.style.transform = 'rotate(180deg)'
+        arrowIcon.style.color = linkColor
+        arrowIcon.style.opacity = 0
         linkIcon.style.color = linkColor
         linkIcon.style.transform = 'rotate(360deg)'
         linkIcon.style.opacity = 1
@@ -143,15 +143,15 @@ export default {
       } else {
         this.isHoveringSelf = false
         // if (this.isTargetATTACKTechnique) {
-        inactiveIcon.style.transform = 'rotate(0deg)'
-        inactiveIcon.style.color = inactiveColor
-        inactiveIcon.style.opacity = 1
+        arrowIcon.style.transform = 'rotate(0deg)'
+        arrowIcon.style.color = inactiveColor
+        arrowIcon.style.opacity = 1
         linkIcon.style.color = inactiveColor
         linkIcon.style.transform = 'rotate(180deg)'
         linkIcon.style.opacity = 0
         // setTimeout(function () { attackIcon.style.opacity = 1 }, 75)
         // } else {
-        // inactiveIcon.style.color = inactiveColor
+        // arrowIcon.style.color = inactiveColor
         // }
         this.selfThread = setTimeout((that) => {
           this.selfThread = null
@@ -162,11 +162,11 @@ export default {
         }, this.delay, this)
       }
       const iconOffset = iconSize * (-5 / 8) + 45
-      inactiveIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
+      arrowIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
       linkIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-      inactiveIcon.style.right = `${iconOffset}px`
+      arrowIcon.style.right = `${iconOffset}px`
       linkIcon.style.right = `${iconOffset}px`
-      inactiveIcon.style.bottom = `${iconOffset - 10}px`
+      arrowIcon.style.bottom = `${iconOffset - 10}px`
       linkIcon.style.bottom = `${iconOffset - 10}px`
     },
     setPreview (event) {
