@@ -96,7 +96,7 @@
       </div>
 
       <v-tooltip right color="light-blue lighten-4">
-        <template #activator="{ on, attrs }">
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
             class="my-5"
             outlined
