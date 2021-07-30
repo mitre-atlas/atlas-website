@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
 export default {
   data: ({ $config: { name } }) => ({
     shortName: name.short,
