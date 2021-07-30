@@ -28,7 +28,6 @@ export default {
   plugins: [
     'plugins/vue-gtag.client.js',
     'plugins/vue-linkify.client.js',
-
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

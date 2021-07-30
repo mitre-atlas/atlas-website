@@ -3,7 +3,6 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <!-- <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p> -->
     <h3 class="font-weight-medium">1. Upload File</h3>
     <subtitle-2 class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
     <v-row>
@@ -21,11 +20,6 @@
           <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
         </v-file-input>
       </v-col>
-      <!-- <v-col>
-        <v-btn class="my-5" @click="readJSON">
-          Populate Form
-        </v-btn>
-      </v-col> -->
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -111,17 +105,7 @@
         </template>
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
-      <v-btn
-        class="my-5"
-        outlined
-        :disabled="!valid"
-        v-if="downloadedYaml"
-        x-large
-        v-on="on"
-        @click="getPPT"
-      >
-        Download Powerpoint
-      </v-btn>
+      <download-powerpoint v-if="downloadedYaml" :study="study" />
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -143,7 +127,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
-import { makePPT } from 'static/data/ppt.js'
 
 export default {
   data () {
@@ -155,12 +138,6 @@ export default {
       year: null,
       month: null,
       date: null,
-      // year: new Date().toISOString().substr(0, 10),
-      // month: new Date().toISOString().substr(0, 10),
-      // date: new Date().toISOString().substr(0, 10),
-      // yearMenu: false,
-      // monthMenu: false,
-      // dateMenu: false,
       selectTactic: null,
       selectTechnique: null,
       description: '',
@@ -287,16 +264,12 @@ export default {
         const tryYamlText = await file.text()
         try {
           yamlParse(tryYamlText)
-          // can i add if !object here?
           if (!(typeof tryYamlText === 'object' || typeof yamlParse(tryYamlText) === 'object')) {
             addError('Invalid YAML')
           }
         } catch (e) {
           addError('Invalid YAML')
         }
-        // PSEUDO FOR YAML VALIDATE
-        // if (!correct yaml)
-        // addError('Incorrectly formatted YAML')
         const yamlErr = validFormatYAML(yamlParse(tryYamlText))
         if (yamlErr !== '') {
           addError(yamlErr)
@@ -363,9 +336,6 @@ export default {
       } else if (!this.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
-    },
-    getPPT () {
-      makePPT(this.study)
     }
   }
 }

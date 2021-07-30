@@ -1,5 +1,6 @@
 // Powerpoint creation script
 import Pptxgen from 'pptxgenjs'
+// import { getters } from '../../store/index.js'
 
 function makePPT (yaml) {
   const ppt = new Pptxgen()
@@ -75,9 +76,11 @@ function procedureSlide (ppt, yaml) {
     { text: 'Description', options: { fill: 'ADD9F4', color: '03256C', align: 'center', bold: true } }
   ]]
   for (let i = 0; i < yaml.study.procedure.length; i++) {
-    // const tactic = this.$store.getters.getTacticById(yaml.study.procedure[i].tactic)
-    // console.log(tactic)
-    const r = [yaml.study.procedure[i].tactic, yaml.study.procedure[i].technique, yaml.study.procedure[i].description]
+    // const tactic = getters.getTacticById(yaml.study.procedure[i].tactic)
+    const tactic = this.$tacticbyid(yaml.study.procedure[i].tactic)
+    console.log(yaml.study.procedure[i].tactic)
+    console.log(tactic)
+    const r = [tactic.name, yaml.study.procedure[i].technique, yaml.study.procedure[i].description]
     rows.push(r)
   }
   const slide = ppt.addSlide()
