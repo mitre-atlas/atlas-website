@@ -1,5 +1,5 @@
 <template>
-  <div class="text-h2 my-5">
+  <div class="text-h3 my-5">
     <slot />
   </div>
 </template>
