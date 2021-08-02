@@ -1,6 +1,15 @@
 <template>
   <div>
+    <hover-preview
+    :y-off="-24"
+    :x-off="hoverOffset"
+    :appear-right="appearRight"
+    :from-right="fromRight"
+    :new-target-id="hoverTargetID"
+    :parent-event="mouseEvent"/>
+
     <v-card-actions class="px-md-4 mx-lg-auto">
+
       <v-autocomplete
         v-model="selectTacticData2"
         :items="getTactics"
@@ -9,7 +18,20 @@
         item-text="name"
         item-value="id"
         @input="tacticUpdate(selectTacticData2)"
-      />
+      >
+      <template
+      class="menu-item-wrapper"
+      v-slot:item="data">
+
+        <div
+        class="menu-item"
+        @mouseenter="function(event){ passMouse(event, data.item) }"
+        @mouseleave="passMouse"
+        @click="passMouse">
+        {{ data.item.name }}
+        </div>
+      </template>
+      </v-autocomplete>
 
       <v-spacer />
 
@@ -22,7 +44,20 @@
         item-value="id"
         :disabled="selectTacticData2 === null"
         @input="$emit('techniqueUpdate', selectTechniqueData2)"
-      />
+        >
+        <template
+        class="menu-item-wrapper"
+        v-slot:item="data">
+
+          <div
+          class="menu-item"
+          @mouseenter="function(event){ passMouse(event, data.item) }"
+          @mouseleave="passMouse"
+          @click="passMouse">
+          {{ data.item.name }}
+          </div>
+        </template>
+      </v-autocomplete>
     </v-card-actions>
 
     <v-card-actions class="px-md-4 mx-lg-auto">
@@ -33,15 +68,23 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import HoverPreview from '../components/HoverPreview.vue'
 
 export default {
+  components: { HoverPreview },
   name: 'ProcedureForm',
   props: ['selectTacticData', 'selectTechniqueData', 'descriptionData'],
   data () {
     return {
       selectTacticData2: this.selectTacticData,
       selectTechniqueData2: this.selectTechniqueData,
-      descriptionData2: this.descriptionData
+      descriptionData2: this.descriptionData,
+
+      mouseEvent: null,
+      hoverTargetID: 'AML.TA0000',
+      hoverOffset: 0,
+      appearRight: false,
+      fromRight: false
     }
   },
   computed: {
@@ -59,6 +102,24 @@ export default {
     }
   },
   methods: {
+    passMouse (event, hoverItem = false) {
+      // console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}, Screen: ${this.$vuetify.breakpoint.name}`)
+      if (hoverItem) { this.hoverTargetID = hoverItem.id }
+      const screenSize = this.$vuetify.breakpoint.name
+      const sizesForSidebar = ['xl', 'lg']
+      const sidebarOffset = sizesForSidebar.includes(screenSize) ? 256 : 0
+      const menuOffset = 40
+      if (hoverItem['object-type'] === 'technique') {
+        this.appearRight = false
+        this.fromRight = true
+        this.hoverOffset = -menuOffset - sidebarOffset // 256 is the size of the sidebar
+      } else {
+        this.appearRight = true
+        this.fromRight = false
+        this.hoverOffset = menuOffset - sidebarOffset
+      }
+      this.mouseEvent = event
+    },
     // updateValue (inputVal) {
     //   // this.inputVal = inputVal
     //   console.log('here + ' + inputVal)
@@ -77,3 +138,26 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .menu-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    flex: 1 1 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu-item-wrapper {
+    align-items: center;
+    position: relative;
+    width: 10%
+  }
+
+</style>
