@@ -88,7 +88,7 @@ export default {
     mousePosition: { x: 0, y: 0 },
     isHovering: false,
     baseYOffset: 64,
-    holdDuration: 500,
+    holdDuration: 750,
     // lastTargetId: null,
     self: null,
     // characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
@@ -214,7 +214,7 @@ export default {
     setPreviewMobile (event) {
       const eventName = event.type
       // const listElem = event.target
-      // console.log('spm got:', eventName)
+      console.log('spm got:', eventName)
       // const cancelContextMenu = event => event.preventDefault()
       // const disablePreviewEvents = ['mouseleave', 'wheel']
       // const enablePreview = !disablePreviewEvents.includes(eventName)

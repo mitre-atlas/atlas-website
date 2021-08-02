@@ -30,6 +30,7 @@
         @click.prevent="passMouse"
         @touchstart="function(event){ passMouse(event, data.item) }"
         @touchend="passMouse"
+        @touchmove="passMouse"
         @touchcancel="passMouse"
         >
         {{ data.item.name }}
@@ -60,6 +61,7 @@
           @click.prevent="passMouse"
           @touchstart="function(event){ passMouse(event, data.item) }"
           @touchend="passMouse"
+          @touchmove="passMouse"
           @touchcancel="passMouse"
           >
           {{ data.item.name }}
