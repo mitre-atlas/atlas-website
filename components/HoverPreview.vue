@@ -1,7 +1,6 @@
 <template>
-  <v-fade-transition>
+  <v-fade-transition v-if="!isMobile">
     <v-card
-    style="z-index: 3000;"
     id="hcard"
     ref="hcard"
     v-if="(enablePreview || keepPreviewEnabled)"
@@ -23,9 +22,41 @@
         <!-- :href="!targetLocation.startsWith('/') ? targetLocation : ''"
     :to="targetLocation.startsWith('/') ? targetLocation : ''" -->
         <!-- <v-icon v-if="isHoveringSelf && isTargetATTACK" id="attack-icon">mdi-open-in-new</v-icon> targetLocation.startsWith('/') <v-card-subtitle>{{ isTargetATTACK ? 'ATT&CK ' : 'ATLAS ' + targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle> -->
-      </v-card-actions> <!--  :style="iconCSS" -->
+      </v-card-actions> <!--  :style="iconCSS"  @click.native="disableOverlay"-->
       <div id="caret"></div>
     </v-card>
+  </v-fade-transition>
+  <v-fade-transition v-else>
+    <v-overlay
+    style="z-index: 3000;"
+    v-if="enablePreview"
+
+    @touchstart.native="disableOverlay"
+    >
+      <v-card
+      v-if="enablePreview"
+      style="z-index: 3000;"
+      id="mhcard"
+      ref="mhcard"
+      target="_blank"
+      :href="targetLocation"
+      :width="cardWidth"
+      outlined
+      light
+      >
+        <v-card-title>{{ targetInfo.name }}</v-card-title>
+        <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type']}} | {{ targetInfo.id }}</v-card-subtitle>
+        <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
+        <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
+        <v-card-actions>
+          <v-icon id="arrow-icon">mdi-arrow-right</v-icon>
+          <v-icon id="link-icon">mdi-open-in-new</v-icon>
+          <!-- :href="!targetLocation.startsWith('/') ? targetLocation : ''"
+      :to="targetLocation.startsWith('/') ? targetLocation : ''" -->
+          <!-- <v-icon v-if="isHoveringSelf && isTargetATTACK" id="attack-icon">mdi-open-in-new</v-icon> targetLocation.startsWith('/') <v-card-subtitle>{{ isTargetATTACK ? 'ATT&CK ' : 'ATLAS ' + targetInfo['object-type']}}, {{ targetInfo.id }}</v-card-subtitle> -->
+        </v-card-actions> <!--  :style="iconCSS" -->
+      </v-card>
+    </v-overlay>
   </v-fade-transition>
 </template>
 
@@ -47,6 +78,7 @@ export default {
   data: () => ({
     // iconLarge: false,
     // isTargetATTACK: false,
+    inputHoldThread: null,
     previewDebounce: false,
     targetId: null,
     isHoveringSelf: false,
@@ -56,6 +88,7 @@ export default {
     mousePosition: { x: 0, y: 0 },
     isHovering: false,
     baseYOffset: 64,
+    holdDuration: 500,
     // lastTargetId: null,
     self: null,
     // characterLimit: 350, // <- (maxLineHeight * 50 = characterLimit)
@@ -69,7 +102,11 @@ export default {
   watch: {
     // watch x/y values for slide transition
     parentEvent (mouseEvent) {
-      this.setPreview(mouseEvent)
+      if (this.isMobile) {
+        this.setPreviewMobile(mouseEvent)
+      } else {
+        this.setPreview(mouseEvent)
+      }
     }
   },
 
@@ -93,6 +130,7 @@ export default {
         return `/${this.targetInfo['object-type']}s/${this.targetId}`
       }
     },
+    isMobile () { return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name) }, // TODO: change this, might not be robust enough
     targetInfo () {
       return (
         this.$store.getters.getTacticById(this.targetId) ||
@@ -100,6 +138,10 @@ export default {
     }
   },
   methods: {
+    disableOverlay (event) {
+      // console.log('overlay:', event.type)
+      this.enablePreview = false
+    },
     setDebounce (that = this) {
       // console.log('debounce enabled!')
       that.previewDebounce = true
@@ -168,6 +210,43 @@ export default {
       linkIcon.style.right = `${iconOffset}px`
       arrowIcon.style.bottom = `${iconOffset - 10}px`
       linkIcon.style.bottom = `${iconOffset - 10}px`
+    },
+    setPreviewMobile (event) {
+      const eventName = event.type
+      // const listElem = event.target
+      // console.log('spm got:', eventName)
+      // const cancelContextMenu = event => event.preventDefault()
+      // const disablePreviewEvents = ['mouseleave', 'wheel']
+      // const enablePreview = !disablePreviewEvents.includes(eventName)
+      // const previouslyDisabled = !(this.enablePreview || this.keepPreviewEnabled)
+      // if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
+      // if (eventName === 'click') { this.enablePreview = false; this.keepPreviewEnabled = false; return }
+      clearTimeout(this.inputHoldThread)
+      // console.log('mobile event of' + eventName, this.holdDuration)
+      if (eventName === 'touchstart') {
+        // console.log('previeous thread killed, new started')
+        // clearTimeout(this.inputHoldThread)
+        this.inputHoldThread = setTimeout(function (that) {
+          // console.log('Thread survived!')
+          // const cancel = new TouchEvent('touchcancel')
+          // console.log(cancel, listElem)
+          // document.dispatchEvent(cancel)
+          // document.addEventListener('contextmenu', (event) => { console.log(event.target); event.preventDefault() })
+          // listElem.oncontextmenu = event => false
+          document.oncontextmenu = event => false
+          // document.addEventListener('contextmenu', cancelContextMenu)
+          that.enablePreview = true
+          that.targetId = that.newTargetId
+          that.keepPreviewEnabled = false
+        }, this.holdDuration, this)
+      } else if (['touchend', 'touchcancel'].includes(eventName)) {
+        // document.oncontextmenu = event => true
+        setTimeout(function () { document.oncontextmenu = event => true }, 0) // i love this function
+        // document.removeEventListener('contextmenu', cancelContextMenu)
+        // document.addEventListener('contextmenu', function () { return true })
+        // console.log('thread killed.')
+        // clearTimeout(this.inputHoldThread)
+      }
     },
     setPreview (event) {
       const eventName = event.type
@@ -338,11 +417,19 @@ export default {
 </script>
 
 <style scoped>
-  .v-card {
+  #hcard {
     position: absolute;
     transition: top 0.5s, left 0.5s, height 0.5s;;
     /* clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%, 5% 6%); */
     /* top: 1px; */
+  }
+
+  .v-overlay {
+    z-index: 3000;
+  }
+
+  .v-card {
+    z-index: 3000;
   }
 
   .v-card__text, .v-card__title {
