@@ -1,8 +1,19 @@
 <template>
   <v-btn
+    v-if="isBuilder"
     class="my-5"
     outlined
     x-large
+    v-on="on"
+    @click="makePPT"
+  >
+    Download Powerpoint
+  </v-btn>
+  <v-btn
+    v-else
+    elevation="0"
+    color="inherit"
+    v-bind="attrs"
     v-on="on"
     @click="makePPT"
   >
@@ -14,15 +25,20 @@
 import Pptxgen from 'pptxgenjs'
 export default {
   name: 'DownloadPowerpoint',
-  props: ['study'],
+  props: ['study', 'builder'],
   data () {
     return {
-      studyYaml: this.study
+      studyYaml: this.study,
+      isBuilder: this.builder
     }
   },
   methods: {
     makePPT () {
       const ppt = new Pptxgen()
+      if (!this.isBuilder) {
+        const studyTemp = { study: this.studyYaml }
+        this.studyYaml = studyTemp
+      }
       this.titleSlide(ppt, this.studyYaml)
       this.detailSlide(ppt, this.studyYaml)
       this.procedureSlide(ppt, this.studyYaml)
@@ -94,7 +110,7 @@ export default {
       for (let i = 0; i < yaml.study.procedure.length; i++) {
         const tactic = this.$store.getters.getTacticById(yaml.study.procedure[i].tactic)
         const technique = this.$store.getters.getTechniqueById(yaml.study.procedure[i].technique)
-        const r = [tactic.name, technique.name, yaml.study.procedure[i].description]
+        const r = [tactic.name + '\n' + yaml.study.procedure[i].tactic, technique.name + '\n' + yaml.study.procedure[i].technique, yaml.study.procedure[i].description]
         rows.push(r)
       }
       const slide = ppt.addSlide()

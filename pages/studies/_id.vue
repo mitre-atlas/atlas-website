@@ -17,11 +17,13 @@
       </v-col>
     </v-row>
     <v-row>
+      <!-- <download-powerpoint v-if="downloadedYaml" :study="study" /> -->
       <v-col
         md="4"
         offset-md="8"
         >
-          <v-btn
+          <download-powerpoint :study="study" :builder="builder" />
+          <!-- <v-btn
             elevation="0"
             color="inherit"
             v-bind="attrs"
@@ -29,7 +31,7 @@
             @click="getPPT()"
           >
           Download Powerpoint
-          </v-btn>
+          </v-btn> -->
         </v-col>
     </v-row>
 
@@ -76,10 +78,10 @@
 </template>
 
 <script>
-import { makePPT } from 'static/data/ppt.js'
 export default {
   data: () => ({
-    charactersThreshold: 300
+    charactersThreshold: 300,
+    builder: false
   }),
   head () {
     return {
@@ -96,11 +98,6 @@ export default {
   methods: {
     openNewTab (url) {
       window.open(url, '_blank')
-    },
-    getPPT () {
-      const yaml = { study: { } }
-      yaml.study = this.$store.getters.getStudyById(this.$route.params.id)
-      makePPT(yaml)
     }
   }
 }

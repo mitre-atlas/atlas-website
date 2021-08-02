@@ -105,7 +105,7 @@
         </template>
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
-      <download-powerpoint v-if="downloadedYaml" :study="study" />
+      <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -120,7 +120,7 @@
 
 <router>
   {
-    path: '/create'
+    path: '/studies/create'
   }
 </router>
 
@@ -161,6 +161,7 @@ export default {
       uploadErrorMessage: [],
       submissionMsg: '',
       downloadedYaml: false,
+      builder: true,
       contactEmail: 'atlas@mitre.org'
     }
   },
