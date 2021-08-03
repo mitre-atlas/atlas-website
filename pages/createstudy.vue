@@ -3,7 +3,6 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <!-- <p> To build your case study, either upload a YAML file below and edit as needed, or fill out the following form. </p> -->
     <h3 class="font-weight-medium">1. Upload File</h3>
     <subtitle-2 class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
     <v-row>
@@ -21,11 +20,6 @@
           <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
         </v-file-input>
       </v-col>
-      <!-- <v-col>
-        <v-btn class="my-5" @click="readJSON">
-          Populate Form
-        </v-btn>
-      </v-col> -->
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -96,7 +90,7 @@
       </div>
 
       <v-tooltip right color="light-blue lighten-4">
-        <template #activator="{ on, attrs }">
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
             class="my-5"
             outlined
@@ -111,6 +105,7 @@
         </template>
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
+      <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -143,17 +138,12 @@ export default {
       year: null,
       month: null,
       date: null,
-      // year: new Date().toISOString().substr(0, 10),
-      // month: new Date().toISOString().substr(0, 10),
-      // date: new Date().toISOString().substr(0, 10),
-      // yearMenu: false,
-      // monthMenu: false,
-      // dateMenu: false,
       selectTactic: null,
       selectTechnique: null,
       description: '',
       titleStudy: '',
       meta: { email: '' },
+      study: null,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
@@ -170,6 +160,8 @@ export default {
       uploadError: false,
       uploadErrorMessage: [],
       submissionMsg: '',
+      downloadedYaml: false,
+      builder: true,
       contactEmail: 'atlas@mitre.org'
     }
   },
@@ -273,16 +265,12 @@ export default {
         const tryYamlText = await file.text()
         try {
           yamlParse(tryYamlText)
-          // can i add if !object here?
           if (!(typeof tryYamlText === 'object' || typeof yamlParse(tryYamlText) === 'object')) {
             addError('Invalid YAML')
           }
         } catch (e) {
           addError('Invalid YAML')
         }
-        // PSEUDO FOR YAML VALIDATE
-        // if (!correct yaml)
-        // addError('Incorrectly formatted YAML')
         const yamlErr = validFormatYAML(yamlParse(tryYamlText))
         if (yamlErr !== '') {
           addError(yamlErr)
@@ -341,6 +329,8 @@ export default {
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
         downloadStudyFile(study)
+        this.downloadedYaml = true
+        this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'

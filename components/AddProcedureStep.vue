@@ -12,7 +12,7 @@
         @descriptionUpdate="descriptionData = $event"
       />
       <v-card-actions>
-        <v-btn class="ma-2" outlined color="blue" v-scroll-to="{ el: '#addForm', offset: -100, easing: 'ease-in', force: false }" @click="addProcedureStep">
+        <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
           Add Step
         </v-btn>
         <v-btn class="ma-2" outlined color="red" @click="clearStepInput">

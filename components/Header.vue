@@ -55,6 +55,7 @@
               text
               class="text-capitalize"
               nuxt
+              exact
             />
           </v-list-item>
 
