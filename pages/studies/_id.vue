@@ -16,6 +16,24 @@
         <study-details-card :study="study" class="mt-10" />
       </v-col>
     </v-row>
+    <v-row>
+      <!-- <download-powerpoint v-if="downloadedYaml" :study="study" /> -->
+      <v-col
+        md="4"
+        offset-md="8"
+        >
+          <download-powerpoint :study="study" :builder="builder" />
+          <!-- <v-btn
+            elevation="0"
+            color="inherit"
+            v-bind="attrs"
+            v-on="on"
+            @click="getPPT()"
+          >
+          Download Powerpoint
+          </v-btn> -->
+        </v-col>
+    </v-row>
 
   <v-container>
       <v-row>
@@ -62,7 +80,8 @@
 <script>
 export default {
   data: () => ({
-    charactersThreshold: 300
+    charactersThreshold: 300,
+    builder: false
   }),
   head () {
     return {

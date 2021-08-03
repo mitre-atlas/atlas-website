@@ -29,6 +29,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            exact
             v-bind="attrs"
             v-on="on"
             text
@@ -48,11 +49,13 @@
             :key="j"
           >
             <v-btn
+              exact
               v-text="childLink.name"
               :to="childLink.href"
               text
               class="text-capitalize"
               nuxt
+              exact
             />
           </v-list-item>
 
@@ -61,6 +64,7 @@
 
       <v-btn
         v-else
+        exact
         v-text="link.name"
         :to="link.href"
         text
@@ -93,6 +97,7 @@
                   text
                   class="text-capitalize"
                   nuxt
+                  exact
                 />
               </v-list-item>
             </div>
@@ -103,6 +108,7 @@
                 text
                 class="text-capitalize"
                 nuxt
+                exact
               />
             </v-list-item>
           </div>
