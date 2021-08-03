@@ -80,8 +80,12 @@
 <script>
 export default {
   data: () => ({
+<<<<<<< HEAD
     charactersThreshold: 300,
     builder: false
+=======
+    charactersThreshold: 300
+>>>>>>> origin/main
   }),
   head () {
     return {

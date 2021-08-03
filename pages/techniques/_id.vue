@@ -1,9 +1,12 @@
 <template>
 <div>
   <breadcrumbs></breadcrumbs>
-
-  <page-title class="ml-5">{{info.name}}</page-title>
-
+  <span v-if="'subtechnique-of' in info">
+    <page-title class="ml-5">{{parentTechnique.name}}: {{info.name}}</page-title>
+  </span>
+  <span v-else>
+    <page-title class="ml-5">{{info.name}}</page-title>
+  </span>
   <v-row>
     <v-col cols="8">
       <page-section-title class="ml-6">Summary</page-section-title>
