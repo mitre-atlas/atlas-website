@@ -11,7 +11,7 @@
       </v-card-actions>
 
       <v-card-actions>
-        <v-btn class="ma-2" outlined color="blue" v-scroll-to="{ el: '#sourceRender', offset: -100, easing: 'ease-in', force: false }" @click="addSource">
+        <v-btn class="ma-2" outlined color="blue" @click="addSource">
           Add Source
         </v-btn>
         <v-btn class="ma-2" outlined color="red" @click="clearSource">
