@@ -1,6 +1,20 @@
 <template>
   <div class="mx-8">
     <breadcrumbs />
+
+    <v-btn
+      class="my-5"
+      outlined
+      color="red"
+      absolute
+      right
+      :disabled="!valid"
+      v-bind="attrs"
+      v-on="on"
+      @click="clearForm"
+    >
+      Clear Form
+    </v-btn>
     <page-title>{{ title }}</page-title>
 
     <h3 class="font-weight-medium">1. Upload File</h3>
@@ -106,6 +120,17 @@
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
       <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+      <!-- <v-btn
+        class="my-5"
+        outlined
+        :disabled="!valid"
+        v-bind="attrs"
+        x-large
+        v-on="on"
+        @click="clearForm"
+      >
+        Clear Form
+      </v-btn> -->
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -208,6 +233,12 @@ export default {
       } else if (typeof inputStudy.references[0] === 'object') {
         this.references = inputStudy.references
       }
+      if (this.procedure !== []) {
+        this.addingStep = false
+      }
+      if (this.references !== []) {
+        this.addingSource = false
+      }
     },
     async readJSON () {
       if (!(this.chosenFile)) {
@@ -303,6 +334,29 @@ export default {
     addSource (newSource) {
       this.references.push(newSource)
       this.addingSource = false
+    },
+    clearForm () {
+      this.valid = true
+      this.chosenFile = null
+      this.initialFileName = '' // IS THIS DOING ANYTHING
+      this.year = null
+      this.month = null
+      this.date = null
+      this.titleStudy = ''
+      this.meta = { email: '' }
+      this.study = null
+      this.summary = ''
+      this.reported = ''
+      this.procedure = []
+      this.addingStep = true
+      this.references = []
+      this.addingSource = true
+      this.errorMsg = ''
+      this.uploadError = false
+      this.uploadErrorMessage = []
+      this.submissionMsg = ''
+      this.downloadedYaml = false
+      this.builder = true
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
