@@ -31,6 +31,7 @@
         rounded="b-lg t-0"
         transition="slide-y-transition"
         content-class="elevation-2"
+        style="z-index:-100;"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -54,6 +55,7 @@
             :key="j"
             nuxt
             :to="childLink.href"
+            exact
             class="text-capitalize px-6 text-md-body-1"
           >
           {{ childLink.name }}
@@ -67,6 +69,7 @@
         v-text="link.name"
         :to="link.href"
         text
+        exact
         class="text-capitalize"
         nuxt
       ></v-btn>
@@ -94,6 +97,7 @@
                   v-text="childLink.name"
                   :to="childLink.href"
                   text
+                  exact
                   class="text-capitalize"
                   nuxt
                 />
@@ -104,6 +108,7 @@
                 v-text="link.name"
                 :to="link.href"
                 text
+                exact
                 class="text-capitalize"
                 nuxt
               />
