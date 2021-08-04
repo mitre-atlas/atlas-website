@@ -86,32 +86,33 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list>
+        <v-list class="hidden-md-and-up">
           <div
             v-for="(link, i) in links"
             :key="i"
             >
             <div v-if="link.isDropdown">
-              <v-list-item v-for="(childLink, j) in link.links" :key="j">
-                <v-btn
-                  v-text="childLink.name"
-                  :to="childLink.href"
-                  text
-                  exact
-                  class="text-capitalize"
-                  nuxt
-                />
-              </v-list-item>
-            </div>
-            <v-list-item v-else>
-              <v-btn
-                v-text="link.name"
-                :to="link.href"
+              <v-list-item
+                v-for="(childLink, j) in link.links"
+                :key="j"
+                v-text="childLink.name"
+                :to="childLink.href"
                 text
                 exact
                 class="text-capitalize"
                 nuxt
-              />
+                >
+              </v-list-item>
+            </div>
+            <v-list-item
+              v-else
+              v-text="link.name"
+              :to="link.href"
+              text
+              exact
+              class="text-capitalize"
+              nuxt
+              >
             </v-list-item>
           </div>
         </v-list>
@@ -152,7 +153,7 @@ export default {
           },
           {
             name: 'Build Case Study',
-            href: '/createstudy'
+            href: '/studies/create'
           }
         ]
       },
