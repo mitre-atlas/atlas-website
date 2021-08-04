@@ -25,6 +25,7 @@
       >
 
       <v-menu
+        class="hidden-sm-and-down"
         v-if="link.isDropdown"
         offset-y
         bottom
@@ -48,7 +49,7 @@
           </v-btn>
         </template>
 
-        <v-list>
+        <v-list class="hidden-sm-and-down">
           <v-list-item-group :value="selection">
           <v-list-item
             v-for="(childLink, j) in link.links"
@@ -56,7 +57,7 @@
             nuxt
             :to="childLink.href"
             exact
-            class="text-capitalize px-6 text-md-body-1"
+            class="px-6 text-button capitalize"
           >
           {{ childLink.name }}
           </v-list-item>
@@ -77,7 +78,14 @@
     </v-toolbar-items>
 
     <v-toolbar-items class="hidden-md-and-up">
-       <v-menu offset-y>
+       <v-menu
+        bottom
+        right
+        offset-y
+        rounded="b-lg t-0"
+        transition="slide-y-transition"
+        content-class="elevation-2"
+        style="z-index:-100;">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -99,7 +107,8 @@
                 :to="childLink.href"
                 text
                 exact
-                class="text-capitalize"
+
+                class="px-6 text-button capitalize"
                 nuxt
                 >
               </v-list-item>
@@ -110,7 +119,7 @@
               :to="link.href"
               text
               exact
-              class="text-capitalize"
+              class="px-6 text-button capitalize"
               nuxt
               >
             </v-list-item>
@@ -185,3 +194,9 @@ export default {
 </script>
 
 <style scoped>
+
+.capitalize {
+  text-transform: capitalize !important
+}
+
+</style>
