@@ -17,6 +17,7 @@
     "core-js": "^3.11.0",
     "js-yaml": "^4.0.0",
     "nuxt": "^2.15.4",
+    "pptxgenjs": "^3.7.1",
     "vue-gtag": "^1.16.1",
     "vue-linkify": "^1.0.1",
     "vue-scrollto": "^2.20.0",

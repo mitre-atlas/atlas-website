@@ -12,7 +12,7 @@
 
     <v-toolbar-title>
       <nuxt-link to="/">
-        <img src="~/assets/MITRE-brand_ATLAS_white.png" height="25" />
+        <img src="~/assets/MITRE-brand_ATLAS_white.svg" height="27" width='200'/>
       </nuxt-link>
     </v-toolbar-title>
 
@@ -36,6 +36,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            exact
             v-bind="attrs"
             v-on="on"
             text
@@ -67,10 +68,10 @@
 
       <v-btn
         v-else
+        exact
         v-text="link.name"
         :to="link.href"
         text
-        exact
         class="text-capitalize"
         nuxt
       ></v-btn>
@@ -107,7 +108,6 @@
                 :to="childLink.href"
                 text
                 exact
-
                 class="px-6 text-button capitalize"
                 nuxt
                 >

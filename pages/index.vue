@@ -32,7 +32,7 @@
         </p>
         <!-- <homepage-links /> -->
          <!-- <page-title class="mt-10 text-center">{{ $config.name.short }}</page-title> -->
-        <img src="~/assets/ATLAS_black.png" height="40" class="d-block mx-auto" />
+        <img src="~/assets/ATLAS_black.svg" height="60" class="d-block mx-auto" />
       </div>
       <div>
         <p>
