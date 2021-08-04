@@ -1,29 +1,31 @@
 <template>
-  <v-card outlined class="my-5">
-    <v-card-title>Add Procedure Steps:</v-card-title>
-    <procedure-form
-      :key="selectTacticData"
-      :select-tactic-data="selectTacticData"
-      :select-technique-data="selectTechniqueData"
-      :description-data="descriptionData"
-      @tacticUpdate="selectTacticData = $event"
-      @techniqueUpdate="selectTechniqueData = $event"
-      @descriptionUpdate="descriptionData = $event"
-    />
-    <v-card-actions>
-      <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
-        Add Step
-      </v-btn>
-      <v-btn class="ma-2" outlined color="red" @click="clearStepInput">
-        Clear
-      </v-btn>
-    </v-card-actions>
-    <v-col sm="6">
-      <v-alert v-if="addStepErr" color="red" outlined type="error" dense>
-        {{ addStepErr }}
-      </v-alert>
-    </v-col>
-  </v-card>
+  <div id="addForm">
+    <v-card outlined class="my-5">
+      <v-card-title>Add Procedure Steps:</v-card-title>
+      <procedure-form
+        :key="selectTacticData"
+        :select-tactic-data="selectTacticData"
+        :select-technique-data="selectTechniqueData"
+        :description-data="descriptionData"
+        @tacticUpdate="selectTacticData = $event"
+        @techniqueUpdate="selectTechniqueData = $event"
+        @descriptionUpdate="descriptionData = $event"
+      />
+      <v-card-actions>
+        <v-btn class="ma-2" outlined color="blue" v-scroll-to="{ el: '#addForm', offset: -100, easing: 'ease-in', force: false }" @click="addProcedureStep">
+          Add Step
+        </v-btn>
+        <v-btn class="ma-2" outlined color="red" @click="clearStepInput">
+          Clear
+        </v-btn>
+      </v-card-actions>
+      <v-col sm="6">
+        <v-alert v-if="addStepErr" color="red" outlined type="error" dense>
+          {{ addStepErr }}
+        </v-alert>
+      </v-col>
+    </v-card>
+  </div>
 </template>
 
 <script>
