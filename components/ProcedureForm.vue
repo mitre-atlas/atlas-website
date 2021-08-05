@@ -27,7 +27,12 @@
         class="menu-item"
         @mouseenter="function(event){ passMouse(event, data.item) }"
         @mouseleave="passMouse"
-        @click="passMouse">
+        @click.prevent="passMouse"
+        @touchstart="function(event){ passMouse(event, data.item) }"
+        @touchend="passMouse"
+        @touchmove="passMouse"
+        @touchcancel="passMouse"
+        >
         {{ data.item.name }}
         </div>
       </template>
@@ -53,7 +58,12 @@
           class="menu-item"
           @mouseenter="function(event){ passMouse(event, data.item) }"
           @mouseleave="passMouse"
-          @click="passMouse">
+          @click.prevent="passMouse"
+          @touchstart="function(event){ passMouse(event, data.item) }"
+          @touchend="passMouse"
+          @touchmove="passMouse"
+          @touchcancel="passMouse"
+          >
           {{ data.item.name }}
           </div>
         </template>

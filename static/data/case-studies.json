@@ -17,7 +17,7 @@
                 "description": "We acquired a similar dataset to the target production model.\n"
             },
             {
-                "tactic": "TA0042",
+                "tactic": "AML.TA0001",
                 "technique": "AML.T0005",
                 "description": "We built a model that was trained on a similar dataset as the production model.\nWe trained the model on ~ 33 million benign and ~ 27 million malicious HTTP packet headers.\nEvaluation showed a true positive rate of ~ 99% and false positive rate of ~0.01%, on average.\nTesting the model with a HTTP packet header from known malware command and control traffic samples was detected as malicious with high confidence (> 99%).\n"
             },
@@ -32,7 +32,7 @@
                 "description": "We queried the model with our adversarial examples and adjusted them until the model was evaded.\n"
             },
             {
-                "tactic": "TA0040",
+                "tactic": "TA0005",
                 "technique": "AML.T0015",
                 "description": "With the crafted samples we performed online evasion of the ML-based spyware detection model.\nThe crafted packets were identified as benign with >80% confidence.\nThis evaluation demonstrates that adversaries are able to bypass advanced ML detection techniques, by crafting samples that are misclassified by an ML model.\n"
             }
@@ -150,7 +150,7 @@
                 "description": "Using this knowledge, the researchers fused attributes of known good files with malware to manually create adversarial malware.\n"
             },
             {
-                "tactic": "TA0040",
+                "tactic": "TA0005",
                 "technique": "AML.T0015",
                 "description": "Due to the secondary model overriding the primary, the researchers were effectively able to bypass the ML model.\n"
             }
@@ -484,12 +484,7 @@
             {
                 "tactic": "TA0042",
                 "technique": "AML.T0002",
-                "description": "The team identified and obtained the publically available base model.\n"
-            },
-            {
-                "tactic": "TA0042",
-                "technique": "AML.T0002",
-                "description": "The team identified and obtained the publically dataset used by the model\n"
+                "description": "The team identified and obtained the publicly available base model.\n"
             },
             {
                 "tactic": "AML.TA0000",
@@ -543,7 +538,7 @@
                 "description": "The team acquired representative open source data.\n"
             },
             {
-                "tactic": "TA0042",
+                "tactic": "AML.TA0001",
                 "technique": "AML.T0005",
                 "description": "The team developed a proxy model using the open source data.\n"
             },
