@@ -77,6 +77,7 @@
       <add-procedure-step
         class="mb-16 mx-8"
         v-if="addingStep"
+        ref="addProcStepRef"
         :select-tactic="selectTactic"
         :select-technique="selectTechnique"
         :description="description"
@@ -98,7 +99,14 @@
           </li>
         </ol>
       </div>
-      <add-source class="mx-8" v-if="addingSource" :source-description="sourceDescription" :url="url" @clicked="addSource" />
+      <add-source
+        class="mx-8"
+        v-if="addingSource"
+        ref="addSourceRef"
+        :source-description="sourceDescription"
+        :url="url"
+        @clicked="addSource"
+      />
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
       </div>
@@ -120,17 +128,6 @@
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
       <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
-      <!-- <v-btn
-        class="my-5"
-        outlined
-        :disabled="!valid"
-        v-bind="attrs"
-        x-large
-        v-on="on"
-        @click="clearForm"
-      >
-        Clear Form
-      </v-btn> -->
       <v-col sm="6">
         <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
           {{ errorMsg }}
@@ -357,6 +354,9 @@ export default {
       this.submissionMsg = ''
       this.downloadedYaml = false
       this.builder = true
+      this.$refs.form.resetValidation()
+      this.$refs.addProcStepRef.clearStepInput()
+      this.$refs.addSourceRef.clearSource()
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
