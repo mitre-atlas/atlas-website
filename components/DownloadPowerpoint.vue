@@ -23,6 +23,7 @@
 
 <script>
 import Pptxgen from 'pptxgenjs'
+import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
 export default {
   name: 'DownloadPowerpoint',
   props: ['study', 'builder'],
@@ -60,9 +61,16 @@ export default {
         h: 2.5,
         valign: 'middle',
         align: 'center',
-        color: '03256C',
-        fill: 'ADD9F4',
+        color: '0D2F4F',
+        fill: '87DEFF',
         fontSize: 48
+      })
+      slide.addImage({
+        data: MITRE_ATLAS_TM_LOGO(),
+        x: 6.75,
+        y: 5,
+        h: 0.4,
+        w: 3
       })
     },
     detailSlide (ppt, yaml) {
@@ -76,26 +84,26 @@ export default {
         w: '100%',
         h: 1,
         color: 'FFFFFF',
-        fill: 'EF5B5B',
+        fill: '0D2F4F',
         fontSize: 30
       })
       slide.addText([
-        { text: 'Summary:', options: { color: '03256C', breakLine: true, fontSize: 24 } },
-        { text: yaml.study.summary, options: { color: '03256C', breakLine: true, fontSize: 18, indentLevel: 1 } }
+        { text: 'Summary:', options: { color: '0D2F4F', breakLine: true, fontSize: 24 } },
+        { text: yaml.study.summary, options: { color: '0D2F4F', breakLine: true, fontSize: 18, indentLevel: 1 } }
       ],
       {
         y: 2.5
       })
       slide.addText([
-        { text: 'Reported By: ', options: { color: '03256C', fontSize: 18 } },
-        { text: yaml.study['reported-by'], options: { color: '03256C', fontSize: 18 } }
+        { text: 'Reported By: ', options: { color: '0D2F4F', fontSize: 18 } },
+        { text: yaml.study['reported-by'], options: { color: '0D2F4F', fontSize: 18 } }
       ],
       {
         y: '80%'
       })
       slide.addText([
-        { text: 'Date: ', options: { color: '03256C', fontSize: 18 } },
-        { text: yaml.study['incident-date'], options: { color: '03256C', fontSize: 18 } }
+        { text: 'Date: ', options: { color: '0D2F4F', fontSize: 18 } },
+        { text: yaml.study['incident-date'], options: { color: '0D2F4F', fontSize: 18 } }
       ],
       {
         y: '90%'
@@ -103,9 +111,9 @@ export default {
     },
     procedureSlide (ppt, yaml) {
       const rows = [[
-        { text: 'Tactic', options: { fill: 'ADD9F4', color: '03256C', align: 'center', bold: true } },
-        { text: 'Technique', options: { fill: 'ADD9F4', color: '03256C', align: 'center', bold: true } },
-        { text: 'Description', options: { fill: 'ADD9F4', color: '03256C', align: 'center', bold: true } }
+        { text: 'Tactic', options: { fill: '87DEFF', color: '0D2F4F', align: 'center', bold: true } },
+        { text: 'Technique', options: { fill: '87DEFF', color: '0D2F4F', align: 'center', bold: true } },
+        { text: 'Description', options: { fill: '87DEFF', color: '0D2F4F', align: 'center', bold: true } }
       ]]
       for (let i = 0; i < yaml.study.procedure.length; i++) {
         const tactic = this.$store.getters.getTacticById(yaml.study.procedure[i].tactic)
@@ -123,7 +131,7 @@ export default {
         w: '100%',
         h: 1,
         color: 'FFFFFF',
-        fill: 'EF5B5B',
+        fill: '0D2F4F',
         fontSize: 30
       })
       slide.addTable(rows,
@@ -131,10 +139,10 @@ export default {
           y: 1.5,
           colW: [2, 2, 5],
           w: 9,
-          color: '03256C',
+          color: '0D2F4F',
           autoPage: true,
           autoPageRepeatHeader: true,
-          border: { color: '03256C' },
+          border: { color: '0D2F4F' },
           margin: 10
         })
     },
@@ -152,7 +160,7 @@ export default {
           w: '100%',
           h: 1,
           color: 'FFFFFF',
-          fill: 'EF5B5B',
+          fill: '0D2F4F',
           fontSize: 30
         })
         let y = 30
@@ -160,13 +168,13 @@ export default {
           if (yaml.study.references[i].sourceDescription) {
             slide.addText([
               { text: yaml.study.references[i].sourceDescription }
-            ], { y: '' + y + '%', color: '03256C', fontSize: 22 })
+            ], { y: '' + y + '%', color: '0D2F4F', fontSize: 22 })
             if (yaml.study.references[i].url) { y += 5 }
           }
           if (yaml.study.references[i].url) {
             slide.addText([
               { text: yaml.study.references[i].url, options: { hyperlink: { url: yaml.study.references[i].url } } }
-            ], { y: '' + y + '%', color: '03256C', fontSize: 22 })
+            ], { y: '' + y + '%', color: '0D2F4F', fontSize: 22 })
           }
           y += 15
           i++

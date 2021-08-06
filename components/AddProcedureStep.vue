@@ -1,7 +1,13 @@
 <template>
   <div id="addForm">
     <v-card outlined class="my-5">
-      <v-card-title>Add Procedure Steps:</v-card-title>
+      <v-card-title>
+        Add Procedure Steps:
+        <v-spacer />
+        <v-btn color="red" icon @click="$emit('addingBoolUpdate', false)">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
       <procedure-form
         :key="selectTacticData"
         :select-tactic-data="selectTacticData"
@@ -31,13 +37,14 @@
 <script>
 export default {
   name: 'AddProcedureStep',
-  props: ['selectTactic', 'selectTechnique', 'description'],
+  props: ['selectTactic', 'selectTechnique', 'description', 'addingStep'],
   data () {
     return {
       selectTacticData: this.selectTactic,
       selectTechniqueData: this.selectTechnique,
       descriptionData: this.description,
-      addStepErr: ''
+      addStepErr: '',
+      addingBool: this.addingStep
     }
   },
   methods: {
