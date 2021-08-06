@@ -58,7 +58,8 @@
             nuxt
             :to="childLink.href"
             exact
-            class="px-6 text-button capitalize"
+            style="text-transform: capitalize !important;"
+            class="px-6 text-button"
           >
           {{ childLink.name }}
           </v-list-item>
@@ -108,7 +109,8 @@
                 :to="childLink.href"
                 text
                 exact
-                class="px-6 text-button capitalize"
+                class="px-6 text-button"
+                style="text-transform: capitalize !important;"
                 nuxt
                 >
               </v-list-item>
@@ -119,8 +121,9 @@
               :to="link.href"
               text
               exact
-              class="px-6 text-button capitalize"
+              class="px-6 text-button"
               nuxt
+              style="text-transform: capitalize !important;"
               >
             </v-list-item>
           </div>
@@ -193,10 +196,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-.capitalize {
-  text-transform: capitalize !important
-}
-
-</style>
