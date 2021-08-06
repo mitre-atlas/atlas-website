@@ -1,7 +1,13 @@
 <template>
   <div id="sourceRender">
     <v-card outlined class="my-5">
-      <v-card-title>Add Sources:</v-card-title>
+      <v-card-title>
+        Add Sources:
+        <v-spacer />
+        <v-btn color="red" icon @click="$emit('addingBoolUpdate', false)">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
 
       <v-card-actions class="px-md-4 mx-lg-auto">
         <v-text-field v-model="sourceDescriptionData" label="Source Description" @input="updateValue(sourceDescriptionData)" />
@@ -30,12 +36,13 @@
 <script>
 export default {
   name: 'AddSource',
-  props: ['sourceDescription', 'url'],
+  props: ['sourceDescription', 'url', 'addingSource'],
   data () {
     return {
       sourceDescriptionData: this.sourceDescription,
       urlData: this.url,
-      addSourceErr: ''
+      addSourceErr: '',
+      addingBool: this.addingSource
     }
   },
   methods: {

@@ -81,7 +81,9 @@
         :select-tactic="selectTactic"
         :select-technique="selectTechnique"
         :description="description"
+        :addingStep="addingStep"
         @clicked="addProcedureStep"
+        @addingBoolUpdate="addingStep = $event"
       />
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
@@ -106,6 +108,7 @@
         :source-description="sourceDescription"
         :url="url"
         @clicked="addSource"
+        @addingBoolUpdate="addingSource = $event"
       />
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
