@@ -3,7 +3,9 @@
     app
     dark
     clipped-left
+    elevate-on-scroll
     color="grey darken-3"
+    style="z-index:2000;"
     >
 
     <!-- <v-app-bar-nav-icon class="hidden-lg-and-up" /> -->
@@ -23,9 +25,14 @@
       >
 
       <v-menu
+        class="hidden-sm-and-down"
         v-if="link.isDropdown"
         offset-y
         bottom
+        rounded="b-lg t-0"
+        transition="slide-y-transition"
+        content-class="elevation-2"
+        style="z-index:-100;"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -43,22 +50,20 @@
           </v-btn>
         </template>
 
-        <v-list>
+        <v-list class="hidden-sm-and-down">
+          <v-list-item-group :value="selection">
           <v-list-item
             v-for="(childLink, j) in link.links"
             :key="j"
+            nuxt
+            :to="childLink.href"
+            exact
+            style="text-transform: capitalize !important;"
+            class="px-6 text-button"
           >
-            <v-btn
-              exact
-              v-text="childLink.name"
-              :to="childLink.href"
-              text
-              class="text-capitalize"
-              nuxt
-              exact
-            />
+          {{ childLink.name }}
           </v-list-item>
-
+          </v-list-item-group>
         </v-list>
       </v-menu>
 
@@ -75,7 +80,14 @@
     </v-toolbar-items>
 
     <v-toolbar-items class="hidden-md-and-up">
-       <v-menu offset-y>
+       <v-menu
+        bottom
+        right
+        offset-y
+        rounded="b-lg t-0"
+        transition="slide-y-transition"
+        content-class="elevation-2"
+        style="z-index:-100;">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -84,32 +96,35 @@
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
-        <v-list>
+        <v-list class="hidden-md-and-up">
           <div
             v-for="(link, i) in links"
             :key="i"
             >
             <div v-if="link.isDropdown">
-              <v-list-item v-for="(childLink, j) in link.links" :key="j">
-                <v-btn
-                  v-text="childLink.name"
-                  :to="childLink.href"
-                  text
-                  class="text-capitalize"
-                  nuxt
-                  exact
-                />
+              <v-list-item
+                v-for="(childLink, j) in link.links"
+                :key="j"
+                v-text="childLink.name"
+                :to="childLink.href"
+                text
+                exact
+                class="px-6 text-button"
+                style="text-transform: capitalize !important;"
+                nuxt
+                >
               </v-list-item>
             </div>
-            <v-list-item v-else>
-              <v-btn
-                v-text="link.name"
-                :to="link.href"
-                text
-                class="text-capitalize"
-                nuxt
-                exact
-              />
+            <v-list-item
+              v-else
+              v-text="link.name"
+              :to="link.href"
+              text
+              exact
+              class="px-6 text-button"
+              nuxt
+              style="text-transform: capitalize !important;"
+              >
             </v-list-item>
           </div>
         </v-list>
@@ -181,4 +196,3 @@ export default {
 }
 </script>
 
-<style scoped>
