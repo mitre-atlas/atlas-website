@@ -1,6 +1,20 @@
 <template>
   <div class="mx-8">
     <breadcrumbs />
+
+    <v-btn
+      class="my-5"
+      outlined
+      color="red"
+      absolute
+      right
+      :disabled="!valid"
+      v-bind="attrs"
+      v-on="on"
+      @click="clearForm"
+    >
+      Clear Form
+    </v-btn>
     <page-title>{{ title }}</page-title>
 
     <h3 class="font-weight-medium">1. Upload File</h3>
@@ -63,10 +77,13 @@
       <add-procedure-step
         class="mb-16 mx-8"
         v-if="addingStep"
+        ref="addProcStepRef"
         :select-tactic="selectTactic"
         :select-technique="selectTechnique"
         :description="description"
+        :addingStep="addingStep"
         @clicked="addProcedureStep"
+        @addingBoolUpdate="addingStep = $event"
       />
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
@@ -84,7 +101,15 @@
           </li>
         </ol>
       </div>
-      <add-source class="mx-8" v-if="addingSource" :source-description="sourceDescription" :url="url" @clicked="addSource" />
+      <add-source
+        class="mx-8"
+        v-if="addingSource"
+        ref="addSourceRef"
+        :source-description="sourceDescription"
+        :url="url"
+        @clicked="addSource"
+        @addingBoolUpdate="addingSource = $event"
+      />
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
       </div>
@@ -208,6 +233,12 @@ export default {
       } else if (typeof inputStudy.references[0] === 'object') {
         this.references = inputStudy.references
       }
+      if (this.procedure !== []) {
+        this.addingStep = false
+      }
+      if (this.references !== []) {
+        this.addingSource = false
+      }
     },
     async readJSON () {
       if (!(this.chosenFile)) {
@@ -303,6 +334,36 @@ export default {
     addSource (newSource) {
       this.references.push(newSource)
       this.addingSource = false
+    },
+    clearForm () {
+      if (this.addingStep) {
+        this.$refs.addProcStepRef.clearStepInput()
+      }
+      if (this.addingSource) {
+        this.$refs.addSourceRef.clearSource()
+      }
+      this.valid = true
+      this.chosenFile = null
+      this.initialFileName = '' // IS THIS DOING ANYTHING
+      this.year = null
+      this.month = null
+      this.date = null
+      this.titleStudy = ''
+      this.meta = { email: '' }
+      this.study = null
+      this.summary = ''
+      this.reported = ''
+      this.procedure = []
+      this.addingStep = true
+      this.references = []
+      this.addingSource = true
+      this.errorMsg = ''
+      this.uploadError = false
+      this.uploadErrorMessage = []
+      this.submissionMsg = ''
+      this.downloadedYaml = false
+      this.builder = true
+      this.$refs.form.resetValidation()
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
