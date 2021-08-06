@@ -56,6 +56,23 @@
           </v-col>
         </v-row>
 
+        <v-subheader>
+          Incident date
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  small
+                  right
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-help-circle-outline
+                </v-icon>
+            </template>
+            <span>Only the year is required, but please specify month and day where possible.</span>
+          </v-tooltip>
+        </v-subheader>
+
         <date-select
           :key="year"
           :year="year"
@@ -90,7 +107,7 @@
       </div>
 
       <h3 class="font-weight-medium">4. References</h3>
-      <subtitle-2 class="ml-6">Add references to your case study, each containing a source and/or url.</subtitle-2>
+      <subtitle-2 class="ml-6">Optionally add references to your case study, each containing a source and/or url.</subtitle-2>
       <div v-if="references.length" class="mx-8">
         <ol>
           <li v-for="(value, key) in references" :key="key">

@@ -32,7 +32,7 @@
           class="pl-0"
           v-model="dateReturn"
           :items="getDate"
-          label="Date"
+          label="Day"
           :disabled="!monthReturn"
           prepend-icon="mdi-calendar"
           @input="$emit('dateUpdate', dateReturn)"
