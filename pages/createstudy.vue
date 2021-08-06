@@ -333,6 +333,12 @@ export default {
       this.addingSource = false
     },
     clearForm () {
+      if (this.addingStep) {
+        this.$refs.addProcStepRef.clearStepInput()
+      }
+      if (this.addingSource) {
+        this.$refs.addSourceRef.clearSource()
+      }
       this.valid = true
       this.chosenFile = null
       this.initialFileName = '' // IS THIS DOING ANYTHING
@@ -355,8 +361,6 @@ export default {
       this.downloadedYaml = false
       this.builder = true
       this.$refs.form.resetValidation()
-      this.$refs.addProcStepRef.clearStepInput()
-      this.$refs.addSourceRef.clearSource()
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
