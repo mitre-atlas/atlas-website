@@ -15,7 +15,7 @@
       <v-col cols="12" sm="8">
         <v-row justify="space-between" align="center">
           <v-card-text style="color: #bababa;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            MITRE ATT&CK is a registered trademark of The MITRE Corporation.
+            MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a trademark and registered trademark of The MITRE Corporation.
           </v-card-text>
         </v-row>
 
