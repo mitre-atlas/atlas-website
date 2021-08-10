@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'MITRE | ATLAS',
+    title: 'MITRE | ATLAS™',
     htmlAttrs: {
       lang: 'en'
     },
@@ -133,7 +133,7 @@ export default {
     name: {
       short: process.env.NAME_SHORT || 'ATLAS',
       long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems',
-      mitre: 'MITRE ATLAS' //process.env?
+      mitre: 'MITRE ATLAS™' //process.env?
     },
     navigator_url: process.env.NAVIGATOR_URL || 'https://mitre.github.io/atlas-navigator/',
     advml: {
