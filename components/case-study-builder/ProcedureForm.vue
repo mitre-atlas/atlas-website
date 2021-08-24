@@ -78,10 +78,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import HoverPreview from '../components/HoverPreview.vue'
 
 export default {
-  components: { HoverPreview },
   name: 'ProcedureForm',
   props: ['selectTacticData', 'selectTechniqueData', 'descriptionData'],
   data () {
