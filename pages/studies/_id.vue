@@ -59,16 +59,7 @@
 
         <ol class="mt-2 mb-3">
           <li class="mb-2" v-for="(source, i) in study.references" :key="i">
-            <template v-if="(source.url && source.sourceDescription) && source.sourceDescription.length > charactersThreshold">
-              <p class="mb-1">{{ source.sourceDescription }}</p>
-              <a @click="openNewTab(source.url)">{{ source.url }}</a>
-              <v-icon small>mdi-open-in-new</v-icon>
-            </template>
-            <template v-else-if="source.url">
-              <a @click="openNewTab(source.url)">{{ source.sourceDescription || source.url }}</a>
-              <v-icon small>mdi-open-in-new</v-icon>
-            </template>
-            <p v-else>{{ source.sourceDescription }}</p>
+            <ref-source :source="source" />
           </li>
         </ol>
       </v-col>

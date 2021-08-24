@@ -2,11 +2,12 @@
   <div id="sourceRender">
     <v-card outlined class="my-5">
       <v-card-title>
+        <div v-if="index != null">
+          Source {{index+1}}
+        </div>
+        <div v-else>
         Add Sources:
-        <v-spacer />
-        <v-btn color="red" icon @click="$emit('addingBoolUpdate', false)">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+        </div>
       </v-card-title>
 
       <v-card-actions class="px-md-4 mx-lg-auto">
@@ -17,11 +18,12 @@
       </v-card-actions>
 
       <v-card-actions>
-        <v-btn class="ma-2" outlined color="blue" @click="addSource">
-          Add Source
+        <v-spacer></v-spacer>
+        <v-btn class="ma-2" text color="grey" @click="$emit('addingBoolUpdate', false)">
+          Cancel
         </v-btn>
-        <v-btn class="ma-2" outlined color="red" @click="clearSource">
-          Clear
+        <v-btn class="ma-2" text color="green" @click="addSource">
+          Save
         </v-btn>
       </v-card-actions>
       <v-col sm="6">
@@ -36,7 +38,12 @@
 <script>
 export default {
   name: 'AddSource',
-  props: ['sourceDescription', 'url', 'addingSource'],
+  props: [
+    'sourceDescription',
+    'url',
+    'addingSource',
+    'index'
+  ],
   data () {
     return {
       sourceDescriptionData: this.sourceDescription,

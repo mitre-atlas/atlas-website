@@ -109,14 +109,14 @@
       <h3 class="font-weight-medium">4. References</h3>
       <subtitle-2 class="ml-6">Optionally add references to your case study, each containing a source and/or url.</subtitle-2>
       <div v-if="references.length" class="mx-8">
-        <ol>
-          <li v-for="(value, key) in references" :key="key">
-            {{ value.sourceDescription }}
-            <p v-linkified>
-              {{ value.url }}
-            </p>
-          </li>
-        </ol>
+        <v-list flat>
+          <v-list-item-group>
+          <div v-for="(value, key) in references" :key="key">
+            <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
+          </div>
+          </v-list-item-group>
+        </v-list>
+
       </div>
       <add-source
         class="mx-8"
@@ -350,6 +350,14 @@ export default {
     },
     addSource (newSource) {
       this.references.push(newSource)
+      this.addingSource = false
+    },
+    addSourceAt (newSource, index) {
+      this.references.splice(index, 1, newSource)
+      this.addingSource = false
+    },
+    deleteSourceAt (index) {
+      this.references.splice(index, 1)
       this.addingSource = false
     },
     clearForm () {
