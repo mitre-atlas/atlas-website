@@ -3,7 +3,6 @@
     <draggable :list="procedureData" :disabled="editing">
       <v-timeline-item v-for="(p, i) in procedureData" :key="i" small>
         <edit-procedure-card
-          :key="p"
           :info="p"
           :editing="editing"
           @deleteClick="deleteStep(i)"

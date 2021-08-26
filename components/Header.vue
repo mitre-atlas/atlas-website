@@ -51,7 +51,7 @@
         </template>
 
         <v-list class="hidden-sm-and-down">
-          <v-list-item-group :value="selection">
+          <v-list-item-group>
           <v-list-item
             v-for="(childLink, j) in link.links"
             :key="j"
