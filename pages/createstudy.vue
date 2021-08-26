@@ -166,7 +166,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
+import { deepCopy, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -231,14 +231,25 @@ export default {
       this.meta = studyFileObj.meta ?? this.meta
       this.titleStudy = inputStudy.name
       this.summary = inputStudy.summary
-      if (inputStudy['incident-date'].length > 4) {
-        const dateParse = inputStudy['incident-date'].split('-')
-        this.year = parseInt(dateParse[0])
-        if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
-        if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
-      } else {
-        this.year = parseInt(inputStudy['incident-date'])
+
+      // Parse incident date
+      if (typeof inputStudy['incident-date'] === 'string') {
+        // Maintain compatibility with older string format
+        if (inputStudy['incident-date'].length > 4) {
+          const dateParse = inputStudy['incident-date'].split('-')
+          this.year = parseInt(dateParse[0])
+          if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
+          if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
+        }
+      } else if (typeof inputStudy['incident-date'] === 'object') {
+        // Date
+        const incidentDate = inputStudy['incident-date']
+        this.year = incidentDate.getUTCFullYear()
+        // Month is a 0-based index
+        this.month = incidentDate.getUTCMonth() + 1
+        this.date = incidentDate.getUTCDate()
       }
+
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']
       if (inputStudy.references === [] || !(inputStudy.references)) {
@@ -391,14 +402,38 @@ export default {
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
+
+        // Metadata
         const nowDate = new Date()
-        const nowDateString = dateToString(nowDate, true)
-        this.meta['date-created'] = this.meta['date-created'] ?? nowDateString
-        this.meta['date-updated'] = nowDateString
+        // Maintain backwards compatibility with JS Date string format
+        if (this.meta['date-created'] && typeof this.meta['date-created'] === 'string') {
+          // Parse the JS Date string, i.e 2021-8-24 1:22:23 PM UTC
+          const dateCreated = new Date(this.meta['date-created'])
+          // Set field to the date itself, which renders as an ISO date
+          this.meta['date-created'] = dateCreated
+        }
+        // Only set the date-created once upon study creation
+        this.meta['date-created'] = this.meta['date-created'] ?? nowDate
+        // Always update date-updated
+        this.meta['date-updated'] = nowDate
         this.meta.uuid = this.meta.uuid ?? generateID()
-        let fullIncDate = '' + String(this.year)
-        if (this.month !== null) { fullIncDate += '-' + String(this.month) }
-        if (this.date !== null) { fullIncDate += '-' + String(this.date) }
+
+        // Convert integer year, optionally month and/or day inputs
+        // into JS Date constructor arguments
+
+        // First argument is a year, which must be a string if sole argument
+        const dateArgs = [String(this.year)]
+        // Second argument is a month index, 0-based
+        if (this.month !== null) {
+          dateArgs.push(this.month - 1)
+        }
+        // Third argument is a day, 1-based
+        if (this.date !== null) {
+          dateArgs.push(this.date)
+        }
+        // Create a UTC-based Date from provided inputs
+        const fullIncDate = new Date(Date.UTC(...dateArgs))
+
         const study = {
           meta: this.meta,
           study: {
