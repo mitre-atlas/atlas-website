@@ -7,7 +7,7 @@
     <v-list-item-content>
       <ref-source :source="source" />
     </v-list-item-content>
-    <v-card-action>
+    <v-card-actions>
       <v-btn color="blue" icon v-on:click="$emit('edit-source', true)">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
@@ -35,7 +35,7 @@
         </confirm-delete-dialog>
       </v-dialog>
 
-    </v-card-action>
+    </v-card-actions>
   </v-list-item>
 </template>
 <script>

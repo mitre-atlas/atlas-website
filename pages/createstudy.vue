@@ -9,8 +9,6 @@
       absolute
       right
       :disabled="!valid"
-      v-bind="attrs"
-      v-on="on"
       @click="clearForm"
     >
       Clear Form
@@ -18,7 +16,7 @@
     <page-title>{{ title }}</page-title>
 
     <h3 class="font-weight-medium">1. Upload File</h3>
-    <subtitle-2 class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</subtitle-2>
+    <div class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</div>
     <v-row>
       <v-col sm="5">
         <v-file-input
@@ -38,7 +36,7 @@
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <h3 class="font-weight-medium">2. Complete Fields</h3>
-      <subtitle-2 class="ml-6">Fill out each field with case study data.</subtitle-2>
+      <div class="ml-6">Fill out each field with case study data.</div>
       <v-container  class="mb-10">
         <v-row>
           <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
@@ -89,7 +87,7 @@
       </v-container>
 
       <h3 class="font-weight-medium">3. Procedure</h3>
-      <subtitle-2 class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</subtitle-2>
+      <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
         class="mb-16 mx-8"
@@ -107,7 +105,7 @@
       </div>
 
       <h3 class="font-weight-medium">4. References</h3>
-      <subtitle-2 class="ml-6">Optionally add references to your case study, each containing a source and/or url.</subtitle-2>
+      <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div>
       <div v-if="references.length" class="mx-8">
         <v-list flat>
           <v-list-item-group>
