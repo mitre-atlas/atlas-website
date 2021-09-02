@@ -120,8 +120,6 @@ function reviver (key, value) {
     } else if (typeof value === 'object') {
       return value[0].split(reportedByDelim).map(e => e.trim())
     }
-  } else if (key === 'incident-date') {
-    return dateToString(new Date(value))
   } else if (key === 'procedure') {
     return procedureFormat(value)
   } else if (key === 'summary') {
