@@ -71,7 +71,7 @@
           </v-tooltip>
         </v-subheader>
 
-        <date-select
+        <!-- <date-select
           :key="year"
           :year="year"
           :month="month"
@@ -79,7 +79,9 @@
           @yearUpdate="year = $event"
           @monthUpdate="month = $event"
           @dateUpdate="date = $event"
-        />
+        /> -->
+
+        <incident-date-picker :startYear="year" :startMonth="month" :startDate="date" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
@@ -249,6 +251,7 @@ export default {
         this.month = incidentDate.getUTCMonth() + 1
         this.date = incidentDate.getUTCDate()
       }
+      console.log('Load Data: ' + this.year + '-' + this.month + '-' + this.date)
 
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']
@@ -337,7 +340,13 @@ export default {
       this.uploadErrorMessage = errors
       return isValid
     },
-
+    setIncidentDate (year, month, date, granularity) {
+      // Called from incident date picker
+      this.year = year
+      this.month = month
+      this.date = date
+      // TODO store date granularity
+    },
     editReferences (refs) {
       // this function takes in an array of strings and converts them to an array of formatted objects
       const structuredRefs = []
