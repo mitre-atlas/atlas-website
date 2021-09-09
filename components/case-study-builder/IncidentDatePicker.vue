@@ -4,6 +4,7 @@
       ref="menu"
       v-model="menu"
       :close-on-content-click="false"
+      :close-on-click="false"
       transition="scale-transition"
       bottom
       offset-y
@@ -33,10 +34,11 @@
           @click:month="monthSelected"
           @click:date="dateSelected"
         >
-          <v-card-actions>
+          <!-- <v-card-actions> -->
             <v-spacer></v-spacer>
-            <v-btn text color="green" @click="ok">OK</v-btn>
-          </v-card-actions>
+            <v-btn text color="secondary" @click="cancel">Cancel</v-btn>
+            <v-btn text color="primary" @click="ok">OK</v-btn>
+          <!-- </v-card-actions> -->
         </v-date-picker>
       </v-card>
     </v-menu>
@@ -46,14 +48,15 @@
 export default {
   name: 'IncidentDatePicker',
   props: [
-    'startDate'
+    'startDate',
+    'startDateGranularity'
   ],
   data () {
     return {
       activePicker: null,
       menu: false,
       date: this.startDate,
-      dateGranularity: null,
+      dateGranularity: this.startDateGranularity,
       monthNames: [
         'January',
         'February',
@@ -81,6 +84,14 @@ export default {
       handler (newVal, oldVal) {
         this.date = newVal
       }
+    },
+    startDateGranularity: {
+      // Ensures that the component data is up to date with prop change
+      // during file load
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.dateGranularity = newVal
+      }
     }
   },
   computed: {
@@ -99,7 +110,7 @@ export default {
           return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
         } else if (this.dateGranularity == null || this.dateGranularity === 'DATE') {
           // If dateGranularity is DATE, or there is no date granularity
-          return `${this.monthNames[this.date.getUTCMonth()]}  ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
+          return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
         }
       }
       return null
@@ -138,10 +149,19 @@ export default {
       this.date = new Date(Date.UTC(year, monthIndex, day))
     },
     ok () {
-      // TODO also handle when click out
-
       // Close menu
       this.menu = false
+
+      // Emit date pieces (1-indexed month) and date granularity
+      this.$emit('selectedDate', this.date, this.dateGranularity)
+    },
+    cancel () {
+      // Close menu
+      this.menu = false
+
+      // Reset to start elements
+      this.date = this.startDate
+      this.dateGranularity = this.startDateGranularity
 
       // Emit date pieces (1-indexed month) and date granularity
       this.$emit('selectedDate', this.date, this.dateGranularity)

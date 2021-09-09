@@ -81,7 +81,7 @@
           @dateUpdate="date = $event"
         /> -->
 
-        <incident-date-picker :startDate="date" v-on:selectedDate="setIncidentDate"/>
+        <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
