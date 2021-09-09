@@ -46,17 +46,14 @@
 export default {
   name: 'IncidentDatePicker',
   props: [
-    'startYear',
-    'startMonth',
     'startDate'
   ],
   data () {
     return {
       activePicker: null,
       menu: false,
-      date: (this.startYear) ? new Date(this.startYear, this.startMonth - 1, this.startDate) : null,
+      date: this.startDate,
       dateGranularity: null,
-      // displayedIncidentDate: null,
       monthNames: [
         'January',
         'February',
@@ -76,30 +73,34 @@ export default {
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
+    },
+    startDate: {
+      // Ensures that the component data is up to date with prop change
+      // during file load
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.date = newVal
+      }
     }
   },
   computed: {
-    // date () {
-    //   if (this.startYear) {
-    //     return new Date(this.startYear, this.startMonth - 1, this.startDate)
-    //   }
-    //   return null
-    // },
     dateISOString () {
       // Set the date-picker date
-      if (this.date) {
-        return this.date.toISOString()
+      if (this.date != null) {
+        return this.date.toISOString().substr(0, 10)
       }
       return null
     },
     displayedIncidentDate () {
-      if (this.dateGranularity === 'YEAR') {
-        return `${this.date.getUTCFullYear()}`
-      } else if (this.dateGranularity === 'MONTH') {
-        return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
-      } else if ((this.date !== null && this.dateGranularity === null) || this.dateGranularity === 'DATE') {
-        // If dateGranularity is DATE, or there is no date granularity
-        return `${this.monthNames[this.date.getUTCMonth()]}  ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
+      if (this.date != null) {
+        if (this.dateGranularity === 'YEAR') {
+          return `${this.date.getUTCFullYear()}`
+        } else if (this.dateGranularity === 'MONTH') {
+          return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
+        } else if (this.dateGranularity == null || this.dateGranularity === 'DATE') {
+          // If dateGranularity is DATE, or there is no date granularity
+          return `${this.monthNames[this.date.getUTCMonth()]}  ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
+        }
       }
       return null
     }
@@ -123,8 +124,6 @@ export default {
       const monthIndex = parseInt(monthStr) - 1
       // Create Date in UTC
       this.date = new Date(Date.UTC(year, monthIndex))
-      // Construct display date of full month, year
-      // this.displayedIncidentDate = `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
     },
     dateSelected (yearMonthDate) {
       // Parameter is YYYY-MM-DD string
@@ -137,14 +136,15 @@ export default {
       const day = parseInt(dateStr)
       // Create Date in UTC
       this.date = new Date(Date.UTC(year, monthIndex, day))
-      // Construct display date of full month, day, year
-      // this.displayedIncidentDate = `${this.monthNames[this.date.getUTCMonth()]}  ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
     },
     ok () {
+      // TODO also handle when click out
+
       // Close menu
       this.menu = false
+
       // Emit date pieces (1-indexed month) and date granularity
-      this.$emit('selectedDate', this.date.getUTCFullYear(), this.date.getUTCMonth() + 1, this.date.getUTCDate(), this.dateGranularity)
+      this.$emit('selectedDate', this.date, this.dateGranularity)
     }
   }
 }

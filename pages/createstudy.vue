@@ -81,7 +81,7 @@
           @dateUpdate="date = $event"
         /> -->
 
-        <incident-date-picker :startYear="year" :startMonth="month" :startDate="date" v-on:selectedDate="setIncidentDate"/>
+        <incident-date-picker :startDate="date" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
@@ -177,8 +177,6 @@ export default {
       valid: true,
       chosenFile: null,
       initialFileName: '',
-      year: null,
-      month: null,
       date: null,
       dateGranularity: null,
       selectTactic: null,
@@ -239,18 +237,18 @@ export default {
       if (typeof inputStudy['incident-date'] === 'string') {
         // Maintain compatibility with older string format
         if (inputStudy['incident-date'].length > 4) {
-          const dateParse = inputStudy['incident-date'].split('-')
-          this.year = parseInt(dateParse[0])
-          if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
-          if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
+          // Split into string tokens
+          const [yearStr, monthStr, dateStr] = inputStudy['incident-date'].split('-')
+          // Parse tokens into ints
+          const year = parseInt(yearStr)
+          const monthIndex = parseInt(monthStr) - 1
+          const day = parseInt(dateStr)
+          // Create Date in UTC
+          this.date = new Date(Date.UTC(year, monthIndex, day))
         }
       } else if (typeof inputStudy['incident-date'] === 'object') {
         // Date
-        const incidentDate = inputStudy['incident-date']
-        this.year = incidentDate.getUTCFullYear()
-        // Month is a 0-based index
-        this.month = incidentDate.getUTCMonth() + 1
-        this.date = incidentDate.getUTCDate()
+        this.date = inputStudy['incident-date']
       }
 
       // Key that defines how specific the date input was
@@ -350,10 +348,8 @@ export default {
       this.uploadErrorMessage = errors
       return isValid
     },
-    setIncidentDate (year, month, date, granularity) {
+    setIncidentDate (date, granularity) {
       // Called from incident date picker
-      this.year = year
-      this.month = month
       this.date = date
       this.dateGranularity = granularity
     },
@@ -438,28 +434,12 @@ export default {
         this.meta['date-updated'] = nowDate
         this.meta.uuid = this.meta.uuid ?? generateID()
 
-        // Convert integer year, optionally month and/or day inputs
-        // into JS Date constructor arguments
-
-        // First argument is a year, which must be a string if sole argument
-        const dateArgs = [String(this.year)]
-        // Second argument is a month index, 0-based
-        if (this.month !== null) {
-          dateArgs.push(this.month - 1)
-        }
-        // Third argument is a day, 1-based
-        if (this.date !== null) {
-          dateArgs.push(this.date)
-        }
-        // Create a UTC-based Date from provided inputs
-        const fullIncDate = new Date(Date.UTC(...dateArgs))
-
         const study = {
           meta: this.meta,
           study: {
             name: this.titleStudy,
             summary: this.summary,
-            'incident-date': fullIncDate,
+            'incident-date': this.date,
             'incident-date-granularity': this.dateGranularity,
             procedure: deepCopy(this.procedure),
             'reported-by': this.reported,
