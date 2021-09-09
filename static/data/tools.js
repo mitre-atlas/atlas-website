@@ -144,7 +144,7 @@ function validFormatYAML (yamlObj) {
     tactic: false,
     technique: false
   }
-  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'sourceDescription', 'url']
+  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'sourceDescription', 'url', 'incident-date-granularity']
   if (!(yamlObj.meta && yamlObj.study)) { return 'YAML is missing meta or study data' }
   // check meta data
   for (const metaKey in yamlObj.meta) {

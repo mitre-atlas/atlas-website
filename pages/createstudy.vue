@@ -180,6 +180,7 @@ export default {
       year: null,
       month: null,
       date: null,
+      dateGranularity: null,
       selectTactic: null,
       selectTechnique: null,
       description: '',
@@ -250,6 +251,15 @@ export default {
         // Month is a 0-based index
         this.month = incidentDate.getUTCMonth() + 1
         this.date = incidentDate.getUTCDate()
+      }
+
+      // Key that defines how specific the date input was
+      if ('incident-date-granularity' in inputStudy) {
+        // Expecting YEAR, MONTH, or DATE
+        this.dateGranularity = inputStudy['incident-date-granularity']
+      } else {
+        // No date granularity at this time, assume to be most specific
+        this.dateGranularity = 'DATE'
       }
       // console.log('Load Data: ' + this.year + '-' + this.month + '-' + this.date)
 
@@ -345,7 +355,7 @@ export default {
       this.year = year
       this.month = month
       this.date = date
-      // TODO store date granularity
+      this.dateGranularity = granularity
     },
     editReferences (refs) {
       // this function takes in an array of strings and converts them to an array of formatted objects
@@ -391,6 +401,7 @@ export default {
       this.year = null
       this.month = null
       this.date = null
+      this.dateGranularity = null
       this.titleStudy = ''
       this.meta = { email: '' }
       this.study = null
@@ -449,6 +460,7 @@ export default {
             name: this.titleStudy,
             summary: this.summary,
             'incident-date': fullIncDate,
+            'incident-date-granularity': this.dateGranularity,
             procedure: deepCopy(this.procedure),
             'reported-by': this.reported,
             references: deepCopy(this.references)
