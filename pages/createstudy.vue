@@ -54,7 +54,7 @@
           </v-col>
         </v-row>
 
-        <v-subheader>
+        <!-- <v-subheader>
           Incident date
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
@@ -69,7 +69,7 @@
             </template>
             <span>Only the year is required, but please specify month and day where possible.</span>
           </v-tooltip>
-        </v-subheader>
+        </v-subheader> -->
 
         <!-- <date-select
           :key="year"
@@ -251,7 +251,7 @@ export default {
         this.month = incidentDate.getUTCMonth() + 1
         this.date = incidentDate.getUTCDate()
       }
-      console.log('Load Data: ' + this.year + '-' + this.month + '-' + this.date)
+      // console.log('Load Data: ' + this.year + '-' + this.month + '-' + this.date)
 
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']

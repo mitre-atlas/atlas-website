@@ -13,6 +13,7 @@
         <v-text-field
           v-model="displayedIncidentDate"
           label="Incident date"
+          hint="Only the year is required, but please specify month and day where possible"
           prepend-icon="mdi-calendar"
           readonly
           v-bind="attrs"
@@ -53,7 +54,7 @@ export default {
     return {
       activePicker: null,
       menu: false,
-      // date: (this.startYear) ? new Date(this.startYear, this.startMonth - 1, this.startDate) : null,
+      date: (this.startYear) ? new Date(this.startYear, this.startMonth - 1, this.startDate) : null,
       dateGranularity: null,
       // displayedIncidentDate: null,
       monthNames: [
@@ -78,12 +79,12 @@ export default {
     }
   },
   computed: {
-    date () {
-      if (this.startYear) {
-        return new Date(this.startYear, this.startMonth - 1, this.startDate)
-      }
-      return null
-    },
+    // date () {
+    //   if (this.startYear) {
+    //     return new Date(this.startYear, this.startMonth - 1, this.startDate)
+    //   }
+    //   return null
+    // },
     dateISOString () {
       // Set the date-picker date
       if (this.date) {
@@ -96,11 +97,11 @@ export default {
         return `${this.date.getUTCFullYear()}`
       } else if (this.dateGranularity === 'MONTH') {
         return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
-      } else /* if (this.dateGranularity === 'DATE') */ {
+      } else if ((this.date !== null && this.dateGranularity === null) || this.dateGranularity === 'DATE') {
         // If dateGranularity is DATE, or there is no date granularity
         return `${this.monthNames[this.date.getUTCMonth()]}  ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
       }
-      // return null
+      return null
     }
   },
   methods: {
