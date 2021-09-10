@@ -21,7 +21,8 @@
     "vue-gtag": "^1.16.1",
     "vue-linkify": "^1.0.1",
     "vue-scrollto": "^2.20.0",
-    "vuedraggable": "^2.24.3"
+    "vuedraggable": "^2.24.3",
+    "vuetify": "^2.5.8"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.0",

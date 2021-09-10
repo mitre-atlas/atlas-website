@@ -54,7 +54,7 @@
           </v-col>
         </v-row>
 
-        <v-subheader>
+        <!-- <v-subheader>
           Incident date
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
@@ -69,9 +69,9 @@
             </template>
             <span>Only the year is required, but please specify month and day where possible.</span>
           </v-tooltip>
-        </v-subheader>
+        </v-subheader> -->
 
-        <date-select
+        <!-- <date-select
           :key="year"
           :year="year"
           :month="month"
@@ -79,7 +79,9 @@
           @yearUpdate="year = $event"
           @monthUpdate="month = $event"
           @dateUpdate="date = $event"
-        />
+        /> -->
+
+        <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
           <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
@@ -175,9 +177,8 @@ export default {
       valid: true,
       chosenFile: null,
       initialFileName: '',
-      year: null,
-      month: null,
       date: null,
+      dateGranularity: null,
       selectTactic: null,
       selectTechnique: null,
       description: '',
@@ -236,19 +237,29 @@ export default {
       if (typeof inputStudy['incident-date'] === 'string') {
         // Maintain compatibility with older string format
         if (inputStudy['incident-date'].length > 4) {
-          const dateParse = inputStudy['incident-date'].split('-')
-          this.year = parseInt(dateParse[0])
-          if (dateParse[1]) { this.month = parseInt(dateParse[1]) }
-          if (dateParse[2]) { this.date = parseInt(dateParse[2]) }
+          // Split into string tokens
+          const [yearStr, monthStr, dateStr] = inputStudy['incident-date'].split('-')
+          // Parse tokens into ints
+          const year = parseInt(yearStr)
+          const monthIndex = parseInt(monthStr) - 1
+          const day = parseInt(dateStr)
+          // Create Date in UTC
+          this.date = new Date(Date.UTC(year, monthIndex, day))
         }
       } else if (typeof inputStudy['incident-date'] === 'object') {
         // Date
-        const incidentDate = inputStudy['incident-date']
-        this.year = incidentDate.getUTCFullYear()
-        // Month is a 0-based index
-        this.month = incidentDate.getUTCMonth() + 1
-        this.date = incidentDate.getUTCDate()
+        this.date = inputStudy['incident-date']
       }
+
+      // Key that defines how specific the date input was
+      if ('incident-date-granularity' in inputStudy) {
+        // Expecting YEAR, MONTH, or DATE
+        this.dateGranularity = inputStudy['incident-date-granularity']
+      } else {
+        // No date granularity at this time, assume to be most specific
+        this.dateGranularity = 'DATE'
+      }
+      // console.log('Load Data: ' + this.year + '-' + this.month + '-' + this.date)
 
       this.procedure = inputStudy.procedure
       this.reported = inputStudy['reported-by']
@@ -337,7 +348,11 @@ export default {
       this.uploadErrorMessage = errors
       return isValid
     },
-
+    setIncidentDate (date, granularity) {
+      // Called from incident date picker
+      this.date = date
+      this.dateGranularity = granularity
+    },
     editReferences (refs) {
       // this function takes in an array of strings and converts them to an array of formatted objects
       const structuredRefs = []
@@ -382,6 +397,7 @@ export default {
       this.year = null
       this.month = null
       this.date = null
+      this.dateGranularity = null
       this.titleStudy = ''
       this.meta = { email: '' }
       this.study = null
@@ -418,28 +434,13 @@ export default {
         this.meta['date-updated'] = nowDate
         this.meta.uuid = this.meta.uuid ?? generateID()
 
-        // Convert integer year, optionally month and/or day inputs
-        // into JS Date constructor arguments
-
-        // First argument is a year, which must be a string if sole argument
-        const dateArgs = [String(this.year)]
-        // Second argument is a month index, 0-based
-        if (this.month !== null) {
-          dateArgs.push(this.month - 1)
-        }
-        // Third argument is a day, 1-based
-        if (this.date !== null) {
-          dateArgs.push(this.date)
-        }
-        // Create a UTC-based Date from provided inputs
-        const fullIncDate = new Date(Date.UTC(...dateArgs))
-
         const study = {
           meta: this.meta,
           study: {
             name: this.titleStudy,
             summary: this.summary,
-            'incident-date': fullIncDate,
+            'incident-date': this.date,
+            'incident-date-granularity': this.dateGranularity,
             procedure: deepCopy(this.procedure),
             'reported-by': this.reported,
             references: deepCopy(this.references)
