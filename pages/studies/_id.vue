@@ -7,9 +7,7 @@
       <v-col cols="8">
         <page-section-title>Summary</page-section-title>
 
-        <div class="text-body-1 mt-5">
-          {{ study.summary }}
-        </div>
+        <div class="text-body-1 mt-5" v-html="$md.render(study.summary)" />
       </v-col>
 
       <v-col cols="4">
