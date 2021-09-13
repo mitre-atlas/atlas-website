@@ -1,5 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
+const yaml = require('js-yaml')
 
 export const state = () => ({
   data: {
@@ -166,13 +167,12 @@ export const actions = {
   // TODO Caching, also needs return or await
   async nuxtServerInit ({ commit }, context) {
     // Retrieve the threat matrix YAML data and populate store upon start
-    const getTactics = await fs.readFile('static/data/tactics.json', 'utf-8')
-    const getTechniques = await fs.readFile('static/data/techniques.json', 'utf-8')
-    const getCaseStudies = await fs.readFile('static/data/case-studies.json', 'utf-8')
+    const getAtlasData = await fs.readFile('static/data/ATLAS-2.0.yaml', 'utf-8')
 
     // Get all contents, then parse and commit payload
-    const promise = Promise.all([getTactics, getTechniques, getCaseStudies])
+    const promise = Promise.resolve(getAtlasData)
       .then((contents) => {
+        /*
         // Pre-parse actions
         // Convert Markdown-style links, i.e. [name](full or relative URL)
 
@@ -238,7 +238,13 @@ export const actions = {
 
           return technique
         })
-        // contents[1] = contents[1].replace(citationRegex, "<a href='$2'>$1</a>")
+        */
+
+       // Parse YAML
+       const doc = yaml.load(contents)
+       const studies = doc['case-studies']
+       const techniques = doc['techniques']
+       const tactics = doc['tactics']
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
