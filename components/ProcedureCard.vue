@@ -28,7 +28,7 @@
           {{ tacticName }}
       </nuxt-link>
     </v-card-subtitle>
-    <v-card-text v-html="info.description" />
+    <v-card-text v-html="$md.render(info.description)" />
   </v-card>
 </template>
 

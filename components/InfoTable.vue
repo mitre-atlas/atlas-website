@@ -54,7 +54,7 @@
     </template>
     <template v-slot:[`item.description`]="{ item }">
       <div
-        v-html="item.description"
+        v-html="$md.render(item.description)"
         class="my-3"
       />
     </template>

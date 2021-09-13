@@ -14,8 +14,8 @@
     :style="cardCSS">
       <v-card-title>{{ targetInfo.name }}</v-card-title>
       <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type']}} | {{ targetInfo.id }}</v-card-subtitle>
-      <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
-      <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
+      <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.render(formatDesc(targetInfo.description))"></v-card-text>
+      <v-card-text v-else id="text-fade" v-html="$md.render(formatDesc(targetInfo.description))"></v-card-text>
       <v-card-actions>
         <v-icon id="arrow-icon">mdi-arrow-right</v-icon>
         <v-icon id="link-icon">mdi-open-in-new</v-icon>
@@ -46,8 +46,8 @@
       >
         <v-card-title>{{ targetInfo.name }}</v-card-title>
         <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type']}} | {{ targetInfo.id }}</v-card-subtitle>
-        <v-card-text v-if="targetInfo.description.length < characterLimit ">{{ formatDesc(targetInfo.description) }}</v-card-text>
-        <v-card-text v-else id="text-fade">{{ formatDesc(targetInfo.description) }}</v-card-text>
+        <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.render(formatDesc(targetInfo.description))"></v-card-text>
+        <v-card-text v-else id="text-fade" v-html="$md.render(formatDesc(targetInfo.description))"></v-card-text>
         <v-card-actions>
           <v-icon id="arrow-icon">mdi-arrow-right</v-icon>
           <v-icon id="link-icon">mdi-open-in-new</v-icon>
@@ -125,7 +125,10 @@ export default {
     characterLimit () { return this.maxLineHeight * 50 },
     targetLocation () {
       if (this.isTargetATTACKTechnique) {
-        return this.targetInfo.external_references[0].url
+        // ATT&CK subtechniques are a level in from their parent techniques,
+        // i.e. https://attack.mitre.org/techniques/T1078/004/ vs. ATLAS's
+        const attackIdUrl = this.targetInfo.id.replace('.', '/')
+        return `https://attack.mitre.org/techniques/${attackIdUrl}`
       } else {
         return `/${this.targetInfo['object-type']}s/${this.targetId}`
       }

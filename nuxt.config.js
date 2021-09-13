@@ -50,8 +50,21 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    'vue-scrollto/nuxt'
+    'vue-scrollto/nuxt',
+    '@nuxtjs/markdownit'
   ],
+
+  // https://github.com/markdown-it/markdown-it
+  markdownit: {
+    // preset: 'default',
+    // linkify: true,
+    breaks: false,
+    // use: [
+    //   'markdown-it-div',
+    //   'markdown-it-attrs'
+    // ],
+    runtime: true
+  },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
