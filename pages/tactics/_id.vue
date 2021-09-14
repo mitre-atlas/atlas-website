@@ -8,7 +8,7 @@
     <v-col cols="8">
       <page-section-title class="ml-7">Summary</page-section-title>
 
-      <div class="my-5 ml-10" v-html="info.description" />
+      <div class="my-5 ml-10" v-html="$md.render(info.description)" />
     </v-col>
     <v-col cols="4">
       <v-card flat class="mt-10">
@@ -146,7 +146,8 @@ export default {
   },
   methods: {
     openNewTab () {
-      const url = this.info.external_references[0].url
+      // const url = this.info.external_references[0].url
+      const url = `https://attack.mitre.org/tactics/${this.info.id}`
       window.open(url, '_blank')
     }
   }
