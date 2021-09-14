@@ -57,13 +57,7 @@ export default {
 
   // https://github.com/markdown-it/markdown-it
   markdownit: {
-    // preset: 'default',
-    // linkify: true,
     breaks: false,
-    // use: [
-    //   'markdown-it-div',
-    //   'markdown-it-attrs'
-    // ],
     runtime: true
   },
 
