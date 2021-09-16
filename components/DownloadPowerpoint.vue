@@ -103,7 +103,7 @@ export default {
       })
       slide.addText([
         { text: 'Date: ', options: { color: '0D2F4F', fontSize: 18 } },
-        { text: yaml.study['incident-date'], options: { color: '0D2F4F', fontSize: 18 } }
+        { text: yaml.study['incident-date'].toISOString().substr(0, 10), options: { color: '0D2F4F', fontSize: 18 } }
       ],
       {
         y: '90%'
