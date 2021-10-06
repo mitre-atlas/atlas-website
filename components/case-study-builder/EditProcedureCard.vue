@@ -32,11 +32,11 @@
     />
     <v-card-actions>
       <v-spacer />
-      <v-btn color="green" icon @click="submitEdit">
-        <v-icon>mdi-check</v-icon>
+      <v-btn class="ma-2" text color="grey" @click="cancelEdit">
+        Cancel
       </v-btn>
-      <v-btn color="red" icon @click="cancelEdit">
-        <v-icon>mdi-close</v-icon>
+      <v-btn class="ma-2" text color="green" @click="submitEdit">
+        Save
       </v-btn>
     </v-card-actions>
   </v-card>
