@@ -1,7 +1,6 @@
 import * as YAML from 'js-yaml'
 
 const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
-const reportedByDelim = ','
 const TAB_LENGTH = 2
 
 const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
@@ -114,13 +113,7 @@ function procedureFormat (procedureArray) {
 }
 
 function reviver (key, value) {
-  if (key === 'reported-by') {
-    if (typeof value === 'string') {
-      return value.split(reportedByDelim).map(e => e.trim())
-    } else if (typeof value === 'object') {
-      return value[0].split(reportedByDelim).map(e => e.trim())
-    }
-  } else if (key === 'procedure') {
+  if (key === 'procedure') {
     return procedureFormat(value)
   } else if (key === 'summary') {
     return value + (value.endsWith('\n') ? '' : '\n')
