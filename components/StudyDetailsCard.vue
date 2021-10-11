@@ -1,11 +1,7 @@
+<!-- Info card to the side of an individual case study page -->
+
 <template>
   <v-card flat >
-
-    <!-- <v-card-text>
-      <div class="text-body-1 text--primary font-weight-medium">
-      {{ study.summary }}
-      </div>
-    </v-card-text> -->
 
     <v-list subheader>
 
@@ -14,18 +10,6 @@
 
       <v-subheader>Reported by</v-subheader>
       <study-details-list-item :itemList="study['reported-by']" />
-
-      <!-- <template>
-        <div>
-          <v-list-item>
-            <v-list-item>
-              <v-list-item-title>
-                <a :href=$config.individual_case_study.link+(study.id)+$config.individual_case_study.suffix target='_blank' style='color: inherit'>ATLAS Navigator: {{study.id}}</a>
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-item>
-        </div>
-      </template> -->
 
     </v-list>
   </v-card>
