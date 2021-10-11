@@ -53,33 +53,6 @@
           </v-col>
         </v-row>
 
-        <!-- <v-subheader>
-          Incident date
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-                <v-icon
-                  small
-                  right
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  mdi-help-circle-outline
-                </v-icon>
-            </template>
-            <span>Only the year is required, but please specify month and day where possible.</span>
-          </v-tooltip>
-        </v-subheader> -->
-
-        <!-- <date-select
-          :key="year"
-          :year="year"
-          :month="month"
-          :date="date"
-          @yearUpdate="year = $event"
-          @monthUpdate="month = $event"
-          @dateUpdate="date = $event"
-        /> -->
-
         <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>

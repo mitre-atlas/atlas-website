@@ -1,3 +1,5 @@
+<!-- Nested v-list-item for an indented style  -->
+
 <template>
   <div>
     <v-list-item v-for="(item, i) in computedItemList" :key="i">
