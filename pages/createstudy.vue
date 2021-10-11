@@ -15,9 +15,8 @@
     </v-btn>
     <page-title>{{ title }}</page-title>
 
-    <h3 class="font-weight-medium">1. Upload File</h3>
-    <div class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</div>
-    <v-row>
+    <v-row style="align-items: center;">
+      <h3 class="font-weight-medium mb-10" style="margin-left: 1%;">Upload Existing Case Study (Optional)</h3>
       <v-col sm="5">
         <v-file-input
           v-model="chosenFile"
@@ -26,7 +25,7 @@
           :error-messages="uploadErrorMessage"
           small-chips
           accept=".yaml,.yml"
-          label="Upload YAML File"
+          label="Upload .YAML file here"
           @change="readJSON"
         >
           <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
@@ -35,7 +34,7 @@
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <h3 class="font-weight-medium">2. Complete Fields</h3>
+      <h3 class="font-weight-medium">1. Case Study Details</h3>
       <div class="ml-6">Fill out each field with case study data.</div>
       <v-container  class="mb-10">
         <v-row>
@@ -61,7 +60,7 @@
         </v-row>
       </v-container>
 
-      <h3 class="font-weight-medium">3. Procedure</h3>
+      <h3 class="font-weight-medium">2. Procedure</h3>
       <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
@@ -79,7 +78,7 @@
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
       </div>
 
-      <h3 class="font-weight-medium">4. References</h3>
+      <h3 class="font-weight-medium">3. References</h3>
       <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div>
       <div v-if="references.length" class="mx-8">
         <v-list flat>
