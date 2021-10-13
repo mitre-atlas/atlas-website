@@ -1,18 +1,6 @@
 <template>
   <div class="mx-8">
     <breadcrumbs />
-
-    <v-btn
-      class="my-5"
-      outlined
-      color="red"
-      absolute
-      right
-      :disabled="!valid"
-      @click="clearForm"
-    >
-      Clear Form
-    </v-btn>
     <page-title>{{ title }}</page-title>
 
     <v-row style="align-items: center;">
@@ -355,37 +343,6 @@ export default {
     deleteSourceAt (index) {
       this.references.splice(index, 1)
       this.addingSource = false
-    },
-    clearForm () {
-      if (this.addingStep) {
-        this.$refs.addProcStepRef.clearStepInput()
-      }
-      if (this.addingSource) {
-        this.$refs.addSourceRef.clearSource()
-      }
-      this.valid = true
-      this.chosenFile = null
-      this.initialFileName = '' // IS THIS DOING ANYTHING
-      this.year = null
-      this.month = null
-      this.date = null
-      this.dateGranularity = null
-      this.titleStudy = ''
-      this.meta = { email: '' }
-      this.study = null
-      this.summary = ''
-      this.reported = ''
-      this.procedure = []
-      this.addingStep = true
-      this.references = []
-      this.addingSource = true
-      this.errorMsg = ''
-      this.uploadError = false
-      this.uploadErrorMessage = []
-      this.submissionMsg = ''
-      this.downloadedYaml = false
-      this.builder = true
-      this.$refs.form.resetValidation()
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
