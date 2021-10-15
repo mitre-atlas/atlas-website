@@ -1,7 +1,6 @@
 <template>
   <div class="mx-8">
     <breadcrumbs />
-
     <v-btn
       class="my-5"
       outlined
@@ -13,6 +12,11 @@
     >
       Clear Form
     </v-btn>
+    <navigation-dialog
+      v-model="showDialog"
+      @close="closeDialog"
+      @leave-page="leavePage"
+    />
     <page-title>{{ title }}</page-title>
 
     <v-row style="align-items: center;">
@@ -175,8 +179,26 @@ export default {
       submissionMsg: '',
       downloadedYaml: false,
       builder: true,
-      contactEmail: 'atlas@mitre.org'
+      contactEmail: 'atlas@mitre.org',
+      showDialog: false,
+      to: null
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    const message = 'Are you sure you want to leave this page? You will lose all changes.'
+    const answer = window.confirm(message)
+    if (answer) {
+      this.showDialog = true
+      next()
+    } else {
+      next(false)
+    }
+    // if (this.to) {
+    //   next()
+    // } else {
+    //   this.to = to
+    //   this.showDialog = true
+    // }
   },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
@@ -429,6 +451,14 @@ export default {
       } else if (!this.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
+    },
+    closeDialog () {
+      this.showDialog = false
+      this.to = null
+    },
+    leavePage () {
+      this.showDialog = false
+      this.beforeRouteLeave()
     }
   }
 }
