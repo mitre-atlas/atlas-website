@@ -16,20 +16,21 @@
 
 <script>
 export default {
+  name: 'NavigationDialog',
   props: {
-    name: 'NavigationDialog',
     value: Boolean
   },
-
   watch: {
-    value(val) {
-      if (val) this.$refs.dialog.show();
-      else this.$refs.dialog.close();
+    value (val) {
+      if (val) {
+        this.$refs.dialog.show()
+      } else {
+        this.$refs.dialog.close()
+      }
     }
   }
-};
+}
 </script>
-
 
 <style scoped>
 .header {
@@ -65,4 +66,3 @@ export default {
   padding: 10px;
 }
 </style>
-
