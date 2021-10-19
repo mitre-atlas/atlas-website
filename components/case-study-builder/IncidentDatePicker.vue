@@ -56,21 +56,7 @@ export default {
       activePicker: null,
       menu: false,
       date: this.startDate,
-      dateGranularity: this.startDateGranularity,
-      monthNames: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
+      dateGranularity: this.startDateGranularity
     }
   },
   watch: {
@@ -105,12 +91,21 @@ export default {
     displayedIncidentDate () {
       if (this.date != null) {
         if (this.dateGranularity === 'YEAR') {
-          return `${this.date.getUTCFullYear()}`
+          return this.date.toLocaleDateString(
+            'default',
+            { timeZone: 'UTC', year: 'numeric' }
+          )
         } else if (this.dateGranularity === 'MONTH') {
-          return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCFullYear()}`
+          return this.date.toLocaleDateString(
+            'default',
+            { timeZone: 'UTC', year: 'numeric', month: 'long' }
+          )
         } else if (this.dateGranularity == null || this.dateGranularity === 'DATE') {
           // If dateGranularity is DATE, or there is no date granularity
-          return `${this.monthNames[this.date.getUTCMonth()]} ${this.date.getUTCDate()}, ${this.date.getUTCFullYear()}`
+          return this.date.toLocaleDateString(
+            'default',
+            { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+          )
         }
       }
       return null
