@@ -22,34 +22,73 @@
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <h3 class="font-weight-medium">1. Case Study Details</h3>
-      <div class="ml-6">Fill out each field with case study data.</div>
-      <v-container  class="mb-10">
-        <v-row>
-          <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
-        </v-row>
+      <!-- <h3 class="font-weight-medium">1. Case Study Details</h3>
+      <div class="ml-6">Fill out each field with case study data.</div> -->
+      <v-card flat>
+        <v-card-title>Details<span class="red--text">*</span></v-card-title>
+        <v-card-text>
 
-        <v-row>
-          <v-col sm="5" class="pl-0">
-            <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
-          </v-col>
+        <v-text-field
+          v-model="titleStudy"
+          :rules="[v => !!v || 'Title is required']"
+          label="Title"
+          hint="Name for this case study"
+          persistent-hint
+          prepend-inner-icon="mdi-format-title"
+          outlined
+          required
+          @input="updateValue(titleStudy)"
+        />
 
-          <v-spacer />
+        <v-text-field
+          v-model="meta.email"
+          :rules="emailRules"
+          label="E-mail address"
+          hint="For correspondence about this case study submission"
+          persistent-hint
+          prepend-inner-icon="mdi-email"
+          type="email"
+          outlined
+          required
+          @input="updateValue(meta.email)"
+        />
 
-          <v-col sm="7">
-            <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by" required @input="updateValue(reported)" />
-          </v-col>
-        </v-row>
+        <v-text-field
+          v-model="reported"
+          :rules="[v => !!v || 'Reporter is required']"
+          label="Reported by"
+          hint="Name(s) of the original authors of the study"
+          persistent-hint
+          prepend-inner-icon="mdi-account"
+          outlined
+          required
+          @input="updateValue(reported)"
+        />
 
-        <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
+        <incident-date-picker
+          :startDate="date"
+          :startDateGranularity="dateGranularity"
+          v-on:selectedDate="setIncidentDate"
+        />
 
-        <v-row>
-          <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
-        </v-row>
-      </v-container>
+        <v-textarea
+          v-model="summary"
+          :rules="[v => !!v || 'Summary is required']"
+          label="Summary"
+          hint="Description of the incident"
+          prepend-inner-icon="mdi-text"
+          persistent-hint
+          outlined
+          required
+          auto-grow
+          @input="updateValue(summary)"
+        />
+        </v-card-text>
 
-      <h3 class="font-weight-medium">2. Procedure</h3>
-      <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div>
+      <!-- <h3 class="font-weight-medium">2. Procedure</h3>
+      <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div> -->
+      <v-card-title>Procedure<span class="red--text">*</span></v-card-title>
+      <v-card-text>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
         class="mb-16 mx-8"
@@ -66,8 +105,13 @@
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
       </div>
 
-      <h3 class="font-weight-medium">3. References</h3>
-      <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div>
+      </v-card-text>
+
+      <!-- <h3 class="font-weight-medium">3. References</h3>
+      <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div> -->
+
+      <v-card-title>References</v-card-title>
+      <v-card-text>
       <div v-if="references.length" class="mx-8">
         <v-list flat>
           <v-list-item-group>
@@ -90,6 +134,9 @@
       <div v-else>
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
       </div>
+
+      </v-card-text>
+      </v-card>
 
       <v-tooltip right color="light-blue lighten-4">
         <template v-slot:activator="{ on, attrs }">

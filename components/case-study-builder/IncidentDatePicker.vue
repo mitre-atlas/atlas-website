@@ -15,7 +15,9 @@
           v-model="displayedIncidentDate"
           label="Incident date"
           hint="Only the year is required, but please specify month and day where possible"
-          prepend-icon="mdi-calendar"
+          persistent-hint
+          prepend-inner-icon="mdi-calendar"
+          outlined
           readonly
           v-bind="attrs"
           v-on="on"
