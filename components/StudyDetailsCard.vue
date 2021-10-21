@@ -1,16 +1,13 @@
 <!-- Info card to the side of an individual case study page -->
 
 <template>
-  <v-card flat >
-
+  <v-card flat>
     <v-list subheader>
-
       <v-subheader>Incident date</v-subheader>
-      <study-details-list-item :itemList="formattedDate" />
+      <study-details-list-item :item-list="formattedDate" />
 
       <v-subheader>Reported by</v-subheader>
-      <study-details-list-item :itemList="study['reported-by']" />
-
+      <study-details-list-item :item-list="study['reported-by']" />
     </v-list>
   </v-card>
 </template>
@@ -19,11 +16,38 @@
 
 export default {
   name: 'StudyDetailsCard',
-  props: ['study'],
+  props: {
+    study: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     formattedDate () {
       const date = new Date(this.study['incident-date'])
 
+      if (this.study.dateGranularity === 'YEAR') {
+        // Year only
+        return date.toLocaleDateString(
+          'default',
+          { timeZone: 'UTC', year: 'numeric' }
+        )
+      } else if (this.study.dateGranularity === 'MONTH') {
+        // Month and year
+        return date.toLocaleDateString(
+          'default',
+          { timeZone: 'UTC', year: 'numeric', month: 'long' }
+        )
+      // } else if (this.study.dateGranularity == null || this.study.dateGranularity === 'DATE') {
+      } else {
+        // If dateGranularity is DATE, or there is no date granularity, use the full date
+        return date.toLocaleDateString(
+          'default',
+          { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+        )
+      }
+
+      /*
       // if Jan 1, assume this is just a year
       if (date.getUTCMonth() === 0 && date.getUTCDate() === 1) {
         return date.getUTCFullYear()
@@ -41,6 +65,7 @@ export default {
         'default',
         { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }
       )
+      */
     }
   }
 }
