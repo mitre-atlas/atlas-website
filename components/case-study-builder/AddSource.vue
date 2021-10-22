@@ -1,36 +1,47 @@
 <template>
   <div id="sourceRender">
-    <v-card outlined class="my-5">
+    <v-card>
       <v-card-title>
         <div v-if="index != null">
           Source {{index+1}}
         </div>
         <div v-else>
-        Add Sources:
+        Add Source
         </div>
       </v-card-title>
 
-      <v-card-actions class="px-md-4 mx-lg-auto">
-        <v-text-field v-model="sourceDescriptionData" label="Source Description" @input="updateValue(sourceDescriptionData)" />
-      </v-card-actions>
-      <v-card-actions class="px-md-4 mx-lg-auto">
-        <v-text-field v-model="urlData" label="URL" @input="updateValue(urlData)" />
-      </v-card-actions>
+      <v-card-text>
+        <v-text-field
+          v-model="sourceDescriptionData"
+          label="Description"
+          outlined
+          prepend-inner-icon="mdi-format-title"
+          @input="updateValue(sourceDescriptionData)"
+        />
+
+        <v-text-field
+          v-model="urlData"
+          label="URL"
+          outlined
+          prepend-inner-icon="mdi-link"
+          @input="updateValue(urlData)"
+        />
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ma-2" text color="grey" @click="$emit('addingBoolUpdate', false)">
+        <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
           Cancel
         </v-btn>
-        <v-btn class="ma-2" text color="green" @click="addSource">
+        <v-btn text color="green" @click="addSource">
           Save
         </v-btn>
       </v-card-actions>
-      <v-col sm="6">
-        <v-alert v-if="addSourceErr" color="red" outlined type="error" dense>
+
+        <v-alert v-if="addSourceErr" color="red" text type="error" dense>
           {{ addSourceErr }}
         </v-alert>
-      </v-col>
+
     </v-card>
   </div>
 </template>

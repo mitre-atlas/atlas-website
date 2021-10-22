@@ -122,7 +122,6 @@
 
       </div>
       <add-source
-        class="mx-8"
         v-if="addingSource"
         ref="addSourceRef"
         :source-description="sourceDescription"
