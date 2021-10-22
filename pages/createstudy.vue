@@ -91,7 +91,6 @@
       <v-card-text>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
-        class="mb-16 mx-8"
         v-if="addingStep"
         ref="addProcStepRef"
         :select-tactic="selectTactic"
