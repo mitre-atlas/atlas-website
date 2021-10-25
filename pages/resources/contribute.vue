@@ -22,7 +22,9 @@
 
     <br>
 
-    Please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> with summary of the incident and {{ $config.name.short }} mapping.
+    If the case study passes all three requirements, the Case Studies -> Build Case Study page can be used to construct the case study for submission.
+    In cases where a .yaml file already exists, the case study form accepts .yaml uploads for editing. Otherwise, the form should be populated with as much detail as possible, including meta-data and a list of the procedures used in the case study. Optionally, references can be added to support the case study.
+    Finally the case study should be shared with the {{ $config.name.short }} team by downloading the created .yaml file and emailing it to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
     See an example of the format below.
 
     <page-section-title>Case study example</page-section-title>
