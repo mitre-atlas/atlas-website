@@ -1,19 +1,29 @@
+<!-- Navigation dialog -->
 <template>
-  <dialog ref="dialog" class="dialog">
-    <div class="header">
-      <div class="title">Confirm Navigation</div>
-      <span class="close" @click="$emit('close')">X</span>
-    </div>
+  <v-card>
+    <v-card-title>
+      Leave Site?
+    </v-card-title>
 
-    <div class="content">Are you sure you want to leave this page? You will lose all changes.</div>
+    <v-card-text>
+      <div class="content">
+        Are you sure you want to leave this page?
+        <v-spacer></v-spacer>
+        You will lose all changes.</div>
+      <slot />
+    </v-card-text>
 
-    <div class="actions">
-      <button @click="$emit('close')">Stay on this Page</button>
-      <button @click="$emit('leave-page')">Leave this Page</button>
-    </div>
-  </dialog>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn class="ma-1" color="grey" text v-on:click="$emit('close')">
+        Stay on this Page
+      </v-btn>
+      <v-btn class="ma-1" color="error" text v-on:click="$emit('leave-page')">
+        Leave this Page
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
-
 <script>
 export default {
   name: 'NavigationDialog',
@@ -31,38 +41,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.header {
-  height: 50px;
-  box-shadow: inset 0px 4px 9px 5px #eee;
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  padding: 0 10px;
-  align-items: center;
-}
-
-.header > .close {
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.content {
-  padding: 20px;
-  display: grid;
-  place-items: center;
-}
-
-.actions {
-  padding: 20px;
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: end;
-  gap: 10px;
-}
-
-.actions button {
-  padding: 10px;
-}
-</style>

@@ -1,12 +1,16 @@
 <template>
   <div class="mx-8">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <navigation-dialog
+        @close="closeDialog"
+        @leave-page="leavePage"
+      />
+    </v-dialog>
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
-    <navigation-dialog
-      v-model="showDialog"
-      @close="closeDialog"
-      @leave-page="leavePage"
-    />
     <v-row style="align-items: center;">
       <h3 class="font-weight-medium mb-10" style="margin-left: 1%;">Upload Existing Case Study (Optional)</h3>
       <v-col sm="5">
@@ -168,25 +172,19 @@ export default {
       downloadedYaml: false,
       builder: true,
       contactEmail: 'atlas@mitre.org',
-      showDialog: false,
-      to: null
+      dialog: false,
+      to: null,
+      isEditing: false
     }
   },
   beforeRouteLeave (to, from, next) {
-    const message = 'Are you sure you want to leave this page? You will lose all changes.'
-    const answer = window.confirm(message)
-    if (answer) {
-      this.showDialog = true
+    if (this.to && this.dialog === false && this.isEditing) {
       next()
     } else {
       next(false)
+      this.to = to
+      this.dialog = true
     }
-    // if (this.to) {
-    //   next()
-    // } else {
-    //   this.to = to
-    //   this.showDialog = true
-    // }
   },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
@@ -410,12 +408,14 @@ export default {
       }
     },
     closeDialog () {
-      this.showDialog = false
+      this.dialog = false
+      console.log('in close')
       this.to = null
     },
     leavePage () {
-      this.showDialog = false
-      this.beforeRouteLeave()
+      this.dialog = false
+      this.isEditing = true
+      this.$router.push(this.to)
     }
   }
 }
