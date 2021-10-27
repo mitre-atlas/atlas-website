@@ -14,6 +14,7 @@
         <v-text-field
           v-model="sourceDescriptionData"
           label="Description"
+          hint="Brief description (optional)"
           outlined
           prepend-inner-icon="mdi-format-title"
           @input="updateValue(sourceDescriptionData)"
@@ -22,6 +23,7 @@
         <v-text-field
           v-model="urlData"
           label="URL"
+          hint="Link (optional)"
           outlined
           prepend-inner-icon="mdi-link"
           @input="updateValue(urlData)"

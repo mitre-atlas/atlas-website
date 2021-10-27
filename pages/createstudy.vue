@@ -33,7 +33,7 @@
           :rules="[v => !!v || 'Title is required']"
           label="Title"
           hint="Name for this case study"
-          persistent-hint
+
           prepend-inner-icon="mdi-format-title"
           outlined
           required
@@ -43,9 +43,8 @@
         <v-text-field
           v-model="meta.email"
           :rules="emailRules"
-          label="E-mail address"
-          hint="For correspondence about this case study submission"
-          persistent-hint
+          label="Contact email(s)"
+          hint="Emails are for correspondence about this case study submission and will not be published"
           prepend-inner-icon="mdi-email"
           type="email"
           outlined
@@ -58,7 +57,6 @@
           :rules="[v => !!v || 'Reporter is required']"
           label="Reported by"
           hint="Name(s) of the original authors of the study"
-          persistent-hint
           prepend-inner-icon="mdi-account"
           outlined
           required
@@ -77,7 +75,7 @@
           label="Summary"
           hint="Description of the incident"
           prepend-inner-icon="mdi-text"
-          persistent-hint
+
           outlined
           required
           auto-grow

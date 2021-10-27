@@ -82,8 +82,7 @@
         v-model="descriptionData2"
         :disabled="selectTacticData2 === null"
         label="Description"
-        hint="Briefly describe how this technique was used in the case study"
-        persistent-hint
+        hint="Describe how this technique was used in the case study"
         required
         outlined
         prepend-inner-icon="mdi-text"
