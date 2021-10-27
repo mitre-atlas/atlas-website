@@ -20,6 +20,7 @@
           readonly
           v-bind="attrs"
           v-on="on"
+          :rules="[v => !!v || 'Required']"
         ></v-text-field>
       </template>
 
