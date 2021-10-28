@@ -3,23 +3,29 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <v-row style="align-items: center;">
-      <h3 class="font-weight-medium mb-10" style="margin-left: 1%;">Upload Existing Case Study (Optional)</h3>
-      <v-col sm="5">
-        <v-file-input
-          v-model="chosenFile"
-          class="mb-10"
-          :error="uploadError"
-          :error-messages="uploadErrorMessage"
-          small-chips
-          accept=".yaml,.yml"
-          label="Upload .YAML file here"
-          @change="readJSON"
-        >
-          <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
-        </v-file-input>
-      </v-col>
-    </v-row>
+    <v-card flat>
+      <v-card-text>
+        <v-row align="center" justify="start">
+          <v-col cols="12" md="4">
+            <div>Upload existing case study (optional)</div>
+          </v-col>
+          <v-col cols="12" md="8" sm="12">
+            <v-file-input
+              v-model="chosenFile"
+              :error="uploadError"
+              :error-messages="uploadErrorMessage"
+              small-chips
+              accept=".yaml,.yml"
+              label="Case study file"
+              @change="readJSON"
+              hide-details
+            >
+              <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
+            </v-file-input>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <!-- <h3 class="font-weight-medium">1. Case Study Details</h3>
