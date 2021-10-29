@@ -10,10 +10,11 @@
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
     "generate-gh": "nuxt generate --dotenv .env.github",
-    "deploy-gh": "push-dir --dir=dist --remote=gh --branch=gh-pages --overwrite-local"
+    "deploy-gh": "push-dir --dir=dist --remote=gh --branch=gh-pages"
   },
   "dependencies": {
     "@nuxt/content": "^1.14.0",
+    "@nuxtjs/markdownit": "^2.0.0",
     "core-js": "^3.11.0",
     "nuxt": "^2.15.4",
     "vue-gtag": "^1.16.1",

@@ -1,4 +1,5 @@
 const fs = require('fs').promises
+const yaml = require('js-yaml')
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -44,8 +45,15 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/content
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/markdownit'
   ],
+
+  // https://github.com/markdown-it/markdown-it
+  markdownit: {
+    breaks: false,
+    runtime: true
+  },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
@@ -84,14 +92,15 @@ export default {
   generate: {
     fallback: true,
     routes () {
-      const getTactics = fs.readFile('static/data/tactics.json', 'utf-8')
-      const getTechniques = fs.readFile('static/data/techniques.json', 'utf-8')
-      const getCaseStudies = fs.readFile('static/data/case-studies.json', 'utf-8')
+      const getAtlasData = fs.readFile('static/data/ATLAS-2.0.yaml', 'utf-8')
 
-      return Promise.all([getTactics, getTechniques, getCaseStudies])
+      return Promise.resolve(getAtlasData)
       .then((contents) => {
         // Parse YAML files
-        const [tactics, techniques, studies] = contents.map(JSON.parse)
+        const doc = yaml.load(contents)
+        const studies = doc['case-studies']
+        const techniques = doc['techniques']
+        const tactics = doc['tactics']
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
