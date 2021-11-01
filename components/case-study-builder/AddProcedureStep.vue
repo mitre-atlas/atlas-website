@@ -4,9 +4,6 @@
       <v-card-title>
         Add Procedure Step
         <v-spacer />
-        <v-btn color="red" icon @click="$emit('addingBoolUpdate', false)">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
       </v-card-title>
       <procedure-form
         :key="selectTacticData"
@@ -19,11 +16,11 @@
       />
       <v-card-actions>
         <v-spacer />
-        <v-btn text color="red" @click="clearStepInput">
-          Clear
+        <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
+          Cancel
         </v-btn>
-        <v-btn text color="blue" @click="addProcedureStep">
-          Add Step
+        <v-btn text color="green" @click="addProcedureStep">
+          Save
         </v-btn>
       </v-card-actions>
 
@@ -60,12 +57,6 @@ export default {
       } else {
         this.addStepErr = 'Please complete all fields'
       }
-    },
-    clearStepInput () {
-      this.selectTacticData = null
-      this.selectTechniqueData = null
-      this.descriptionData = ''
-      this.addStepErr = ''
     }
   }
 }

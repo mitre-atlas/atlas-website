@@ -28,10 +28,10 @@
     </v-card>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <!-- <h3 class="font-weight-medium">1. Case Study Details</h3>
+      <!-- <h3 class="font-weight-medium">1. Case Study Details</h3> <span class="red--text">*</span>
       <div class="ml-6">Fill out each field with case study data.</div> -->
       <v-card flat>
-        <v-card-title>Details<span class="red--text">*</span></v-card-title>
+        <v-card-title>Details</v-card-title>
         <v-card-text>
 
         <v-text-field
@@ -91,7 +91,7 @@
 
       <!-- <h3 class="font-weight-medium">2. Procedure</h3>
       <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div> -->
-      <v-card-title>Procedure<span class="red--text">*</span></v-card-title>
+      <v-card-title>Procedure</v-card-title>
       <v-card-text>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
