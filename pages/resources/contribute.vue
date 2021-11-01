@@ -27,6 +27,12 @@
     Finally the case study should be shared with the {{ $config.name.short }} team by downloading the created .yaml file and emailing it to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
     See an example of the format below.
 
+    <br><br>
+
+    <div class="center">
+      <video controls src="/atlas_case_study_demo.mp4" />
+    </div>
+
     <page-section-title>Case study example</page-section-title>
     <case-study-example />
 
@@ -80,3 +86,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+video{
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 550px;
+}
+div.center {
+  text-align: center;
+}
+</style>
