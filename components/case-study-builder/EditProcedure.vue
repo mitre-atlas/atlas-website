@@ -1,7 +1,8 @@
 <template>
   <v-timeline v-if="procedureData.length" align-top dense>
     <draggable :list="procedureData" :disabled="editing">
-      <v-timeline-item v-for="(p, i) in procedureData" :key="i" small>
+      <!-- Key with index and technique for uniqueness -->
+      <v-timeline-item v-for="(p, i) in procedureData" :key="i + p.technique" small>
         <edit-procedure-card
           :info="p"
           :editing="editing"

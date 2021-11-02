@@ -1,23 +1,10 @@
 <template>
   <div class="mx-8">
     <breadcrumbs />
-
-    <v-btn
-      class="my-5"
-      outlined
-      color="red"
-      absolute
-      right
-      :disabled="!valid"
-      @click="clearForm"
-    >
-      Clear Form
-    </v-btn>
     <page-title>{{ title }}</page-title>
 
-    <h3 class="font-weight-medium">1. Upload File</h3>
-    <div class="ml-6">If you already have a .yaml file, submit your case study here and edit in the form as needed.</div>
-    <v-row>
+    <v-row style="align-items: center;">
+      <h3 class="font-weight-medium mb-10" style="margin-left: 1%;">Upload Existing Case Study (Optional)</h3>
       <v-col sm="5">
         <v-file-input
           v-model="chosenFile"
@@ -26,7 +13,7 @@
           :error-messages="uploadErrorMessage"
           small-chips
           accept=".yaml,.yml"
-          label="Upload YAML File"
+          label="Upload .YAML file here"
           @change="readJSON"
         >
           <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
@@ -35,7 +22,7 @@
     </v-row>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <h3 class="font-weight-medium">2. Complete Fields</h3>
+      <h3 class="font-weight-medium">1. Case Study Details</h3>
       <div class="ml-6">Fill out each field with case study data.</div>
       <v-container  class="mb-10">
         <v-row>
@@ -54,33 +41,6 @@
           </v-col>
         </v-row>
 
-        <!-- <v-subheader>
-          Incident date
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-                <v-icon
-                  small
-                  right
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  mdi-help-circle-outline
-                </v-icon>
-            </template>
-            <span>Only the year is required, but please specify month and day where possible.</span>
-          </v-tooltip>
-        </v-subheader> -->
-
-        <!-- <date-select
-          :key="year"
-          :year="year"
-          :month="month"
-          :date="date"
-          @yearUpdate="year = $event"
-          @monthUpdate="month = $event"
-          @dateUpdate="date = $event"
-        /> -->
-
         <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
@@ -88,7 +48,7 @@
         </v-row>
       </v-container>
 
-      <h3 class="font-weight-medium">3. Procedure</h3>
+      <h3 class="font-weight-medium">2. Procedure</h3>
       <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div>
       <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
       <add-procedure-step
@@ -106,7 +66,7 @@
         <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
       </div>
 
-      <h3 class="font-weight-medium">4. References</h3>
+      <h3 class="font-weight-medium">3. References</h3>
       <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div>
       <div v-if="references.length" class="mx-8">
         <v-list flat>
@@ -383,37 +343,6 @@ export default {
     deleteSourceAt (index) {
       this.references.splice(index, 1)
       this.addingSource = false
-    },
-    clearForm () {
-      if (this.addingStep) {
-        this.$refs.addProcStepRef.clearStepInput()
-      }
-      if (this.addingSource) {
-        this.$refs.addSourceRef.clearSource()
-      }
-      this.valid = true
-      this.chosenFile = null
-      this.initialFileName = '' // IS THIS DOING ANYTHING
-      this.year = null
-      this.month = null
-      this.date = null
-      this.dateGranularity = null
-      this.titleStudy = ''
-      this.meta = { email: '' }
-      this.study = null
-      this.summary = ''
-      this.reported = ''
-      this.procedure = []
-      this.addingStep = true
-      this.references = []
-      this.addingSource = true
-      this.errorMsg = ''
-      this.uploadError = false
-      this.uploadErrorMessage = []
-      this.submissionMsg = ''
-      this.downloadedYaml = false
-      this.builder = true
-      this.$refs.form.resetValidation()
     },
     submitStudy () {
       if (this.$refs.form.validate() && this.procedure.length) {
