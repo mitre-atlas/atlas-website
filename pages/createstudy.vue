@@ -158,10 +158,16 @@
       </v-tooltip>
       <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
       <v-col sm="6">
-        <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
+        <v-alert
+          v-if="errorMsg"
+          text
+          color="red"
+          type="error"
+          dense
+          >
           {{ errorMsg }}
         </v-alert>
-        <v-alert v-if="submissionMsg" color="green" outlined type="success" dense>
+        <v-alert v-if="submissionMsg" color="green" text type="success" dense>
           {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
         </v-alert>
       </v-col>

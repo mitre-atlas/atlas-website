@@ -24,7 +24,13 @@
         </v-btn>
       </v-card-actions>
 
-        <v-alert v-if="addStepErr" text type="error" dense>
+        <v-alert
+          v-if="addStepErr"
+          text
+          color="red"
+          type="error"
+          dense
+          >
           {{ addStepErr }}
         </v-alert>
     </v-card>
