@@ -63,6 +63,12 @@ export default {
       } else {
         this.addStepErr = 'Please complete all fields'
       }
+    },
+    clearStepInput () {
+      this.selectTacticData = null
+      this.selectTechniqueData = null
+      this.descriptionData = ''
+      this.addStepErr = ''
     }
   }
 }

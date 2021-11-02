@@ -232,7 +232,7 @@ export default {
       procedure: [],
       addingStep: true,
       references: [],
-      addingSource: true,
+      addingSource: false,
       errorMsg: '',
       uploadError: false,
       uploadErrorMessage: [],
