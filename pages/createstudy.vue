@@ -105,7 +105,12 @@
         @addingBoolUpdate="addingStep = $event"
       />
       <div v-else>
-        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
+        <v-btn class="ma-2 mb-10" @click="addingStep = true">
+          <v-icon left>
+            mdi-plus
+          </v-icon>
+          Add New Step
+        </v-btn>
       </div>
 
       </v-card-text>
@@ -134,30 +139,38 @@
         @addingBoolUpdate="addingSource = $event"
       />
       <div v-else>
-        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
+        <v-btn class="ma-2 mb-10" @click="addingSource = true">
+          <v-icon left>
+            mdi-plus
+          </v-icon>
+          Add New Source
+        </v-btn>
       </div>
 
       </v-card-text>
-      </v-card>
 
-      <v-tooltip right color="light-blue lighten-4">
+      <v-card-text>
+
+      <v-tooltip top color="light-blue lighten-4">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            class="my-5"
-            outlined
+            color="primary"
             :disabled="!valid"
             v-bind="attrs"
-            x-large
             v-on="on"
             @click="submitStudy"
           >
+            <v-icon left>
+            mdi-download
+            </v-icon>
             Download Case Study
           </v-btn>
         </template>
         <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
       </v-tooltip>
+
       <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
-      <v-col sm="6">
+
         <v-alert
           v-if="errorMsg"
           text
@@ -167,10 +180,18 @@
           >
           {{ errorMsg }}
         </v-alert>
-        <v-alert v-if="submissionMsg" color="green" text type="success" dense>
+        <v-alert
+          v-if="submissionMsg"
+          text
+          color="green"
+          type="success"
+          dense
+          >
           {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
         </v-alert>
-      </v-col>
+
+        </v-card-text>
+       </v-card>
     </v-form>
   </div>
 </template>

@@ -1,12 +1,13 @@
 <template>
   <v-btn
     v-if="isBuilder"
-    class="my-5"
-    outlined
-    x-large
+    color="secondary"
     v-on="on"
     @click="makePPT"
   >
+              <v-icon left>
+            mdi-download
+            </v-icon>
     Download Powerpoint
   </v-btn>
   <v-btn
