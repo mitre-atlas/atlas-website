@@ -1,8 +1,5 @@
 # Adversarial ML Threat Matrix
 
-## Git Setup
-This project uses the `data` project in this GitLab group as a Git submodule in `content/threat-matrix`.  Clone using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
-
 ## Build Setup
 
 ```bash
@@ -33,6 +30,18 @@ $ docker save -o atlas-website-image.tar atlas:atlas-website
 
 #load website tar file
 $ docker load -i atlas-website-image.tar
+```
+
+## Tests
+
+Playwright tests are located in the tests directory.
+Set the environment variable `URL` prior to making the test call with base URL of the instance to be tested.
+
+Examples:
+
+```
+URL=localhost:3000 npx playwright test
+URL=https://advml.lt.mitre.org npx playwright test
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

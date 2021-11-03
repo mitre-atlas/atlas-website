@@ -91,3 +91,6 @@ sw.*
 
 # Deplpy scripts
 *.sh
+
+# Playwright videos
+test-results
