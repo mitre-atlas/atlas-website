@@ -137,6 +137,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
+// import router from './router'
 
 export default {
   data () {
@@ -177,19 +178,14 @@ export default {
       isEditing: false
     }
   },
-  beforeRouteLeave (to, from, next) {
-    if (this.to && this.dialog === false && this.isEditing) {
-      next()
-    } else {
-      next(false)
-      this.to = to
-      this.dialog = true
-    }
-  },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  // mounted () { //Restores case study data from store
+  mounted () { // Restores case study data from store
+    window.popStateDetected = false
+    window.addEventListener('popstate', () => {
+      window.popStateDetected = true
+    })
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
   //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
@@ -200,7 +196,21 @@ export default {
   //   //     console.log('No case study found in store')
   //   //   }
   //   // })
-  // },
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.to && this.dialog === false && this.isEditing) {
+      next()
+    }
+    const backButtonClicked = window.popStateDetected
+    if (backButtonClicked) {
+      window.popStateDetected = false
+      next()
+    } else {
+      next(false)
+      this.to = to
+      this.dialog = true
+    }
+  },
   methods: {
     ...mapActions(['submitCaseStudy']),
     updateValue (inputVal) {
@@ -409,11 +419,12 @@ export default {
     },
     closeDialog () {
       this.dialog = false
-      console.log('in close')
       this.to = null
     },
     leavePage () {
       this.dialog = false
+      const backButtonClicked = window.popStateDetected
+      console.log('testing back button clicked', backButtonClicked)
       this.isEditing = true
       this.$router.push(this.to)
     }
