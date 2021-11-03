@@ -5,9 +5,9 @@
     v-on="on"
     @click="makePPT"
   >
-              <v-icon left>
-            mdi-download
-            </v-icon>
+    <v-icon left>
+      mdi-download
+    </v-icon>
     Download Powerpoint
   </v-btn>
   <v-btn

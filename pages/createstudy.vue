@@ -28,8 +28,6 @@
     </v-card>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <!-- <h3 class="font-weight-medium">1. Case Study Details</h3> <span class="red--text">*</span>
-      <div class="ml-6">Fill out each field with case study data.</div> -->
       <v-card flat>
         <v-card-title>Details</v-card-title>
         <v-card-text>
@@ -89,87 +87,80 @@
         />
         </v-card-text>
 
-      <!-- <h3 class="font-weight-medium">2. Procedure</h3>
-      <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div> -->
       <v-card-title>Procedure</v-card-title>
       <v-card-text>
-      <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
-      <add-procedure-step
-        v-if="addingStep"
-        ref="addProcStepRef"
-        :select-tactic="selectTactic"
-        :select-technique="selectTechnique"
-        :description="description"
-        :addingStep="addingStep"
-        @clicked="addProcedureStep"
-        @addingBoolUpdate="addingStep = $event"
-      />
-      <div v-else>
-        <v-btn class="ma-2 mb-10" @click="addingStep = true">
-          <v-icon left>
-            mdi-plus
-          </v-icon>
-          Add New Step
-        </v-btn>
-      </div>
-
+        <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+        <add-procedure-step
+          v-if="addingStep"
+          ref="addProcStepRef"
+          :select-tactic="selectTactic"
+          :select-technique="selectTechnique"
+          :description="description"
+          :addingStep="addingStep"
+          @clicked="addProcedureStep"
+          @addingBoolUpdate="addingStep = $event"
+        />
+        <div v-else>
+          <v-btn class="ma-2 mb-10" @click="addingStep = true">
+            <v-icon left>
+              mdi-plus
+            </v-icon>
+            Add New Step
+          </v-btn>
+        </div>
       </v-card-text>
-
-      <!-- <h3 class="font-weight-medium">3. References</h3>
-      <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div> -->
 
       <v-card-title>References</v-card-title>
+      <v-card-subtitle>(Optional)</v-card-subtitle>
       <v-card-text>
-      <div v-if="references.length" class="mx-8">
-        <v-list flat>
-          <v-list-item-group>
-          <div v-for="(value, key) in references" :key="key">
-            <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
-          </div>
-          </v-list-item-group>
-        </v-list>
+        <div v-if="references.length" class="mx-8">
+          <v-list flat>
+            <v-list-item-group>
+            <div v-for="(value, key) in references" :key="key">
+              <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
+            </div>
+            </v-list-item-group>
+          </v-list>
 
-      </div>
-      <add-source
-        v-if="addingSource"
-        ref="addSourceRef"
-        :source-description="sourceDescription"
-        :url="url"
-        @clicked="addSource"
-        @addingBoolUpdate="addingSource = $event"
-      />
-      <div v-else>
-        <v-btn class="ma-2 mb-10" @click="addingSource = true">
-          <v-icon left>
-            mdi-plus
-          </v-icon>
-          Add New Source
-        </v-btn>
-      </div>
-
+        </div>
+        <add-source
+          v-if="addingSource"
+          ref="addSourceRef"
+          :source-description="sourceDescription"
+          :url="url"
+          @clicked="addSource"
+          @addingBoolUpdate="addingSource = $event"
+        />
+        <div v-else>
+          <v-btn class="ma-2 mb-10" @click="addingSource = true">
+            <v-icon left>
+              mdi-plus
+            </v-icon>
+            Add New Source
+          </v-btn>
+        </div>
       </v-card-text>
 
       <v-card-text>
+        <v-tooltip top color="light-blue lighten-4">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              :disabled="!valid"
+              v-bind="attrs"
+              v-on="on"
+              @click="submitStudy"
+            >
+              <v-icon left>
+              mdi-download
+              </v-icon>
+              Download Case Study
+            </v-btn>
+          </template>
+          <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
+        </v-tooltip>
 
-      <v-tooltip top color="light-blue lighten-4">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            :disabled="!valid"
-            v-bind="attrs"
-            v-on="on"
-            @click="submitStudy"
-          >
-            <v-icon left>
-            mdi-download
-            </v-icon>
-            Download Case Study
-          </v-btn>
-        </template>
-        <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
-      </v-tooltip>
-
-      <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+        <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
 
         <v-alert
           v-if="errorMsg"
@@ -191,7 +182,7 @@
         </v-alert>
 
         </v-card-text>
-       </v-card>
+      </v-card>
     </v-form>
   </div>
 </template>
