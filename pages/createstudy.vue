@@ -34,7 +34,7 @@
 
         <v-text-field
           v-model="titleStudy"
-          :rules="[v => !!v || 'Title is required']"
+          :rules="rules.title"
           label="Title"
           hint="Name for this case study"
           prepend-inner-icon="mdi-format-title"
@@ -58,7 +58,7 @@
 
         <v-text-field
           v-model="reported"
-          :rules="[v => !!v || 'Reporter is required']"
+          :rules="rules.reportedBy"
           label="Reported by"
           hint="Name(s) of the original authors of the study"
           prepend-inner-icon="mdi-account"
@@ -70,12 +70,13 @@
         <incident-date-picker
           :startDate="date"
           :startDateGranularity="dateGranularity"
+          :initialRules="rules.incidentDate"
           v-on:selectedDate="setIncidentDate"
         />
 
         <v-textarea
           v-model="summary"
-          :rules="[v => !!v || 'Summary is required']"
+          :rules="rules.summary"
           label="Summary"
           hint="Description of the incident"
           prepend-inner-icon="mdi-text"
@@ -212,8 +213,7 @@ export default {
       meta: { email: '' },
       study: null,
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
       ],
       summary: '',
       sourceDescription: '',
@@ -229,7 +229,16 @@ export default {
       submissionMsg: '',
       downloadedYaml: false,
       builder: true,
-      contactEmail: 'atlas@mitre.org'
+      contactEmail: 'atlas@mitre.org',
+
+      rules: {}, // Initial empty obj bound to field rules prop - must start empty
+      requiredRule: v => !!v || 'Required',
+      requiredFieldRuleKeys: [
+        'title',
+        'reportedBy',
+        'summary',
+        'incidentDate'
+      ]
     }
   },
   computed: {
@@ -411,6 +420,12 @@ export default {
       this.addingSource = false
     },
     submitStudy () {
+      this.requiredFieldRuleKeys.forEach((key) => {
+        this.rules[key] = [this.requiredRule]
+      })
+      // Email already has a rule in place, add required to the front
+      this.emailRules.unshift(this.requiredRule)
+
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
 
