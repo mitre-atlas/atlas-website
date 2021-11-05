@@ -37,7 +37,6 @@
           :rules="[v => !!v || 'Title is required']"
           label="Title"
           hint="Name for this case study"
-
           prepend-inner-icon="mdi-format-title"
           outlined
           required
@@ -47,6 +46,7 @@
         <v-text-field
           v-model="meta.email"
           :rules="emailRules"
+          :validate-on-blur="true"
           label="Contact email(s)"
           hint="Emails are for correspondence about this case study submission and will not be published"
           prepend-inner-icon="mdi-email"
@@ -79,7 +79,6 @@
           label="Summary"
           hint="Description of the incident"
           prepend-inner-icon="mdi-text"
-
           outlined
           required
           auto-grow
