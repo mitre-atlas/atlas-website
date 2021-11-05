@@ -7,7 +7,7 @@
       <v-card-text>
         <v-row align="center" justify="start">
           <v-col cols="12" md="4">
-            <div>Upload existing case study (optional)</div>
+            <div>Upload an existing case study (optional)</div>
           </v-col>
           <v-col cols="12" md="8" sm="12">
             <v-file-input
@@ -16,7 +16,7 @@
               :error-messages="uploadErrorMessage"
               small-chips
               accept=".yaml,.yml"
-              label="Case study file"
+              label="Case study .yaml file"
               @change="readJSON"
               hide-details
             >
@@ -30,8 +30,9 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-card flat>
         <v-card-title>Details</v-card-title>
-        <v-card-text>
+        <v-card-subtitle>All fields required.</v-card-subtitle>
 
+        <v-card-text>
         <v-text-field
           v-model="titleStudy"
           :rules="rules.title"
@@ -88,6 +89,7 @@
         </v-card-text>
 
       <v-card-title>Procedure</v-card-title>
+      <v-card-subtitle>Construct a timeline of the incident, mapped to ATLAS techniques. Add at least one step.</v-card-subtitle>
       <v-card-text>
         <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
         <add-procedure-step
@@ -111,7 +113,7 @@
       </v-card-text>
 
       <v-card-title>References</v-card-title>
-      <v-card-subtitle>(Optional)</v-card-subtitle>
+      <v-card-subtitle>Optionally list sources for this case study.</v-card-subtitle>
       <v-card-text>
         <div v-if="references.length" class="mx-8">
           <v-list flat>
@@ -157,7 +159,7 @@
               Download Case Study
             </v-btn>
           </template>
-          <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
+          <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
         </v-tooltip>
 
         <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
