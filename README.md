@@ -40,7 +40,7 @@ Set the environment variable `URL` prior to making the test call with base URL o
 Examples:
 
 ```
-URL=localhost:3000 npx playwright test
+URL=http://localhost:3000 npx playwright test
 URL=https://advml.lt.mitre.org npx playwright test
 ```
 

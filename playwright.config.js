@@ -3,7 +3,7 @@
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
   use: {
-    headless: false,
+    headless: true,
     baseURL: process.env.URL,
     ignoreHTTPSErrors: true,
     video: 'off'
