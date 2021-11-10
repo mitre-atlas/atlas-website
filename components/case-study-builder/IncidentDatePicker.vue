@@ -6,7 +6,7 @@
       :close-on-content-click="false"
       :close-on-click="false"
       transition="scale-transition"
-      bottom
+      top
       offset-y
       min-width="auto"
     >
@@ -15,10 +15,12 @@
           v-model="displayedIncidentDate"
           label="Incident date"
           hint="Only the year is required, but please specify month and day where possible"
-          prepend-icon="mdi-calendar"
+          prepend-inner-icon="mdi-calendar"
+          outlined
           readonly
           v-bind="attrs"
           v-on="on"
+          :rules="rules"
         ></v-text-field>
       </template>
 
@@ -49,14 +51,16 @@ export default {
   name: 'IncidentDatePicker',
   props: [
     'startDate',
-    'startDateGranularity'
+    'startDateGranularity',
+    'initialRules'
   ],
   data () {
     return {
       activePicker: null,
       menu: false,
       date: this.startDate,
-      dateGranularity: this.startDateGranularity
+      dateGranularity: this.startDateGranularity,
+      rules: this.initialRules
     }
   },
   watch: {
@@ -77,6 +81,14 @@ export default {
       immediate: true,
       handler (newVal, oldVal) {
         this.dateGranularity = newVal
+      }
+    },
+    initialRules: {
+      // Ensures that the component data is up to date with rules update
+      // during form submit
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.rules = newVal
       }
     }
   },
