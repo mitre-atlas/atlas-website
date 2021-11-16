@@ -174,18 +174,51 @@ export default {
       builder: true,
       contactEmail: 'atlas@mitre.org',
       dialog: false,
+      refreshDialog: false,
       to: null,
-      isEditing: false
+      isEditing: false,
+      refreshFlag: false
     }
+  },
+  beforeMount () {
+    console.log('Adding event listener for refresh button')
+    window.addEventListener('beforeunload', (event) => {
+      if (!this.isEditing) {
+        return
+      }
+      event.preventDefault()
+      event.returnValue = ''
+    })
   },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  mounted () { // Restores case study data from store
-    window.popStateDetected = false
-    window.addEventListener('popstate', () => {
-      window.popStateDetected = true
-    })
+  // const beforeUnloadListener = (event) => {
+  //   this.refreshDialog = true
+  //   event.preventDefault()
+  //   if (event) {
+  //     event.returnValue = '' // Legacy method for cross browser support
+  //   }
+  //   return ''
+  // }
+  // const refreshTrigger
+
+  // window.addEventListener('beforeunload', beforeUnloadListener)
+  // window.addEventListener('beforeunload', this.handleRefreshButton)
+  // window.addEventListener('beforeunload', (event) => {
+  //   if (!this.isEditing) {
+  //     return
+  //   }
+  //   this.handleRefreshButton()
+  //   event.preventDefault()
+  //   event.returnValue = ''
+  // })
+  // beforeDestroy() {
+  //   window.removeEventListener('beforeunload');
+  // },
+  mounted () {
+    console.log('Adding event listener for back button')
+    window.addEventListener('popstate', this.handleBackButton) // Restores case study data from store
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
   //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
@@ -199,11 +232,6 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.to && this.dialog === false && this.isEditing) {
-      next()
-    }
-    const backButtonClicked = window.popStateDetected
-    if (backButtonClicked) {
-      window.popStateDetected = false
       next()
     } else {
       next(false)
@@ -419,14 +447,17 @@ export default {
     },
     closeDialog () {
       this.dialog = false
+      this.isEditing = true
       this.to = null
     },
     leavePage () {
       this.dialog = false
-      const backButtonClicked = window.popStateDetected
-      console.log('testing back button clicked', backButtonClicked)
       this.isEditing = true
       this.$router.push(this.to)
+    },
+    handleBackButton () {
+      console.log('back button clicked')
+      this.dialog = true
     }
   }
 }
