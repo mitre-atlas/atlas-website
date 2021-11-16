@@ -1,12 +1,13 @@
 <template>
   <v-btn
     v-if="isBuilder"
-    class="my-5"
-    outlined
-    x-large
+    color="secondary"
     v-on="on"
     @click="makePPT"
   >
+    <v-icon left>
+      mdi-download
+    </v-icon>
     Download Powerpoint
   </v-btn>
   <v-btn
@@ -109,6 +110,13 @@ export default {
         y: '90%'
       })
     },
+    getUrlFromInfoObject (infoObject) {
+      const baseUrl = window.location.origin
+      return `${baseUrl}/${infoObject['object-type']}s/${infoObject.id}`
+    },
+    linkText (text, url) {
+      return { text, options: { hyperlink: { url } } }
+    },
     procedureSlide (ppt, yaml) {
       const rows = [[
         { text: 'Tactic', options: { fill: '87DEFF', color: '0D2F4F', align: 'center', bold: true } },
@@ -116,10 +124,35 @@ export default {
         { text: 'Description', options: { fill: '87DEFF', color: '0D2F4F', align: 'center', bold: true } }
       ]]
       for (let i = 0; i < yaml.study.procedure.length; i++) {
-        const tactic = this.$store.getters.getTacticById(yaml.study.procedure[i].tactic)
-        const technique = this.$store.getters.getTechniqueById(yaml.study.procedure[i].technique)
-        const r = [tactic.name + '\n' + yaml.study.procedure[i].tactic, technique.name + '\n' + yaml.study.procedure[i].technique, yaml.study.procedure[i].description]
-        rows.push(r)
+        const tacticId = yaml.study.procedure[i].tactic
+        const techniqueId = yaml.study.procedure[i].technique
+        const description = yaml.study.procedure[i].description
+
+        const tacticInfo = this.$store.getters.getTacticById(tacticId)
+        const techniqueInfo = this.$store.getters.getTechniqueById(techniqueId)
+
+        // const tacticLabel = [
+        //   { text: tacticInfo.name },
+        //   this.linkText(tacticId, this.getUrlFromInfoObject(tacticInfo))
+        // ]
+        // const techniqueLabel = [
+        //   { text: techniqueInfo.name },
+        //   this.linkText(techniqueId, this.getUrlFromInfoObject(techniqueInfo))
+        // ]
+        // console.log(techniqueLabel, tacticLabel)
+
+        const workaroundTacticLabel = `${tacticInfo.name}\n${tacticId}`
+        const workaroundTecniqueLabel = `${techniqueInfo.name}\n${techniqueId}`
+
+        const row = [
+          this.linkText(workaroundTacticLabel, this.getUrlFromInfoObject(tacticInfo)),
+          this.linkText(workaroundTecniqueLabel, this.getUrlFromInfoObject(techniqueInfo)),
+          // { text: tacticLabel },
+          // { text: techniqueLabel },
+          // { text: techniqueInfo.name + '\n' + techniqueId },
+          { text: description }
+        ]
+        rows.push(row)
       }
       const slide = ppt.addSlide()
       slide.addText([
@@ -142,6 +175,7 @@ export default {
           color: '0D2F4F',
           autoPage: true,
           autoPageRepeatHeader: true,
+          // verbose: true,
           border: { color: '0D2F4F' },
           margin: 10
         })

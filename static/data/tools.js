@@ -199,7 +199,7 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
 function downloadStudyFile (study) {
   const studyBody = study.study
   const studyYAML = createYAML(study)
-  download(`${studyBody.name}-YAML.yaml`, studyYAML)
+  download(`${studyBody.name}.yaml`, studyYAML)
 }
 
 export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
