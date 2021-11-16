@@ -12,7 +12,7 @@ test.describe('Case study builder', () => {
   test('minimal successful form fill', async ({ page }) => {
     // Details
     await page.fill('text=Title', 'Playwright Test')
-    await page.fill('text=Contact email(s)', 'test@mitre.org')
+    await page.fill('text=E-mail', 'test@mitre.org')
     await page.fill('text=Reported by', 'Roboto')
     // Incident date
     await page.click('[readonly="readonly"]')
