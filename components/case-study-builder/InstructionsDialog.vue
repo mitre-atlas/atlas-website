@@ -48,7 +48,7 @@
           </div>
 
           <div class="mt-2">
-          To edit an existing case study, upload the .yaml file at the top of the form, make adjustments, then re-download the file.
+          To view or edit an existing case study, click the "Upload Case Study" button and upload the .yaml file.  Make any necessary adjustments, then re-download the file.
           </div>
 
           <div class="mt-2">

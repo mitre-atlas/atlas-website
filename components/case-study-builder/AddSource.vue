@@ -17,7 +17,6 @@
           hint="Brief description (optional)"
           outlined
           prepend-inner-icon="mdi-format-title"
-          @input="updateValue(sourceDescriptionData)"
         />
 
         <v-text-field
@@ -26,7 +25,6 @@
           hint="Link (optional)"
           outlined
           prepend-inner-icon="mdi-link"
-          @input="updateValue(urlData)"
         />
       </v-card-text>
 
