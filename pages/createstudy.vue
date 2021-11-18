@@ -12,6 +12,10 @@
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
+    <v-card-actions>
+        <instructions-dialog />
+    </v-card-actions>
+
     <v-card flat>
       <v-card-text>
         <v-row align="center" justify="start">
@@ -98,7 +102,7 @@
         </v-card-text>
 
       <v-card-title>Procedure</v-card-title>
-      <v-card-subtitle>Construct a timeline of the incident, mapped to ATLAS techniques. Add at least one step.</v-card-subtitle>
+      <v-card-subtitle>Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.</v-card-subtitle>
       <v-card-text>
         <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
         <add-procedure-step
