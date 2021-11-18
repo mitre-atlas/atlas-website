@@ -260,19 +260,14 @@ export default {
     }
   },
   beforeMount () {
-    window.addEventListener('beforeunload', (event) => {
-      if (!this.isEditing) {
-        return
-      }
-      event.preventDefault()
-      event.returnValue = ''
-    })
+    window.addEventListener('beforeunload', this.handleBeforeUnload)
+    window.addEventListener('popstate', this.handleBackButton)
   },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  mounted () {
-    window.addEventListener('popstate', this.handleBackButton) // Restores case study data from store
+  // mounted () {
+  // Restores case study data from store
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
   //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
@@ -283,7 +278,7 @@ export default {
   //   //     console.log('No case study found in store')
   //   //   }
   //   // })
-  },
+  // },
   beforeRouteLeave (to, from, next) {
     if (this.to && this.dialog === false && this.isEditing) {
       next()
@@ -292,6 +287,10 @@ export default {
       this.to = to
       this.dialog = true
     }
+  },
+  beforeDestroy () {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
+    window.removeEventListener('popstate', this.handleBackButton)
   },
   methods: {
     ...mapActions(['submitCaseStudy']),
@@ -517,6 +516,13 @@ export default {
     },
     handleBackButton () {
       this.dialog = true
+    },
+    handleBeforeUnload (event) {
+      if (!this.isEditing) {
+        return
+      }
+      event.preventDefault()
+      event.returnValue = ''
     }
   }
 }
