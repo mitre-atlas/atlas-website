@@ -235,9 +235,6 @@ export default {
   // },
   methods: {
     ...mapActions(['submitCaseStudy']),
-    updateValue (inputVal) {
-      this.inputVal = inputVal
-    },
     setDataFromFile (data) {
       // Directly set proprties on this instance
       Object.assign(this, data)
@@ -254,21 +251,6 @@ export default {
       // Called from incident date picker
       this.date = date
       this.dateGranularity = granularity
-    },
-    editReferences (refs) {
-      // this function takes in an array of strings and converts them to an array of formatted objects
-      const structuredRefs = []
-      for (let i = 0; i < refs.length; i++) {
-        const matches = refs[i].match(/(https?:\/\/[^ ]*)/)
-        let thisRef = { sourceDescription: '', url: '' }
-        if (matches) {
-          thisRef = { sourceDescription: refs[i].replace(matches[1], ''), url: matches[1] }
-        } else {
-          thisRef = { sourceDescription: refs[i], url: '' }
-        }
-        structuredRefs.push(thisRef)
-      }
-      return structuredRefs
     },
     addProcedureStep (newStep) {
       this.procedure.push(newStep)

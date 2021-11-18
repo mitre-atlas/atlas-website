@@ -51,7 +51,7 @@
           <v-btn
             plain
             color="primary"
-            :disabled="hasError"
+            :disabled="hasError || !chosenFile"
             @click="loadDataFromFile"
             >
             OK
@@ -165,6 +165,21 @@ export default {
 
       this.errorMessages = errors
       return isValid
+    },
+    editReferences (refs) {
+      // this function takes in an array of strings and converts them to an array of formatted objects
+      const structuredRefs = []
+      for (let i = 0; i < refs.length; i++) {
+        const matches = refs[i].match(/(https?:\/\/[^ ]*)/)
+        let thisRef = { sourceDescription: '', url: '' }
+        if (matches) {
+          thisRef = { sourceDescription: refs[i].replace(matches[1], ''), url: matches[1] }
+        } else {
+          thisRef = { sourceDescription: refs[i], url: '' }
+        }
+        structuredRefs.push(thisRef)
+      }
+      return structuredRefs
     },
     loadData (data) {
       const studyFileObj = (typeof data === 'object') ? data : yamlParse(data)
