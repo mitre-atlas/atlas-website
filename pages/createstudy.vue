@@ -207,7 +207,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, yamlParse, validFormatYAML, downloadStudyFile } from 'static/data/tools.js'
-// import router from './router'
 
 export default {
   data () {
@@ -269,29 +268,6 @@ export default {
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  // const beforeUnloadListener = (event) => {
-  //   this.refreshDialog = true
-  //   event.preventDefault()
-  //   if (event) {
-  //     event.returnValue = '' // Legacy method for cross browser support
-  //   }
-  //   return ''
-  // }
-  // const refreshTrigger
-
-  // window.addEventListener('beforeunload', beforeUnloadListener)
-  // window.addEventListener('beforeunload', this.handleRefreshButton)
-  // window.addEventListener('beforeunload', (event) => {
-  //   if (!this.isEditing) {
-  //     return
-  //   }
-  //   this.handleRefreshButton()
-  //   event.preventDefault()
-  //   event.returnValue = ''
-  // })
-  // beforeDestroy() {
-  //   window.removeEventListener('beforeunload');
-  // },
   mounted () {
     console.log('Adding event listener for back button')
     window.addEventListener('popstate', this.handleBackButton) // Restores case study data from store
