@@ -33,14 +33,14 @@
         <v-card-text>
 
           <ol>
-            <li>Fill out the form</li>
+            <li>Fill out the form.</li>
             <!-- <ol type="a">
               <li>Details of the case study</li>
               <li>Procedure: a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques</li>
               <li>An optional list of sources</li>
             </ol> -->
-            <li>Download the generated case study .yaml file</li>
-            <li>Email the case study file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a></li>
+            <li>Download the generated case study .yaml file.</li>
+            <li>Email the case study file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.</li>
           </ol>
 
           <div class="mt-2">
@@ -48,7 +48,7 @@
           </div>
 
           <div class="mt-2">
-          To view or edit an existing case study, click the "Upload Case Study" button and upload the .yaml file.  Make any necessary adjustments, then re-download the file.
+          To view or edit an existing case study, click the "Load Case Study" button and upload the .yaml file.  Make any necessary adjustments, then re-download the file.
           </div>
 
           <div class="mt-2">
