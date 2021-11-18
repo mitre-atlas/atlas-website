@@ -256,7 +256,6 @@ export default {
     }
   },
   beforeMount () {
-    console.log('Adding event listener for refresh button')
     window.addEventListener('beforeunload', (event) => {
       if (!this.isEditing) {
         return
@@ -269,7 +268,6 @@ export default {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
   mounted () {
-    console.log('Adding event listener for back button')
     window.addEventListener('popstate', this.handleBackButton) // Restores case study data from store
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
@@ -514,7 +512,6 @@ export default {
       this.$router.push(this.to)
     },
     handleBackButton () {
-      console.log('back button clicked')
       this.dialog = true
     }
   }
