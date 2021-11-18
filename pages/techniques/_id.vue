@@ -112,11 +112,11 @@
       >
       <template v-slot:activator>
         <page-section-title>
-          Case studies
+          Case study examples
         </page-section-title>
-        <!-- <v-badge inline :content="relevantStudies.length" /> -->
       </template>
 
+      <v-list three-line>
       <div
         v-for="(study,i) in relevantStudies"
         :key="i">
@@ -124,27 +124,13 @@
           :nuxt="true"
           :to="`/studies/${study.id}`"
           >
-          <v-list-item>
-          <v-list-item-title>
-            {{ study.name }}
-          </v-list-item-title>
-        </v-list-item>
+            <case-study-procedure-example :study="study" :techniqueId="info.id" />
         </v-list-item>
 
       </div>
+      </v-list>
     </v-list-group>
   </div>
-
-  <!--
-  <div v-if="info.external_references.length > 1">
-    <page-section-title text="Sources" />
-    <ol class="mt-2">
-      <li v-for="(ref, i) in info.external_references.slice(1)" :key="i">
-        <a :href="ref.url">{{ ref.description }}</a>
-      </li>
-    </ol>
-  </div>
-  -->
 
 </div>
 </template>

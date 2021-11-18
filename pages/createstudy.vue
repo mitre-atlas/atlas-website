@@ -1,5 +1,14 @@
 <template>
   <div class="mx-8">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <navigation-dialog
+        @close="closeDialog"
+        @leave-page="leavePage"
+      />
+    </v-dialog>
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
@@ -236,6 +245,9 @@ export default {
       downloadedYaml: false,
       builder: true,
       contactEmail: 'atlas@mitre.org',
+      dialog: false,
+      to: null,
+      isEditing: false,
 
       rules: {}, // Initial empty obj bound to field rules prop - must start empty
       requiredRule: v => !!v || 'Required',
@@ -247,10 +259,20 @@ export default {
       ]
     }
   },
+  beforeMount () {
+    window.addEventListener('beforeunload', (event) => {
+      if (!this.isEditing) {
+        return
+      }
+      event.preventDefault()
+      event.returnValue = ''
+    })
+  },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  // mounted () { //Restores case study data from store
+  mounted () {
+    window.addEventListener('popstate', this.handleBackButton) // Restores case study data from store
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
   //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
@@ -261,7 +283,16 @@ export default {
   //   //     console.log('No case study found in store')
   //   //   }
   //   // })
-  // },
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.to && this.dialog === false && this.isEditing) {
+      next()
+    } else {
+      next(false)
+      this.to = to
+      this.dialog = true
+    }
+  },
   methods: {
     ...mapActions(['submitCaseStudy']),
     updateValue (inputVal) {
@@ -473,6 +504,19 @@ export default {
       } else if (!this.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
+    },
+    closeDialog () {
+      this.dialog = false
+      this.isEditing = true
+      this.to = null
+    },
+    leavePage () {
+      this.dialog = false
+      this.isEditing = true
+      this.$router.push(this.to)
+    },
+    handleBackButton () {
+      this.dialog = true
     }
   }
 }
