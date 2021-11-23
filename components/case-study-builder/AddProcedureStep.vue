@@ -1,12 +1,9 @@
 <template>
   <div id="addForm">
-    <v-card outlined class="my-5">
+    <v-card class="my-5">
       <v-card-title>
-        Add Procedure Steps:
+        Add Procedure Step
         <v-spacer />
-        <v-btn color="red" icon @click="$emit('addingBoolUpdate', false)">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
       </v-card-title>
       <procedure-form
         :key="selectTacticData"
@@ -18,18 +15,24 @@
         @descriptionUpdate="descriptionData = $event"
       />
       <v-card-actions>
-        <v-btn class="ma-2" outlined color="blue" @click="addProcedureStep">
-          Add Step
+        <v-spacer />
+        <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
+          Cancel
         </v-btn>
-        <v-btn class="ma-2" outlined color="red" @click="clearStepInput">
-          Clear
+        <v-btn text color="green" @click="addProcedureStep">
+          Save
         </v-btn>
       </v-card-actions>
-      <v-col sm="6">
-        <v-alert v-if="addStepErr" color="red" outlined type="error" dense>
+
+        <v-alert
+          v-if="addStepErr"
+          text
+          color="red"
+          type="error"
+          dense
+          >
           {{ addStepErr }}
         </v-alert>
-      </v-col>
     </v-card>
   </div>
 </template>

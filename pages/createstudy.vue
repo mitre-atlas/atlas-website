@@ -1,121 +1,203 @@
 <template>
   <div class="mx-8">
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <navigation-dialog
+        @close="closeDialog"
+        @leave-page="leavePage"
+      />
+    </v-dialog>
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
-    <v-row style="align-items: center;">
-      <h3 class="font-weight-medium mb-10" style="margin-left: 1%;">Upload Existing Case Study (Optional)</h3>
-      <v-col sm="5">
-        <v-file-input
-          v-model="chosenFile"
-          class="mb-10"
-          :error="uploadError"
-          :error-messages="uploadErrorMessage"
-          small-chips
-          accept=".yaml,.yml"
-          label="Upload .YAML file here"
-          @change="readJSON"
-        >
-          <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
-        </v-file-input>
-      </v-col>
-    </v-row>
+    <v-card-actions>
+        <instructions-dialog />
+    </v-card-actions>
+
+    <v-card flat>
+      <v-card-text>
+        <v-row align="center" justify="start">
+          <v-col cols="12" md="4">
+            <div>Upload an existing case study (optional)</div>
+          </v-col>
+          <v-col cols="12" md="8" sm="12">
+            <v-file-input
+              v-model="chosenFile"
+              :error="uploadError"
+              :error-messages="uploadErrorMessage"
+              small-chips
+              accept=".yaml,.yml"
+              label="Case study .yaml file"
+              @change="readJSON"
+              hide-details
+            >
+              <template v-slot:selection><v-chip small>{{ initialFileName }}</v-chip></template>
+            </v-file-input>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <h3 class="font-weight-medium">1. Case Study Details</h3>
-      <div class="ml-6">Fill out each field with case study data.</div>
-      <v-container  class="mb-10">
-        <v-row>
-          <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
-        </v-row>
+      <v-card flat>
+        <v-card-title>Details</v-card-title>
+        <v-card-subtitle>All fields required.</v-card-subtitle>
 
-        <v-row>
-          <v-col sm="5" class="pl-0">
-            <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
-          </v-col>
+        <v-card-text>
+        <v-text-field
+          v-model="titleStudy"
+          :rules="rules.title"
+          label="Title"
+          hint="Name for this case study"
+          prepend-inner-icon="mdi-format-title"
+          outlined
+          required
+          @input="updateValue(titleStudy)"
+        />
 
-          <v-spacer />
+        <v-text-field
+          v-model="meta.email"
+          :rules="emailRules"
+          :validate-on-blur="true"
+          label="Contact email(s)"
+          hint="Emails are for correspondence about this case study submission and will not be published"
+          prepend-inner-icon="mdi-email"
+          type="email"
+          outlined
+          required
+          @input="updateValue(meta.email)"
+        />
 
-          <v-col sm="7">
-            <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by" required @input="updateValue(reported)" />
-          </v-col>
-        </v-row>
+        <v-text-field
+          v-model="reported"
+          :rules="rules.reportedBy"
+          label="Reported by"
+          hint="Name(s) of the original authors of the study"
+          prepend-inner-icon="mdi-account"
+          outlined
+          required
+          @input="updateValue(reported)"
+        />
 
-        <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
+        <incident-date-picker
+          :startDate="date"
+          :startDateGranularity="dateGranularity"
+          :initialRules="rules.incidentDate"
+          v-on:selectedDate="setIncidentDate"
+        />
 
-        <v-row>
-          <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
-        </v-row>
-      </v-container>
+        <v-textarea
+          v-model="summary"
+          :rules="rules.summary"
+          label="Summary"
+          hint="Description of the incident"
+          prepend-inner-icon="mdi-text"
+          outlined
+          required
+          auto-grow
+          @input="updateValue(summary)"
+        />
+        </v-card-text>
 
-      <h3 class="font-weight-medium">2. Procedure</h3>
-      <div class="ml-6">Add procedure steps to your case study, each containing a tactic, technique, and description.</div>
-      <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
-      <add-procedure-step
-        class="mb-16 mx-8"
-        v-if="addingStep"
-        ref="addProcStepRef"
-        :select-tactic="selectTactic"
-        :select-technique="selectTechnique"
-        :description="description"
-        :addingStep="addingStep"
-        @clicked="addProcedureStep"
-        @addingBoolUpdate="addingStep = $event"
-      />
-      <div v-else>
-        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingStep = true">Add New Step</v-btn>
-      </div>
-
-      <h3 class="font-weight-medium">3. References</h3>
-      <div class="ml-6">Optionally add references to your case study, each containing a source and/or url.</div>
-      <div v-if="references.length" class="mx-8">
-        <v-list flat>
-          <v-list-item-group>
-          <div v-for="(value, key) in references" :key="key">
-            <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
-          </div>
-          </v-list-item-group>
-        </v-list>
-
-      </div>
-      <add-source
-        class="mx-8"
-        v-if="addingSource"
-        ref="addSourceRef"
-        :source-description="sourceDescription"
-        :url="url"
-        @clicked="addSource"
-        @addingBoolUpdate="addingSource = $event"
-      />
-      <div v-else>
-        <v-btn class="ma-2 mb-10" outlined color="blue" @click="addingSource = true">Add New Source</v-btn>
-      </div>
-
-      <v-tooltip right color="light-blue lighten-4">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            class="my-5"
-            outlined
-            :disabled="!valid"
-            v-bind="attrs"
-            x-large
-            v-on="on"
-            @click="submitStudy"
-          >
-            Download Case Study
+      <v-card-title>Procedure</v-card-title>
+      <v-card-subtitle>Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.</v-card-subtitle>
+      <v-card-text>
+        <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+        <add-procedure-step
+          v-if="addingStep"
+          ref="addProcStepRef"
+          :select-tactic="selectTactic"
+          :select-technique="selectTechnique"
+          :description="description"
+          :addingStep="addingStep"
+          @clicked="addProcedureStep"
+          @addingBoolUpdate="addingStep = $event"
+        />
+        <div v-else>
+          <v-btn class="ma-2 mb-10" @click="addingStep = true">
+            <v-icon left>
+              mdi-plus
+            </v-icon>
+            Add New Step
           </v-btn>
-        </template>
-        <span :style="{ color: 'black' }">Email your downloaded yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
-      </v-tooltip>
-      <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
-      <v-col sm="6">
-        <v-alert v-if="errorMsg" color="red" outlined type="error" dense>
+        </div>
+      </v-card-text>
+
+      <v-card-title>References</v-card-title>
+      <v-card-subtitle>Optionally list sources for this case study.</v-card-subtitle>
+      <v-card-text>
+        <div v-if="references.length" class="mx-8">
+          <v-list flat>
+            <v-list-item-group>
+            <div v-for="(value, key) in references" :key="key">
+              <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
+            </div>
+            </v-list-item-group>
+          </v-list>
+
+        </div>
+        <add-source
+          v-if="addingSource"
+          ref="addSourceRef"
+          :source-description="sourceDescription"
+          :url="url"
+          @clicked="addSource"
+          @addingBoolUpdate="addingSource = $event"
+        />
+        <div v-else>
+          <v-btn class="ma-2 mb-10" @click="addingSource = true">
+            <v-icon left>
+              mdi-plus
+            </v-icon>
+            Add New Source
+          </v-btn>
+        </div>
+      </v-card-text>
+
+      <v-card-text>
+        <v-tooltip top color="light-blue lighten-4">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="primary"
+              :disabled="!valid"
+              v-bind="attrs"
+              v-on="on"
+              @click="submitStudy"
+            >
+              <v-icon left>
+              mdi-download
+              </v-icon>
+              Download Case Study
+            </v-btn>
+          </template>
+          <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
+        </v-tooltip>
+
+        <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+
+        <v-alert
+          v-if="errorMsg"
+          text
+          color="red"
+          type="error"
+          dense
+          >
           {{ errorMsg }}
         </v-alert>
-        <v-alert v-if="submissionMsg" color="green" outlined type="success" dense>
+        <v-alert
+          v-if="submissionMsg"
+          text
+          color="green"
+          type="success"
+          dense
+          >
           {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
         </v-alert>
-      </v-col>
+
+        </v-card-text>
+      </v-card>
     </v-form>
   </div>
 </template>
@@ -146,8 +228,7 @@ export default {
       meta: { email: '' },
       study: null,
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
       ],
       summary: '',
       sourceDescription: '',
@@ -156,20 +237,37 @@ export default {
       procedure: [],
       addingStep: true,
       references: [],
-      addingSource: true,
+      addingSource: false,
       errorMsg: '',
       uploadError: false,
       uploadErrorMessage: [],
       submissionMsg: '',
       downloadedYaml: false,
       builder: true,
-      contactEmail: 'atlas@mitre.org'
+      contactEmail: 'atlas@mitre.org',
+      dialog: false,
+      to: null,
+      isEditing: false,
+
+      rules: {}, // Initial empty obj bound to field rules prop - must start empty
+      requiredRule: v => !!v || 'Required',
+      requiredFieldRuleKeys: [
+        'title',
+        'reportedBy',
+        'summary',
+        'incidentDate'
+      ]
     }
+  },
+  beforeMount () {
+    window.addEventListener('beforeunload', this.handleBeforeUnload)
+    window.addEventListener('popstate', this.handleBackButton)
   },
   computed: {
     ...mapGetters(['getCaseStudyBuilderData'])
   },
-  // mounted () { //Restores case study data from store
+  // mounted () {
+  // Restores case study data from store
   //   // this.$nextTick(function () {
   //   //   // todo: fix getter, shouldn't have to do this?
   //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
@@ -181,6 +279,19 @@ export default {
   //   //   }
   //   // })
   // },
+  beforeRouteLeave (to, from, next) {
+    if (this.to && this.dialog === false && this.isEditing) {
+      next()
+    } else {
+      next(false)
+      this.to = to
+      this.dialog = true
+    }
+  },
+  beforeDestroy () {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
+    window.removeEventListener('popstate', this.handleBackButton)
+  },
   methods: {
     ...mapActions(['submitCaseStudy']),
     updateValue (inputVal) {
@@ -345,6 +456,12 @@ export default {
       this.addingSource = false
     },
     submitStudy () {
+      this.requiredFieldRuleKeys.forEach((key) => {
+        this.rules[key] = [this.requiredRule]
+      })
+      // Email already has a rule in place, add required to the front
+      this.emailRules.unshift(this.requiredRule)
+
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
 
@@ -386,6 +503,26 @@ export default {
       } else if (!this.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
+    },
+    closeDialog () {
+      this.dialog = false
+      this.isEditing = true
+      this.to = null
+    },
+    leavePage () {
+      this.dialog = false
+      this.isEditing = true
+      this.$router.push(this.to)
+    },
+    handleBackButton () {
+      this.dialog = true
+    },
+    handleBeforeUnload (event) {
+      if (!this.isEditing) {
+        return
+      }
+      event.preventDefault()
+      event.returnValue = ''
     }
   }
 }

@@ -12,18 +12,25 @@
 
     <page-section-title>Contribute Case Studies</page-section-title>
 
-    <p>We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers. Before submitting a case-study, consider that the attack:</p>
+    <p>We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers.</p>
 
-    <ol>
-      <li>Exploits one or more vulnerabilities that compromises the confidentiality, integrity or availability of ML system.</li>
-      <li>The attack was against a production, commercial ML system. This can be on MLaaS like Amazon, Microsoft Azure, Google Cloud AI, IBM Watson, or ML systems embedded in client/edge.</li>
-      <li>You have permission to share the information/published this research. Please follow the proper channels before reporting a new attack and make sure you are practicing responsible disclosure.</li>
-    </ol>
+    <p>
+      Use the <NuxtLink to="/studies/create">Case Study Builder</NuxtLink> to craft a submission file with details and technique mappings,
+      then email the file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+      The {{ $config.name.short }} team will review the submission and follow up with feedback.
+    </p>
 
-    <br>
+    <p>
+      <v-card-actions>
+         <v-btn nuxt to="/studies/create">Go to the case study builder</v-btn>
+      </v-card-actions>
+    </p>
 
-    Please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> with summary of the incident and {{ $config.name.short }} mapping.
-    See an example of the format below.
+    <!--
+    <div class="center">
+      <video controls src="/atlas_case_study_demo.mp4" />
+    </div>
+    -->
 
     <page-section-title>Case study example</page-section-title>
     <case-study-example />
@@ -78,3 +85,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+video{
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 550px;
+}
+div.center {
+  text-align: center;
+}
+</style>
