@@ -131,6 +131,16 @@
       </v-card-text>
 
       <v-card-text>
+        <v-textarea
+          v-model="message"
+          :rules="rules.title"
+          label="File Name"
+          hint="Input or change case study file name"
+          prepend-inner-icon="mdi-text"
+          outlined
+          required
+          auto-grow
+        />
         <v-tooltip top color="light-blue lighten-4">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
