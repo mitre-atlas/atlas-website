@@ -139,6 +139,7 @@
           >
             <v-text-field
               v-model="fileName"
+              :rules="rules.fileName"
               label="Case Study File Name"
               hint="Input or change case study file name"
               prepend-inner-icon="mdi-file-download"
@@ -150,7 +151,7 @@
             />
           </v-col>
           <v-col>
-            <v-tooltip top color="light-blue lighten-4">
+            <v-tooltip bottom color="light-blue lighten-4">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="primary"
@@ -168,7 +169,9 @@
               <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
             </v-tooltip>
           </v-col>
-          <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+          <v-col>
+            <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+          </v-col>
 
           <v-alert
             v-if="errorMsg"
@@ -232,6 +235,7 @@ export default {
       addingSource: false,
       errorMsg: '',
       submissionMsg: '',
+      fileName: '',
       downloadedYaml: false,
       builder: true,
       contactEmail: 'atlas@mitre.org',
@@ -245,7 +249,8 @@ export default {
         'title',
         'reportedBy',
         'summary',
-        'incidentDate'
+        'incidentDate',
+        'fileName'
       ]
     }
   },
@@ -345,7 +350,7 @@ export default {
         const study = {
           meta: this.meta,
           study: {
-            name: this.titleStudy,
+            name: this.fileName,
             summary: this.summary,
             'incident-date': this.date,
             'incident-date-granularity': this.dateGranularity,
