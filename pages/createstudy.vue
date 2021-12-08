@@ -137,61 +137,59 @@
             sm="3"
             md="6"
           >
+            <div>
             <v-text-field
               v-model="fileName"
               :rules="rules.fileName"
               label="Case Study File Name"
-              hint="Input or change case study file name"
+              hint="Name or change case study file name to be downloaded"
               prepend-inner-icon="mdi-file-download"
               outlined
               clearable
-              counter="25"
               required
               auto-grow
             />
-          </v-col>
-          <v-col>
-            <v-tooltip bottom color="light-blue lighten-4">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  :disabled="!valid"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="submitStudy"
+              <v-alert
+                v-if="errorMsg"
+                text
+                color="red"
+                type="error"
+                dense
                 >
-                  <v-icon left>
-                  mdi-download
-                  </v-icon>
-                  Download Case Study
-                </v-btn>
-              </template>
-              <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
-            </v-tooltip>
-          </v-col>
-          <v-col>
-            <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
-          </v-col>
-
-          <v-alert
-            v-if="errorMsg"
-            text
-            color="red"
-            type="error"
-            dense
-            >
-            {{ errorMsg }}
-          </v-alert>
-          <v-alert
-            v-if="submissionMsg"
-            text
-            color="green"
-            type="success"
-            dense
-            >
-            {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
-          </v-alert>
-        </v-row>
+                {{ errorMsg }}
+              </v-alert>
+            </div>
+            <div style="float: right;">
+              <v-tooltip>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    :disabled="!valid"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="submitStudy"
+                  >
+                    <v-icon left>
+                    mdi-download
+                    </v-icon>
+                    Download Case Study
+                  </v-btn>
+                </template>
+                <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
+              </v-tooltip>
+              <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+              <v-alert
+                v-if="submissionMsg"
+                text
+                color="green"
+                type="success"
+                dense
+                >
+                {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
+              </v-alert>
+            </div>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-form>
@@ -299,6 +297,9 @@ export default {
       }
       if (this.references !== []) {
         this.addingSource = false
+      }
+      if (this.titleStudy) {
+        this.fileName = this.titleStudy
       }
     },
     setIncidentDate (date, granularity) {
