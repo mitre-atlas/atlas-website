@@ -13,7 +13,7 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-        <upload-file-dialog @loaded-data="setDataFromFile" />
+        <upload-file-dialog @loaded-data="setDataFromFile" @loaded-filename="setFileName"/>
         <v-spacer />
         <instructions-dialog />
     </v-card-actions>
@@ -287,6 +287,9 @@ export default {
   },
   methods: {
     ...mapActions(['submitCaseStudy']),
+    setFileName (loadedFileName) {
+      this.fileName = loadedFileName
+    },
     setDataFromFile (data) {
       // Directly set proprties on this instance
       Object.assign(this, data)
@@ -297,9 +300,6 @@ export default {
       }
       if (this.references !== []) {
         this.addingSource = false
-      }
-      if (this.titleStudy) {
-        this.fileName = this.titleStudy
       }
     },
     setIncidentDate (date, granularity) {
@@ -351,7 +351,7 @@ export default {
         const study = {
           meta: this.meta,
           study: {
-            name: this.fileName,
+            name: this.titleStudy,
             summary: this.summary,
             'incident-date': this.date,
             'incident-date-granularity': this.dateGranularity,
@@ -362,7 +362,7 @@ export default {
         }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
-        downloadStudyFile(study)
+        downloadStudyFile(study, this.fileName)
         this.downloadedYaml = true
         this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
