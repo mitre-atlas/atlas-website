@@ -186,7 +186,7 @@ export const actions = {
   // TODO Caching, also needs return or await
   async nuxtServerInit ({ commit }, context) {
     // Retrieve the threat matrix YAML data and populate store upon start
-    const getAtlasData = await fs.readFile('static/data/ATLAS-2.0.yaml', 'utf-8')
+    const getAtlasData = await fs.readFile('static/data/ATLAS.yaml', 'utf-8')
 
     // Get all contents, then parse and commit payload
     const promise = Promise.resolve(getAtlasData)
