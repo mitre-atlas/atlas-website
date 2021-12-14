@@ -33,6 +33,54 @@ export default {
     makePPT () {
       const ppt = new Pptxgen()
       ppt.layout = 'LAYOUT_16x9'
+      // Slide layout with just title
+      ppt.defineSlideMaster({
+        title: 'Content',
+        background: { color: 'FFFFFF' },
+        objects: [
+          {
+            placeholder: {
+              options: {
+                name: 'title',
+                type: 'title',
+                x: 0.5,
+                y: 0.5,
+                w: '100%',
+                align: 'left',
+                fontFace: 'Arial',
+                fontSize: 24,
+                color: '0D2F4F',
+                isTextBox: true
+              },
+              text: 'Title'
+            }
+          },
+          {
+            image: {
+              x: '5%',
+              y: '93%',
+              w: 1.2,
+              h: 0.18,
+              data: MITRE_ATLAS_TM_LOGO()
+            }
+          },
+
+          {
+            text: {
+              text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+              options: {
+                y: '95%',
+                w: '100%',
+                align: 'center',
+                fontFace: 'Arial',
+                fontSize: 8,
+                color: '0D2F4F'
+              }
+            }
+          }
+        ],
+        slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+      })
 
       if (!this.isBuilder) {
         const studyTemp = { study: this.studyYaml }
@@ -73,6 +121,7 @@ export default {
                 valign: 'middle',
                 fontFace: 'Arial',
                 fontSize: 36,
+                color: '0D2F4F',
                 isTextBox: true
               },
               text: 'Title'
@@ -87,6 +136,7 @@ export default {
                 align: 'center',
                 fontFace: 'Arial',
                 fontSize: 14,
+                color: '0D2F4F',
                 isTextBox: true
               }
             }
@@ -102,6 +152,7 @@ export default {
                 align: 'center',
                 fontFace: 'Arial',
                 fontSize: 14,
+                color: '0D2F4F',
                 isTextBox: true
               },
               text: 'Incident Date'
@@ -117,6 +168,7 @@ export default {
                 align: 'center',
                 fontFace: 'Arial',
                 fontSize: 14,
+                color: '0D2F4F',
                 isTextBox: true
               },
               text: 'Reported by'
@@ -152,32 +204,10 @@ export default {
         .addText(yaml.study.name, { placeholder: 'title' })
         .addText(yaml.study['reported-by'], { placeholder: 'reportedBy' })
         .addText(formattedDate, { placeholder: 'incidentDate' })
-      // const slide = ppt.addSlide({ masterName: 'MASTER_SLIDE' })
-      // slide.addText([
-      //   { text: yaml.study.name }
-      // ],
-      // {
-      //   x: 0,
-      //   y: '25%',
-      //   w: '100%',
-      //   h: 2.5,
-      //   valign: 'middle',
-      //   align: 'center',
-      //   color: '0D2F4F',
-      //   fill: '87DEFF',
-      //   fontSize: 48
-      // })
-      // slide.addImage({
-      //   data: MITRE_ATLAS_TM_LOGO(),
-      //   x: 6.75,
-      //   y: 5,
-      //   h: 0.4,
-      //   w: 3
-      // })
     },
     detailSlide (ppt, yaml) {
       ppt.defineSlideMaster({
-        title: 'Content',
+        title: 'Summary',
         background: { color: 'FFFFFF' },
         objects: [
           {
@@ -191,6 +221,7 @@ export default {
                 align: 'left',
                 fontFace: 'Arial',
                 fontSize: 24,
+                color: '0D2F4F',
                 isTextBox: true
               },
               text: 'Title'
@@ -208,6 +239,7 @@ export default {
                 align: 'left',
                 fontFace: 'Arial',
                 fontSize: 16,
+                color: '0D2F4F',
                 isTextBox: true
               },
               text: 'Content'
@@ -236,66 +268,12 @@ export default {
             }
           }
         ],
-        slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8 }
+        slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
 
-      ppt.addSlide({ masterName: 'Content' })
+      ppt.addSlide({ masterName: 'Summary' })
         .addText('Summary', { placeholder: 'title' })
         .addText(yaml.study.summary, { placeholder: 'content' })
-      // const slide = ppt.addSlide()
-      // slide.addText([{ text: 'Case Study Details' }], {
-      //   x: 0,
-      //   y: 0,
-      //   w: '100%',
-      //   h: 1,
-      //   color: 'FFFFFF',
-      //   fill: '0D2F4F',
-      //   fontSize: 30
-      // })
-      // slide.addText(
-      //   [
-      //     {
-      //       text: 'Summary:',
-      //       options: { color: '0D2F4F', breakLine: true, fontSize: 24 }
-      //     },
-      //     {
-      //       text: yaml.study.summary,
-      //       options: {
-      //         color: '0D2F4F',
-      //         breakLine: true,
-      //         autoFit: true,
-      //         indentLevel: 1
-      //       }
-      //     }
-      //   ],
-      //   {
-      //     y: 2.5
-      //   }
-      // )
-      // slide.addText(
-      //   [
-      //     { text: 'Reported By: ', options: { color: '0D2F4F', fontSize: 18 } },
-      //     {
-      //       text: yaml.study['reported-by'],
-      //       options: { color: '0D2F4F', fontSize: 18 }
-      //     }
-      //   ],
-      //   {
-      //     y: '80%'
-      //   }
-      // )
-      // slide.addText(
-      //   [
-      //     { text: 'Date: ', options: { color: '0D2F4F', fontSize: 18 } },
-      //     {
-      //       text: yaml.study['incident-date'].toISOString().substr(0, 10),
-      //       options: { color: '0D2F4F', fontSize: 18 }
-      //     }
-      //   ],
-      //   {
-      //     y: '90%'
-      //   }
-      // )
     },
     getUrlFromInfoObject (infoObject) {
       const baseUrl = window.location.origin
@@ -310,8 +288,8 @@ export default {
           {
             text: 'Tactic',
             options: {
-              fill: '87DEFF',
-              color: '0D2F4F',
+              fill: '005B94',
+              color: 'ffffff',
               align: 'center',
               bold: true
             }
@@ -319,8 +297,8 @@ export default {
           {
             text: 'Technique',
             options: {
-              fill: '87DEFF',
-              color: '0D2F4F',
+              fill: '005B94',
+              color: 'ffffff',
               align: 'center',
               bold: true
             }
@@ -328,8 +306,8 @@ export default {
           {
             text: 'Description',
             options: {
-              fill: '87DEFF',
-              color: '0D2F4F',
+              fill: '005B94',
+              color: 'ffffff',
               align: 'center',
               bold: true
             }
@@ -373,16 +351,9 @@ export default {
         ]
         rows.push(row)
       }
-      const slide = ppt.addSlide()
-      slide.addText([{ text: 'Procedure' }], {
-        x: 0,
-        y: 0,
-        w: '100%',
-        h: 1,
-        color: 'FFFFFF',
-        fill: '0D2F4F',
-        fontSize: 30
-      })
+      const slide = ppt.addSlide({ masterName: 'Content' })
+        .addText('Procedure', { placeholder: 'title' })
+
       slide.addTable(rows, {
         y: 1.5,
         colW: [2, 2, 5],
@@ -396,48 +367,40 @@ export default {
       })
     },
     referenceSlide (ppt, yaml) {
-      let i = 0
-      while (i < yaml.study.references.length) {
-        const lim =
-          i + 5 > yaml.study.references.length
-            ? yaml.study.references.length
-            : i + 5
-        const slide = ppt.addSlide()
-        slide.addText([{ text: 'References' }], {
-          x: 0,
-          y: 0,
-          w: '100%',
-          h: 1,
-          color: 'FFFFFF',
-          fill: '0D2F4F',
-          fontSize: 30
-        })
-        let y = 30
-        while (i < lim) {
-          if (yaml.study.references[i].sourceDescription) {
-            slide.addText(
-              [{ text: yaml.study.references[i].sourceDescription }],
-              { y: '' + y + '%', color: '0D2F4F', fontSize: 22 }
-            )
-            if (yaml.study.references[i].url) {
-              y += 5
-            }
-          }
-          if (yaml.study.references[i].url) {
-            slide.addText(
-              [
-                {
-                  text: yaml.study.references[i].url,
-                  options: { hyperlink: { url: yaml.study.references[i].url } }
-                }
-              ],
-              { y: '' + y + '%', color: '0D2F4F', fontSize: 22 }
-            )
-          }
-          y += 15
-          i++
+      const slide = ppt.addSlide({ masterName: 'Content' })
+        .addText('References', { placeholder: 'title' })
+
+      const texts = []
+
+      yaml.study.references.forEach((ref) => {
+        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null
+        const hasUrl = 'url' in ref && ref.url !== null
+
+        if (hasText && hasUrl) {
+          texts.push({
+            text: JSON.parse(JSON.stringify(ref.sourceDescription)),
+            options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+          })
+
+        } else if (hasText) {
+          texts.push({
+            text: JSON.parse(JSON.stringify(ref.sourceDescription)),
+            options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+          })
+
+        } else if (hasUrl) {
+          texts.push({
+            text: JSON.parse(JSON.stringify(ref.url)),
+            options: { hyperlink: { url: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+          })
         }
-      }
+
+        // Add to slide
+        slide.addText(
+          texts,
+          { x: 1, y: 1.5 }
+        )
+      })
     }
   }
 }
