@@ -358,16 +358,29 @@ export default {
         ]
         rows.push(row)
       }
-      const slide = ppt.addSlide({ masterName: 'Content' })
-        .addText('Procedure', { placeholder: 'title' })
+      // const slide = ppt.addSlide({ masterName: 'Content' })
+      //   .addText('Procedure', { placeholder: 'title' })
+
+      const slide = ppt.addSlide()
+      slide.addText('Procedure', {
+        x: 0.5,
+        y: 0.5,
+        w: '100%',
+        align: 'left',
+        fontFace: 'Arial',
+        fontSize: 24,
+        color: '0D2F4F',
+        isTextBox: true
+      })
 
       slide.addTable(rows, {
-        y: 1.5,
+        y: 1,
         colW: [2, 2, 5],
         w: 9,
         color: '0D2F4F',
         autoPage: true,
         autoPageRepeatHeader: true,
+        newSlideStartY: 1,
         // verbose: true,
         border: { color: '0D2F4F' },
         margin: 10
