@@ -189,7 +189,8 @@ export default {
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
       } else if (
-        yaml.study.dateGranularity == null ||
+        // TODO some case studies have incident-date-granularity, remove this undefined check once fixed
+        yaml.study.dateGranularity === undefined ||
         yaml.study.dateGranularity === 'DATE'
       ) {
         // If dateGranularity is DATE, or there is no date granularity
@@ -199,10 +200,16 @@ export default {
         )
       }
 
+      // Workaround for erroneous list item, TBD removal
+      let reportedBy = yaml.study['reported-by']
+      if (Array.isArray(reportedBy)) {
+        reportedBy = reportedBy[0]
+      }
+
       ppt
         .addSlide({ masterName: 'Title' })
         .addText(yaml.study.name, { placeholder: 'title' })
-        .addText(yaml.study['reported-by'], { placeholder: 'reportedBy' })
+        .addText(reportedBy, { placeholder: 'reportedBy' })
         .addText(formattedDate, { placeholder: 'incidentDate' })
     },
     detailSlide (ppt, yaml) {
@@ -381,13 +388,11 @@ export default {
             text: JSON.parse(JSON.stringify(ref.sourceDescription)),
             options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
           })
-
         } else if (hasText) {
           texts.push({
             text: JSON.parse(JSON.stringify(ref.sourceDescription)),
             options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
           })
-
         } else if (hasUrl) {
           texts.push({
             text: JSON.parse(JSON.stringify(ref.url)),
