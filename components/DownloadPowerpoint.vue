@@ -146,7 +146,7 @@ export default {
             placeholder: {
               options: {
                 name: 'incidentDate',
-                type: 'incidentDate',
+                type: 'body',
                 y: '82%',
                 w: '100%',
                 align: 'center',
@@ -162,7 +162,7 @@ export default {
             placeholder: {
               options: {
                 name: 'reportedBy',
-                type: 'reportedBy',
+                type: 'body',
                 y: '88%',
                 w: '100%',
                 align: 'center',
@@ -225,6 +225,7 @@ export default {
                 x: 0.5,
                 y: 0.5,
                 w: '100%',
+                h: 1,
                 align: 'left',
                 fontFace: 'Arial',
                 fontSize: 24,
@@ -238,9 +239,9 @@ export default {
             placeholder: {
               options: {
                 name: 'content',
-                type: 'content',
+                type: 'body',
                 x: 0.5,
-                y: 1.5,
+                y: 1,
                 w: 9,
                 h: 6,
                 align: 'left',
@@ -366,7 +367,9 @@ export default {
         x: 0.5,
         y: 0.5,
         w: '100%',
+        h: 1,
         align: 'left',
+        valign: 'top',
         fontFace: 'Arial',
         fontSize: 24,
         color: '0D2F4F',
@@ -374,13 +377,15 @@ export default {
       })
 
       slide.addTable(rows, {
-        y: 1,
+        y: 1.5,
         colW: [2, 2, 5],
         w: 9,
         color: '0D2F4F',
         autoPage: true,
         autoPageRepeatHeader: true,
-        newSlideStartY: 1,
+        autoPageLineWeight: 0.4,
+        autoPageCharWeight: 0.2,
+        // newSlideStartY: 0.5,
         // verbose: true,
         border: { color: '0D2F4F' },
         margin: 10
