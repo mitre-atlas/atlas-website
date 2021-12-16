@@ -24,27 +24,51 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <h3 class="font-weight-medium">1. Case Study Details</h3>
       <div class="ml-6">Fill out each field with case study data.</div>
-      <v-container  class="mb-10">
+      <v-container class="mb-10">
         <v-row>
-          <v-text-field v-model="titleStudy" :rules="[v => !!v || 'Title is required']" label="Title" required @input="updateValue(titleStudy)" />
+          <v-text-field
+            id="titleInput"
+            v-model="titleStudy"
+            :rules="[v => !!v || 'Title is required']"
+            label="Title"
+            required
+            @input="updateValue(titleStudy)" />
         </v-row>
 
         <v-row>
           <v-col sm="5" class="pl-0">
-            <v-text-field v-model="meta.email" :rules="emailRules" label="E-mail" required @input="updateValue(meta.email)" />
+            <v-text-field
+              id="emailInput"
+              v-model="meta.email"
+              :rules="emailRules"
+              label="E-mail"
+              required
+              @input="updateValue(meta.email)" />
           </v-col>
 
           <v-spacer />
 
           <v-col sm="7">
-            <v-text-field v-model="reported" :rules="[v => !!v || 'Reporter is required']" label="Reported by" required @input="updateValue(reported)" />
+            <v-text-field
+              id="reporterInput"
+              v-model="reported"
+              :rules="[v => !!v || 'Reporter is required']"
+              label="Reported by"
+              required
+              @input="updateValue(reported)" />
           </v-col>
         </v-row>
 
         <incident-date-picker :startDate="date" :startDateGranularity="dateGranularity" v-on:selectedDate="setIncidentDate"/>
 
         <v-row>
-          <v-textarea v-model="summary" :rules="[v => !!v || 'Summary is required']" label="Summary" required @input="updateValue(summary)" />
+          <v-textarea
+            id="summaryInput"
+            v-model="summary"
+            :rules="[v => !!v || 'Summary is required']"
+            label="Summary"
+            required
+            @input="updateValue(summary)" />
         </v-row>
       </v-container>
 
@@ -94,6 +118,7 @@
       <v-tooltip right color="light-blue lighten-4">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            id="download_case_study_button"
             class="my-5"
             outlined
             :disabled="!valid"

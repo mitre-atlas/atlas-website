@@ -13,6 +13,7 @@
       <v-autocomplete
         v-model="selectTacticData2"
         :items="getTactics"
+        id="tactic_selection"
         label="Tactic"
         prepend-icon="mdi-magnify"
         item-text="name"
@@ -43,6 +44,7 @@
       <v-autocomplete
         v-model="selectTechniqueData2"
         :items="mapTechAndSub"
+        id="technique_selection"
         label="Technique"
         prepend-icon="mdi-magnify"
         item-text="name"
@@ -71,7 +73,12 @@
     </v-card-actions>
 
     <v-card-actions class="px-md-4 mx-lg-auto">
-      <v-textarea v-model="descriptionData2" :disabled="selectTacticData2 === null" label="Description" required @input="descriptionUpdate(descriptionData2)" />
+      <v-textarea
+        v-model="descriptionData2"
+        :disabled="selectTacticData2 === null"
+        id="procedure_description"
+        label="Description"
+        required @input="descriptionUpdate(descriptionData2)" />
     </v-card-actions>
   </div>
 </template>

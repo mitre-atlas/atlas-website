@@ -11,31 +11,31 @@ test.describe('Case study builder', () => {
 
   test('minimal successful form fill', async ({ page }) => {
     // Details
-    await page.fill('text=Title', 'Playwright Test')
-    await page.fill('text=E-mail', 'test@mitre.org')
-    await page.fill('text=Reported by', 'Roboto')
+    await page.fill('id=titleInput', 'Playwright Test')
+    await page.fill('id=emailInput', 'test@mitre.org')
+    await page.fill('id=reporterInput', 'Roboto')
     // Incident date
     await page.click('[readonly="readonly"]')
     await page.click('li >> text=2021')
     await page.click('button >> text=OK')
     // Summary
-    await page.fill('text=Summary', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
+    await page.fill('id=summaryInput', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
 
     // Procedure
 
     // Select tactic
-    await page.click('[autocomplete=off]')
+    await page.click('id=tactic_selection')
     await page.click('div :text("Reconnaissance")')
     // Select technique
-    await page.click('[autocomplete=off]:below(:text("Technique"))')
+    await page.click('id=technique_selection')
     await page.click('div :text("Search for Victim\'s Publicly Available Research Materials")')
     // Description
-    await page.fill('textarea:below(:text("Description"))', 'One')
+    await page.fill('id=procedure_description', 'One')
     // Save
-    await page.click('button :text("Save"):below(:has-text("Add Procedure Step"))')
+    await page.click('id=save_procedure_button')
 
     // Click download button
-    await page.click('button >> text=Download Case Study')
+    await page.click('id=download_case_study_button')
 
     await page.waitForTimeout(TIMEOUT_MS);
   })
