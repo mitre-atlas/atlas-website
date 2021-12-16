@@ -272,7 +272,8 @@ export default {
                 w: '100%',
                 align: 'center',
                 fontFace: 'Arial',
-                fontSize: 8
+                fontSize: 8,
+                color: '0D2F4F'
               }
             }
           }
@@ -289,7 +290,7 @@ export default {
       return `${baseUrl}/${infoObject['object-type']}s/${infoObject.id}`
     },
     linkText (text, url) {
-      return { text, options: { hyperlink: { url } } }
+      return { text, options: { hyperlink: { url }, fontFace: 'Arial', fontSize: 10 } }
     },
     procedureSlide (ppt, yaml) {
       const rows = [
@@ -300,7 +301,8 @@ export default {
               fill: '005B94',
               color: 'ffffff',
               align: 'center',
-              bold: true
+              bold: true,
+              fontFace: 'Arial'
             }
           },
           {
@@ -309,7 +311,8 @@ export default {
               fill: '005B94',
               color: 'ffffff',
               align: 'center',
-              bold: true
+              bold: true,
+              fontFace: 'Arial'
             }
           },
           {
@@ -318,7 +321,8 @@ export default {
               fill: '005B94',
               color: 'ffffff',
               align: 'center',
-              bold: true
+              bold: true,
+              fontFace: 'Arial'
             }
           }
         ]
@@ -356,14 +360,44 @@ export default {
           // { text: tacticLabel },
           // { text: techniqueLabel },
           // { text: techniqueInfo.name + '\n' + techniqueId },
-          { text: description }
+          { text: description, options: { fontFace: 'Arial', fontSize: 10 } }
         ]
         rows.push(row)
       }
       // const slide = ppt.addSlide({ masterName: 'Content' })
       //   .addText('Procedure', { placeholder: 'title' })
 
-      const slide = ppt.addSlide()
+      ppt.defineSlideMaster({
+        title: 'Procedure',
+        background: { color: 'FFFFFF' },
+        objects: [
+          {
+            image: {
+              x: '5%',
+              y: '93%',
+              w: 1.2,
+              h: 0.18,
+              data: MITRE_ATLAS_TM_LOGO()
+            }
+          },
+
+          {
+            text: {
+              text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+              options: {
+                y: '95%',
+                w: '100%',
+                align: 'center',
+                fontFace: 'Arial',
+                fontSize: 8,
+                color: '0D2F4F'
+              }
+            }
+          }
+        ],
+        slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+      })
+      const slide = ppt.addSlide({ masterName: 'Procedure' })
       slide.addText('Procedure', {
         x: 0.5,
         y: 0.5,
@@ -385,10 +419,10 @@ export default {
         autoPage: true,
         autoPageRepeatHeader: true,
         // autoPageLineWeight: 0.4,
-        // autoPageCharWeight: 0.2,
+        autoPageCharWeight: -0.1,
         // newSlideStartY: 0.5,
         // verbose: true,
-        border: { color: '0D2F4F' },
+        border: { color: 'D4D4D3' },
         margin: 10
       })
     },
