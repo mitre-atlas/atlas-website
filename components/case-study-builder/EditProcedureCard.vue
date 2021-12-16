@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="!editingData">
     <v-card-title>
-      {{ getTechniqueById(info.technique).name }}
+      {{ techniqueName }}
       <v-spacer />
       <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
@@ -14,9 +14,29 @@
       <v-btn color="blue" icon @click="editStep">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-btn color="red" icon @click="deleteStep">
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+       <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="red"
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+
+        <confirm-delete-dialog
+          :name="comboName"
+          v-on:cancel="dialog = false"
+          v-on:delete="deleteStep"
+        >
+          <div v-html="info.description" />
+        </confirm-delete-dialog>
+      </v-dialog>
     </v-card-actions>
   </v-card>
 
@@ -53,7 +73,8 @@ export default {
       editingData: this.editing,
       selectTacticData: this.info.tactic,
       selectTechniqueData: this.info.technique,
-      descriptionData: this.info.description
+      descriptionData: this.info.description,
+      dialog: false
     }
   },
   computed: {
@@ -76,6 +97,9 @@ export default {
         return '(Name not found for technique ' + this.info.technique + ')'
       }
       return technique.name
+    },
+    comboName () {
+      return `${this.techniqueName} - ${this.tacticName}`
     },
     tacticId () {
       const tactic = this.$store.getters.getTacticById(this.info.tactic)

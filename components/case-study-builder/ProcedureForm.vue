@@ -8,14 +8,17 @@
     :new-target-id="hoverTargetID"
     :parent-event="mouseEvent"/>
 
-    <v-card-actions class="px-md-4 mx-lg-auto">
+    <v-card-text class="px-md-4 mx-lg-auto">
 
+    <v-row>
+      <v-col cols="12" lg="6">
       <v-autocomplete
         v-model="selectTacticData2"
         :items="getTactics"
         id="tactic_selection"
         label="Tactic"
-        prepend-icon="mdi-magnify"
+        outlined
+        prepend-inner-icon="mdi-magnify"
         item-text="name"
         item-value="id"
         @input="tacticUpdate(selectTacticData2)"
@@ -39,14 +42,17 @@
       </template>
       </v-autocomplete>
 
-      <v-spacer />
+      </v-col>
+      <v-col cols="12" lg="6">
 
       <v-autocomplete
         v-model="selectTechniqueData2"
         :items="mapTechAndSub"
         id="technique_selection"
         label="Technique"
-        prepend-icon="mdi-magnify"
+        outlined
+        prepend-inner-icon="mdi-magnify"
+
         item-text="name"
         item-value="id"
         :disabled="selectTacticData2 === null"
@@ -70,16 +76,23 @@
           </div>
         </template>
       </v-autocomplete>
-    </v-card-actions>
 
-    <v-card-actions class="px-md-4 mx-lg-auto">
+      </v-col>
+    </v-row>
+
       <v-textarea
         v-model="descriptionData2"
         :disabled="selectTacticData2 === null"
         id="procedure_description"
         label="Description"
-        required @input="descriptionUpdate(descriptionData2)" />
-    </v-card-actions>
+        hint="Describe how this technique was used in the case study"
+        required
+        outlined
+        prepend-inner-icon="mdi-text"
+        auto-grow
+        @input="descriptionUpdate(descriptionData2)"
+      />
+       </v-card-text>
   </div>
 </template>
 
