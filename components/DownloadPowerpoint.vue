@@ -302,7 +302,8 @@ export default {
               color: 'ffffff',
               align: 'center',
               bold: true,
-              fontFace: 'Arial'
+              fontFace: 'Arial',
+              fontSize: 10
             }
           },
           {
@@ -312,7 +313,8 @@ export default {
               color: 'ffffff',
               align: 'center',
               bold: true,
-              fontFace: 'Arial'
+              fontFace: 'Arial',
+              fontSize: 10
             }
           },
           {
@@ -322,7 +324,8 @@ export default {
               color: 'ffffff',
               align: 'center',
               bold: true,
-              fontFace: 'Arial'
+              fontFace: 'Arial',
+              fontSize: 10
             }
           }
         ]
