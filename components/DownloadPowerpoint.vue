@@ -241,14 +241,15 @@ export default {
                 name: 'content',
                 type: 'body',
                 x: 0.5,
-                y: 1,
+                y: 1.2,
                 w: 9,
-                h: 6,
+                h: 4,
                 align: 'left',
                 fontFace: 'Arial',
-                fontSize: 16,
+                fontSize: 12,
                 color: '0D2F4F',
-                isTextBox: true
+                isTextBox: true,
+                lineSpacingMultiple: 1.15
               },
               text: 'Content'
             }
@@ -377,14 +378,14 @@ export default {
       })
 
       slide.addTable(rows, {
-        y: 1.5,
+        y: 1.2,
         colW: [2, 2, 5],
         w: 9,
         color: '0D2F4F',
         autoPage: true,
         autoPageRepeatHeader: true,
-        autoPageLineWeight: 0.4,
-        autoPageCharWeight: 0.2,
+        // autoPageLineWeight: 0.4,
+        // autoPageCharWeight: 0.2,
         // newSlideStartY: 0.5,
         // verbose: true,
         border: { color: '0D2F4F' },
@@ -404,24 +405,24 @@ export default {
         if (hasText && hasUrl) {
           texts.push({
             text: JSON.parse(JSON.stringify(ref.sourceDescription)),
-            options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+            options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
           })
         } else if (hasText) {
           texts.push({
             text: JSON.parse(JSON.stringify(ref.sourceDescription)),
-            options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+            options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
           })
         } else if (hasUrl) {
           texts.push({
             text: JSON.parse(JSON.stringify(ref.url)),
-            options: { hyperlink: { url: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 16, bullet: { type: 'number' }, breakLine: true }
+            options: { hyperlink: { url: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
           })
         }
 
         // Add to slide
         slide.addText(
           texts,
-          { x: 1, y: 1.5 }
+          { x: 0.5, y: 1.2, w: 9, h: 4, valign: 'top' }
         )
       })
     }
