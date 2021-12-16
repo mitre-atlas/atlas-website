@@ -296,7 +296,7 @@ export default {
       const rows = [
         [
           {
-            text: 'Tactic',
+            text: '#',
             options: {
               fill: '005B94',
               color: 'ffffff',
@@ -331,11 +331,11 @@ export default {
         ]
       ]
       for (let i = 0; i < yaml.study.procedure.length; i++) {
-        const tacticId = yaml.study.procedure[i].tactic
+        // const tacticId = yaml.study.procedure[i].tactic
         const techniqueId = yaml.study.procedure[i].technique
         const description = yaml.study.procedure[i].description
 
-        const tacticInfo = this.$store.getters.getTacticById(tacticId)
+        // const tacticInfo = this.$store.getters.getTacticById(tacticId)
         const techniqueInfo = this.$store.getters.getTechniqueById(techniqueId)
 
         // const tacticLabel = [
@@ -348,14 +348,15 @@ export default {
         // ]
         // console.log(techniqueLabel, tacticLabel)
 
-        const workaroundTacticLabel = `${tacticInfo.name}\n${tacticId}`
-        const workaroundTecniqueLabel = `${techniqueInfo.name}\n${techniqueId}`
+        // const workaroundTacticLabel = `${tacticInfo.name}\n${tacticId}`
+        const workaroundTecniqueLabel = `${techniqueInfo.name}`
 
         const row = [
-          this.linkText(
-            workaroundTacticLabel,
-            this.getUrlFromInfoObject(tacticInfo)
-          ),
+          // this.linkText(
+          //   workaroundTacticLabel,
+          //   this.getUrlFromInfoObject(tacticInfo)
+          // ),
+          { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
           this.linkText(
             workaroundTecniqueLabel,
             this.getUrlFromInfoObject(techniqueInfo)
@@ -416,13 +417,13 @@ export default {
 
       slide.addTable(rows, {
         y: 1.2,
-        colW: [2, 2, 5],
+        colW: [0.5, 2.5, 6],
         w: 9,
         color: '0D2F4F',
         autoPage: true,
         autoPageRepeatHeader: true,
         // autoPageLineWeight: 0.4,
-        autoPageCharWeight: -0.1,
+        autoPageCharWeight: -0.2,
         // newSlideStartY: 0.5,
         // verbose: true,
         border: { color: 'D4D4D3' },
