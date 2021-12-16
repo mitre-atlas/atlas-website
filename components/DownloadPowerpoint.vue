@@ -93,7 +93,7 @@ export default {
         this.referenceSlide(ppt, this.studyYaml)
       }
 
-      ppt.writeFile({ fileName: `${this.studyYaml.study.name}-PPT.pptx` })
+      ppt.writeFile({ fileName: `${this.studyYaml.study.name}.pptx` })
     },
     titleSlide (ppt, yaml) {
       ppt.defineSlideMaster({
