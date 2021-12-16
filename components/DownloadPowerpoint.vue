@@ -102,10 +102,10 @@ export default {
         objects: [
           {
             image: {
-              x: '45%',
-              y: '10%',
-              w: 1.2,
-              h: 0.18,
+              x: '42%',
+              y: '15%',
+              w: 1.5,
+              h: 0.22,
               data: MITRE_ATLAS_TM_LOGO()
             }
           },
