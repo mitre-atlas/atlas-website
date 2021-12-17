@@ -57,20 +57,23 @@
         @input="$emit('techniqueUpdate', selectTechniqueData2)"
         >
         <template
-        class="menu-item-wrapper"
-        v-slot:item="data">
+          class="menu-item-wrapper"
+          v-slot:item="data">
 
           <div
-          class="menu-item"
-          @mouseenter="function(event){ passMouse(event, data.item) }"
-          @mouseleave="passMouse"
-          @click.prevent="passMouse"
-          @touchstart="function(event){ passMouse(event, data.item) }"
-          @touchend="passMouse"
-          @touchmove="passMouse"
-          @touchcancel="passMouse"
-          >
-          {{ data.item.name }}
+            class="menu-item"
+            @mouseenter="function(event){ passMouse(event, data.item) }"
+            @mouseleave="passMouse"
+            @click.prevent="passMouse"
+            @touchstart="function(event){ passMouse(event, data.item) }"
+            @touchend="passMouse"
+            @touchmove="passMouse"
+            @touchcancel="passMouse"
+            >
+            <span v-if="'subtechnique-of' in data.item">
+              &nbsp; &nbsp; &nbsp; &nbsp;
+            </span>
+            {{ data.item.name }}
           </div>
         </template>
       </v-autocomplete>
@@ -115,11 +118,17 @@ export default {
   computed: {
     ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId']),
     mapTechAndSub () {
+      // Parent techniques that have the selecetd tactic as a parent
       const techs = this.getTechSubByTacticId(this.selectTacticData2)
+
       for (let i = 0; i < techs.length; i++) {
+        // Add subtechniques, if exist
         if (techs[i].subtechniques) {
           for (let j = 0; j < techs[i].subtechniques.length; j++) {
-            techs.push(techs[i].subtechniques[j])
+            const subtechnique = techs[i].subtechniques[j]
+            // Insert into techniques array below the parent technique and any prior subtechniques
+            const index = i + 1 + j
+            techs.splice(index, 0, subtechnique)
           }
         }
       }
