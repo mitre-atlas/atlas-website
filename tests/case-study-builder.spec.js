@@ -32,7 +32,7 @@ test.describe('Case study builder', () => {
     // Description
     await page.fill('id=procedure_description', 'One')
     // Save
-    await page.click('id=save_procedure_button')
+    await page.click('button:has-text("Save")')
 
     // Click download button
     await page.click('id=download_case_study_button')
