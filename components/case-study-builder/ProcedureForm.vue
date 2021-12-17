@@ -50,7 +50,7 @@
         label="Technique"
         outlined
         prepend-inner-icon="mdi-magnify"
-
+        :filter="alsoMatchSubtechniquesOfMatchingTechniques"
         item-text="name"
         item-value="id"
         :disabled="selectTacticData2 === null"
@@ -116,7 +116,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId']),
+    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId', 'getTechniqueById']),
     mapTechAndSub () {
       // Parent techniques that have the selecetd tactic as a parent
       const techs = this.getTechSubByTacticId(this.selectTacticData2)
@@ -168,6 +168,18 @@ export default {
     // },
     descriptionUpdate (selectDescriptionData2) {
       this.$emit('descriptionUpdate', selectDescriptionData2)
+    },
+    alsoMatchSubtechniquesOfMatchingTechniques (item, queryText, itemText) {
+      // Match current item text
+      let isMatch = itemText.toLocaleLowerCase().includes(queryText.toLocaleLowerCase())
+      // Also match subtechniques of matching techniques
+      if ('subtechnique-of' in item && !isMatch) {
+        // Get the parent technique name of this subtechnique
+        const parentTechniqueName = this.getTechniqueById(item['subtechnique-of']).name
+        // Check if that name matches the query
+        isMatch = parentTechniqueName.toLocaleLowerCase().includes(queryText.toLocaleLowerCase())
+      }
+      return isMatch
     }
   }
 }
