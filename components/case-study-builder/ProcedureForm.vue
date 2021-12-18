@@ -70,9 +70,10 @@
             @touchmove="passMouse"
             @touchcancel="passMouse"
             >
-            <span v-if="'subtechnique-of' in data.item">
-              &nbsp; &nbsp; &nbsp; &nbsp;
-            </span>
+            <!-- Small icon with left and right padding to slightly indent and offset from subtechnique name -->
+            <v-icon small left right v-if="'subtechnique-of' in data.item">
+              mdi-subdirectory-arrow-right
+            </v-icon>
             {{ data.item.name }}
           </div>
         </template>
