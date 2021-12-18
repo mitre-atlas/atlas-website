@@ -159,7 +159,7 @@
                 {{ errorMsg }}
               </v-alert>
             </div>
-            <div style="float: right;">
+            <div style="float: left;">
               <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
