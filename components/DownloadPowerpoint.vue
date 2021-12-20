@@ -29,6 +29,14 @@ export default {
       isBuilder: this.builder
     }
   },
+  watch:{
+    studyYaml: {
+      immediate: true,
+      handler (newYaml, oldYaml){
+        this.studyYaml = newYaml
+      }
+    }
+  },
   methods: {
     makePPT () {
       const ppt = new Pptxgen()
