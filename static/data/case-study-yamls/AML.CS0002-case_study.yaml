@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-03T21:59:39.292Z
-  date-updated: 2022-01-03T21:59:39.292Z
-  uuid: 262b-da1b-4ade
+  email: ''
 study:
   name: VirusTotal Poisoning
   summary: >

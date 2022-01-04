@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T01:55:53.609Z
-  date-updated: 2022-01-04T01:55:53.609Z
-  uuid: 6380-bb8b-dfde
+  email: ''
 study:
   name: ProofPoint Evasion
   summary: >

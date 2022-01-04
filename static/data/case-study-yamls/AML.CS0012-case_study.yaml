@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T02:13:24.381Z
-  date-updated: 2022-01-04T02:13:24.381Z
-  uuid: 1fba-edb9-fd47
+  email: ''
 study:
   name: MITRE - Physical Adversarial Attack on Face Identification
   summary: >

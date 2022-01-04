@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-03T21:53:11.861Z
-  date-updated: 2022-01-03T21:53:11.861Z
-  uuid: c865-62b3-1a05
+  email: ''
 study:
   name: Botnet Domain Generation Algorithm (DGA) Detection Evasion
   summary: >

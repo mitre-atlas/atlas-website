@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T01:52:48.267Z
-  date-updated: 2022-01-04T01:52:48.267Z
-  uuid: 4ae0-3c36-a951
+  email: ''
 study:
   name: GPT-2 Model Replication
   summary: >

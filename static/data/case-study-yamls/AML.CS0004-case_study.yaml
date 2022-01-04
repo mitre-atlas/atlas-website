@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-03T22:14:40.027Z
-  date-updated: 2022-01-03T22:14:40.027Z
-  uuid: 1ec0-c379-6398
+  email: ''
 study:
   name: Camera Hijack Attack on Facial Recognition System
   summary: >

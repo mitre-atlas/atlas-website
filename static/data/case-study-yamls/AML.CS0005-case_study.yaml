@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-03T22:20:14.470Z
-  date-updated: 2022-01-03T22:20:14.470Z
-  uuid: 2326-831d-7781
+  email: ''
 study:
   name: >-
     Attack on Machine Translation Service - Google Translate, Bing Translator,

@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-03T22:10:50.155Z
-  date-updated: 2022-01-03T22:10:50.155Z
-  uuid: d4e5-1c4f-8fc8
+  email: ''
 study:
   name: Bypassing Cylance's AI Malware Detection
   summary: >

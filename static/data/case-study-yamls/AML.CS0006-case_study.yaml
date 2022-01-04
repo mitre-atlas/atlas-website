@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T01:49:51.972Z
-  date-updated: 2022-01-04T01:49:51.972Z
-  uuid: 8b4d-2f1b-933a
+  email: ''
 study:
   name: ClearviewAI Misconfiguration
   summary: >

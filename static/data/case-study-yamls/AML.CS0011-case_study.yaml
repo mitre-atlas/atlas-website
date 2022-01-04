@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T02:07:18.726Z
-  date-updated: 2022-01-04T02:07:18.726Z
-  uuid: f7bc-13cb-cd1d
+  email: ''
 study:
   name: Microsoft Edge AI - Evasion
   summary: >

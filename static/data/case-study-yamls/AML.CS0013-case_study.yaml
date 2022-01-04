@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T02:18:13.066Z
-  date-updated: 2022-01-04T02:18:13.066Z
-  uuid: ba5e-eb7f-e246
+  email: ''
 study:
   name: Backdoor Attack on Deep Learning Models in Mobile Apps
   summary: >

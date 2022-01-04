@@ -1,8 +1,5 @@
 meta:
-  email: atlas@mitre.org
-  date-created: 2022-01-04T02:02:49.617Z
-  date-updated: 2022-01-04T02:02:49.617Z
-  uuid: abcc-a541-54de
+  email: ''
 study:
   name: Microsoft - Azure Service
   summary: >
