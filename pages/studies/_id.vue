@@ -20,8 +20,8 @@
         md="4"
         offset-md="8"
         >
-          <download-powerpoint :study="study" :builder="builder" />
-          <download-yaml :study="study" />
+          <download-data-files-dropdown :study="study" class='mt-5'></download-data-files-dropdown>
+          <!-- <download-powerpoint :study="study" :builder="builder" /> -->
           <!-- <v-btn
             elevation="0"
             color="inherit"
@@ -32,7 +32,6 @@
           Download Powerpoint
           </v-btn> -->
         </v-col>
-
     </v-row>
 
   <v-container>

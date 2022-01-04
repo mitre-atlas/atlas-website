@@ -162,7 +162,10 @@ export default {
     individual_case_study:{
       navigator_link:process.env.CASE_STUDY_DATA_URL || 'https://mitre.github.io/atlas-navigator/#layerURL=https%3A%2F%2Fraw.githubusercontent.com%2Fmitre%2Fadvmlthreatmatrix%2Fgh-pages%2Fdata%2Fcase-study-layers%2F',
       raw_link:process.env.RAW_CASE_STUDY_DATA_URL || 'https://raw.githubusercontent.com/mitre/advmlthreatmatrix/gh-pages/data/case-study-layers/',
-      suffix:process.env.CASE_STUDY_DATA_SUFFIX || '-case_study_layer.json'
+      suffix:process.env.CASE_STUDY_DATA_SUFFIX || '-case_study_layer.json',
+
+      yaml_raw_link: 'https://raw.githubusercontent.com/mitre/advmlthreatmatrix/gh-pages/data/case-study-yamls/',
+      yaml_file_suffix: '-case_study.yaml'
     }
     },
 
