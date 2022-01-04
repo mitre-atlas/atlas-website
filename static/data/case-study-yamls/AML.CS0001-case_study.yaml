@@ -1,0 +1,72 @@
+meta:
+  email: atlas@mitre.org
+  date-created: 2022-01-03T21:53:11.861Z
+  date-updated: 2022-01-03T21:53:11.861Z
+  uuid: c865-62b3-1a05
+study:
+  name: Botnet Domain Generation Algorithm (DGA) Detection Evasion
+  summary: >
+    The Palo Alto Networks Security AI research team was able to bypass a
+    Convolutional Neural Network (CNN)-based botnet Domain Generation Algorithm
+    (DGA) detection [1] by domain name mutations. It is a generic domain
+    mutation technique which can evade most ML-based DGA detection modules. The
+    generic mutation technique can also be used to test the effectiveness and
+    robustness of all DGA detection methods developed by security companies in
+    the industry before it is deployed to the production environment.
+  incident-date: 2020-01-01T00:00:00.000Z
+  incident-date-granularity: DATE
+  procedure:
+    - tactic: TA0043
+      technique: AML.T0000
+      description: >+
+        DGA detection is a widely used technique to detect botnets in academia
+        and industry.
+
+        The searched for research papers related to DGA detection.
+
+    - tactic: TA0042
+      technique: AML.T0002
+      description: >+
+        The researchers acquired a publicly available CNN-based DGA detection
+        model [1] and tested against a well-known DGA generated domain name data
+        sets, which includes ~50 million domain names from 64 botnet DGA
+        families.
+
+        The CNN-based DGA detection model shows more than 70% detection accuracy
+        on 16 (~25%) botnet DGA families.
+
+    - tactic: TA0042
+      technique: AML.T0017
+      description: >+
+        The researchers developed a generic mutation technique that requires a
+        minimal number of iterations.
+
+    - tactic: AML.TA0001
+      technique: AML.T0043.001
+      description: >+
+        The researchers used the mutation technique to generate evasive domain
+        names.
+
+    - tactic: AML.TA0001
+      technique: AML.T0042
+      description: >+
+        Experiment results show that, after only one string is inserted once to
+        the DGA generated domain names, the detection rate of all 16 botnet DGA
+        families can drop to less than 25% detection accuracy.
+
+    - tactic: TA0005
+      technique: AML.T0015
+      description: >+
+        The DGA generated domain names mutated with this technique successfully
+        evade the target DGA Detection model, allowing an adversary to continue
+        communication with their [Command and Control]() servers.
+
+  reported-by: Palo Alto Networks (Network Security AI Research Team)
+  references:
+    - sourceDescription: >-
+        [1] Yu, Bin, Jie Pan, Jiaming Hu, Anderson Nascimento, and Martine De
+        Cock. "Character level based detection of DGA domain names." In 2018
+        International Joint Conference on Neural Networks (IJCNN), pp. 1-8.
+        IEEE, 2018. Source code is available from Github:
+        https://github.com/matthoffman/degas
+      url: https://github.com/matthoffman/degas

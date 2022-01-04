@@ -1,0 +1,55 @@
+meta:
+  email: atlas@mitre.org
+  date-created: 2022-01-03T22:14:40.027Z
+  date-updated: 2022-01-03T22:14:40.027Z
+  uuid: 1ec0-c379-6398
+study:
+  name: Camera Hijack Attack on Facial Recognition System
+  summary: >
+    This type of attack can break through the traditional live detection model
+    and cause the misuse of face recognition.
+  incident-date: 2020-01-01T00:00:00.000Z
+  incident-date-granularity: DATE
+  procedure:
+    - tactic: TA0042
+      technique: T1583
+      description: |+
+        The attackers bought customized low-end mobile phones.
+
+    - tactic: TA0042
+      technique: T1588.002
+      description: >+
+        The attackers obtained customized android ROMs and a virtual camera
+        application.
+
+    - tactic: TA0042
+      technique: AML.T0016
+      description: >+
+        The attackers obtained software that turns static photos into videos,
+        adding realistic effects such as blinking eyes.
+
+    - tactic: TA0009
+      technique: T1213
+      description: |+
+        The attackers collected user identity information and face photos.
+
+    - tactic: TA0042
+      technique: T1585
+      description: >+
+        The attackers registered accounts with the victims' identity
+        information.
+
+    - tactic: AML.TA0000
+      technique: AML.T0047
+      description: >+
+        The attackers used the virtual camera app to present the generated video
+        to the ML-based facial recognition product used for user verification.
+
+    - tactic: TA0040
+      technique: AML.T0015
+      description: >+
+        The attackers successfully evaded the face recognition system and
+        impersonated the victim.
+
+  reported-by: Henry Xuef, Ant Group AISEC Team
+  references: []

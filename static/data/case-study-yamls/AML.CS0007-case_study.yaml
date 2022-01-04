@@ -1,0 +1,59 @@
+meta:
+  email: atlas@mitre.org
+  date-created: 2022-01-04T01:52:48.267Z
+  date-updated: 2022-01-04T01:52:48.267Z
+  uuid: 4ae0-3c36-a951
+study:
+  name: GPT-2 Model Replication
+  summary: >
+    OpenAI built GPT-2, a powerful natural language model and adopted a
+    staged-release process to incrementally release 1.5 Billion parameter model.
+    Before the 1.5B parameter model could be released by OpenAI eventually, two
+    ML researchers replicated the model and released it to the public.
+  incident-date: 2019-08-22T00:00:00.000Z
+  incident-date-granularity: DATE
+  procedure:
+    - tactic: TA0043
+      technique: AML.T0000
+      description: >+
+        Using the public documentation about GPT-2, ML researchers gathered
+        information about the dataset, model architecture, and training
+        hyper-parameters.
+
+    - tactic: TA0042
+      technique: AML.T0002.001
+      description: >+
+        The researchers obtained a reference implementation of a similar
+        publicly available model called Grover.
+
+    - tactic: TA0042
+      technique: AML.T0002.000
+      description: >+
+        The researchers were able to manually recreate the dataset used in the
+        original GPT-2 paper using the gathered documentation.
+
+    - tactic: TA0042
+      technique: AML.T0008
+      description: >+
+        The researchers were able to use TensorFlow Research Cloud via their
+        academic credentials.
+
+    - tactic: AML.TA0001
+      technique: AML.T0005
+      description: >+
+        The researchers modified Grover's objective function to reflect GPT-2's
+        objective function and then trained on the dataset they curated.
+
+        They used Grover's initial hyperparameters for training.
+
+        This resulted in their replicated model.
+
+  reported-by: >-
+    Vanya Cohen (@VanyaCohen), Aaron Gokaslan (@SkyLi0n), Ellie Pavlick,
+    Stefanie Tellex
+  references:
+    - sourceDescription: ''
+      url: https://www.wired.com/story/dangerous-ai-open-source/
+    - sourceDescription: ''
+      url: >-
+        https://blog.usejournal.com/opengpt-2-we-replicated-gpt-2-because-you-can-too-45e34e6d36dc

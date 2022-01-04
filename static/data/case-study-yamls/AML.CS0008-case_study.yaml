@@ -1,0 +1,53 @@
+meta:
+  email: atlas@mitre.org
+  date-created: 2022-01-04T01:55:53.609Z
+  date-updated: 2022-01-04T01:55:53.609Z
+  uuid: 6380-bb8b-dfde
+study:
+  name: ProofPoint Evasion
+  summary: >
+    CVE-2019-20634 describes how ML researchers evaded ProofPoint's email
+    protection system by first building a copy-cat email protection ML model,
+    and using the insights to evade the live system.
+  incident-date: 2019-09-09T00:00:00.000Z
+  incident-date-granularity: DATE
+  procedure:
+    - tactic: TA0042
+      technique: AML.T0002
+      description: >+
+        The researchers first gathered the scores from the Proofpoint's ML
+        system used in email headers by sending a large number of emails through
+        the system and scraping the model scores exposed in the logs.
+
+    - tactic: TA0042
+      technique: AML.T0002.000
+      description: |+
+        The researchers converted the collected scores into a dataset.
+
+    - tactic: AML.TA0001
+      technique: AML.T0005
+      description: >+
+        Using these scores, the researchers replicated the ML mode by building a
+        "shadow" aka copy-cat ML model.
+
+    - tactic: AML.TA0001
+      technique: AML.T0043.000
+      description: >+
+        Next, the ML researchers algorithmically found samples that this
+        "offline" copy cat model.
+
+    - tactic: AML.TA0001
+      technique: AML.T0043.002
+      description: >+
+        Finally, these insights from the offline model allowed the researchers
+        to create malicious emails that received preferable scores from the real
+        ProofPoint email protection system, hence bypassing it.
+
+  reported-by: Will Pearce (@moo_hax), Nick Landers (@monoxgas)
+  references:
+    - sourceDescription: ''
+      url: https://nvd.nist.gov/vuln/detail/CVE-2019-20634
+    - sourceDescription: ''
+      url: https://github.com/moohax/Talks/blob/master/slides/DerbyCon19.pdf
+    - sourceDescription: ''
+      url: https://github.com/moohax/Proof-Pudding
