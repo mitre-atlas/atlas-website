@@ -140,17 +140,17 @@
             md="6"
           >
             <div>
-            <v-text-field
-              v-model="fileName"
-              :rules="rules.fileName"
-              label="Case Study File Name"
-              hint="Name or change case study file name to be downloaded"
-              prepend-inner-icon="mdi-file-download"
-              outlined
-              clearable
-              required
-              auto-grow
-            />
+              <v-text-field
+                v-model="fileName"
+                :rules="rules.fileName"
+                label="Case Study File Name"
+                hint="Name or change case study file name to be downloaded"
+                prepend-inner-icon="mdi-file-download"
+                outlined
+                clearable
+                required
+                auto-grow
+              />
               <v-alert
                 v-if="errorMsg"
                 text
@@ -179,7 +179,6 @@
                 </template>
                 <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
               </v-tooltip>
-              <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
               <v-alert
                 v-if="submissionMsg"
                 text
@@ -190,6 +189,9 @@
                 {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
             </div>
+            </v-col>
+            <v-col>
+              <download-powerpoint pptSelected :study="study" :builder="builder"/>
             </v-col>
           </v-row>
         </v-card-text>
@@ -205,6 +207,7 @@
 </router>
 
 <script>
+import Pptxgen from 'pptxgenjs'
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
 
@@ -236,7 +239,7 @@ export default {
       errorMsg: '',
       submissionMsg: '',
       fileName: '',
-      downloadedYaml: false,
+      downloadedYaml: true,
       builder: true,
       contactEmail: 'atlas@mitre.org',
       dialog: false,
@@ -326,6 +329,7 @@ export default {
       this.addingSource = false
     },
     submitStudy () {
+      console.log('checkbox', this.pptSelected)
       this.requiredFieldRuleKeys.forEach((key) => {
         this.rules[key] = [this.requiredRule]
       })
@@ -334,6 +338,7 @@ export default {
 
       if (this.$refs.form.validate() && this.procedure.length) {
         this.errorMsg = ''
+        // this.downloadedYaml = true
 
         // Metadata
         const nowDate = new Date()
@@ -362,10 +367,25 @@ export default {
             references: deepCopy(this.references)
           }
         }
+
+        if (this.pptSelected === true) {
+          const ppt = new Pptxgen()
+          if (!this.isBuilder) {
+            const studyTemp = { study: this.studyYaml }
+            this.studyYaml = studyTemp
+          }
+          this.titleSlide(ppt, this.studyYaml)
+          this.detailSlide(ppt, this.studyYaml)
+          this.procedureSlide(ppt, this.studyYaml)
+          if (this.studyYaml.study.references) {
+            this.referenceSlide(ppt, this.studyYaml)
+          }
+
+          ppt.writeFile({ fileName: `${this.studyYaml.study.name}-PPT.pptx` })
+        }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
         downloadStudyFile(study, this.fileName)
-        this.downloadedYaml = true
         this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {

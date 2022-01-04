@@ -1,29 +1,21 @@
 <template>
-  <v-btn
-    v-if="isBuilder"
-    color="secondary"
-    v-on="on"
-    @click="makePPT"
-  >
-    <v-icon left>
-      mdi-download
-    </v-icon>
-    Download Powerpoint
-  </v-btn>
-  <v-btn
-    v-else
-    elevation="0"
-    color="inherit"
-    v-bind="attrs"
-    v-on="on"
-    @click="makePPT"
-  >
-    Download Powerpoint
-  </v-btn>
+    <v-container>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-checkbox
+            v-model="pptSelected"
+            label="Download Case Study PPT"
+            value="ppt"
+            v-bind="attrs"
+            v-on="on"
+          ></v-checkbox>
+        </template>
+        <span>Tooltip</span>
+      </v-tooltip>
+    </v-container>
 </template>
 
 <script>
-import Pptxgen from 'pptxgenjs'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
 export default {
   name: 'DownloadPowerpoint',
@@ -31,25 +23,11 @@ export default {
   data () {
     return {
       studyYaml: this.study,
-      isBuilder: this.builder
+      isBuilder: this.builder,
+      pptSelected: false
     }
   },
   methods: {
-    makePPT () {
-      const ppt = new Pptxgen()
-      if (!this.isBuilder) {
-        const studyTemp = { study: this.studyYaml }
-        this.studyYaml = studyTemp
-      }
-      this.titleSlide(ppt, this.studyYaml)
-      this.detailSlide(ppt, this.studyYaml)
-      this.procedureSlide(ppt, this.studyYaml)
-      if (this.studyYaml.study.references) {
-        this.referenceSlide(ppt, this.studyYaml)
-      }
-
-      ppt.writeFile({ fileName: `${this.studyYaml.study.name}-PPT.pptx` })
-    },
     titleSlide (ppt, yaml) {
       const slide = ppt.addSlide({ masterName: 'MASTER_SLIDE' })
       slide.addText([
