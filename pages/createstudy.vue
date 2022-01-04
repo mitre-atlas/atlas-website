@@ -13,7 +13,7 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-        <upload-file-dialog @loaded-data="setDataFromFile" />
+        <upload-file-dialog @loaded-data="setDataFromFile" @loaded-filename="setFileName"/>
         <v-spacer />
         <instructions-dialog />
     </v-card-actions>
@@ -130,46 +130,68 @@
         </div>
       </v-card-text>
 
+      <v-card-title>Download</v-card-title>
+      <v-card-subtitle>Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.</v-card-subtitle>
       <v-card-text>
-        <v-tooltip top color="light-blue lighten-4">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              :disabled="!valid"
-              v-bind="attrs"
-              v-on="on"
-              @click="submitStudy"
-            >
-              <v-icon left>
-              mdi-download
-              </v-icon>
-              Download Case Study
-            </v-btn>
-          </template>
-          <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span>
-        </v-tooltip>
-
-        <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
-
-        <v-alert
-          v-if="errorMsg"
-          text
-          color="red"
-          type="error"
-          dense
+        <v-row>
+          <v-col
+            cols="12"
+            sm="3"
+            md="6"
           >
-          {{ errorMsg }}
-        </v-alert>
-        <v-alert
-          v-if="submissionMsg"
-          text
-          color="green"
-          type="success"
-          dense
-          >
-          {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
-        </v-alert>
-
+            <div>
+            <v-text-field
+              v-model="fileName"
+              :rules="rules.fileName"
+              label="Case Study File Name"
+              hint="Name or change case study file name to be downloaded"
+              prepend-inner-icon="mdi-file-download"
+              outlined
+              clearable
+              required
+              auto-grow
+            />
+              <v-alert
+                v-if="errorMsg"
+                text
+                color="red"
+                type="error"
+                dense
+                >
+                {{ errorMsg }}
+              </v-alert>
+            </div>
+            <div style="float: left;">
+              <v-tooltip>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    :disabled="!valid"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="submitStudy"
+                  >
+                    <v-icon left>
+                    mdi-download
+                    </v-icon>
+                    Download Case Study
+                  </v-btn>
+                </template>
+                <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
+              </v-tooltip>
+              <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+              <v-alert
+                v-if="submissionMsg"
+                text
+                color="green"
+                type="success"
+                dense
+                >
+                {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
+              </v-alert>
+            </div>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-form>
@@ -213,6 +235,7 @@ export default {
       addingSource: false,
       errorMsg: '',
       submissionMsg: '',
+      fileName: '',
       downloadedYaml: false,
       builder: true,
       contactEmail: 'atlas@mitre.org',
@@ -226,7 +249,8 @@ export default {
         'title',
         'reportedBy',
         'summary',
-        'incidentDate'
+        'incidentDate',
+        'fileName'
       ]
     }
   },
@@ -265,6 +289,9 @@ export default {
   },
   methods: {
     ...mapActions(['submitCaseStudy']),
+    setFileName (loadedFileName) {
+      this.fileName = loadedFileName
+    },
     setDataFromFile (data) {
       // Directly set proprties on this instance
       Object.assign(this, data)
@@ -337,7 +364,7 @@ export default {
         }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
-        downloadStudyFile(study)
+        downloadStudyFile(study, this.fileName)
         this.downloadedYaml = true
         this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
