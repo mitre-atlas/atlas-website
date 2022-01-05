@@ -9,9 +9,11 @@
       <v-subheader>Reported by</v-subheader>
       <study-details-list-item>{{ study['reported-by'] }}</study-details-list-item>
 
-      <v-subheader>Files</v-subheader>
+      <v-subheader>Additional views</v-subheader>
       <study-details-list-item>
         <download-data-files-dropdown :study="study" />
+      </study-details-list-item>
+      <study-details-list-item>
         <navigator-layer-dropdown :study="study" />
       </study-details-list-item>
     </v-list>

@@ -2,12 +2,13 @@
 <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                elevation="0"
+                text
                 color="inherit"
+                style="padding: 0;"
                 v-bind="attrs"
                 v-on="on"
               >
-                Download Data Files
+                Case study data
                 <v-icon right>mdi-menu-down</v-icon>
               </v-btn>
             </template>

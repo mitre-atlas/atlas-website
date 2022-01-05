@@ -14,43 +14,14 @@
         <study-details-card :study="study" class="mt-10" />
       </v-col>
     </v-row>
-    <v-row>
-      <!-- <download-powerpoint v-if="downloadedYaml" :study="study" /> -->
-      <v-col
-        md="4"
-        offset-md="8"
-        >
-          <download-data-files-dropdown :study="study" class='mt-5'></download-data-files-dropdown>
-          <!-- <download-powerpoint :study="study" :builder="builder" /> -->
-          <!-- <v-btn
-            elevation="0"
-            color="inherit"
-            v-bind="attrs"
-            v-on="on"
-            @click="getPPT()"
-          >
-          Download Powerpoint
-          </v-btn> -->
-        </v-col>
-    </v-row>
 
   <v-container>
       <v-row>
-        <v-col >
+        <v-col>
           <page-section-title> Procedure </page-section-title>
-        </v-col>
-        <v-col
-        md="4"
-        offset-md="4"
-        >
-          <navigator-layer-dropdown :study="study" class='mt-5'></navigator-layer-dropdown>
-        </v-col>
-        <!-- <span class="pink--text">
-            TODO link to custom layer on ATT&CK Navigator
-            <v-icon small>mdi-open-in-new</v-icon>
-          </span> -->
 
-        <procedure-timeline :study="study" class="mt-5" />
+          <procedure-timeline :study="study" class="mt-5" />
+        </v-col>
       </v-row>
     <v-row v-if="study.references">
       <v-col>
