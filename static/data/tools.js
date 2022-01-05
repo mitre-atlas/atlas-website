@@ -196,10 +196,9 @@ function download (filename, text) { // ripped from stackoverflow lets goooooooo
   document.body.removeChild(element)
 }
 
-function downloadStudyFile (study) {
-  const studyBody = study.study
+function downloadStudyFile (study, filename) {
   const studyYAML = createYAML(study)
-  download(`${studyBody.name}.yaml`, studyYAML)
+  download(`${filename}.yaml`, studyYAML)
 }
 
 export { createJSON, createYAML, download, deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }

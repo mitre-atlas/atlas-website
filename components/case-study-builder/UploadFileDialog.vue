@@ -118,13 +118,15 @@ export default {
       const extStartIndex = file.name.lastIndexOf('.')
       if (extStartIndex >= 0) {
         fileType = file.name.slice(extStartIndex)
+        // Filename without extension
+        this.initialFileName = file.name.substring(0, extStartIndex)
       }
 
       // Check file extension (though accept prop is in effect)
       // Rename file name to prevent XSS
       if (expectedTypes.includes(fileType)) { // nominal
         // https://blog.yeswehack.com/yeswerhackers/file-upload-attacks-part-2/
-        this.initialFileName = file.name
+
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop
           writable: true,
           value: generateID() + '.yaml'
@@ -227,6 +229,7 @@ export default {
       }
 
       this.$emit('loaded-data', this.loadedData)
+      this.$emit('loaded-filename', this.initialFileName)
     }
   }
 }
