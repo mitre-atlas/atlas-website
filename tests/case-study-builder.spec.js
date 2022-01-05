@@ -41,16 +41,16 @@ test.describe('Case study builder', () => {
   })
 
   test('source widget', async ({ page }) => {
-    // By default, there is 1 div here, the "Add Source" button
-    const itemsBelowReferences = page.locator('.v-card__text:below(:has-text("References")) > div')
-    await expect(itemsBelowReferences).toHaveCount(1) // the "Add Source div"
+    // ToggleableSource is the component rendering the source data
+    const sources = page.locator('.toggleable_source')
+    await expect(sources).toHaveCount(0) // Starts empty
 
     // Add source
     await page.click('button >> text=Add New Source')
     await page.fill('input:below(:has-text("Add Source"))', 'Reference 1')
     await page.fill('text=URL', 'www.mitre.org')
     await page.click('button :text("Save"):below(:has-text("Add Source"))')
-    await expect(itemsBelowReferences).toHaveCount(2) // Additional item
+    await expect(sources).toHaveCount(1) // Additional item
     await page.waitForTimeout(TIMEOUT_MS);
 
     // Edit source
@@ -61,7 +61,7 @@ test.describe('Case study builder', () => {
 
     await page.click('.mdi-delete:below(:has-text("References"))')
     await page.click('button:has-text("Delete"):below(:has-text("Delete reference?"))')
-    await expect(itemsBelowReferences).toHaveCount(1) // Item has been deleted
+    await expect(sources).toHaveCount(0) // Item has been deleted
     await page.waitForTimeout(TIMEOUT_MS)
   })
 })

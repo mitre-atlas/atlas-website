@@ -169,6 +169,7 @@
               <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    id=download_case_study_button
                     color="primary"
                     :disabled="!valid"
                     v-bind="attrs"
