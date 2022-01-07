@@ -41,6 +41,7 @@
           nuxt
           :to="button.to" /></v-col></v-row>
       </v-col>
+      <p>v{{version}}</p>
 
     </v-row>
 
@@ -48,9 +49,11 @@
   </v-footer>
 </template>
 <script>
+import packageData from '../package.json'
 export default {
   name: 'Footer',
   data: () => ({
+    version: packageData.version,
     buttons: [
       { text: 'Contact', to: '/resources/feedback', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
