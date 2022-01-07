@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { downloadUrlAsFile } from 'static/data/tools.js'
+
 export default {
   name: 'DownloadDataFilesDropdown',
   props: ['study'],
@@ -44,24 +46,13 @@ export default {
   },
   methods: {
     downloadYaml () {
+      // Construct full URL to case study data file on GitHub
       const rawLink = this.$config.individual_case_study.yaml_raw_link
       const id = this.study.id
       const suffix = this.$config.individual_case_study.yaml_file_suffix
       const url = rawLink + id + suffix
-      // Get file name from url.
-      const xhr = new XMLHttpRequest()
-      xhr.responseType = 'blob'
-      xhr.onload = function () {
-        let a = document.createElement('a')
-        a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
-        a.download = id + suffix // Set the file name.
-        a.style.display = 'none'
-        document.body.appendChild(a)
-        a.click()
-        a = null
-      }
-      xhr.open('GET', url)
-      xhr.send()
+      // Serve up download of that file, named the same
+      downloadUrlAsFile(url)
     }
   }
 }
