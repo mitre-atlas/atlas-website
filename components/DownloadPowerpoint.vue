@@ -10,16 +10,24 @@
     </v-icon>
     Download Powerpoint
   </v-btn>
-  <v-btn
+  <v-list-item
     v-else
-    elevation="0"
     color="inherit"
     v-bind="attrs"
     v-on="on"
     @click="makePPT"
   >
-    Download Powerpoint
-  </v-btn>
+    <v-list-item-icon style="margin-right: 0px;">
+      <v-icon small>
+        mdi-arrow-collapse-down
+      </v-icon>
+    </v-list-item-icon>
+    <v-list-item-content>
+      <v-list-item-title>
+        Download as Powerpoint (.pptx)
+      </v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
 </template>
 
 <script>
