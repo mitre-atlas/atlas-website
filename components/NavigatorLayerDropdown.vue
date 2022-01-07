@@ -14,19 +14,6 @@
     </template>
     <v-list>
 
-      <v-list-item @click="downloadNavigatorLayerFile">
-        <v-list-item-icon style="margin-right: 0px;">
-          <v-icon small>
-            mdi-arrow-collapse-down
-          </v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>
-            Download as raw data (.json)
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
       <v-list-item
         :href="navigatorUrlIndividualCaseStudyLayer"
         target="_blank"
@@ -39,6 +26,19 @@
         <v-list-item-content>
           <v-list-item-title>
             View on ATLAS Navigator
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="downloadNavigatorLayerFile">
+        <v-list-item-icon style="margin-right: 0px;">
+          <v-icon small>
+            mdi-arrow-collapse-down
+          </v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Download as raw data (.json)
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
