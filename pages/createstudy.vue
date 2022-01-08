@@ -191,7 +191,13 @@
             </div>
             </v-col>
             <v-col>
-              <download-powerpoint pptSelected :study="study" :builder="builder"/>
+              <download-powerpoint
+              :study="study"
+              :builder="builder"
+              @updateCheckbox="updateCheckbox"
+              ref="formatPpt"
+              />
+              <p>case study box {{pptSelected}} </p>
             </v-col>
           </v-row>
         </v-card-text>
@@ -207,7 +213,6 @@
 </router>
 
 <script>
-import Pptxgen from 'pptxgenjs'
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
 
@@ -245,6 +250,7 @@ export default {
       dialog: false,
       to: null,
       isEditing: false,
+      pptSelected: '',
 
       rules: {}, // Initial empty obj bound to field rules prop - must start empty
       requiredRule: v => !!v || 'Required',
@@ -312,6 +318,9 @@ export default {
       this.date = date
       this.dateGranularity = granularity
     },
+    updateCheckbox (newval) {
+      this.pptSelected = newval
+    },
     addProcedureStep (newStep) {
       this.procedure.push(newStep)
       this.addingStep = false
@@ -357,6 +366,7 @@ export default {
 
         const study = {
           meta: this.meta,
+          filename: this.filename,
           study: {
             name: this.titleStudy,
             summary: this.summary,
@@ -369,19 +379,20 @@ export default {
         }
 
         if (this.pptSelected === true) {
-          const ppt = new Pptxgen()
-          if (!this.isBuilder) {
-            const studyTemp = { study: this.studyYaml }
-            this.studyYaml = studyTemp
-          }
-          this.titleSlide(ppt, this.studyYaml)
-          this.detailSlide(ppt, this.studyYaml)
-          this.procedureSlide(ppt, this.studyYaml)
-          if (this.studyYaml.study.references) {
-            this.referenceSlide(ppt, this.studyYaml)
-          }
+          this.$refs.formatPpt.makePPT()
+          // const ppt = new Pptxgen()
+          // if (!this.isBuilder) {
+          //   const studyTemp = { study }
+          //   this.study = studyTemp
+          // }
+          // this.$refs.formatPpt.titleSlide(ppt, this.study)
+          // this.$refs.formatPpt.detailSlide(ppt, this.study)
+          // this.$refs.formatPpt.procedureSlide(ppt, this.study)
+          // if (this.study.study.references) {
+          //   this.$refs.formatPpt.referenceSlide(ppt, this.study)
+          // }
 
-          ppt.writeFile({ fileName: `${this.studyYaml.study.name}-PPT.pptx` })
+          // ppt.writeFile({ fileName: `${this.fileName}-PPT.pptx` })
         }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store

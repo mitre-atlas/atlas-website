@@ -1,21 +1,16 @@
 <template>
     <v-container>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-checkbox
-            v-model="pptSelected"
-            label="Download Case Study PPT"
-            value="ppt"
-            v-bind="attrs"
-            v-on="on"
-          ></v-checkbox>
-        </template>
-        <span>Tooltip</span>
-      </v-tooltip>
+      <p> {{pptCheckbox}} </p>
+      <v-checkbox
+        v-model="pptCheckbox"
+        label="Download Case Study PPT"
+        @change="changeCheckbox"
+      ></v-checkbox>
     </v-container>
 </template>
 
 <script>
+import Pptxgen from 'pptxgenjs'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
 export default {
   name: 'DownloadPowerpoint',
@@ -24,10 +19,33 @@ export default {
     return {
       studyYaml: this.study,
       isBuilder: this.builder,
-      pptSelected: false
+      pptCheckbox: ''
     }
   },
+  // computed: {
+  //   pptCheckbox () {
+  //     this.$emit('pptCheckbox', this.pptCheckbox)
+  //   }
+  // },
   methods: {
+    changeCheckbox () {
+      this.$emit('updateCheckbox', this.pptCheckbox)
+    },
+    makePPT () {
+      const ppt = new Pptxgen()
+      if (!this.isBuilder) {
+        const studyTemp = { study: this.studyYaml }
+        this.studyYaml = studyTemp
+      }
+      this.titleSlide(ppt, this.studyYaml)
+      this.detailSlide(ppt, this.studyYaml)
+      this.procedureSlide(ppt, this.studyYaml)
+      if (this.studyYaml.study.references) {
+        this.referenceSlide(ppt, this.studyYaml)
+      }
+
+      ppt.writeFile({ fileName: `${this.studyYaml.fileName}-PPT.pptx` })
+    },
     titleSlide (ppt, yaml) {
       const slide = ppt.addSlide({ masterName: 'MASTER_SLIDE' })
       slide.addText([
