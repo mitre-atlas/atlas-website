@@ -50,27 +50,31 @@
         label="Technique"
         outlined
         prepend-inner-icon="mdi-magnify"
-
+        :filter="alsoMatchSubtechniquesOfMatchingTechniques"
         item-text="name"
         item-value="id"
         :disabled="selectTacticData2 === null"
         @input="$emit('techniqueUpdate', selectTechniqueData2)"
         >
         <template
-        class="menu-item-wrapper"
-        v-slot:item="data">
+          class="menu-item-wrapper"
+          v-slot:item="data">
 
           <div
-          class="menu-item"
-          @mouseenter="function(event){ passMouse(event, data.item) }"
-          @mouseleave="passMouse"
-          @click.prevent="passMouse"
-          @touchstart="function(event){ passMouse(event, data.item) }"
-          @touchend="passMouse"
-          @touchmove="passMouse"
-          @touchcancel="passMouse"
-          >
-          {{ data.item.name }}
+            class="menu-item"
+            @mouseenter="function(event){ passMouse(event, data.item) }"
+            @mouseleave="passMouse"
+            @click.prevent="passMouse"
+            @touchstart="function(event){ passMouse(event, data.item) }"
+            @touchend="passMouse"
+            @touchmove="passMouse"
+            @touchcancel="passMouse"
+            >
+            <!-- Small icon with left and right padding to slightly indent and offset from subtechnique name -->
+            <v-icon small left right v-if="'subtechnique-of' in data.item">
+              mdi-subdirectory-arrow-right
+            </v-icon>
+            {{ data.item.name }}
           </div>
         </template>
       </v-autocomplete>
@@ -113,13 +117,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId']),
+    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId', 'getTechniqueById']),
     mapTechAndSub () {
+      // Parent techniques that have the selecetd tactic as a parent
       const techs = this.getTechSubByTacticId(this.selectTacticData2)
+
       for (let i = 0; i < techs.length; i++) {
+        // Add subtechniques, if exist
         if (techs[i].subtechniques) {
           for (let j = 0; j < techs[i].subtechniques.length; j++) {
-            techs.push(techs[i].subtechniques[j])
+            const subtechnique = techs[i].subtechniques[j]
+            // Insert into techniques array below the parent technique and any prior subtechniques
+            const index = i + 1 + j
+            techs.splice(index, 0, subtechnique)
           }
         }
       }
@@ -159,6 +169,18 @@ export default {
     // },
     descriptionUpdate (selectDescriptionData2) {
       this.$emit('descriptionUpdate', selectDescriptionData2)
+    },
+    alsoMatchSubtechniquesOfMatchingTechniques (item, queryText, itemText) {
+      // Match current item text
+      let isMatch = itemText.toLocaleLowerCase().includes(queryText.toLocaleLowerCase())
+      // Also match subtechniques of matching techniques
+      if ('subtechnique-of' in item && !isMatch) {
+        // Get the parent technique name of this subtechnique
+        const parentTechniqueName = this.getTechniqueById(item['subtechnique-of']).name
+        // Check if that name matches the query
+        isMatch = parentTechniqueName.toLocaleLowerCase().includes(queryText.toLocaleLowerCase())
+      }
+      return isMatch
     }
   }
 }
