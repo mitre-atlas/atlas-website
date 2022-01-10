@@ -171,8 +171,10 @@
               />
             </v-col>
           </v-row>
-          <v-row>
-            <v-card-actions>
+          <v-row style="margin-top:-25px">
+            <v-col
+            cols="3"
+            >
               <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -190,6 +192,8 @@
                 </template>
                 <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
               </v-tooltip>
+            </v-col>
+            <v-col>
               <v-alert
                 v-if="submissionMsg"
                 text
@@ -199,7 +203,7 @@
                 >
                 {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
-            </v-card-actions>
+            </v-col>
           </v-row>
         </v-card-text>
       </v-card>
