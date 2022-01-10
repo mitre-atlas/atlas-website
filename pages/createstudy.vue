@@ -261,6 +261,7 @@ export default {
       // Initial empty obj bound to field rules prop - must start empty
       rules: {},
       requiredRule: v => !!v || 'Required',
+      // rules.key that will get the above rule applied upon click Download
       requiredFieldRuleKeys: [
         'title',
         'reportedBy',
@@ -353,13 +354,6 @@ export default {
 
         // Metadata
         const nowDate = new Date()
-        // Maintain backwards compatibility with JS Date string format
-        if (this.studyData.meta['date-created'] && typeof this.studyData.meta['date-created'] === 'string') {
-          // Parse the JS Date string, i.e 2021-8-24 1:22:23 PM UTC
-          const dateCreated = new Date(this.studyData.meta['date-created'])
-          // Set field to the date itself, which renders as an ISO date
-          this.studyData.meta['date-created'] = dateCreated
-        }
         // Only set the date-created once upon study creation
         this.studyData.meta['date-created'] = this.studyData.meta['date-created'] ?? nowDate
         // Always update date-updated
@@ -369,6 +363,8 @@ export default {
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
         downloadStudyFile(this.studyData, this.fileName)
+
+        // Reset
         this.downloadedYaml = true
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
