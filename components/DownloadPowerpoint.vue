@@ -1,14 +1,15 @@
 <template>
-    <v-container>
-      <p> {{pptCheckbox}} </p>
-      <v-checkbox
-        v-model="pptCheckbox"
-        label="Download Case Study PPT"
-        @change="changeCheckbox"
-        elevation="0"
-        color="inherit"
-      ></v-checkbox>
-    </v-container>
+    <v-row align="start">
+      <v-container>
+        <v-checkbox
+          v-model="pptCheckbox"
+          label="Include Case Study PPT"
+          @change="changeCheckbox"
+          elevation="0"
+          color="inherit"
+        ></v-checkbox>
+      </v-container>
+    </v-row>
 </template>
 
 <script>
@@ -24,11 +25,6 @@ export default {
       pptCheckbox: ''
     }
   },
-  // computed: {
-  //   pptCheckbox () {
-  //     this.$emit('pptCheckbox', this.pptCheckbox)
-  //   }
-  // },
   methods: {
     changeCheckbox () {
       this.$emit('updateCheckbox', this.pptCheckbox)
@@ -84,19 +80,6 @@ export default {
         ],
         slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
-
-      if (!this.isBuilder) {
-        const studyTemp = { study: this.studyYaml }
-        this.studyYaml = studyTemp
-      }
-      this.titleSlide(ppt, this.studyYaml)
-      this.detailSlide(ppt, this.studyYaml)
-      this.procedureSlide(ppt, this.studyYaml)
-      if (this.studyYaml.study.references) {
-        this.referenceSlide(ppt, this.studyYaml)
-      }
-
-      ppt.writeFile({ fileName: `${this.studyYaml.fileName}-PPT.pptx` })
     },
     titleSlide (ppt, yaml) {
       ppt.defineSlideMaster({
@@ -196,6 +179,8 @@ export default {
         yaml.study.dateGranularity === undefined ||
         yaml.study.dateGranularity === 'DATE'
       ) {
+        console.log('yaml.study', yaml.study)
+        console.log('yaml.study.study', yaml.study.study)
         // If dateGranularity is DATE, or there is no date granularity
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',

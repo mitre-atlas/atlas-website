@@ -161,7 +161,18 @@
                 {{ errorMsg }}
               </v-alert>
             </div>
-            <div style="float: left;">
+            </v-col>
+            <v-col>
+              <download-powerpoint
+              :study="study"
+              :builder="builder"
+              @updateCheckbox="updateCheckbox"
+              ref="formatPpt"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-card-actions>
               <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -188,17 +199,7 @@
                 >
                 {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
-            </div>
-            </v-col>
-            <v-col>
-              <download-powerpoint
-              :study="study"
-              :builder="builder"
-              @updateCheckbox="updateCheckbox"
-              ref="formatPpt"
-              />
-              <p>case study box {{pptSelected}} </p>
-            </v-col>
+            </v-card-actions>
           </v-row>
         </v-card-text>
       </v-card>
@@ -213,6 +214,7 @@
 </router>
 
 <script>
+import Pptxgen from 'pptxgenjs'
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
 
@@ -377,22 +379,23 @@ export default {
             references: deepCopy(this.references)
           }
         }
+        this.study = study
 
         if (this.pptSelected === true) {
-          this.$refs.formatPpt.makePPT()
-          // const ppt = new Pptxgen()
-          // if (!this.isBuilder) {
-          //   const studyTemp = { study }
-          //   this.study = studyTemp
-          // }
-          // this.$refs.formatPpt.titleSlide(ppt, this.study)
-          // this.$refs.formatPpt.detailSlide(ppt, this.study)
-          // this.$refs.formatPpt.procedureSlide(ppt, this.study)
-          // if (this.study.study.references) {
-          //   this.$refs.formatPpt.referenceSlide(ppt, this.study)
-          // }
+          // this.$refs.formatPpt.makePPT()
+          const ppt = new Pptxgen()
+          if (!this.isBuilder) {
+            const studyTemp = { study: this.study.study }
+            this.study = studyTemp
+          }
+          this.$refs.formatPpt.titleSlide(ppt, this.study)
+          this.$refs.formatPpt.detailSlide(ppt, this.study)
+          this.$refs.formatPpt.procedureSlide(ppt, this.study)
+          if (this.study.study.references) {
+            this.$refs.formatPpt.referenceSlide(ppt, this.study)
+          }
 
-          // ppt.writeFile({ fileName: `${this.fileName}-PPT.pptx` })
+          ppt.writeFile({ fileName: `${this.fileName}-PPT.pptx` })
         }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
