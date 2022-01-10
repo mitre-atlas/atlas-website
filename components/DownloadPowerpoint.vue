@@ -29,10 +29,10 @@ export default {
       isBuilder: this.builder
     }
   },
-  watch:{ //TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
+  watch: { // TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
     studyYaml: {
       immediate: true,
-      handler (newYaml, oldYaml){
+      handler (newYaml, oldYaml) {
         this.studyYaml = newYaml
       }
     }
