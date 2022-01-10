@@ -2,9 +2,7 @@
   <v-menu offset-y>
     <template v-slot:activator="{ on, attrs }">
       <v-btn
-        text
         color="inherit"
-        style="padding: 0;"
         v-bind="attrs"
         v-on="on"
       >
