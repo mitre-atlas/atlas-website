@@ -25,7 +25,7 @@
 
         <v-card-text>
         <v-text-field
-          v-model="titleStudy"
+          v-model="studyData.study.name"
           :rules="rules.title"
           label="Title"
           hint="Name for this case study"
@@ -35,7 +35,7 @@
         />
 
         <v-text-field
-          v-model="meta.email"
+          v-model="studyData.meta.email"
           :rules="emailRules"
           :validate-on-blur="true"
           label="Contact email(s)"
@@ -47,7 +47,7 @@
         />
 
         <v-text-field
-          v-model="reported"
+          v-model="studyData.study['reported-by']"
           :rules="rules.reportedBy"
           label="Reported by"
           hint="Name(s) of the original authors of the study"
@@ -57,14 +57,14 @@
         />
 
         <incident-date-picker
-          :startDate="date"
-          :startDateGranularity="dateGranularity"
+          :startDate="studyData.study['incident-date']"
+          :startDateGranularity="studyData.study['incident-date-granularity']"
           :initialRules="rules.incidentDate"
           v-on:selectedDate="setIncidentDate"
         />
 
         <v-textarea
-          v-model="summary"
+          v-model="studyData.study.summary"
           :rules="rules.summary"
           label="Summary"
           hint="Description of the incident"
@@ -78,7 +78,12 @@
       <v-card-title>Procedure</v-card-title>
       <v-card-subtitle>Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.</v-card-subtitle>
       <v-card-text>
-        <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+        <edit-procedure
+          class="mx-8"
+          :key="studyData.study.procedure"
+          :procedure="studyData.study.procedure"
+          @updateProcedure="studyData.study.procedure = $event"
+          />
         <add-procedure-step
           v-if="addingStep"
           ref="addProcStepRef"
@@ -102,10 +107,10 @@
       <v-card-title>References</v-card-title>
       <v-card-subtitle>Optionally list sources for this case study.</v-card-subtitle>
       <v-card-text>
-        <div v-if="references.length" class="mx-8">
+        <div v-if="studyData.study.references.length" class="mx-8">
           <v-list flat>
             <v-list-item-group>
-            <div v-for="(value, key) in references" :key="key">
+            <div v-for="(value, key) in studyData.study.references" :key="key">
               <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
             </div>
             </v-list-item-group>
@@ -206,7 +211,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
+import { generateID, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -214,25 +219,31 @@ export default {
       title: 'Create A Case Study',
       valid: true,
       initialFileName: '',
-      date: null,
-      dateGranularity: null,
+
       selectTactic: null,
       selectTechnique: null,
       description: '',
-      titleStudy: '',
-      meta: { email: '' },
-      study: null,
-      emailRules: [
-        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
-      ],
-      summary: '',
+
+      // Case study data object
+      studyData: {
+        meta: { email: '' },
+        study: {
+          name: '',
+          summary: '',
+          'incident-date': null,
+          'incident-date-granularity': null,
+          procedure: [],
+          'reported-by': '',
+          references: []
+        }
+      },
+
       sourceDescription: '',
       url: '',
-      reported: '',
-      procedure: [],
+
       addingStep: true,
-      references: [],
       addingSource: false,
+
       errorMsg: '',
       submissionMsg: '',
       fileName: '',
@@ -243,7 +254,12 @@ export default {
       to: null,
       isEditing: false,
 
-      rules: {}, // Initial empty obj bound to field rules prop - must start empty
+      // Field validation rules
+      emailRules: [
+        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
+      ],
+      // Initial empty obj bound to field rules prop - must start empty
+      rules: {},
       requiredRule: v => !!v || 'Required',
       requiredFieldRuleKeys: [
         'title',
@@ -294,35 +310,35 @@ export default {
     },
     setDataFromFile (data) {
       // Directly set proprties on this instance
-      Object.assign(this, data)
+      this.studyData = data
 
       // Collapse forms into buttons as needed
-      if (this.procedure !== []) {
+      if (this.studyData.study.procedure !== []) {
         this.addingStep = false
       }
-      if (this.references !== []) {
+      if (this.studyData.study.references !== []) {
         this.addingSource = false
       }
     },
     setIncidentDate (date, granularity) {
       // Called from incident date picker
-      this.date = date
-      this.dateGranularity = granularity
+      this.studyData.study['incident-date'] = date
+      this.studyData.study['incident-date-granularity'] = granularity
     },
     addProcedureStep (newStep) {
-      this.procedure.push(newStep)
+      this.studyData.study.procedure.push(newStep)
       this.addingStep = false
     },
     addSource (newSource) {
-      this.references.push(newSource)
+      this.studyData.study.references.push(newSource)
       this.addingSource = false
     },
     addSourceAt (newSource, index) {
-      this.references.splice(index, 1, newSource)
+      this.studyData.study.references.splice(index, 1, newSource)
       this.addingSource = false
     },
     deleteSourceAt (index) {
-      this.references.splice(index, 1)
+      this.studyData.study.references.splice(index, 1)
       this.addingSource = false
     },
     submitStudy () {
@@ -332,45 +348,32 @@ export default {
       // Email already has a rule in place, add required to the front
       this.emailRules.unshift(this.requiredRule)
 
-      if (this.$refs.form.validate() && this.procedure.length) {
+      if (this.$refs.form.validate() && this.studyData.study.procedure.length) {
         this.errorMsg = ''
 
         // Metadata
         const nowDate = new Date()
         // Maintain backwards compatibility with JS Date string format
-        if (this.meta['date-created'] && typeof this.meta['date-created'] === 'string') {
+        if (this.studyData.meta['date-created'] && typeof this.studyData.meta['date-created'] === 'string') {
           // Parse the JS Date string, i.e 2021-8-24 1:22:23 PM UTC
-          const dateCreated = new Date(this.meta['date-created'])
+          const dateCreated = new Date(this.studyData.meta['date-created'])
           // Set field to the date itself, which renders as an ISO date
-          this.meta['date-created'] = dateCreated
+          this.studyData.meta['date-created'] = dateCreated
         }
         // Only set the date-created once upon study creation
-        this.meta['date-created'] = this.meta['date-created'] ?? nowDate
+        this.studyData.meta['date-created'] = this.studyData.meta['date-created'] ?? nowDate
         // Always update date-updated
-        this.meta['date-updated'] = nowDate
-        this.meta.uuid = this.meta.uuid ?? generateID()
+        this.studyData.meta['date-updated'] = nowDate
+        this.studyData.meta.uuid = this.studyData.meta.uuid ?? generateID()
 
-        const study = {
-          meta: this.meta,
-          study: {
-            name: this.titleStudy,
-            summary: this.summary,
-            'incident-date': this.date,
-            'incident-date-granularity': this.dateGranularity,
-            procedure: deepCopy(this.procedure),
-            'reported-by': this.reported,
-            references: deepCopy(this.references)
-          }
-        }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
-        downloadStudyFile(study, this.fileName)
+        downloadStudyFile(this.studyData, this.fileName)
         this.downloadedYaml = true
-        this.study = study
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
-      } else if (!this.procedure.length) {
+      } else if (!this.studyData.study.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
     },
