@@ -13,9 +13,12 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-        <upload-file-dialog @loaded-data="setDataFromFile" @loaded-filename="setFileName"/>
-        <v-spacer />
-        <instructions-dialog />
+      <upload-file-dialog
+        @loaded-data="setDataFromFile"
+        @loaded-filename="setFileName"
+      />
+      <v-spacer />
+      <instructions-dialog />
     </v-card-actions>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -24,59 +27,64 @@
         <v-card-subtitle>All fields required.</v-card-subtitle>
 
         <v-card-text>
-        <v-text-field
-          v-model="studyData.study.name"
-          :rules="rules.title"
-          label="Title"
-          hint="Name for this case study"
-          prepend-inner-icon="mdi-format-title"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.study.name"
+            :rules="rules.title"
+            label="Title"
+            hint="Name for this case study"
+            prepend-inner-icon="mdi-format-title"
+            outlined
+            required
+          />
 
-        <v-text-field
-          v-model="studyData.meta.email"
-          :rules="emailRules"
-          :validate-on-blur="true"
-          label="Contact email(s)"
-          hint="Emails are for correspondence about this case study submission and will not be published"
-          prepend-inner-icon="mdi-email"
-          type="email"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.meta.email"
+            :rules="emailRules"
+            :validate-on-blur="true"
+            label="Contact email(s)"
+            hint="Emails are for correspondence about this case study submission and will not be published"
+            prepend-inner-icon="mdi-email"
+            type="email"
+            outlined
+            required
+          />
 
-        <v-text-field
-          v-model="studyData.study['reported-by']"
-          :rules="rules.reportedBy"
-          label="Reported by"
-          hint="Name(s) of the original authors of the study"
-          prepend-inner-icon="mdi-account"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.study['reported-by']"
+            :rules="rules.reportedBy"
+            label="Reported by"
+            hint="Name(s) of the original authors of the study"
+            prepend-inner-icon="mdi-account"
+            outlined
+            required
+          />
 
-        <incident-date-picker
-          :startDate="studyData.study['incident-date']"
-          :startDateGranularity="studyData.study['incident-date-granularity']"
-          :initialRules="rules.incidentDate"
-          v-on:selectedDate="setIncidentDate"
-        />
+          <incident-date-picker
+            :startDate="studyData.study['incident-date']"
+            :startDateGranularity="studyData.study['incident-date-granularity']"
+            :initialRules="rules.incidentDate"
+            v-on:selectedDate="setIncidentDate"
+          />
 
-        <v-textarea
-          v-model="studyData.study.summary"
-          :rules="rules.summary"
-          label="Summary"
-          hint="Description of the incident"
-          prepend-inner-icon="mdi-text"
-          outlined
-          required
-          auto-grow
-        />
+          <v-textarea
+            v-model="studyData.study.summary"
+            :rules="rules.summary"
+            label="Summary"
+            hint="Description of the incident"
+            prepend-inner-icon="mdi-text"
+            outlined
+            required
+            auto-grow
+          />
         </v-card-text>
 
-      <v-card-title>Procedure</v-card-title>
-      <v-card-subtitle>Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.</v-card-subtitle>
+      <v-card-title>
+        Procedure
+      </v-card-title>
+      <v-card-subtitle>
+        Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
+      </v-card-subtitle>
+
       <v-card-text>
         <edit-procedure
           class="mx-8"
@@ -95,7 +103,10 @@
           @addingBoolUpdate="addingStep = $event"
         />
         <div v-else>
-          <v-btn class="ma-2 mb-10" @click="addingStep = true">
+          <v-btn
+            class="ma-2 mb-10"
+            @click="addingStep = true"
+          >
             <v-icon left>
               mdi-plus
             </v-icon>
@@ -104,18 +115,33 @@
         </div>
       </v-card-text>
 
-      <v-card-title>References</v-card-title>
-      <v-card-subtitle>Optionally list sources for this case study.</v-card-subtitle>
+      <v-card-title>
+        References
+      </v-card-title>
+      <v-card-subtitle>
+        Optionally list sources for this case study.
+      </v-card-subtitle>
+
       <v-card-text>
-        <div v-if="studyData.study.references.length" class="mx-8">
+        <div
+          v-if="studyData.study.references.length"
+          class="mx-8"
+        >
           <v-list flat>
             <v-list-item-group>
-            <div v-for="(value, key) in studyData.study.references" :key="key">
-              <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
-            </div>
+              <div
+                v-for="(value, key) in studyData.study.references"
+                :key="key"
+              >
+                <toggleable-source
+                  :source="value"
+                  :index="key"
+                  @clicked="addSourceAt"
+                  v-on:delete="deleteSourceAt"
+                />
+              </div>
             </v-list-item-group>
           </v-list>
-
         </div>
         <add-source
           v-if="addingSource"
@@ -135,8 +161,12 @@
         </div>
       </v-card-text>
 
-      <v-card-title>Download</v-card-title>
-      <v-card-subtitle>Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.</v-card-subtitle>
+      <v-card-title>
+        Download
+      </v-card-title>
+      <v-card-subtitle>
+        Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.
+      </v-card-subtitle>
       <v-card-text>
         <v-row>
           <v-col
@@ -145,17 +175,17 @@
             md="6"
           >
             <div>
-            <v-text-field
-              v-model="fileName"
-              :rules="rules.fileName"
-              label="Case Study File Name"
-              hint="Name or change case study file name to be downloaded"
-              prepend-inner-icon="mdi-file-download"
-              outlined
-              clearable
-              required
-              auto-grow
-            />
+              <v-text-field
+                v-model="fileName"
+                :rules="rules.fileName"
+                label="Case Study File Name"
+                hint="Name or change case study file name to be downloaded"
+                prepend-inner-icon="mdi-file-download"
+                outlined
+                clearable
+                required
+                auto-grow
+              />
               <v-alert
                 v-if="errorMsg"
                 text
@@ -177,14 +207,17 @@
                     @click="submitStudy"
                   >
                     <v-icon left>
-                    mdi-download
+                      mdi-download
                     </v-icon>
                     Download Case Study
                   </v-btn>
                 </template>
-                <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
               </v-tooltip>
-              <download-powerpoint v-if="downloadedYaml" :study="study" :builder="builder" />
+              <download-powerpoint
+                v-if="downloadedYaml"
+                :study="studyData"
+                :builder="true"
+              />
               <v-alert
                 v-if="submissionMsg"
                 text
@@ -192,7 +225,8 @@
                 type="success"
                 dense
                 >
-                {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
+                {{ submissionMsg }}
+                <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
             </div>
             </v-col>
@@ -248,7 +282,6 @@ export default {
       submissionMsg: '',
       fileName: '',
       downloadedYaml: false,
-      builder: true,
       contactEmail: 'atlas@mitre.org',
       dialog: false,
       to: null,
