@@ -130,6 +130,8 @@
         </div>
       </v-card-text>
 
+      <v-card-title>Download</v-card-title>
+      <v-card-subtitle>Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.</v-card-subtitle>
       <v-card-text>
         <v-row>
           <v-col
@@ -159,7 +161,7 @@
                 {{ errorMsg }}
               </v-alert>
             </div>
-            <div style="float: right;">
+            <div style="float: left;">
               <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
