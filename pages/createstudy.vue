@@ -344,16 +344,14 @@ export default {
       this.addingSource = false
     },
     submitStudy () {
-      console.log('checkbox', this.pptSelected)
       this.requiredFieldRuleKeys.forEach((key) => {
         this.rules[key] = [this.requiredRule]
       })
       // Email already has a rule in place, add required to the front
       this.emailRules.unshift(this.requiredRule)
 
-      if (this.$refs.form.validate() && this.procedure.length) {
+      if (this.$refs.form.validate() && this.procedure.length && this.fileName) {
         this.errorMsg = ''
-        // this.downloadedYaml = true
 
         // Metadata
         const nowDate = new Date()
