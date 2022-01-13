@@ -186,6 +186,10 @@ export default {
             href: '/resources/contribute'
           },
           {
+            name: 'Updates',
+            href: '/resources/updates'
+          },
+          {
             name: 'Contact Us',
             href: '/resources/feedback'
           }

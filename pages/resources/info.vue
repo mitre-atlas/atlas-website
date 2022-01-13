@@ -23,10 +23,6 @@
   </p>
 
   <page-section-title>Current Version: {{version}}</page-section-title>
-  <ul>
-    <li>This version contains changes to case studies X and Y</li>
-  </ul>
-
   <!-- <version-documentation :version-doc="version-docA" /> -->
   <nuxt-content :document ="page"/>
 

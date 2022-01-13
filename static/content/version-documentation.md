@@ -1,55 +1,29 @@
-# Dillinger
-## _The Last Markdown Editor, Ever_
+## Latest Update - January 2022
+<p></p>
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
+- Version: 3.0.0
+- Release Date: January 11, 2022
+- Overview Notes: Case study builder added
+- Data: [V3.0.0 Data Repository](https://atlas.mitre.org/matrix)
+\
+The January 2022 (v3.0.0) ATLAS release update adds new functionality in the form of the Case Study Builder. The builder can be used to craft submission files for new case studies with details and technique mappings.
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+The [Case Study Builder](https://atlas.mitre.org/studies/create) can be found in the “Build Case Study” subsection located under the “Case Study” tab in the navigation menu.
 
-Dillinger is a cloud-enabled, mobile-ready, offline-storage compatible,
-AngularJS-powered HTML5 Markdown editor.
+### How to Use the Case Study Builder:
+<p></p>
 
-- Type some Markdown on the left
-- See HTML in the right
-- ✨Magic ✨
+1.	Fill out the form.
+2.	Download the generated case study .yaml file (and PowerPoint .pptx version if selected).
+3.	Email the case study file to atlas@mitre.org
+\
+To view or edit an existing case study, click the "Load Case Study" button and upload the .yaml file. Make any necessary adjustments, then re-download the file. The ATLAS team will review the submission and follow up with feedback.
 
-## Features
+### Case Study Considerations:
+<p></p>
 
-- Import a HTML file and watch it magically convert to Markdown
-- Drag and drop images (requires your Dropbox account be linked)
-- Import and save files from GitHub, Dropbox, Google Drive and One Drive
-- Drag and drop markdown and HTML files into Dillinger
-- Export documents as Markdown, HTML and PDF
-
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
-As [John Gruber] writes on the [Markdown site][df1]
-
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
-
-This text you see here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
-
-## Tech
-
-Dillinger uses a number of open source projects to work properly:
-
-- [AngularJS] - HTML enhanced for web apps!
-- [Ace Editor] - awesome web-based text editor
-- [markdown-it] - Markdown parser done right. Fast and easy to extend.
-- [Twitter Bootstrap] - great UI boilerplate for modern web apps
-- [node.js] - evented I/O for the backend
-- [Express] - fast node.js network app framework [@tjholowaychuk]
-- [Gulp] - the streaming build system
-- [Breakdance](https://breakdance.github.io/breakdance/) - HTML
-to Markdown converter
-- [jQuery] - duh
-
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
+1.	The attack exploits one or more vulnerabilities that compromise the confidentiality, integrity, or availability of a ML system.
+2.	The attack is against a production/commercial ML system. This can be on MLaaS or ML systems embedded in clients/at the edge.
+3.	Ensure you have permission to share this information and/or publish this research. Please follow the proper channels before reporting a new attack and make sure you are practicing responsible disclosure.
+\
+We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers. This version of ATLAS contains 12 Tactics, 33 Techniques, 17 Sub-techniques, and 15 Case Studies.
