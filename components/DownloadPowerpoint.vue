@@ -419,8 +419,8 @@ export default {
       })
     },
     referenceSlide (ppt, yaml) {
-      const slide = ppt.addSlide({ masterName: 'Content' })
-        .addText('References', { placeholder: 'title' })
+      // const slide = ppt.addSlide({ masterName: 'Content' })
+      //   .addText('References', { placeholder: 'title' })
 
       const texts = []
 
@@ -446,10 +446,76 @@ export default {
         }
 
         // Add to slide
-        slide.addText(
-          texts,
-          { x: 0.5, y: 1.2, w: 9, h: 4, valign: 'top' }
-        )
+        ppt.defineSlideMaster({
+          title: 'References',
+          background: { color: 'FFFFFF' },
+          objects: [
+            {
+              placeholder: {
+                options: {
+                  name: 'title',
+                  type: 'title',
+                  x: 0.5,
+                  y: 0.5,
+                  w: '100%',
+                  h: 1,
+                  align: 'left',
+                  fontFace: 'Arial',
+                  fontSize: 24,
+                  color: '0D2F4F',
+                  isTextBox: true
+                },
+                text: 'Title'
+              }
+            },
+            {
+              placeholder: {
+                options: {
+                  name: 'content',
+                  type: 'body',
+                  x: 0.5,
+                  y: 1.2,
+                  w: 9,
+                  h: 4,
+                  align: 'left',
+                  fontFace: 'Arial',
+                  fontSize: 12,
+                  color: '0D2F4F',
+                  isTextBox: true,
+                  lineSpacingMultiple: 1.15
+                },
+                text: 'Content'
+              }
+            },
+            {
+              image: {
+                x: '5%',
+                y: '93%',
+                w: 1.2,
+                h: 0.18,
+                data: MITRE_ATLAS_TM_LOGO()
+              }
+            },
+
+            {
+              text: {
+                text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+                options: {
+                  y: '95%',
+                  w: '100%',
+                  align: 'center',
+                  fontFace: 'Arial',
+                  fontSize: 8,
+                  color: '0D2F4F'
+                }
+              }
+            }
+          ],
+          slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+        })
+        ppt.addSlide({ masterName: 'References' })
+          .addText('References', { placeholder: 'title' })
+          .addText(texts, { placeholder: 'content' })
       })
     }
   }
