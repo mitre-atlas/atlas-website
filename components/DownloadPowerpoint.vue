@@ -1,15 +1,25 @@
 <template>
-    <v-row align="start">
-      <v-container>
-        <v-checkbox
-          v-model="pptCheckbox"
-          label="Include Case Study PPT"
-          @change="changeCheckbox"
-          elevation="0"
-          color="inherit"
-        ></v-checkbox>
+  <v-row v-if="isBuilder" align="start">
+    <v-container>
+      <v-checkbox
+        v-model="pptCheckbox"
+        label="Include Case Study PPT"
+        @change="changeCheckbox"
+        elevation="0"
+        color="inherit"
+      ></v-checkbox>
       </v-container>
     </v-row>
+  <v-btn
+    v-else
+    elevation="0"
+    color="inherit"
+    v-bind="attrs"
+    v-on="on"
+    @click="makePPT"
+  >
+    Download Powerpoint
+  </v-btn>
 </template>
 
 <script>
@@ -80,6 +90,19 @@ export default {
         ],
         slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
+
+      if (!this.isBuilder) {
+        const studyTemp = { study: this.studyYaml }
+        this.studyYaml = studyTemp
+      }
+      this.titleSlide(ppt, this.studyYaml)
+      this.detailSlide(ppt, this.studyYaml)
+      this.procedureSlide(ppt, this.studyYaml)
+      if (this.studyYaml.study.references) {
+        this.referenceSlide(ppt, this.studyYaml)
+      }
+
+      ppt.writeFile({ fileName: `${this.studyYaml.study.name}.pptx` })
     },
     titleSlide (ppt, yaml) {
       ppt.defineSlideMaster({
@@ -417,8 +440,8 @@ export default {
       })
     },
     referenceSlide (ppt, yaml) {
-      // const slide = ppt.addSlide({ masterName: 'Content' })
-      //   .addText('References', { placeholder: 'title' })
+      const slide = ppt.addSlide({ masterName: 'Content' })
+        .addText('References', { placeholder: 'title' })
 
       const texts = []
 
@@ -444,76 +467,10 @@ export default {
         }
 
         // Add to slide
-        ppt.defineSlideMaster({
-          title: 'References',
-          background: { color: 'FFFFFF' },
-          objects: [
-            {
-              placeholder: {
-                options: {
-                  name: 'title',
-                  type: 'title',
-                  x: 0.5,
-                  y: 0.5,
-                  w: '100%',
-                  h: 1,
-                  align: 'left',
-                  fontFace: 'Arial',
-                  fontSize: 24,
-                  color: '0D2F4F',
-                  isTextBox: true
-                },
-                text: 'Title'
-              }
-            },
-            {
-              placeholder: {
-                options: {
-                  name: 'content',
-                  type: 'body',
-                  x: 0.5,
-                  y: 1.2,
-                  w: 9,
-                  h: 4,
-                  align: 'left',
-                  fontFace: 'Arial',
-                  fontSize: 12,
-                  color: '0D2F4F',
-                  isTextBox: true,
-                  lineSpacingMultiple: 1.15
-                },
-                text: 'Content'
-              }
-            },
-            {
-              image: {
-                x: '5%',
-                y: '93%',
-                w: 1.2,
-                h: 0.18,
-                data: MITRE_ATLAS_TM_LOGO()
-              }
-            },
-
-            {
-              text: {
-                text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
-                options: {
-                  y: '95%',
-                  w: '100%',
-                  align: 'center',
-                  fontFace: 'Arial',
-                  fontSize: 8,
-                  color: '0D2F4F'
-                }
-              }
-            }
-          ],
-          slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
-        })
-        ppt.addSlide({ masterName: 'References' })
-          .addText('References', { placeholder: 'title' })
-          .addText(texts, { placeholder: 'content' })
+        slide.addText(
+          texts,
+          { x: 0.5, y: 1.2, w: 9, h: 4, valign: 'top' }
+        )
       })
     }
   }

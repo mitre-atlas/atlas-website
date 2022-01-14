@@ -218,7 +218,6 @@
 </router>
 
 <script>
-import Pptxgen from 'pptxgenjs'
 import { mapActions, mapGetters } from 'vuex'
 import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
 
