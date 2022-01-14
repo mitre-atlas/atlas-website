@@ -35,6 +35,14 @@ export default {
       pptCheckbox: ''
     }
   },
+  watch: { // TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
+    studyYaml: {
+      immediate: true,
+      handler (newYaml, oldYaml) {
+        this.studyYaml = newYaml
+      }
+    }
+  },
   methods: {
     changeCheckbox () {
       this.$emit('updateCheckbox', this.pptCheckbox)

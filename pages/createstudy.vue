@@ -13,9 +13,12 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-        <upload-file-dialog @loaded-data="setDataFromFile" @loaded-filename="setFileName"/>
-        <v-spacer />
-        <instructions-dialog />
+      <upload-file-dialog
+        @loaded-data="setDataFromFile"
+        @loaded-filename="setFileName"
+      />
+      <v-spacer />
+      <instructions-dialog />
     </v-card-actions>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -24,61 +27,71 @@
         <v-card-subtitle>All fields required.</v-card-subtitle>
 
         <v-card-text>
-        <v-text-field
-          v-model="titleStudy"
-          :rules="rules.title"
-          label="Title"
-          hint="Name for this case study"
-          prepend-inner-icon="mdi-format-title"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.study.name"
+            :rules="rules.title"
+            label="Title"
+            hint="Name for this case study"
+            prepend-inner-icon="mdi-format-title"
+            outlined
+            required
+          />
 
-        <v-text-field
-          v-model="meta.email"
-          :rules="emailRules"
-          :validate-on-blur="true"
-          label="Contact email(s)"
-          hint="Emails are for correspondence about this case study submission and will not be published"
-          prepend-inner-icon="mdi-email"
-          type="email"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.meta.email"
+            :rules="emailRules"
+            :validate-on-blur="true"
+            label="Contact email(s)"
+            hint="Emails are for correspondence about this case study submission and will not be published"
+            prepend-inner-icon="mdi-email"
+            type="email"
+            outlined
+            required
+          />
 
-        <v-text-field
-          v-model="reported"
-          :rules="rules.reportedBy"
-          label="Reported by"
-          hint="Name(s) of the original authors of the study"
-          prepend-inner-icon="mdi-account"
-          outlined
-          required
-        />
+          <v-text-field
+            v-model="studyData.study['reported-by']"
+            :rules="rules.reportedBy"
+            label="Reported by"
+            hint="Name(s) of the original authors of the study"
+            prepend-inner-icon="mdi-account"
+            outlined
+            required
+          />
 
-        <incident-date-picker
-          :startDate="date"
-          :startDateGranularity="dateGranularity"
-          :initialRules="rules.incidentDate"
-          v-on:selectedDate="setIncidentDate"
-        />
+          <incident-date-picker
+            :startDate="studyData.study['incident-date']"
+            :startDateGranularity="studyData.study['incident-date-granularity']"
+            :initialRules="rules.incidentDate"
+            v-on:selectedDate="setIncidentDate"
+          />
 
-        <v-textarea
-          v-model="summary"
-          :rules="rules.summary"
-          label="Summary"
-          hint="Description of the incident"
-          prepend-inner-icon="mdi-text"
-          outlined
-          required
-          auto-grow
-        />
+          <v-textarea
+            v-model="studyData.study.summary"
+            :rules="rules.summary"
+            label="Summary"
+            hint="Description of the incident"
+            prepend-inner-icon="mdi-text"
+            outlined
+            required
+            auto-grow
+          />
         </v-card-text>
 
-      <v-card-title>Procedure</v-card-title>
-      <v-card-subtitle>Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.</v-card-subtitle>
+      <v-card-title>
+        Procedure
+      </v-card-title>
+      <v-card-subtitle>
+        Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
+      </v-card-subtitle>
+
       <v-card-text>
-        <edit-procedure class="mx-8" :key="procedure" :procedure="procedure" @updateProcedure="procedure = $event" />
+        <edit-procedure
+          class="mx-8"
+          :key="studyData.study.procedure"
+          :procedure="studyData.study.procedure"
+          @updateProcedure="studyData.study.procedure = $event"
+          />
         <add-procedure-step
           v-if="addingStep"
           ref="addProcStepRef"
@@ -90,7 +103,10 @@
           @addingBoolUpdate="addingStep = $event"
         />
         <div v-else>
-          <v-btn class="ma-2 mb-10" @click="addingStep = true">
+          <v-btn
+            class="ma-2 mb-10"
+            @click="addingStep = true"
+          >
             <v-icon left>
               mdi-plus
             </v-icon>
@@ -99,18 +115,33 @@
         </div>
       </v-card-text>
 
-      <v-card-title>References</v-card-title>
-      <v-card-subtitle>Optionally list sources for this case study.</v-card-subtitle>
+      <v-card-title>
+        References
+      </v-card-title>
+      <v-card-subtitle>
+        Optionally list sources for this case study.
+      </v-card-subtitle>
+
       <v-card-text>
-        <div v-if="references.length" class="mx-8">
+        <div
+          v-if="studyData.study.references.length"
+          class="mx-8"
+        >
           <v-list flat>
             <v-list-item-group>
-            <div v-for="(value, key) in references" :key="key">
-              <toggleable-source :source="value" :index="key" @clicked="addSourceAt" v-on:delete="deleteSourceAt"/>
-            </div>
+              <div
+                v-for="(value, key) in studyData.study.references"
+                :key="key"
+              >
+                <toggleable-source
+                  :source="value"
+                  :index="key"
+                  @clicked="addSourceAt"
+                  v-on:delete="deleteSourceAt"
+                />
+              </div>
             </v-list-item-group>
           </v-list>
-
         </div>
         <add-source
           v-if="addingSource"
@@ -130,8 +161,12 @@
         </div>
       </v-card-text>
 
-      <v-card-title>Download</v-card-title>
-      <v-card-subtitle>Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.</v-card-subtitle>
+      <v-card-title>
+        Download
+      </v-card-title>
+      <v-card-subtitle>
+        Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.
+      </v-card-subtitle>
       <v-card-text>
         <v-row>
           <v-col
@@ -185,15 +220,22 @@
                     @click="submitStudy"
                   >
                     <v-icon left>
-                    mdi-download
+                      mdi-download
                     </v-icon>
                     Download Case Study
                   </v-btn>
                 </template>
-                <!-- <span :style="{ color: 'black' }">Email the downloaded .yaml file to <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a></span> -->
               </v-tooltip>
+<<<<<<< HEAD
             </v-col>
             <v-col>
+=======
+              <download-powerpoint
+                v-if="downloadedYaml"
+                :study="studyData"
+                :builder="true"
+              />
+>>>>>>> origin/103-powerpoint-bug
               <v-alert
                 v-if="submissionMsg"
                 text
@@ -201,7 +243,8 @@
                 type="success"
                 dense
                 >
-                {{ submissionMsg }} <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
+                {{ submissionMsg }}
+                <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
             </v-col>
           </v-row>
@@ -219,7 +262,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { deepCopy, generateID, downloadStudyFile } from 'static/data/tools.js'
+import { generateID, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
   data () {
@@ -227,38 +270,54 @@ export default {
       title: 'Create A Case Study',
       valid: true,
       initialFileName: '',
-      date: null,
-      dateGranularity: null,
+
       selectTactic: null,
       selectTechnique: null,
       description: '',
-      titleStudy: '',
-      meta: { email: '' },
-      study: null,
-      emailRules: [
-        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
-      ],
-      summary: '',
+
+      // Case study data object
+      studyData: {
+        meta: { email: '' },
+        study: {
+          name: '',
+          summary: '',
+          'incident-date': null,
+          'incident-date-granularity': null,
+          procedure: [],
+          'reported-by': '',
+          references: []
+        }
+      },
+
       sourceDescription: '',
       url: '',
-      reported: '',
-      procedure: [],
+
       addingStep: true,
-      references: [],
       addingSource: false,
+
       errorMsg: '',
       submissionMsg: '',
       fileName: '',
+<<<<<<< HEAD
       downloadedYaml: true,
       builder: true,
+=======
+      downloadedYaml: false,
+>>>>>>> origin/103-powerpoint-bug
       contactEmail: 'atlas@mitre.org',
       dialog: false,
       to: null,
       isEditing: false,
       pptSelected: '',
 
-      rules: {}, // Initial empty obj bound to field rules prop - must start empty
+      // Field validation rules
+      emailRules: [
+        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
+      ],
+      // Initial empty obj bound to field rules prop - must start empty
+      rules: {},
       requiredRule: v => !!v || 'Required',
+      // rules.key that will get the above rule applied upon click Download
       requiredFieldRuleKeys: [
         'title',
         'reportedBy',
@@ -308,38 +367,38 @@ export default {
     },
     setDataFromFile (data) {
       // Directly set proprties on this instance
-      Object.assign(this, data)
+      this.studyData = data
 
       // Collapse forms into buttons as needed
-      if (this.procedure !== []) {
+      if (this.studyData.study.procedure !== []) {
         this.addingStep = false
       }
-      if (this.references !== []) {
+      if (this.studyData.study.references !== []) {
         this.addingSource = false
       }
     },
     setIncidentDate (date, granularity) {
       // Called from incident date picker
-      this.date = date
-      this.dateGranularity = granularity
+      this.studyData.study['incident-date'] = date
+      this.studyData.study['incident-date-granularity'] = granularity
     },
     updateCheckbox (newval) {
       this.pptSelected = newval
     },
     addProcedureStep (newStep) {
-      this.procedure.push(newStep)
+      this.studyData.study.procedure.push(newStep)
       this.addingStep = false
     },
     addSource (newSource) {
-      this.references.push(newSource)
+      this.studyData.study.references.push(newSource)
       this.addingSource = false
     },
     addSourceAt (newSource, index) {
-      this.references.splice(index, 1, newSource)
+      this.studyData.study.references.splice(index, 1, newSource)
       this.addingSource = false
     },
     deleteSourceAt (index) {
-      this.references.splice(index, 1)
+      this.studyData.study.references.splice(index, 1)
       this.addingSource = false
     },
     submitStudy () {
@@ -354,58 +413,26 @@ export default {
 
         // Metadata
         const nowDate = new Date()
-        // Maintain backwards compatibility with JS Date string format
-        if (this.meta['date-created'] && typeof this.meta['date-created'] === 'string') {
-          // Parse the JS Date string, i.e 2021-8-24 1:22:23 PM UTC
-          const dateCreated = new Date(this.meta['date-created'])
-          // Set field to the date itself, which renders as an ISO date
-          this.meta['date-created'] = dateCreated
-        }
         // Only set the date-created once upon study creation
-        this.meta['date-created'] = this.meta['date-created'] ?? nowDate
+        this.studyData.meta['date-created'] = this.studyData.meta['date-created'] ?? nowDate
         // Always update date-updated
-        this.meta['date-updated'] = nowDate
-        this.meta.uuid = this.meta.uuid ?? generateID()
+        this.studyData.meta['date-updated'] = nowDate
+        this.studyData.meta.uuid = this.studyData.meta.uuid ?? generateID()
 
-        const study = {
-          meta: this.meta,
-          filename: this.filename,
-          study: {
-            name: this.titleStudy,
-            summary: this.summary,
-            'incident-date': this.date,
-            'incident-date-granularity': this.dateGranularity,
-            procedure: deepCopy(this.procedure),
-            'reported-by': this.reported,
-            references: deepCopy(this.references)
-          }
-        }
-        this.study = study
-
-        if (this.pptSelected === true) {
-          // this.$refs.formatPpt.makePPT()
-          const ppt = new Pptxgen()
-          if (!this.isBuilder) {
-            const studyTemp = { study: this.study.study }
-            this.study = studyTemp
-          }
-          this.$refs.formatPpt.titleSlide(ppt, this.study)
-          this.$refs.formatPpt.detailSlide(ppt, this.study)
-          this.$refs.formatPpt.procedureSlide(ppt, this.study)
-          if (this.study.study.references) {
-            this.$refs.formatPpt.referenceSlide(ppt, this.study)
-          }
-
-          ppt.writeFile({ fileName: `${this.fileName}-PPT.pptx` })
-        }
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
-        downloadStudyFile(study, this.fileName)
-        this.study = study
+        downloadStudyFile(this.studyData, this.fileName)
+
+        if (this.pptSelected === true) {
+          this.$refs.formatPpt.makePPT()
+        }
+
+        // Reset
+        this.downloadedYaml = true
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
       } else if (!this.$refs.form.validate()) {
         this.errorMsg = 'Please complete all required fields'
-      } else if (!this.procedure.length) {
+      } else if (!this.studyData.study.procedure.length) {
         this.errorMsg = 'Please add at least one procedure step'
       }
     },
