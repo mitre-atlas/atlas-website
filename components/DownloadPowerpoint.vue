@@ -179,8 +179,6 @@ export default {
         yaml.study.dateGranularity === undefined ||
         yaml.study.dateGranularity === 'DATE'
       ) {
-        console.log('yaml.study', yaml.study)
-        console.log('yaml.study.study', yaml.study.study)
         // If dateGranularity is DATE, or there is no date granularity
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',
