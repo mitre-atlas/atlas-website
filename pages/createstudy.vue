@@ -226,16 +226,8 @@
                   </v-btn>
                 </template>
               </v-tooltip>
-<<<<<<< HEAD
             </v-col>
             <v-col>
-=======
-              <download-powerpoint
-                v-if="downloadedYaml"
-                :study="studyData"
-                :builder="true"
-              />
->>>>>>> origin/103-powerpoint-bug
               <v-alert
                 v-if="submissionMsg"
                 text
@@ -298,12 +290,8 @@ export default {
       errorMsg: '',
       submissionMsg: '',
       fileName: '',
-<<<<<<< HEAD
       downloadedYaml: true,
       builder: true,
-=======
-      downloadedYaml: false,
->>>>>>> origin/103-powerpoint-bug
       contactEmail: 'atlas@mitre.org',
       dialog: false,
       to: null,
