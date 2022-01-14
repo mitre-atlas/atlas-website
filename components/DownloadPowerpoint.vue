@@ -425,8 +425,8 @@ export default {
       const texts = []
 
       yaml.study.references.forEach((ref) => {
-        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null
-        const hasUrl = 'url' in ref && ref.url !== null
+        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null && ref.sourceDescription !== ''
+        const hasUrl = 'url' in ref && ref.url !== null && ref.url !== ''
 
         if (hasText && hasUrl) {
           texts.push({
