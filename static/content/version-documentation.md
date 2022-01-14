@@ -1,4 +1,3 @@
-## Latest Update - January 2022
 <p></p>
 
 - Version: 3.0.0
