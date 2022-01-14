@@ -36,7 +36,7 @@ export default {
     }
   },
   watch: { // TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
-    studyYaml: {
+    study: {
       immediate: true,
       handler (newYaml, oldYaml) {
         this.studyYaml = newYaml

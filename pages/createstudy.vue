@@ -199,7 +199,7 @@
             </v-col>
             <v-col>
               <download-powerpoint
-              :study="study"
+              :study="studyData"
               :builder="builder"
               @updateCheckbox="updateCheckbox"
               ref="formatPpt"
@@ -396,7 +396,7 @@ export default {
       // Email already has a rule in place, add required to the front
       this.emailRules.unshift(this.requiredRule)
 
-      if (this.$refs.form.validate() && this.procedure.length && this.fileName) {
+      if (this.$refs.form.validate() && this.studyData.study.procedure.length && this.fileName) {
         this.errorMsg = ''
 
         // Metadata
