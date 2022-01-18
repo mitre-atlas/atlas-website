@@ -200,20 +200,25 @@ export default {
       })
 
       let formattedDate = null
-      if (yaml.study.dateGranularity === 'YEAR') {
+      let dateGranularity = yaml.study['incident-date-granularity']
+      // Handle existing individual case studies with previous key
+      if ('dateGranularity' in yaml.study) {
+        dateGranularity = yaml.study.dateGranularity
+      }
+      if (dateGranularity === 'YEAR') {
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric' }
         )
-      } else if (yaml.study.dateGranularity === 'MONTH') {
+      } else if (dateGranularity === 'MONTH') {
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
       } else if (
         // TODO some case studies have incident-date-granularity, remove this undefined check once fixed
-        yaml.study.dateGranularity === undefined ||
-        yaml.study.dateGranularity === 'DATE'
+        dateGranularity === undefined ||
+        dateGranularity === 'DATE'
       ) {
         // If dateGranularity is DATE, or there is no date granularity
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
