@@ -412,7 +412,7 @@ export default {
         downloadStudyFile(this.studyData, this.fileName)
 
         if (this.pptSelected === true) {
-          this.$refs.formatPpt.makePPT()
+          this.$refs.formatPpt.makePPT(this.fileName)
         }
 
         // Reset

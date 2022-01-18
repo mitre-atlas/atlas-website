@@ -16,7 +16,7 @@
     color="inherit"
     v-bind="attrs"
     v-on="on"
-    @click="makePPT"
+    @click="makePPT()"
   >
     Download Powerpoint
   </v-btn>
@@ -47,7 +47,7 @@ export default {
     changeCheckbox () {
       this.$emit('updateCheckbox', this.pptCheckbox)
     },
-    makePPT () {
+    makePPT (filename) {
       const ppt = new Pptxgen()
       ppt.layout = 'LAYOUT_16x9'
       // Slide layout with just title
@@ -110,7 +110,12 @@ export default {
         this.referenceSlide(ppt, this.studyYaml)
       }
 
-      ppt.writeFile({ fileName: `${this.studyYaml.study.name}.pptx` })
+      // Use case study title if no argument provided
+      if (typeof filename === 'undefined') {
+        filename = this.studyYaml.study.name
+      }
+
+      ppt.writeFile({ fileName: `${filename}.pptx` })
     },
     titleSlide (ppt, yaml) {
       ppt.defineSlideMaster({
