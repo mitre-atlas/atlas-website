@@ -4,16 +4,23 @@
   <v-card flat>
     <v-list subheader>
       <v-subheader>Incident date</v-subheader>
-      <study-details-list-item :item-list="formattedDate" />
+      <study-details-list-item>{{ formattedDate }}</study-details-list-item>
 
       <v-subheader>Reported by</v-subheader>
-      <study-details-list-item :item-list="study['reported-by']" />
+      <study-details-list-item>{{ study['reported-by'] }}</study-details-list-item>
+
+      <v-subheader>Additional views</v-subheader>
+      <v-list-item>
+        <download-data-files-dropdown :study="study" />
+      </v-list-item>
+      <v-list-item>
+        <navigator-layer-dropdown :study="study" />
+      </v-list-item>
     </v-list>
   </v-card>
 </template>
 
 <script>
-
 export default {
   name: 'StudyDetailsCard',
   props: {

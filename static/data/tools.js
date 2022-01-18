@@ -1,4 +1,5 @@
 import * as YAML from 'js-yaml'
+const path = require('path')
 
 const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
 const TAB_LENGTH = 2
@@ -164,7 +165,7 @@ function createJSON (obj) {
   return json
 }
 
-function download (filename, text) { // ripped from stackoverflow lets gooooooooo
+function download (filename, text) {
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plaincharset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
@@ -180,4 +181,22 @@ function downloadStudyFile (study, filename) {
   download(`${filename}.yaml`, studyYAML)
 }
 
-export { createJSON, createYAML, download, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
+function downloadUrlAsFile (url) {
+  // Downloads a file located at url
+  // Parameter url is a string
+  const xhr = new XMLHttpRequest()
+  xhr.responseType = 'blob'
+  xhr.onload = function () {
+    let a = document.createElement('a')
+    a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
+    a.download = path.basename(url) // Set download filename to url filename
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    a = null
+  }
+  xhr.open('GET', url)
+  xhr.send()
+}
+
+export { createJSON, createYAML, download, downloadUrlAsFile, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }

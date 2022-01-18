@@ -41,16 +41,21 @@
           nuxt
           :to="button.to" /></v-col></v-row>
       </v-col>
-
+      <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
+        <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
+            v{{version}}
+        </v-card-text>
+      </v-row>
     </v-row>
-
     </v-card>
   </v-footer>
 </template>
 <script>
+import packageData from '../package.json'
 export default {
   name: 'Footer',
   data: () => ({
+    version: packageData.version,
     buttons: [
       { text: 'Contact', to: '/resources/feedback', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
