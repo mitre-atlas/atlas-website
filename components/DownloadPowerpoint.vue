@@ -1,16 +1,21 @@
 <template>
-  <v-btn v-if="isBuilder" color="secondary" v-on="on" @click="makePPT">
-    <v-icon left>
-      mdi-download
-    </v-icon>
-    Download Powerpoint
-  </v-btn>
+  <v-row v-if="isBuilder" align="start">
+    <v-container>
+      <v-checkbox
+        v-model="pptCheckbox"
+        label="Include Case Study PPT"
+        @change="changeCheckbox"
+        elevation="0"
+        color="inherit"
+      ></v-checkbox>
+      </v-container>
+    </v-row>
   <v-list-item
     v-else
     color="inherit"
     v-bind="attrs"
     v-on="on"
-    @click="makePPT"
+    @click="makePPT()"
   >
     <v-list-item-icon style="margin-right: 0px;">
       <v-icon small>
@@ -34,11 +39,23 @@ export default {
   data () {
     return {
       studyYaml: this.study,
-      isBuilder: this.builder
+      isBuilder: this.builder,
+      pptCheckbox: ''
+    }
+  },
+  watch: { // TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
+    study: {
+      immediate: true,
+      handler (newYaml, oldYaml) {
+        this.studyYaml = newYaml
+      }
     }
   },
   methods: {
-    makePPT () {
+    changeCheckbox () {
+      this.$emit('updateCheckbox', this.pptCheckbox)
+    },
+    makePPT (filename) {
       const ppt = new Pptxgen()
       ppt.layout = 'LAYOUT_16x9'
       // Slide layout with just title
@@ -101,7 +118,12 @@ export default {
         this.referenceSlide(ppt, this.studyYaml)
       }
 
-      ppt.writeFile({ fileName: `${this.studyYaml.study.name}.pptx` })
+      // Use case study title if no argument provided
+      if (typeof filename === 'undefined') {
+        filename = this.studyYaml.study.name
+      }
+
+      ppt.writeFile({ fileName: `${filename}.pptx` })
     },
     titleSlide (ppt, yaml) {
       ppt.defineSlideMaster({
@@ -186,20 +208,25 @@ export default {
       })
 
       let formattedDate = null
-      if (yaml.study.dateGranularity === 'YEAR') {
+      let dateGranularity = yaml.study['incident-date-granularity']
+      // Handle existing individual case studies with previous key
+      if ('dateGranularity' in yaml.study) {
+        dateGranularity = yaml.study.dateGranularity
+      }
+      if (dateGranularity === 'YEAR') {
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric' }
         )
-      } else if (yaml.study.dateGranularity === 'MONTH') {
+      } else if (dateGranularity === 'MONTH') {
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
       } else if (
         // TODO some case studies have incident-date-granularity, remove this undefined check once fixed
-        yaml.study.dateGranularity === undefined ||
-        yaml.study.dateGranularity === 'DATE'
+        dateGranularity === undefined ||
+        dateGranularity === 'DATE'
       ) {
         // If dateGranularity is DATE, or there is no date granularity
         formattedDate = yaml.study['incident-date'].toLocaleDateString(
@@ -445,8 +472,8 @@ export default {
       const texts = []
 
       yaml.study.references.forEach((ref) => {
-        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null
-        const hasUrl = 'url' in ref && ref.url !== null
+        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null && ref.sourceDescription !== ''
+        const hasUrl = 'url' in ref && ref.url !== null && ref.url !== ''
 
         if (hasText && hasUrl) {
           texts.push({

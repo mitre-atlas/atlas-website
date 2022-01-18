@@ -74,27 +74,6 @@ function generateID (template = 'xxxx-xxxx-xxxx') {
   })
 }
 
-// function referenceFormat (refArray) {
-//   console.log(refArray)
-//   const outArray = []
-//   for (const index in refArray) {
-//     const sourceObject = refArray[index]
-//     outArray[index] = {
-//       sourceDescription: sourceObject.source,
-//       url: sourceObject.sourceLink
-//     }
-//   }
-// }
-
-function deepCopy (object) {
-  try {
-    return JSON.parse(JSON.stringify(object))
-  } catch (e) {
-    return null
-    // console.log('Can\'t deepcopy invalid object')
-  }
-}
-
 function dateToString (dateObj, includeTime = false) {
   const date = +pad(dateObj.getDate(), 2)
   const month = +pad(dateObj.getMonth() + 1, 2)
@@ -220,4 +199,4 @@ function downloadUrlAsFile (url) {
   xhr.send()
 }
 
-export { createJSON, createYAML, download, downloadUrlAsFile, deepCopy, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
+export { createJSON, createYAML, download, downloadUrlAsFile, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
