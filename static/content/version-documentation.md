@@ -1,5 +1,3 @@
-<p></p>
-
 - Version: 3.0.0
 - Release Date: January 11, 2022
 - Overview Notes: Case study builder added

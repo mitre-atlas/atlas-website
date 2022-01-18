@@ -22,7 +22,7 @@
     The first iteration of the adversarial machine learning threat matrix is at <a href="https://github.com/mitre/advmlthreatmatrix">https://github.com/mitre/advmlthreatmatrix</a>.
   </p>
 
-  <page-section-title>Current Version: {{version}}</page-section-title>
+  <page-section-title>Current Version</page-section-title>
   <!-- <version-documentation :version-doc="version-docA" /> -->
   <nuxt-content :document ="page"/>
 
