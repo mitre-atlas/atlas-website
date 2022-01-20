@@ -24,7 +24,7 @@
 
   <page-section-title>Current Version</page-section-title>
   <!-- <version-documentation :version-doc="version-docA" /> -->
-  <nuxt-content :document ="page"/>
+    <nuxt-content :document ="currentUpdatePageData"/>
 
 </div>
 </template>
@@ -32,10 +32,11 @@
 import packageData from '../../package.json'
 export default {
   async asyncData ({ $content }) {
-    const page = await $content('version-documentation').fetch()
-
+    // const currentUpdatePage = await $content('version-documentation').fetch()
+    const currentUpdatePage = await $content('update-files').sortBy('slug', 'desc').limit(1).fetch()
+    const currentUpdatePageData = currentUpdatePage[0]
     return {
-      page
+      currentUpdatePageData
     }
   },
   data: ({ $config: { name } }) => ({
