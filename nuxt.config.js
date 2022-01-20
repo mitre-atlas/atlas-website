@@ -63,7 +63,8 @@ export default {
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {
-    dir: 'static/content'
+    dir: 'static/content',
+    liveEdit: false
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
