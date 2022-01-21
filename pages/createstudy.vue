@@ -146,8 +146,6 @@
         <add-source
           v-if="addingSource"
           ref="addSourceRef"
-          :source-description="sourceDescription"
-          :url="url"
           @clicked="addSource"
           @addingBoolUpdate="addingSource = $event"
         />
@@ -280,9 +278,6 @@ export default {
           references: []
         }
       },
-
-      sourceDescription: '',
-      url: '',
 
       addingStep: true,
       addingSource: false,

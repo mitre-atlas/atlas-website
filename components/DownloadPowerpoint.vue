@@ -472,17 +472,17 @@ export default {
       const texts = []
 
       yaml.study.references.forEach((ref) => {
-        const hasText = 'sourceDescription' in ref && ref.sourceDescription !== null && ref.sourceDescription !== ''
+        const hasText = 'title' in ref && ref.title !== null && ref.title !== ''
         const hasUrl = 'url' in ref && ref.url !== null && ref.url !== ''
 
         if (hasText && hasUrl) {
           texts.push({
-            text: JSON.parse(JSON.stringify(ref.sourceDescription)),
+            text: JSON.parse(JSON.stringify(ref.title)),
             options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
           })
         } else if (hasText) {
           texts.push({
-            text: JSON.parse(JSON.stringify(ref.sourceDescription)),
+            text: JSON.parse(JSON.stringify(ref.title)),
             options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
           })
         } else if (hasUrl) {

@@ -76,7 +76,7 @@ study:
 
   reported-by: Palo Alto Networks (Network Security AI Research Team)
   references:
-    - sourceDescription: 'Le, Hung, et al. "URLNet: Learning a URL representation with
+    - title: 'Le, Hung, et al. "URLNet: Learning a URL representation with
       deep learning for malicious URL detection." arXiv preprint arXiv:1802.03162
       (2018).'
       url: ''
