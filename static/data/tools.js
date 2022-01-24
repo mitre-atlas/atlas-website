@@ -117,7 +117,7 @@ function validFormatYAML (yamlObj) {
     tactic: false,
     technique: false
   }
-  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'sourceDescription', 'url', 'incident-date-granularity']
+  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'title', 'url', 'incident-date-granularity']
   if (!(yamlObj.meta && yamlObj.study)) { return 'YAML is missing meta or study data' }
   // check meta data
   for (const metaKey in yamlObj.meta) {
@@ -145,9 +145,9 @@ function validFormatYAML (yamlObj) {
       // ensure references are correctly formatted
       if (studyKey === 'references') {
         const refObj = yamlObj.study[studyKey]
-        if (refObj === null) { return 'If study has references, include sourceDescription and/or url' }
+        if (refObj === null) { return 'If study has references, include title and/or url' }
         for (let i = 0; i < refObj.length; i++) {
-          if (!('sourceDescription' in refObj[i] || 'url' in refObj[i])) { return 'Each reference requires sourceDescription and/or url' }
+          if (!('title' in refObj[i] || 'url' in refObj[i])) { return 'Each reference requires title and/or url' }
         }
       }
     } else { return 'Study data contains invalid key' }

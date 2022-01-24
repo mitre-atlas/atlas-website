@@ -42,9 +42,9 @@ study:
 
   reported-by: Will Pearce (@moo_hax), Nick Landers (@monoxgas)
   references:
-    - sourceDescription: ''
+    - title: ''
       url: https://nvd.nist.gov/vuln/detail/CVE-2019-20634
-    - sourceDescription: ''
+    - title: ''
       url: https://github.com/moohax/Talks/blob/master/slides/DerbyCon19.pdf
-    - sourceDescription: ''
+    - title: ''
       url: https://github.com/moohax/Proof-Pudding

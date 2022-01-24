@@ -103,7 +103,7 @@ study:
     Neil Yale / YingZonghao (Organization:University of Chinese Academy of
     Sciences)
   references:
-    - sourceDescription: >-
+    - title: >-
         DeepPayload: Black-box Backdoor Attack on Deep Learning Models through
         Neural Payload Injection
       url: https://arxiv.org/abs/2101.06896

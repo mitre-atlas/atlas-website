@@ -12,7 +12,7 @@
 
       <v-card-text>
         <v-text-field
-          v-model="sourceDescriptionData"
+          v-model="titleData"
           label="Description"
           hint="Brief description (optional)"
           outlined
@@ -49,15 +49,24 @@
 <script>
 export default {
   name: 'AddSource',
-  props: [
-    'sourceDescription',
-    'url',
-    'addingSource',
-    'index'
-  ],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    addingSource: {
+      type: Boolean,
+      default: false
+    },
+    index: Number
+  },
   data () {
     return {
-      sourceDescriptionData: this.sourceDescription,
+      titleData: this.title,
       urlData: this.url,
       addSourceErr: '',
       addingBool: this.addingSource
@@ -68,9 +77,9 @@ export default {
       this.inputVal = inputVal
     },
     addSource () {
-      if (this.sourceDescriptionData || this.urlData) {
+      if (this.titleData || this.urlData) {
         const newSource = {
-          sourceDescription: this.sourceDescriptionData,
+          title: this.titleData,
           url: this.urlData
         }
         this.$emit('clicked', newSource)
@@ -80,7 +89,7 @@ export default {
       }
     },
     clearSource () {
-      this.sourceDescriptionData = ''
+      this.titleData = ''
       this.urlData = ''
       this.addSourceErr = ''
     }

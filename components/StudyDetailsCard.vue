@@ -33,19 +33,19 @@ export default {
     formattedDate () {
       const date = new Date(this.study['incident-date'])
 
-      if (this.study.dateGranularity === 'YEAR') {
+      const dateGranularity = this.study['incident-date-granularity']
+      if (dateGranularity === 'YEAR') {
         // Year only
         return date.toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric' }
         )
-      } else if (this.study.dateGranularity === 'MONTH') {
+      } else if (dateGranularity === 'MONTH') {
         // Month and year
         return date.toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
-      // } else if (this.study.dateGranularity == null || this.study.dateGranularity === 'DATE') {
       } else {
         // If dateGranularity is DATE, or there is no date granularity, use the full date
         return date.toLocaleDateString(
@@ -53,26 +53,6 @@ export default {
           { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
         )
       }
-
-      /*
-      // if Jan 1, assume this is just a year
-      if (date.getUTCMonth() === 0 && date.getUTCDate() === 1) {
-        return date.getUTCFullYear()
-      } else if (date.getUTCDate() === 1) {
-        // If the first of any month, use the month and year
-        return date.toLocaleDateString(
-          'default',
-          { month: 'long', year: 'numeric', timeZone: 'UTC' }
-        )
-      }
-
-      // Otherwise, this is a specific date
-      // i.e. January 2, 2021
-      return date.toLocaleDateString(
-        'default',
-        { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }
-      )
-      */
     }
   }
 }

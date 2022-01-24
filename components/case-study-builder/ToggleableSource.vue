@@ -5,7 +5,7 @@ between render with edit/delete and editable form. -->
     <add-source
       v-if="isInEditMode"
       :url="source.url"
-      :sourceDescription="source.sourceDescription"
+      :title="source.title"
       :addingSource="isInEditMode"
       :index="index"
       @clicked="replaceSource"

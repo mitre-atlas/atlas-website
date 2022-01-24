@@ -99,7 +99,7 @@ export default {
   generate: {
     fallback: true,
     routes () {
-      const getAtlasData = fs.readFile('static/data/ATLAS-2.0.yaml', 'utf-8')
+      const getAtlasData = fs.readFile('static/data/ATLAS.yaml', 'utf-8')
 
       return Promise.resolve(getAtlasData)
       .then((contents) => {
