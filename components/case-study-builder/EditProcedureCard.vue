@@ -8,7 +8,7 @@
     <v-card-subtitle>
       {{ tacticName }}
     </v-card-subtitle>
-    <v-card-text v-html="info.description" />
+    <v-card-text v-html="$md.render(info.description)" />
     <v-card-actions>
       <v-spacer />
       <v-btn color="blue" icon @click="editStep">
