@@ -107,7 +107,6 @@ const yamlParse = t => YAML.load(t)
 
 function validFormatYAML (yamlObj) {
   const required = {
-    email: false,
     'incident-date': false,
     name: false,
     'reported-by': false,

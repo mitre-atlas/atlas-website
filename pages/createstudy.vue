@@ -38,18 +38,6 @@
           />
 
           <v-text-field
-            v-model="studyData.meta.email"
-            :rules="emailRules"
-            :validate-on-blur="true"
-            label="Contact email(s)"
-            hint="Emails are for correspondence about this case study submission and will not be published"
-            prepend-inner-icon="mdi-email"
-            type="email"
-            outlined
-            required
-          />
-
-          <v-text-field
             v-model="studyData.study['reported-by']"
             :rules="rules.reportedBy"
             label="Reported by"
@@ -267,7 +255,7 @@ export default {
 
       // Case study data object
       studyData: {
-        meta: { email: '' },
+        meta: {},
         study: {
           name: '',
           summary: '',
@@ -293,10 +281,6 @@ export default {
       isEditing: false,
       pptSelected: '',
 
-      // Field validation rules
-      emailRules: [
-        v => /^$|.+@.+\..+/.test(v) || 'E-mail must be valid' // Matches empty string or x@y.z
-      ],
       // Initial empty obj bound to field rules prop - must start empty
       rules: {},
       requiredRule: v => !!v || 'Required',
@@ -388,8 +372,6 @@ export default {
       this.requiredFieldRuleKeys.forEach((key) => {
         this.rules[key] = [this.requiredRule]
       })
-      // Email already has a rule in place, add required to the front
-      this.emailRules.unshift(this.requiredRule)
 
       if (this.$refs.form.validate() && this.studyData.study.procedure.length && this.fileName) {
         this.errorMsg = ''
