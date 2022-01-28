@@ -3,7 +3,7 @@
     app
     absolute
     clipped
-    style="height: calc(100% - 170px)"
+    style="height: calc(100% - 175px)"
     >
     <v-list-item class="mt-10">
       <v-list-item-content>
