@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="!editingData">
     <v-card-title style="font-size: 1.1rem">
-      {{parentTechniqueName}} : {{ techniqueName }}
+      {{ parentTechniqueName }}: {{ techniqueName }}
       <v-spacer />
       <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>

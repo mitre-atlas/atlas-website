@@ -384,7 +384,10 @@ export default {
         // console.log(techniqueLabel, tacticLabel)
 
         // const workaroundTacticLabel = `${tacticInfo.name}\n${tacticId}`
-        const workaroundTecniqueLabel = `${techniqueInfo.name}`
+        const parentTechniqueId = this.$store.getters.getTechniqueById(techniqueId)['subtechnique-of']
+        const parentTechnique = this.$store.getters.getTechniqueById(parentTechniqueId)
+
+        const workaroundTecniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
 
         const row = [
           // this.linkText(
