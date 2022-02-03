@@ -1,0 +1,115 @@
+{
+  "type": "object",
+  "properties": {
+      "id": {
+          "type": "string",
+          "pattern": "AML\\.CS\\d{4}"
+      },
+      "object-type": {
+          "const": "case-study"
+      },
+      "name": {
+          "type": "string"
+      },
+      "summary": {
+          "type": "string"
+      },
+      "incident-date": {
+          "type": "date-time"
+      },
+      "incident-date-granularity": {
+          "enum": [
+              "YEAR",
+              "MONTH",
+              "DATE"
+          ]
+      },
+      "procedure": {
+          "type": "array",
+          "items": {
+              "type": "object",
+              "properties": {
+                  "tactic": {
+                      "type": "string",
+                      "pattern": "(AML\\.)?TA\\d{4}"
+                  },
+                  "technique": {
+                      "anyOf": [
+                          {
+                              "type": "string",
+                              "pattern": "(AML\\.)?T\\d{4}"
+                          },
+                          {
+                              "type": "string",
+                              "pattern": "(AML\\.)?T\\d{4}\\.\\d{3}"
+                          }
+                      ]
+                  },
+                  "description": {
+                      "type": "string"
+                  }
+              },
+              "required": [
+                  "tactic",
+                  "technique",
+                  "description"
+              ],
+              "additionalProperties": false
+          }
+      },
+      "reported-by": {
+          "type": "string"
+      },
+      "references": {
+          "anyOf": [
+              {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                          "title": {
+                              "anyOf": [
+                                  {
+                                      "type": "string"
+                                  },
+                                  {
+                                      "const": null
+                                  }
+                              ]
+                          },
+                          "url": {
+                              "anyOf": [
+                                  {
+                                      "type": "string"
+                                  },
+                                  {
+                                      "const": null
+                                  }
+                              ]
+                          }
+                      },
+                      "required": [
+                          "title",
+                          "url"
+                      ],
+                      "additionalProperties": false
+                  }
+              },
+              {
+                  "const": null
+              }
+          ]
+      }
+  },
+  "required": [
+      "name",
+      "summary",
+      "incident-date",
+      "incident-date-granularity",
+      "procedure",
+      "reported-by"
+  ],
+  "additionalProperties": false,
+  "$id": "ATLAS Case Study Schema",
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

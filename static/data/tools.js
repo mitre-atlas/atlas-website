@@ -1,4 +1,7 @@
 import * as YAML from 'js-yaml'
+import { validate } from 'jsonschema'
+// import schema from '@/static/data/case-study-schema.json'
+import schema from '@/static/data/cs_schema.json'
 const path = require('path')
 
 const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
@@ -105,57 +108,78 @@ function reviver (key, value) {
 const createYAML = o => YAML.dump(o, { replacer: reviver })
 const yamlParse = t => YAML.load(t)
 
+// Verifies if user uploaded case study yaml file is in correct format for use in case builder
 function validFormatYAML (yamlObj) {
-  const required = {
-    'incident-date': false,
-    name: false,
-    'reported-by': false,
-    summary: false,
-    procedure: false,
-    description: false,
-    tactic: false,
-    technique: false
-  }
-  const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'title', 'url', 'incident-date-granularity']
-  if (!(yamlObj.meta && yamlObj.study)) { return 'YAML is missing meta or study data' }
-  // check meta data
-  for (const metaKey in yamlObj.meta) {
-    if (metaKey in required) {
-      required[metaKey] = true
-    } else if (!notRequired.includes(metaKey)) { return 'Meta data contains invalid key' }
-  }
-  // check study data
-  for (const studyKey in yamlObj.study) {
-    if (studyKey in required) {
-      required[studyKey] = true
-      // make sure each procedure step is correctly formatted
-      if (studyKey === 'procedure') {
-        const procObj = yamlObj.study[studyKey]
-        if (procObj === null) { return 'YAML file requires at least one procedure step' }
-        for (let i = 0; i < procObj.length; i++) {
-          if ('tactic' in procObj[i] && 'technique' in procObj[i] && 'description' in procObj[i] && Object.keys(procObj[i]).length === 3) {
-            required.description = true
-            required.technique = true
-            required.tactic = true
-          } else { return 'Each procedure step requires tactic, technique, and description' }
-        }
-      }
-    } else if (notRequired.includes(studyKey)) {
-      // ensure references are correctly formatted
-      if (studyKey === 'references') {
-        const refObj = yamlObj.study[studyKey]
-        if (refObj === null) { return 'If study has references, include title and/or url' }
-        for (let i = 0; i < refObj.length; i++) {
-          if (!('title' in refObj[i] || 'url' in refObj[i])) { return 'Each reference requires title and/or url' }
-        }
-      }
-    } else { return 'Study data contains invalid key' }
-  }
-  // return whether all required fields are true
-  if (Object.keys(required).every(k => required[k])) {
+  const yamlStudyData = yamlObj.study
+  const validObj = validate(yamlStudyData, schema)
+  // If yaml file format is valid
+  if (validObj.valid) {
     return ''
-  } else { return 'YAML file is missing required values' }
+  }
+  // Else output error messages for user to correct formatting
+  const errorList = validObj.errors
+  const errorArrayLength = validObj.errors.length
+  let errorMessages = 'File Errors: '
+  for (let i = 0; i < errorArrayLength; i++) {
+    errorMessages += errorList[i].stack
+    if (i + 1 !== errorArrayLength) {
+      errorMessages += ', '
+    }
+  }
+  return errorMessages
 }
+
+// function validFormatYAML (yamlObj) {
+//   const required = {
+//     'incident-date': false,
+//     name: false,
+//     'reported-by': false,
+//     summary: false,
+//     procedure: false,
+//     description: false,
+//     tactic: false,
+//     technique: false
+//   }
+//   const notRequired = ['date-created', 'date-updated', 'uuid', 'references', 'title', 'url', 'incident-date-granularity']
+//   if (!(yamlObj.meta && yamlObj.study)) { return 'YAML is missing meta or study data' }
+//   // check meta data
+//   for (const metaKey in yamlObj.meta) {
+//     if (metaKey in required) {
+//       required[metaKey] = true
+//     } else if (!notRequired.includes(metaKey)) { return 'Meta data contains invalid key' }
+//   }
+//   // check study data
+//   for (const studyKey in yamlObj.study) {
+//     if (studyKey in required) {
+//       required[studyKey] = true
+//       // make sure each procedure step is correctly formatted
+//       if (studyKey === 'procedure') {
+//         const procObj = yamlObj.study[studyKey]
+//         if (procObj === null) { return 'YAML file requires at least one procedure step' }
+//         for (let i = 0; i < procObj.length; i++) {
+//           if ('tactic' in procObj[i] && 'technique' in procObj[i] && 'description' in procObj[i] && Object.keys(procObj[i]).length === 3) {
+//             required.description = true
+//             required.technique = true
+//             required.tactic = true
+//           } else { return 'Each procedure step requires tactic, technique, and description' }
+//         }
+//       }
+//     } else if (notRequired.includes(studyKey)) {
+//       // ensure references are correctly formatted
+//       if (studyKey === 'references') {
+//         const refObj = yamlObj.study[studyKey]
+//         if (refObj === null) { return 'If study has references, include title and/or url' }
+//         for (let i = 0; i < refObj.length; i++) {
+//           if (!('title' in refObj[i] || 'url' in refObj[i])) { return 'Each reference requires title and/or url' }
+//         }
+//       }
+//     } else { return 'Study data contains invalid key' }
+//   }
+//   // return whether all required fields are true
+//   if (Object.keys(required).every(k => required[k])) {
+//     return ''
+//   } else { return 'YAML file is missing required values' }
+// }
 
 function createJSON (obj) {
   obj.study['object-type'] = 'case-study'
