@@ -1,7 +1,12 @@
 <template>
   <v-card v-if="!editingData">
-    <v-card-title style="font-size: 1.1rem">
+    <v-card-title style="font-size: 1.1rem" v-if="parentTech">
       {{ parentTechniqueName }}: {{ techniqueName }}
+      <v-spacer />
+      <v-icon>mdi-arrow-up-down</v-icon>
+    </v-card-title>
+    <v-card-title style="font-size: 1.1rem" v-else>
+      {{ techniqueName }}
       <v-spacer />
       <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
@@ -90,15 +95,24 @@ export default {
       }
       return tactic.name
     },
+    parentTech () {
+      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
+      const parentTechnique = this.$store.getters.getTechniqueById(technique)
+      if (parentTechnique === undefined) {
+        return false
+      }
+      return true
+    },
     parentTechniqueName () {
       const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
       const parentTechnique = this.$store.getters.getTechniqueById(technique)
       if (parentTechnique === undefined) {
-        return '(Name not found for technique ' + this.info.technique['subtechnique-of'] + ')'
+        return ''
       }
       return parentTechnique.name
     },
     techniqueName () {
+      console.log(this.info)
       const technique = this.$store.getters.getTechniqueById(this.info.technique)
 
       if (technique === undefined) {

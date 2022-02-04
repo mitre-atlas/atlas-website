@@ -387,7 +387,12 @@ export default {
         const parentTechniqueId = this.$store.getters.getTechniqueById(techniqueId)['subtechnique-of']
         const parentTechnique = this.$store.getters.getTechniqueById(parentTechniqueId)
 
-        const workaroundTecniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
+        let workaroundTecniqueLabel = null
+        if (parentTechnique) {
+          workaroundTecniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
+        } else {
+          workaroundTecniqueLabel = `${techniqueInfo.name}`
+        }
 
         const row = [
           // this.linkText(
@@ -455,7 +460,7 @@ export default {
 
       slide.addTable(rows, {
         y: 1.2,
-        colW: [0.5, 2.5, 6],
+        colW: [0.5, 2.6, 5.5],
         w: 9,
         color: '0D2F4F',
         autoPage: true,
