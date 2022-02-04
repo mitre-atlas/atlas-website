@@ -111,6 +111,14 @@ const yamlParse = t => YAML.load(t)
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
 function validFormatYAML (yamlObj) {
   const yamlStudyData = yamlObj.study
+  // Keeping date in ISO format for date-time format validation
+  try {
+    yamlStudyData['incident-date'] = yamlStudyData['incident-date'].toISOString()
+  } catch (e) {
+    if (e instanceof TypeError) {
+      return 'instance.incident-date is not of a type(s) date-time'
+    }
+  }
   const validObj = validate(yamlStudyData, schema)
   // If yaml file format is valid
   if (validObj.valid) {
