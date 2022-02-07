@@ -128,8 +128,15 @@ function validFormatYAML (yamlObj) {
   const errorList = validObj.errors
   const errorArrayLength = validObj.errors.length
   let errorMessages = 'File Errors: '
+  let errorTemp = ''
   for (let i = 0; i < errorArrayLength; i++) {
-    errorMessages += errorList[i].stack
+    // Makes subschema related errors more user friendly and readable
+    if ((errorList[i].stack).includes('subschema')) {
+      errorTemp += errorList[i].property + ' contains invalid nested properties'
+      errorMessages += errorTemp
+    } else {
+      errorMessages += errorList[i].stack
+    }
     if (i + 1 !== errorArrayLength) {
       errorMessages += ', '
     }
