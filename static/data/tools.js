@@ -132,7 +132,7 @@ function validFormatYAML (yamlObj) {
   for (let i = 0; i < errorArrayLength; i++) {
     // Makes subschema related errors more user friendly and readable
     if ((errorList[i].stack).includes('subschema')) {
-      errorTemp += errorList[i].property + ' contains invalid nested properties'
+      errorTemp += errorList[i].property + ' contains invalid nested property(ies)'
       errorMessages += errorTemp
     } else {
       errorMessages += errorList[i].stack
