@@ -119,7 +119,7 @@ function validFormatYAML (yamlObj) {
       return 'instance.incident-date is not of a type(s) date-time'
     }
   }
-  const validObj = validate(yamlStudyData, schema)
+  const validObj = validate(yamlStudyData, schema, { nestedErrors: true })
   // If yaml file format is valid
   if (validObj.valid) {
     return ''
@@ -128,16 +128,17 @@ function validFormatYAML (yamlObj) {
   const errorList = validObj.errors
   const errorArrayLength = validObj.errors.length
   let errorMessages = 'File Errors: '
-  let errorTemp = ''
+  const errorListSimplified = []
+  // Iterates through error list to populate a new list that only contains user friendly (more readable) error messages
   for (let i = 0; i < errorArrayLength; i++) {
-    // Makes subschema related errors more user friendly and readable
-    if ((errorList[i].stack).includes('subschema')) {
-      errorTemp += errorList[i].property + ' contains invalid nested property(ies)'
-      errorMessages += errorTemp
-    } else {
-      errorMessages += errorList[i].stack
+    if (!(errorList[i].stack).includes('subschema') && !(errorList[i].stack).includes('constant: null')) {
+      errorListSimplified.push(errorList[i].stack)
     }
-    if (i + 1 !== errorArrayLength) {
+  }
+  // Iterates through new curated error messages list to format their display
+  for (let i = 0; i < errorListSimplified.length; i++) {
+    errorMessages += errorListSimplified[i]
+    if (i + 1 !== errorListSimplified.length) {
       errorMessages += ', '
     }
   }
