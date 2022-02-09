@@ -459,15 +459,15 @@ export default {
       })
 
       slide.addTable(rows, {
-        y: 1.2,
-        colW: [0.5, 2.6, 5.5],
-        w: 9,
+        y: 1,
+        colW: [0.5, 2.6, 5.7],
+        w: 11,
         color: '0D2F4F',
         autoPage: true,
         autoPageRepeatHeader: true,
-        // autoPageLineWeight: 0.4,
+        autoPageLineWeight: -0.2,
         autoPageCharWeight: -0.2,
-        // newSlideStartY: 0.5,
+        newSlideStartY: 0.4,
         // verbose: true,
         border: { color: 'D4D4D3' },
         margin: 10
