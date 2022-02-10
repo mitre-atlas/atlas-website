@@ -44,7 +44,7 @@
           <v-btn
             plain
             color="grey"
-            @click="show = false"
+            @click="cancel"
           >
             Cancel
           </v-btn>
@@ -95,6 +95,7 @@ export default {
       this.loadYaml()
       // Close dialog
       this.show = false
+      this.chosenFile = null
     },
     loadYaml () {
       if (this.chosenFile) {
@@ -102,6 +103,12 @@ export default {
         reader.readAsText(this.chosenFile)
         reader.onload = () => { this.loadData(reader.result) }
       }
+    },
+    cancel () {
+      this.show = false
+      this.chosenFile = null
+      this.hasError = false
+      this.errorMessages = []
     },
     async validateFile (file) {
       // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
