@@ -12,6 +12,13 @@
           </sup> -->
           </span>
       <nuxt-link
+        v-else-if="parentTech"
+        :to="`/techniques/${techniqueId}`"
+        style="color: inherit;"
+        >
+          {{ parentTechniqueName }}: {{ techniqueName }}
+      </nuxt-link>
+      <nuxt-link
         v-else
         :to="`/techniques/${techniqueId}`"
         style="color: inherit;"
@@ -50,6 +57,22 @@ export default {
         return '(Name not found for technique ' + this.info.tactic + ')'
       }
       return tactic.name
+    },
+    parentTech () {
+      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
+      const parentTechnique = this.$store.getters.getTechniqueById(technique)
+      if (parentTechnique === undefined) {
+        return false
+      }
+      return true
+    },
+    parentTechniqueName () {
+      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
+      const parentTechnique = this.$store.getters.getTechniqueById(technique)
+      if (parentTechnique === undefined) {
+        return ''
+      }
+      return parentTechnique.name
     },
     techniqueName () {
       const technique = this.$store.getters.getTechniqueById(this.info.technique)
