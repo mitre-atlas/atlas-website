@@ -91,18 +91,11 @@ export default {
       if (this.urlData !== '') {
         try {
           url = new URL(this.urlData)
+          console.log(url)
         } catch (_) {
           isUrlValid = false
-          this.addSourceErr = 'URL cannot be found'
+          this.addSourceErr = 'URL cannot be found or does not start with http(s)://'
           return
-        }
-        if (isUrlValid) {
-          if (url.protocol === 'http:' || url.protocol === 'https:') {
-            isUrlValid = true
-          } else {
-            this.addSourceErr = 'URL cannot be found'
-            isUrlValid = false
-          }
         }
       }
 
