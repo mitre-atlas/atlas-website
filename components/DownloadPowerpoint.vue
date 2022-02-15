@@ -209,8 +209,6 @@ export default {
 
       let formattedDate = null
       let dateGranularity = yaml.study['incident-date-granularity']
-      console.log('test yaml study object?', yaml.study)
-      console.log('test yaml study date?', yaml.study['incident-date-granularity'])
       // Handle existing individual case studies with previous key
       if ('dateGranularity' in yaml.study) {
         dateGranularity = yaml.study.dateGranularity
