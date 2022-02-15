@@ -37,15 +37,15 @@
 
 <script>
 export default {
-  name: "AddSource",
+  name: 'AddSource',
   props: {
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     url: {
       type: String,
-      default: ""
+      default: ''
     },
     addingSource: {
       type: Boolean,
@@ -53,17 +53,17 @@ export default {
     },
     index: Number
   },
-  data() {
+  data () {
     return {
       titleData: this.title,
       urlData: this.url,
-      addSourceErr: "",
+      addSourceErr: '',
       addingBool: this.addingSource
-    };
+    }
   },
   methods: {
-    updateValue(inputVal) {
-      this.inputVal = inputVal;
+    updateValue (inputVal) {
+      this.inputVal = inputVal
     },
     // isValidHttpUrl(urlString) {
     //     let url;
@@ -76,56 +76,54 @@ export default {
 
     //     return url.protocol === "http:" || url.protocol === "https:";
     // },
-    addSource() {
-      let url;
+    addSource () {
+      let url
       // If url is empty, valid check remains true by default since field is optional
-      let isUrlValid = true;
+      let isUrlValid = true
 
       // If both title and url fields are empty
-      if (this.titleData === "" && this.urlData === "") {
-        this.addSourceErr = "Please complete at least one field";
+      if (this.titleData === '' && this.urlData === '') {
+        this.addSourceErr = 'Please complete at least one field'
         return
       }
 
       // If url is not empt then it must be validated
-      if (this.urlData != "") {
-        console.log('URL is not empty');
+      if (this.urlData !== '') {
         try {
-          url = new URL(this.urlData);
+          url = new URL(this.urlData)
         } catch (_) {
           isUrlValid = false
-          this.addSourceErr = "URL cannot be found";
+          this.addSourceErr = 'URL cannot be found'
           return
         }
         if (isUrlValid) {
-          if(url.protocol === "http:" || url.protocol === "https:") {
+          if (url.protocol === 'http:' || url.protocol === 'https:') {
             isUrlValid = true
-          }
-          else {
-            this.addSourceErr = "URL cannot be found";
+          } else {
+            this.addSourceErr = 'URL cannot be found'
             isUrlValid = false
           }
         }
       }
 
       // If there exists a title and url is validated
-      if (this.titleData && isUrlValid) {
-        console.log(this.urlData);
+      if ((this.titleData === '' || this.titleData) && isUrlValid) {
+        console.log(this.urlData)
         const newSource = {
           title: this.titleData,
           url: this.urlData
-        };
-        this.$emit("clicked", newSource);
-        this.clearSource();
+        }
+        this.$emit('clicked', newSource)
+        this.clearSource()
       } else {
-        this.addSourceErr = "Please complete at least one field";
+        this.addSourceErr = 'Please complete at least one field'
       }
     },
-    clearSource() {
-      this.titleData = "";
-      this.urlData = "";
-      this.addSourceErr = "";
+    clearSource () {
+      this.titleData = ''
+      this.urlData = ''
+      this.addSourceErr = ''
     }
   }
-};
+}
 </script>
