@@ -76,7 +76,7 @@ export default {
         return
       }
 
-      // If url is not empt then it must be validated
+      // If url is not empty then it must be validated
       if (this.urlData !== '') {
         try {
           url = new URL(this.urlData)
