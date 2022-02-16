@@ -65,17 +65,6 @@ export default {
     updateValue (inputVal) {
       this.inputVal = inputVal
     },
-    // isValidHttpUrl(urlString) {
-    //     let url;
-
-    //     try {
-    //         url = new URL(urlString);
-    //     } catch (_) {
-    //         return false;
-    //     }
-
-    //     return url.protocol === "http:" || url.protocol === "https:";
-    // },
     addSource () {
       let url
       // If url is empty, valid check remains true by default since field is optional
