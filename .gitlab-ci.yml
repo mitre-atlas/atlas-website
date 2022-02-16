@@ -1,4 +1,4 @@
-image: node:alpine3.13
+image: node:16-alpine
 
 pages:
   script:
