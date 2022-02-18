@@ -32,7 +32,9 @@
 
 <script>
 import Pptxgen from 'pptxgenjs'
+import { YAMLException } from 'js-yaml'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
+
 export default {
   name: 'DownloadPowerpoint',
   props: ['study', 'builder'],
@@ -107,20 +109,16 @@ export default {
         slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
 
-      if (!this.isBuilder && this.studyYaml.study == undefined) {
-        const studyTemp = { study: this.studyYaml }
-        this.studyYaml = studyTemp
-      }
       this.titleSlide(ppt, this.studyYaml)
       this.detailSlide(ppt, this.studyYaml)
       this.procedureSlide(ppt, this.studyYaml)
-      if (this.studyYaml.study.references) {
+      if (this.studyYaml.references) {
         this.referenceSlide(ppt, this.studyYaml)
       }
 
       // Use case study title if no argument provided
       if (typeof filename === 'undefined') {
-        filename = this.studyYaml.study.name
+        filename = this.studyYaml.name
       }
 
       ppt.writeFile({ fileName: `${filename}.pptx` })
@@ -208,18 +206,18 @@ export default {
       })
 
       let formattedDate = null
-      let dateGranularity = yaml.study['incident-date-granularity']
+      let dateGranularity = yaml['incident-date-granularity']
       // Handle existing individual case studies with previous key
-      if ('dateGranularity' in yaml.study) {
-        dateGranularity = yaml.study.dateGranularity
+      if ('dateGranularity' in yaml) {
+        dateGranularity = YAMLException.dateGranularity
       }
       if (dateGranularity === 'YEAR') {
-        formattedDate = yaml.study['incident-date'].toLocaleDateString(
+        formattedDate = yaml['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric' }
         )
       } else if (dateGranularity === 'MONTH') {
-        formattedDate = yaml.study['incident-date'].toLocaleDateString(
+        formattedDate = yaml['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
@@ -229,21 +227,21 @@ export default {
         dateGranularity === 'DATE'
       ) {
         // If dateGranularity is DATE, or there is no date granularity
-        formattedDate = yaml.study['incident-date'].toLocaleDateString(
+        formattedDate = yaml['incident-date'].toLocaleDateString(
           'default',
           { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
         )
       }
 
       // Workaround for erroneous list item, TBD removal
-      let reportedBy = yaml.study['reported-by']
+      let reportedBy = yaml['reported-by']
       if (Array.isArray(reportedBy)) {
         reportedBy = reportedBy[0]
       }
 
       ppt
         .addSlide({ masterName: 'Title' })
-        .addText(yaml.study.name, { placeholder: 'title' })
+        .addText(yaml.name, { placeholder: 'title' })
         .addText(reportedBy, { placeholder: 'reportedBy' })
         .addText(formattedDate, { placeholder: 'incidentDate' })
     },
@@ -318,7 +316,7 @@ export default {
 
       ppt.addSlide({ masterName: 'Summary' })
         .addText('Summary', { placeholder: 'title' })
-        .addText(yaml.study.summary, { placeholder: 'content' })
+        .addText(yaml.summary, { placeholder: 'content' })
     },
     getUrlFromInfoObject (infoObject) {
       const baseUrl = window.location.origin
@@ -365,10 +363,10 @@ export default {
           }
         ]
       ]
-      for (let i = 0; i < yaml.study.procedure.length; i++) {
+      for (let i = 0; i < yaml.procedure.length; i++) {
         // const tacticId = yaml.study.procedure[i].tactic
-        const techniqueId = yaml.study.procedure[i].technique
-        const description = yaml.study.procedure[i].description
+        const techniqueId = yaml.procedure[i].technique
+        const description = yaml.procedure[i].description
 
         // const tacticInfo = this.$store.getters.getTacticById(tacticId)
         const techniqueInfo = this.$store.getters.getTechniqueById(techniqueId)
@@ -479,7 +477,7 @@ export default {
 
       const texts = []
 
-      yaml.study.references.forEach((ref) => {
+      yaml.references.forEach((ref) => {
         const hasText = 'title' in ref && ref.title !== null && ref.title !== ''
         const hasUrl = 'url' in ref && ref.url !== null && ref.url !== ''
 
