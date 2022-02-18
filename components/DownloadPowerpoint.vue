@@ -32,9 +32,7 @@
 
 <script>
 import Pptxgen from 'pptxgenjs'
-import { YAMLException } from 'js-yaml'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
-
 export default {
   name: 'DownloadPowerpoint',
   props: ['study', 'builder'],
@@ -109,6 +107,10 @@ export default {
         slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
 
+      // if (!this.isBuilder) {
+      //   const studyTemp = { study: this.studyYaml }
+      //   this.studyYaml = studyTemp
+      // }
       this.titleSlide(ppt, this.studyYaml)
       this.detailSlide(ppt, this.studyYaml)
       this.procedureSlide(ppt, this.studyYaml)
@@ -209,7 +211,7 @@ export default {
       let dateGranularity = yaml['incident-date-granularity']
       // Handle existing individual case studies with previous key
       if ('dateGranularity' in yaml) {
-        dateGranularity = YAMLException.dateGranularity
+        dateGranularity = yaml.dateGranularity
       }
       if (dateGranularity === 'YEAR') {
         formattedDate = yaml['incident-date'].toLocaleDateString(
@@ -364,7 +366,7 @@ export default {
         ]
       ]
       for (let i = 0; i < yaml.procedure.length; i++) {
-        // const tacticId = yaml.study.procedure[i].tactic
+        // const tacticId = yaml.procedure[i].tactic
         const techniqueId = yaml.procedure[i].technique
         const description = yaml.procedure[i].description
 
