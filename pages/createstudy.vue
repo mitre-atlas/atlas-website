@@ -185,7 +185,7 @@
             </v-col>
             <v-col>
               <download-powerpoint
-              :study="studyData"
+              :study="studyData.study"
               :builder="builder"
               @updateCheckbox="updateCheckbox"
               ref="formatPpt"
