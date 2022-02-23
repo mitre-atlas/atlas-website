@@ -298,22 +298,6 @@ export default {
     window.addEventListener('beforeunload', this.handleBeforeUnload)
     window.addEventListener('popstate', this.handleBackButton)
   },
-  computed: {
-    ...mapGetters(['getCaseStudyBuilderData'])
-  },
-  // mounted () {
-  // Restores case study data from store
-  //   // this.$nextTick(function () {
-  //   //   // todo: fix getter, shouldn't have to do this?
-  //   //   const storedCaseStudy = this.getCaseStudyBuilderData ? this.getCaseStudyBuilderData.study : null
-  //   //   if (storedCaseStudy) {
-  //   //     console.log('Case study found in store. Loading...')
-  //   //     this.loadData(storedCaseStudy)
-  //   //   } else {
-  //   //     console.log('No case study found in store')
-  //   //   }
-  //   // })
-  // },
   beforeRouteLeave (to, from, next) {
     if (this.to && this.dialog === false && this.isEditing) {
       next()
