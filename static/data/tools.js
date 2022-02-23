@@ -4,14 +4,7 @@ import { validate } from 'jsonschema'
 import schema from '@/static/data/cs_schema.json'
 const path = require('path')
 
-const sentenceRegex = /([.!?]) \b(?=[A-Z]|\d)/g
-const TAB_LENGTH = 2
-
 const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
-
-function sentenceNewline (text, escape = false) {
-  return text.replaceAll(sentenceRegex, '$1' + (!escape ? '\n' : '\\n')) + (text.endsWith('\n') ? '' : '\n')
-}
 
 // function sentenceSplit (text, removeNewlines) {
 //   if (removeNewlines) {
@@ -31,11 +24,6 @@ function sentenceNewline (text, escape = false) {
 
 function pad (value, max, padChar = '0') {
   return String(value).padStart(max, padChar)
-}
-
-// still need to figure out what this will be
-function getCaseStudyID (name) {
-  return `AML.CS${pad(name.length, 5)}`
 }
 
 // function flattenReferences (refArray) {
@@ -85,27 +73,7 @@ function dateToString (dateObj, includeTime = false) {
   return (`${year}-${month}-${date}`) + (includeTime ? ' ' + dateObj.toLocaleTimeString([], timezoneOptions) : '')
 }
 
-function procedureFormat (procedureArray) {
-  const outArray = []
-  for (const i in procedureArray) {
-    const step = { ...procedureArray[i] }
-    step.description = sentenceNewline(step.description.trim()) + '\n'
-    outArray[i] = step
-  }
-  return outArray
-}
-
-function reviver (key, value) {
-  if (key === 'procedure') {
-    return procedureFormat(value)
-  } else if (key === 'summary') {
-    return value + (value.endsWith('\n') ? '' : '\n')
-  } else {
-    return value
-  }
-}
-
-const createYAML = o => YAML.dump(o, { replacer: reviver })
+const createYAML = o => YAML.dump(o)
 const yamlParse = t => YAML.load(t)
 
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
@@ -197,13 +165,6 @@ function validFormatYAML (yamlObj) {
 //   } else { return 'YAML file is missing required values' }
 // }
 
-function createJSON (obj) {
-  obj.study['object-type'] = 'case-study'
-  obj.study.id = getCaseStudyID(obj.name)
-  const json = JSON.stringify(obj, reviver, TAB_LENGTH)
-  return json
-}
-
 function download (filename, text) {
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plaincharset=utf-8,' + encodeURIComponent(text))
@@ -216,6 +177,7 @@ function download (filename, text) {
 }
 
 function downloadStudyFile (study, filename) {
+  console.log(study)
   const studyYAML = createYAML(study)
   download(`${filename}.yaml`, studyYAML)
 }
@@ -238,4 +200,4 @@ function downloadUrlAsFile (url) {
   xhr.send()
 }
 
-export { createJSON, createYAML, download, downloadUrlAsFile, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
+export { createYAML, download, downloadUrlAsFile, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
