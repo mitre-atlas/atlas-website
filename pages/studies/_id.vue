@@ -1,12 +1,13 @@
 <template>
   <div>
     <breadcrumbs />
-    <div class="text-h4 pt-10">{{ study.name }}</div>
+    <div class="text-h4 pt-10">
+      {{ study.name }}
+    </div>
 
     <v-row>
       <v-col cols="8">
         <page-section-title>Summary</page-section-title>
-
         <div class="text-body-1 mt-5" v-html="$md.render(study.summary)" />
       </v-col>
 
@@ -15,7 +16,7 @@
       </v-col>
     </v-row>
 
-  <v-container>
+    <v-container>
       <v-row>
         <v-col>
           <page-section-title> Procedure </page-section-title>
@@ -23,18 +24,18 @@
           <procedure-timeline :study="study" class="mt-5" />
         </v-col>
       </v-row>
-    <v-row v-if="study.references">
-      <v-col>
-        <page-section-title>Sources</page-section-title>
+      <v-row v-if="study.references">
+        <v-col>
+          <page-section-title>Sources</page-section-title>
 
-        <ol class="mt-2 mb-3">
-          <li class="mb-2" v-for="(source, i) in study.references" :key="i">
-            <ref-source :source="source" />
-          </li>
-        </ol>
-      </v-col>
-    </v-row>
-  </v-container>
+          <ol class="mt-2 mb-3">
+            <li v-for="(source, i) in study.references" :key="i" class="mb-2">
+              <ref-source :source="source" />
+            </li>
+          </ol>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 

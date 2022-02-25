@@ -10,7 +10,7 @@
       offset-y
       min-width="auto"
     >
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <v-text-field
           v-model="displayedIncidentDate"
           label="Incident date"
@@ -19,16 +19,16 @@
           outlined
           readonly
           v-bind="attrs"
-          v-on="on"
           :rules="rules"
-        ></v-text-field>
+          v-on="on"
+        />
       </template>
 
       <v-card>
         <v-date-picker
+          v-model="dateISOString"
           flat
           no-title
-          v-model="dateISOString"
           :active-picker.sync="activePicker"
           :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
           min="1970-01-01"
@@ -37,9 +37,13 @@
           @click:date="dateSelected"
         >
           <!-- <v-card-actions> -->
-            <v-spacer></v-spacer>
-            <v-btn text color="secondary" @click="cancel">Cancel</v-btn>
-            <v-btn text color="primary" @click="ok">OK</v-btn>
+          <v-spacer />
+          <v-btn text color="secondary" @click="cancel">
+            Cancel
+          </v-btn>
+          <v-btn text color="primary" @click="ok">
+            OK
+          </v-btn>
           <!-- </v-card-actions> -->
         </v-date-picker>
       </v-card>
@@ -61,35 +65,6 @@ export default {
       date: this.startDate,
       dateGranularity: this.startDateGranularity,
       rules: this.initialRules
-    }
-  },
-  watch: {
-    menu (val) {
-      val && setTimeout(() => (this.activePicker = 'YEAR'))
-    },
-    startDate: {
-      // Ensures that the component data is up to date with prop change
-      // during file load
-      immediate: true,
-      handler (newVal, oldVal) {
-        this.date = newVal
-      }
-    },
-    startDateGranularity: {
-      // Ensures that the component data is up to date with prop change
-      // during file load
-      immediate: true,
-      handler (newVal, oldVal) {
-        this.dateGranularity = newVal
-      }
-    },
-    initialRules: {
-      // Ensures that the component data is up to date with rules update
-      // during form submit
-      immediate: true,
-      handler (newVal, oldVal) {
-        this.rules = newVal
-      }
     }
   },
   computed: {
@@ -121,6 +96,35 @@ export default {
         }
       }
       return null
+    }
+  },
+  watch: {
+    menu (val) {
+      val && setTimeout(() => (this.activePicker = 'YEAR'))
+    },
+    startDate: {
+      // Ensures that the component data is up to date with prop change
+      // during file load
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.date = newVal
+      }
+    },
+    startDateGranularity: {
+      // Ensures that the component data is up to date with prop change
+      // during file load
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.dateGranularity = newVal
+      }
+    },
+    initialRules: {
+      // Ensures that the component data is up to date with rules update
+      // during form submit
+      immediate: true,
+      handler (newVal, oldVal) {
+        this.rules = newVal
+      }
     }
   },
   methods: {

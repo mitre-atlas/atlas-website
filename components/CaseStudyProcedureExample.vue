@@ -4,8 +4,8 @@ for use in TT case study lists -->
 <template>
   <v-list-item>
     <v-list-item-content>
-      <v-list-item-title v-html="this.study.name" />
-      <v-list-item-subtitle v-html="$md.render(this.procedureStepDescription)" />
+      <v-list-item-title v-html="study.name" />
+      <v-list-item-subtitle v-html="$md.render(procedureStepDescription)" />
     </v-list-item-content>
   </v-list-item>
 </template>
@@ -24,6 +24,7 @@ export default {
       )
       // Ensure there should only be 1
       if (matchingProcedureSteps.length !== 1) {
+        // eslint-disable-next-line no-console
         console.error(`Expected 1 matching procedure step, found ${matchingProcedureSteps.length}`)
       }
 

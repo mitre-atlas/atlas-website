@@ -3,18 +3,15 @@
     <v-card-title>
       {{ study.name }}
     </v-card-title>
-    <!-- <v-card-text>
-      {{ study.id }}
-    </v-card-text> -->
     <v-card-actions>
       <v-btn
-          icon
-          @click="show = !show"
-        >
-          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </v-btn>
+        icon
+        @click="show = !show"
+      >
+        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+      </v-btn>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-btn
         color="teal accent-4"
@@ -26,17 +23,16 @@
     </v-card-actions>
 
     <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-          <v-card-subtitle>
-            {{ study.id }}
-          </v-card-subtitle>
-          <v-card-text>
-            {{ study.summary }}
-          </v-card-text>
-        </div>
-      </v-expand-transition>
-
+      <div v-show="show">
+        <v-divider />
+        <v-card-subtitle>
+          {{ study.id }}
+        </v-card-subtitle>
+        <v-card-text>
+          {{ study.summary }}
+        </v-card-text>
+      </div>
+    </v-expand-transition>
   </v-card>
 </template>
 

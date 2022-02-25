@@ -6,7 +6,10 @@
 export default {
   name: 'MarkdownImage',
   props: {
-    imagename: String
+    imagename: {
+      type: String,
+      default: ''
+    }
   },
   computed: {
     dynamicImage () {

@@ -48,10 +48,10 @@
           />
 
           <incident-date-picker
-            :startDate="studyData.study['incident-date']"
-            :startDateGranularity="studyData.study['incident-date-granularity']"
-            :initialRules="rules.incidentDate"
-            v-on:selectedDate="setIncidentDate"
+            :start-date="studyData.study['incident-date']"
+            :start-date-granularity="studyData.study['incident-date-granularity']"
+            :initial-rules="rules.incidentDate"
+            @selectedDate="setIncidentDate"
           />
 
           <v-textarea
@@ -66,138 +66,138 @@
           />
         </v-card-text>
 
-      <v-card-title>
-        Procedure
-      </v-card-title>
-      <v-card-subtitle>
-        Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
-      </v-card-subtitle>
+        <v-card-title>
+          Procedure
+        </v-card-title>
+        <v-card-subtitle>
+          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
+        </v-card-subtitle>
 
-      <v-card-text>
-        <edit-procedure
-          class="mx-8"
-          :key="studyData.study.procedure"
-          :procedure="studyData.study.procedure"
-          @updateProcedure="studyData.study.procedure = $event"
+        <v-card-text>
+          <edit-procedure
+            :key="studyData.study.procedure"
+            class="mx-8"
+            :procedure="studyData.study.procedure"
+            @updateProcedure="studyData.study.procedure = $event"
           />
-        <add-procedure-step
-          v-if="addingStep"
-          ref="addProcStepRef"
-          :select-tactic="selectTactic"
-          :select-technique="selectTechnique"
-          :description="description"
-          :addingStep="addingStep"
-          @clicked="addProcedureStep"
-          @addingBoolUpdate="addingStep = $event"
-        />
-        <div v-else>
-          <v-btn
-            class="ma-2 mb-10"
-            @click="addingStep = true"
+          <add-procedure-step
+            v-if="addingStep"
+            ref="addProcStepRef"
+            :select-tactic="selectTactic"
+            :select-technique="selectTechnique"
+            :description="description"
+            :adding-step="addingStep"
+            @clicked="addProcedureStep"
+            @addingBoolUpdate="addingStep = $event"
+          />
+          <div v-else>
+            <v-btn
+              class="ma-2 mb-10"
+              @click="addingStep = true"
+            >
+              <v-icon left>
+                mdi-plus
+              </v-icon>
+              Add New Step
+            </v-btn>
+          </div>
+        </v-card-text>
+
+        <v-card-title>
+          References
+        </v-card-title>
+        <v-card-subtitle>
+          Optionally list sources for this case study.
+        </v-card-subtitle>
+
+        <v-card-text>
+          <div
+            v-if="studyData.study.references.length"
+            class="mx-8"
           >
-            <v-icon left>
-              mdi-plus
-            </v-icon>
-            Add New Step
-          </v-btn>
-        </div>
-      </v-card-text>
-
-      <v-card-title>
-        References
-      </v-card-title>
-      <v-card-subtitle>
-        Optionally list sources for this case study.
-      </v-card-subtitle>
-
-      <v-card-text>
-        <div
-          v-if="studyData.study.references.length"
-          class="mx-8"
-        >
-          <v-list flat>
-            <v-list-item-group>
-              <div
-                v-for="(value, key) in studyData.study.references"
-                :key="key"
-              >
-                <toggleable-source
-                  :source="value"
-                  :index="key"
-                  @clicked="addSourceAt"
-                  v-on:delete="deleteSourceAt"
-                />
-              </div>
-            </v-list-item-group>
-          </v-list>
-        </div>
-        <add-source
-          v-if="addingSource"
-          ref="addSourceRef"
-          @clicked="addSource"
-          @addingBoolUpdate="addingSource = $event"
-        />
-        <div v-else>
-          <v-btn class="ma-2 mb-10" @click="addingSource = true">
-            <v-icon left>
-              mdi-plus
-            </v-icon>
-            Add New Source
-          </v-btn>
-        </div>
-      </v-card-text>
-
-      <v-card-title>
-        Download
-      </v-card-title>
-      <v-card-subtitle>
-        Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.
-      </v-card-subtitle>
-      <v-card-text>
-        <v-row>
-          <v-col
-            cols="12"
-            sm="3"
-            md="6"
-          >
-            <div>
-              <v-text-field
-                v-model="fileName"
-                :rules="rules.fileName"
-                label="Case Study File Name"
-                hint="Name or change case study file name to be downloaded"
-                prepend-inner-icon="mdi-file-download"
-                outlined
-                clearable
-                required
-                auto-grow
-              />
-              <v-alert
-                v-if="errorMsg"
-                text
-                color="red"
-                type="error"
-                dense
+            <v-list flat>
+              <v-list-item-group>
+                <div
+                  v-for="(value, key) in studyData.study.references"
+                  :key="key"
                 >
-                {{ errorMsg }}
-              </v-alert>
-            </div>
+                  <toggleable-source
+                    :source="value"
+                    :index="key"
+                    @clicked="addSourceAt"
+                    @delete="deleteSourceAt"
+                  />
+                </div>
+              </v-list-item-group>
+            </v-list>
+          </div>
+          <add-source
+            v-if="addingSource"
+            ref="addSourceRef"
+            @clicked="addSource"
+            @addingBoolUpdate="addingSource = $event"
+          />
+          <div v-else>
+            <v-btn class="ma-2 mb-10" @click="addingSource = true">
+              <v-icon left>
+                mdi-plus
+              </v-icon>
+              Add New Source
+            </v-btn>
+          </div>
+        </v-card-text>
+
+        <v-card-title>
+          Download
+        </v-card-title>
+        <v-card-subtitle>
+          Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.
+        </v-card-subtitle>
+        <v-card-text>
+          <v-row>
+            <v-col
+              cols="12"
+              sm="3"
+              md="6"
+            >
+              <div>
+                <v-text-field
+                  v-model="fileName"
+                  :rules="rules.fileName"
+                  label="Case Study File Name"
+                  hint="Name or change case study file name to be downloaded"
+                  prepend-inner-icon="mdi-file-download"
+                  outlined
+                  clearable
+                  required
+                  auto-grow
+                />
+                <v-alert
+                  v-if="errorMsg"
+                  text
+                  color="red"
+                  type="error"
+                  dense
+                >
+                  {{ errorMsg }}
+                </v-alert>
+              </div>
             </v-col>
             <v-col>
               <download-powerpoint
-              :study="studyData.study"
-              :builder="builder"
-              @updateCheckbox="updateCheckbox"
-              ref="formatPpt"
+                ref="formatPpt"
+                :study="studyData.study"
+                :builder="builder"
+                @updateCheckbox="updateCheckbox"
               />
             </v-col>
           </v-row>
           <v-row style="margin-top:-25px">
             <v-col
-            cols="3"
+              cols="3"
             >
               <v-tooltip>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <v-btn
                     color="primary"
                     :disabled="!valid"
@@ -220,7 +220,7 @@
                 color="green"
                 type="success"
                 dense
-                >
+              >
                 {{ submissionMsg }}
                 <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
               </v-alert>
@@ -239,10 +239,19 @@
 </router>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { generateID, downloadStudyFile } from 'static/data/tools.js'
 
 export default {
+  beforeRouteLeave (to, from, next) {
+    if (this.to && this.dialog === false && this.isEditing) {
+      next()
+    } else {
+      next(false)
+      this.to = to
+      this.dialog = true
+    }
+  },
   data () {
     return {
       title: 'Create A Case Study',
@@ -297,15 +306,6 @@ export default {
   beforeMount () {
     window.addEventListener('beforeunload', this.handleBeforeUnload)
     window.addEventListener('popstate', this.handleBackButton)
-  },
-  beforeRouteLeave (to, from, next) {
-    if (this.to && this.dialog === false && this.isEditing) {
-      next()
-    } else {
-      next(false)
-      this.to = to
-      this.dialog = true
-    }
   },
   beforeDestroy () {
     window.removeEventListener('beforeunload', this.handleBeforeUnload)

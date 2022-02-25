@@ -1,86 +1,83 @@
 <template>
   <div>
     <hover-preview
-    :y-off="-24"
-    :x-off="hoverOffset"
-    :appear-right="appearRight"
-    :from-right="fromRight"
-    :new-target-id="hoverTargetID"
-    :parent-event="mouseEvent"/>
+      :y-off="-24"
+      :x-off="hoverOffset"
+      :appear-right="appearRight"
+      :from-right="fromRight"
+      :new-target-id="hoverTargetID"
+      :parent-event="mouseEvent"
+    />
 
     <v-card-text class="px-md-4 mx-lg-auto">
-
-    <v-row>
-      <v-col cols="12" lg="6">
-      <v-autocomplete
-        v-model="selectTacticData2"
-        :items="getTactics"
-        label="Tactic"
-        outlined
-        prepend-inner-icon="mdi-magnify"
-        item-text="name"
-        item-value="id"
-        @input="tacticUpdate(selectTacticData2)"
-      >
-      <template
-      class="menu-item-wrapper"
-      v-slot:item="data">
-
-        <div
-        class="menu-item"
-        @mouseenter="function(event){ passMouse(event, data.item) }"
-        @mouseleave="passMouse"
-        @click.prevent="passMouse"
-        @touchstart="function(event){ passMouse(event, data.item) }"
-        @touchend="passMouse"
-        @touchmove="passMouse"
-        @touchcancel="passMouse"
-        >
-        {{ data.item.name }}
-        </div>
-      </template>
-      </v-autocomplete>
-
-      </v-col>
-      <v-col cols="12" lg="6">
-
-      <v-autocomplete
-        v-model="selectTechniqueData2"
-        :items="mapTechAndSub"
-        label="Technique"
-        outlined
-        prepend-inner-icon="mdi-magnify"
-        :filter="alsoMatchSubtechniquesOfMatchingTechniques"
-        item-text="name"
-        item-value="id"
-        :disabled="selectTacticData2 === null"
-        @input="$emit('techniqueUpdate', selectTechniqueData2)"
-        >
-        <template
-          class="menu-item-wrapper"
-          v-slot:item="data">
-
-          <div
-            class="menu-item"
-            @mouseenter="function(event){ passMouse(event, data.item) }"
-            @mouseleave="passMouse"
-            @click.prevent="passMouse"
-            @touchstart="function(event){ passMouse(event, data.item) }"
-            @touchend="passMouse"
-            @touchmove="passMouse"
-            @touchcancel="passMouse"
+      <v-row>
+        <v-col cols="12" lg="6">
+          <v-autocomplete
+            v-model="selectTacticData2"
+            :items="getTactics"
+            label="Tactic"
+            outlined
+            prepend-inner-icon="mdi-magnify"
+            item-text="name"
+            item-value="id"
+            @input="tacticUpdate(selectTacticData2)"
+          >
+            <template
+              #item="data"
+              class="menu-item-wrapper"
             >
-            <!-- Small icon with left and right padding to slightly indent and offset from subtechnique name -->
-            <v-icon small left right v-if="'subtechnique-of' in data.item">
-              mdi-subdirectory-arrow-right
-            </v-icon>
-            {{ data.item.name }}
-          </div>
-        </template>
-      </v-autocomplete>
-
-      </v-col>
-    </v-row>
+              <div
+                class="menu-item"
+                @mouseenter="function(event){ passMouse(event, data.item) }"
+                @mouseleave="passMouse"
+                @click.prevent="passMouse"
+                @touchstart="function(event){ passMouse(event, data.item) }"
+                @touchend="passMouse"
+                @touchmove="passMouse"
+                @touchcancel="passMouse"
+              >
+                {{ data.item.name }}
+              </div>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-col cols="12" lg="6">
+          <v-autocomplete
+            v-model="selectTechniqueData2"
+            :items="mapTechAndSub"
+            label="Technique"
+            outlined
+            prepend-inner-icon="mdi-magnify"
+            :filter="alsoMatchSubtechniquesOfMatchingTechniques"
+            item-text="name"
+            item-value="id"
+            :disabled="selectTacticData2 === null"
+            @input="$emit('techniqueUpdate', selectTechniqueData2)"
+          >
+            <template
+              #item="data"
+              class="menu-item-wrapper"
+            >
+              <div
+                class="menu-item"
+                @mouseenter="function(event){ passMouse(event, data.item) }"
+                @mouseleave="passMouse"
+                @click.prevent="passMouse"
+                @touchstart="function(event){ passMouse(event, data.item) }"
+                @touchend="passMouse"
+                @touchmove="passMouse"
+                @touchcancel="passMouse"
+              >
+                <!-- Small icon with left and right padding to slightly indent and offset from subtechnique name -->
+                <v-icon v-if="'subtechnique-of' in data.item" small left right>
+                  mdi-subdirectory-arrow-right
+                </v-icon>
+                {{ data.item.name }}
+              </div>
+            </template>
+          </v-autocomplete>
+        </v-col>
+      </v-row>
 
       <v-textarea
         v-model="descriptionData2"
@@ -93,7 +90,7 @@
         auto-grow
         @input="descriptionUpdate(descriptionData2)"
       />
-       </v-card-text>
+    </v-card-text>
   </div>
 </template>
 
@@ -138,7 +135,6 @@ export default {
   },
   methods: {
     passMouse (event, hoverItem = false) {
-      // console.log(`Got '${event.type}' event for ${hoverItem ? hoverItem.name : 'none'}, Screen: ${this.$vuetify.breakpoint.name}`)
       if (hoverItem) { this.hoverTargetID = hoverItem.id }
       const screenSize = this.$vuetify.breakpoint.name
       const sizesForSidebar = ['xl', 'lg']
@@ -155,11 +151,6 @@ export default {
       }
       this.mouseEvent = event
     },
-    // updateValue (inputVal) {
-    //   // this.inputVal = inputVal
-    //   console.log('here + ' + inputVal)
-    //   this.$emit('inputFormData', inputVal)
-    // },
     tacticUpdate (selectTacticData2) {
       this.selectTacticData2 = selectTacticData2
       this.$emit('tacticUpdate', selectTacticData2)

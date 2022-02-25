@@ -5,43 +5,33 @@
     </v-card-title>
 
     <v-card-actions>
-        <v-btn
-          icon
-          @click="show = !show"
-        >
-          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </v-btn>
+      <v-btn
+        icon
+        @click="show = !show"
+      >
+        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+      </v-btn>
 
-        <v-spacer></v-spacer>
+      <v-spacer />
 
-        <!-- <v-btn
-          color="teal accent-4"
-          text
-          v-if="'subtechniques' in info"
-        >
-          Explore {{ info.subtechniques.length }} techniques
-        </v-btn> -->
+      <v-btn
+        color="deep-orange accent-4"
+        text
+        :href="`/techniques/$info.id}`"
+      >
+        Learn more
+      </v-btn>
+    </v-card-actions>
 
-        <v-btn
-          color="deep-orange accent-4"
-          text
-          :href="`/techniques/$info.id}`"
-          >
-          Learn more
-        </v-btn>
-      </v-card-actions>
-
-      <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-          <v-card-subtitle>
-            {{ info.id }}
-          </v-card-subtitle>
-          <v-card-text v-html="info.description">
-
-          </v-card-text>
-        </div>
-      </v-expand-transition>
+    <v-expand-transition>
+      <div v-show="show">
+        <v-divider />
+        <v-card-subtitle>
+          {{ info.id }}
+        </v-card-subtitle>
+        <v-card-text v-html="info.description" />
+      </div>
+    </v-expand-transition>
   </v-card>
 </template>
 

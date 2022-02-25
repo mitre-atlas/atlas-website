@@ -1,13 +1,15 @@
 <template>
   <v-menu offset-y>
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-btn
         color="inherit"
         v-bind="attrs"
         v-on="on"
       >
         Case study data
-        <v-icon right>mdi-menu-down</v-icon>
+        <v-icon right>
+          mdi-menu-down
+        </v-icon>
       </v-btn>
     </template>
 
@@ -26,7 +28,6 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
     </v-list>
   </v-menu>
 </template>
