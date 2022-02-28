@@ -19,7 +19,7 @@
     <v-spacer />
 
     <v-toolbar-items
-      v-for="(link, i) in links"
+      v-for="(link, i) in linksModded"
       :key="i"
       class="hidden-sm-and-down"
       >
@@ -196,6 +196,23 @@ export default {
         ]
       }
     ]
-  })
+  }),
+    computed: {
+        linksModded() {
+            console.log(this.$config.navigator_url)
+            if (!this.$config.navigator_url) {
+                for (const link of this.links) {
+                    if (link.name === 'Navigator') {
+                        const index = this.links.indexOf(link)
+                        console.log(index)
+                        if (index !== -1) {
+                            this.links.splice(index, 1)
+                        }
+                    }
+                }
+            }
+            return this.links
+        }
+    }
 }
 </script>

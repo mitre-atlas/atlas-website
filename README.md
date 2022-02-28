@@ -23,7 +23,7 @@ $ npm run generate
 ## Docker Setup/Build
 ```bash
 #setup image for docker website
-$ docker build --build-arg navigator_url="INPUT URL" -t atlas:atlas-website .
+$ docker build -t atlas:atlas-website .
 
 #run website locally on port 3333 (http://localhost:3000)
 $ docker run -d -p 3000:3000 atlas:atlas-website
