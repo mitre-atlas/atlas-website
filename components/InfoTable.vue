@@ -54,6 +54,12 @@
     </template>
     <template v-slot:[`item.description`]="{ item }">
       <div
+        v-if="isCaseStudy"
+        v-html="$md.render(item.summary)"
+        class="my-3"
+      />
+      <div
+        v-else
         v-html="$md.render(item.description)"
         class="my-3"
       />
@@ -67,10 +73,9 @@
 <script>
 export default {
   name: 'InfoTable',
-  props: ['items', 'showFilterButton'],
+  props: ['items', 'showFilterButton', 'isCaseStudy'],
   data: () => ({
-    search: '',
-    showAdvMlOnly: false
+    search: ''
   }),
   computed: {
     headers () {
@@ -82,31 +87,6 @@ export default {
           filter: (value, search, time) => {
             return this.showAdvMlOnly ? value.startsWith('AML') : true
           }
-          // filter: (value, search, item) => {
-          //   // if (this.showFilterButton) {
-          //   //   if (this.showAdvMlOnly && search) {
-          //   //     const rx = new RegExp(search, 'i')
-          //   //     const includesQuery = (str) => { return str.search(rx) !== -1 }
-          //   //     return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
-          //   //   } else if (this.showAdvMlOnly) {
-          //   //     return value.startsWith('AML')
-          //   //   }
-          //   // } else if (search) {
-          //   //   const rx = new RegExp(search, 'i')
-          //   //   const includesQuery = (str) => { return str.search(rx) !== -1 }
-          //   //   return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
-          //   // } else {
-          //   //   return true
-          //   // }
-          //   // if (this.showAdvMlOnly && search) {
-          //   //   const rx = new RegExp(search, 'i')
-          //   //   const includesQuery = (str) => { return str.search(rx) !== -1 }
-          //   //   return value.startsWith('AML') && (includesQuery(item.description) || includesQuery(item.id) || includesQuery(item.name))
-          //   // } else if (this.showAdvMlOnly) {
-          //   //   return value.startsWith('AML')
-          //   // }
-          //   // return true
-          // }
         },
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }
