@@ -20,7 +20,7 @@
 
     <div class="mb-10">{{ description }}</div>
 
-    <info-table :items="mappedStudies" />
+    <info-table :items="getStudies"/>
 
   </div>
 </template>
@@ -39,13 +39,7 @@ export default {
     sortBy: 'name'
   }),
   computed: {
-    ...mapGetters(['getStudies']),
-    mappedStudies () {
-      // Duplicate the 'summary' field into 'description' for use with InfoTable
-      return this.getStudies.map((study) => {
-        return study
-      })
-    }
+    ...mapGetters(['getStudies'])
   },
   head () {
     return {
