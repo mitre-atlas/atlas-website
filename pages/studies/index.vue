@@ -43,7 +43,6 @@ export default {
     mappedStudies () {
       // Duplicate the 'summary' field into 'description' for use with InfoTable
       return this.getStudies.map((study) => {
-        study.description = study.summary
         return study
       })
     }

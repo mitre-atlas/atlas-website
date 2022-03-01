@@ -52,9 +52,9 @@
         > {{ item.name }}
         </nuxt-link>
     </template>
-    <template v-slot:[`item.description`]="{ item }">
+    <template v-slot:[`item.summary`]="{ item }">
       <div
-        v-html="$md.render(item.description)"
+        v-html="$md.render(item.summary)"
         class="my-3"
       />
     </template>
@@ -109,7 +109,7 @@ export default {
           // }
         },
         { value: 'name', text: 'Name', width: '25%' },
-        { value: 'description', text: 'Description', sortable: false }
+        { value: 'summary', text: 'Description', sortable: false }
       ]
     }
   }
