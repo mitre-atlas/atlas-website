@@ -10,15 +10,15 @@
             <div v-if="Array.isArray(value)">
               <ol>
                 <li v-for="(procObj, i) in value" :key="i" class="mb-4">
-                    <div v-for="(procValue, procKey) in procObj" :key="procKey">
-                      <span class="text-capitalize font-weight-medium">{{ procKey }}</span>: {{ procValue }}
-                    </div>
+                  <div v-for="(procValue, procKey) in procObj" :key="procKey">
+                    <span class="text-capitalize font-weight-medium">{{ procKey }}</span>: {{ procValue }}
+                  </div>
                 </li>
                 <li> ... </li>
               </ol>
             </div>
             <div v-else>
-            {{ value }}
+              {{ value }}
             </div>
           </v-col>
         </v-row>

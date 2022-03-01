@@ -10,11 +10,11 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn class="ma-1" color="grey" text v-on:click="$emit('cancel')">
+      <v-spacer />
+      <v-btn class="ma-1" color="grey" text @click="$emit('cancel')">
         Cancel
       </v-btn>
-      <v-btn class="ma-1" color="error" text v-on:click="$emit('delete')">
+      <v-btn class="ma-1" color="error" text @click="$emit('delete')">
         Delete
       </v-btn>
     </v-card-actions>

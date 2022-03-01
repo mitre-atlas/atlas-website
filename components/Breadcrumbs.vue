@@ -1,9 +1,9 @@
 <template>
   <div class="breadcrumbs">
     <v-breadcrumbs :items="items" large class="pl-0">
-        <template v-slot:divider>
-            <v-icon>mdi-chevron-right</v-icon>
-        </template>
+      <template #divider>
+        <v-icon>mdi-chevron-right</v-icon>
+      </template>
     </v-breadcrumbs>
   </div>
 </template>
@@ -44,7 +44,6 @@ export default {
         const name = this.getNameFromID(location, lastLocation)
         const id = text
         if ((id.split('.').length - 1) > 1) { // 'Home > Techniques > SubTechnique' -> 'Home > Techniques > ParentTechnique > SubTechnique'
-          console.log('noooo')
           const parentID = id.slice(0, id.lastIndexOf('.'))
           const parentName = this.getNameFromID(parentID, lastLocation)
           const parentPath = '/' + parentID
@@ -90,7 +89,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>
