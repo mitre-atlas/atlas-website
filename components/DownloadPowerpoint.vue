@@ -92,7 +92,7 @@ export default {
 
           {
             text: {
-              text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+              text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
               options: {
                 y: '95%',
                 w: '100%',
@@ -296,7 +296,7 @@ export default {
 
           {
             text: {
-              text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+              text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
               options: {
                 y: '95%',
                 w: '100%',
@@ -403,7 +403,7 @@ export default {
 
           {
             text: {
-              text: '© 2021 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+              text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
               options: {
                 y: '95%',
                 w: '100%',
