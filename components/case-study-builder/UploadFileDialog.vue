@@ -186,6 +186,8 @@ export default {
           delete obj.sourceDescription
           return obj
         })
+      } else {
+        this.loadedData.study.references = {}
       }
 
       this.$emit('loaded-data', this.loadedData)

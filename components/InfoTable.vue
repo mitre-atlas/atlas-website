@@ -67,7 +67,7 @@
 <script>
 export default {
   name: 'InfoTable',
-  props: ['items', 'showFilterButton', 'isCaseStudy'],
+  props: ['items', 'showFilterButton'],
   data: () => ({
     search: ''
   }),
