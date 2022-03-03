@@ -12,6 +12,7 @@
         class="ma-2 white--text pa-6"
         color="#006400"
         light
+        href = 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
       >
         <img
           src="../../slack.png"
@@ -28,6 +29,7 @@
         class="ma-2 white--text pa-6"
         color="#6e5494"
         light
+        href = 'https://github.com/mitre-atlas'
       >
         <img
           src="../../github.png"
