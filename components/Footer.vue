@@ -57,7 +57,7 @@ export default {
   data: () => ({
     version: packageData.version,
     buttons: [
-      { text: 'Contact', to: '/resources/feedback', important: true },
+      { text: 'Contact', to: '/resources/contact', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
       { text: 'Terms of Use', to: '/resources/terms' }
     ]
