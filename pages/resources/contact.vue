@@ -7,6 +7,36 @@
     For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
     <br><br>
     For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
+    <br><br>
+    <v-btn
+        class="ma-2 white--text pa-6"
+        color="#006400"
+        light
+      >
+        <img
+          src="../../slack.png"
+          height="30px"
+          width="30px"
+          style="margin-right: 10px"
+          />
+        Join the Mitre-Atlas Slack
+    </v-btn>
+
+        <br><br>
+
+    <v-btn
+        class="ma-2 white--text pa-6"
+        color="#6e5494"
+        light
+      >
+        <img
+          src="../../github.png"
+          height="30px"
+          width="30px"
+          style="margin-right: 10px"
+          />
+        Join the GitHub Group
+    </v-btn>
 
     <page-section-title>Mailing List</page-section-title>
 
