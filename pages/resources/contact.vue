@@ -15,15 +15,15 @@
         href = 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
       >
         <img
-          src="../../slack.png"
-          height="30px"
-          width="30px"
+          src="../../slack-icon.png"
+          height="45px"
+          width="45px"
           style="margin-right: 10px"
           />
         Join the Mitre-Atlas Slack
     </v-btn>
 
-        <br><br>
+    <br><br>
 
     <v-btn
         class="ma-2 white--text pa-6"
@@ -33,8 +33,8 @@
       >
         <img
           src="../../github.png"
-          height="30px"
-          width="30px"
+          height="45px"
+          width="45px"
           style="margin-right: 10px"
           />
         Join the GitHub Group
@@ -45,6 +45,23 @@
     <p>
     For discussions around {{ shortName }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
     </p>
+
+    <v-btn
+        class="ma-2 black--text pa-6"
+        color="#D3D3D3"
+        light
+        href = 'https://groups.google.com/forum/#!forum/advmlthreatmatrix/join'
+      >
+        <img
+          src="../../google-group-icon.png"
+          height="45px"
+          width="45px"
+          style="margin-right: 10px"
+          />
+        Join the Google Group
+    </v-btn>
+
+    <br><br>
 
      For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
     <br><br>
