@@ -36,3 +36,12 @@ $ docker load -i atlas-website-image.tar
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## User Site Customization
+
+Create a .env file in the root of your project to set certain variables that can alter the website's appearance and data. Below is an example of the variables that can be set by the user:
+
+```
+#input a URL to activate the "Navigator" tab which will pull data from a repository to display MITRE ATLAS™ data alongside MITRE ATT&CK® Enterprise tactics and techniques
+NAVIGATOR_URL = https://mitre.github.io/atlas-navigator/
+```
