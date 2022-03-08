@@ -52,9 +52,15 @@
         > {{ item.name }}
         </nuxt-link>
     </template>
-    <template v-slot:[`item.summary`]="{ item }">
+    <template v-slot:[`item.description`]="{ item }">
       <div
+        v-if="isCaseStudy"
         v-html="$md.render(item.summary)"
+        class="my-3"
+      />
+      <div
+        v-else
+        v-html="$md.render(item.description)"
         class="my-3"
       />
     </template>
@@ -67,7 +73,7 @@
 <script>
 export default {
   name: 'InfoTable',
-  props: ['items', 'showFilterButton'],
+  props: ['items', 'showFilterButton', 'isCaseStudy'],
   data: () => ({
     search: ''
   }),
@@ -83,7 +89,7 @@ export default {
           }
         },
         { value: 'name', text: 'Name', width: '25%' },
-        { value: 'summary', text: 'Description', sortable: false }
+        { value: 'description', text: 'Description', sortable: false }
       ]
     }
   }

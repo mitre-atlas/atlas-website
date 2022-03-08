@@ -20,7 +20,7 @@
 
     <div class="mb-10">{{ description }}</div>
 
-    <info-table :items="getStudies"/>
+    <info-table :items="getStudies" :isCaseStudy="true" />
 
   </div>
 </template>
