@@ -15,7 +15,7 @@
         href = 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
       >
         <img
-          src="../../slack-icon.png"
+          src="../../assets/slack-icon.png"
           height="45px"
           width="45px"
           style="margin-right: 10px"
@@ -32,7 +32,7 @@
         href = 'https://github.com/mitre-atlas'
       >
         <img
-          src="../../github.png"
+          src="../../assets/github-icon.png"
           height="45px"
           width="45px"
           style="margin-right: 10px"
@@ -53,7 +53,7 @@
         href = 'https://groups.google.com/forum/#!forum/advmlthreatmatrix/join'
       >
         <img
-          src="../../google-group-icon.png"
+          src="../../assets/google-group-icon.png"
           height="45px"
           width="45px"
           style="margin-right: 10px"
