@@ -112,7 +112,7 @@
 
       <v-card-text>
         <div
-          v-if="studyData.study.references.length"
+          v-if="studyData.study.references"
           class="mx-8"
         >
           <v-list flat>
