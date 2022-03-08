@@ -8,14 +8,14 @@
       <ref-source :source="source" />
     </v-list-item-content>
     <v-card-actions>
-      <v-btn color="blue" icon v-on:click="$emit('edit-source', true)">
+      <v-btn color="blue" icon @click="$emit('edit-source', true)">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
       <v-dialog
         v-model="dialog"
         width="500"
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <v-btn
             color="red"
             icon
@@ -28,13 +28,12 @@
 
         <confirm-delete-dialog
           name="reference"
-          v-on:cancel="dialog = false"
-          v-on:delete="deleteSource"
+          @cancel="dialog = false"
+          @delete="deleteSource"
         >
           <ref-source :source="source" />
         </confirm-delete-dialog>
       </v-dialog>
-
     </v-card-actions>
   </v-list-item>
 </template>

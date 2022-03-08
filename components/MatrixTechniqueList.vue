@@ -2,18 +2,19 @@
   <v-list
     height="500"
     dense
-    >
+  >
     <div
       v-for="(technique, i) in techniques"
-      :key="i">
+      :key="i"
+    >
       <v-list-group v-if="'subtechniques' in technique">
-        <template v-slot:activator>
+        <template #activator>
           <matrix-technique-content :technique="technique" />
         </template>
 
         <v-list-item
-          v-for="(subtechnique, i) in technique.subtechniques"
-          :key="i"
+          v-for="(subtechnique, j) in technique.subtechniques"
+          :key="j"
         >
           <!-- This nested v-list-item will be indented -->
           <matrix-technique-item :technique="subtechnique" />

@@ -1,21 +1,22 @@
 <template>
   <v-menu offset-y>
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-btn
         color="inherit"
         v-bind="attrs"
         v-on="on"
       >
         Navigator Layer
-        <v-icon right>mdi-menu-down</v-icon>
+        <v-icon right>
+          mdi-menu-down
+        </v-icon>
       </v-btn>
     </template>
     <v-list>
-
       <v-list-item
         :href="navigatorUrlIndividualCaseStudyLayer"
         target="_blank"
-        >
+      >
         <v-list-item-icon style="margin-right: 0px;">
           <v-icon small>
             mdi-open-in-new
@@ -40,7 +41,6 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
     </v-list>
   </v-menu>
 </template>

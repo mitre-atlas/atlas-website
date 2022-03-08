@@ -7,30 +7,28 @@
     <page-section-title>Corrections and Improvement</page-section-title>
 
     For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+
     <br><br>
-    <!-- For a more hands-on feedback session, <span class="pink--text">TODO future events, consider adding an announcements section.</span> -->
 
     <page-section-title>Contribute Case Studies</page-section-title>
 
     <p>We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers.</p>
 
     <p>
-      Use the <NuxtLink to="/studies/create">Case Study Builder</NuxtLink> to craft a submission file with details and technique mappings,
+      Use the <NuxtLink to="/studies/create">
+        Case Study Builder
+      </NuxtLink> to craft a submission file with details and technique mappings,
       then email the file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
       The {{ $config.name.short }} team will review the submission and follow up with feedback.
     </p>
 
     <p>
       <v-card-actions>
-         <v-btn nuxt to="/studies/create">Go to the case study builder</v-btn>
+        <v-btn nuxt to="/studies/create">
+          Go to the case study builder
+        </v-btn>
       </v-card-actions>
     </p>
-
-    <!--
-    <div class="center">
-      <video controls src="/atlas_case_study_demo.mp4" />
-    </div>
-    -->
 
     <page-section-title>Case study example</page-section-title>
     <case-study-example />
@@ -56,7 +54,6 @@
 export default {
   async asyncData ({ $content }) {
     const contents = await $content('contributorslist').only('data').fetch()
-    // console.log(contents.data)
 
     // Sort contributors alphabetically
     const contributors = contents.data.map((c) => {

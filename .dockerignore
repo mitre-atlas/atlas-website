@@ -4,3 +4,4 @@ node_modules
 .gitlab-ci.yml
 dist
 .nuxt
+.env

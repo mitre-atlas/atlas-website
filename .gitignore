@@ -91,3 +91,6 @@ sw.*
 
 # Deplpy scripts
 *.sh
+
+# Docker image
+atlas-website-image.tar

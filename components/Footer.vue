@@ -1,52 +1,56 @@
 <template>
   <v-footer padless dark>
-    <v-card class="pt-2" flat tile width="100%" color="grey darken-3"><!-- MTIRE Navy #0D2F4F -->
+    <v-card class="pt-2" flat tile width="100%" color="grey darken-3">
+      <!-- MTIRE Navy #0D2F4F -->
 
-    <v-row justify="center" align="center">
-      <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''"> <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
-        <a href="https://www.mitre.org/">
-          <img src="~/assets/mitre-logo-white.svg" :height="!mobile ? 45 : 25" class="d-block mx-auto" />
-        </a>
-      </v-col>
+      <v-row justify="center" align="center">
+        <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
+          <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
+          <a href="https://www.mitre.org/">
+            <img src="~/assets/mitre-logo-white.svg" :height="!mobile ? 45 : 25" class="d-block mx-auto">
+          </a>
+        </v-col>
 
-      <!-- <v-row justify="space-between" align="center" class="pb-3 pt-0">
-          <v-card-text class="text-center pt-0"> -->
+        <v-col cols="12" sm="8">
+          <v-row justify="space-between" align="center">
+            <v-card-text style="color: #bababa;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
+              MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a trademark and registered trademark of The MITRE Corporation.
+            </v-card-text>
+          </v-row>
 
-      <v-col cols="12" sm="8">
-        <v-row justify="space-between" align="center">
-          <v-card-text style="color: #bababa;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a trademark and registered trademark of The MITRE Corporation.
+          <v-row :class="`mt-n5 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
+            <v-col v-for="button in mainButtons" :key="button.text" :class="buttonClass" cols="auto">
+              <v-btn
+                :outlined="button.outline"
+                text
+                nuxt
+                :to="button.to"
+                v-text="button.text"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="12" sm="2">
+          <v-row class="text-center" justify="center" align="center">
+            <v-col v-for="button in importantButtons" :key="button.text" class="text-center" :class="buttonClass" cols="auto">
+              <v-btn
+                class="mx-auto"
+                color="indigo darken-1"
+                depressed
+                nuxt
+                :to="button.to"
+                v-text="button.text"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
+          <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
+            v{{ version }}
           </v-card-text>
         </v-row>
-
-        <v-row :class="`mt-n5 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
-          <!-- <v-spacer /> -->
-          <v-col :key="button.text" v-for="button in mainButtons" :class="buttonClass" cols="auto">
-            <v-btn
-            :outlined="button.outline"
-            v-text="button.text"
-            text
-            nuxt
-            :to="button.to" /></v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="12" sm="2">
-        <v-row class="text-center" justify="center" align="center"><v-col class="text-center" :key="button.text" v-for="button in importantButtons" :class="buttonClass" cols="auto">
-          <v-btn
-          class="mx-auto"
-          color="indigo darken-1"
-          depressed
-          v-text="button.text"
-          nuxt
-          :to="button.to" /></v-col></v-row>
-      </v-col>
-      <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
-        <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{version}}
-        </v-card-text>
       </v-row>
-    </v-row>
     </v-card>
   </v-footer>
 </template>

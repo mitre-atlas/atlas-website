@@ -8,8 +8,8 @@
 import MatrixTechniqueContent from './MatrixTechniqueContent.vue'
 
 export default {
-  components: { MatrixTechniqueContent },
   name: 'MatrixTechniqueItem',
+  components: { MatrixTechniqueContent },
   props: ['technique']
 }
 </script>

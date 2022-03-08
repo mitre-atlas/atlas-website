@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col sm=4 class="pl-0">
+      <v-col sm="4" class="pl-0">
         <v-autocomplete
           v-model="yearReturn"
           :items="getLast100"
@@ -12,11 +12,11 @@
           @input="$emit('yearUpdate', yearReturn)"
         />
       </v-col>
-      <v-col sm=4 class="pl-0">
+      <v-col sm="4" class="pl-0">
         <v-autocomplete
-          sm=4
-          class="pl-0"
           v-model="monthReturn"
+          sm="4"
+          class="pl-0"
           :items="getMonths"
           label="Month"
           :disabled="!yearReturn"
@@ -26,11 +26,11 @@
           @input="$emit('monthUpdate', monthReturn)"
         />
       </v-col>
-      <v-col sm=4 class="pl-0">
+      <v-col sm="4" class="pl-0">
         <v-autocomplete
-          sm=4
-          class="pl-0"
           v-model="dateReturn"
+          sm="4"
+          class="pl-0"
           :items="getDate"
           label="Day"
           :disabled="!monthReturn"
