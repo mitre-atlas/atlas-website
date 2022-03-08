@@ -134,6 +134,7 @@
         <add-source
           v-if="addingSource"
           ref="addSourceRef"
+          :index="studyData.study.references.length"
           @clicked="addSource"
           @addingBoolUpdate="addingSource = $event"
         />
