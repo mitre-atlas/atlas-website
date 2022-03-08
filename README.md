@@ -25,8 +25,8 @@ $ npm run generate
 #setup image for docker website
 $ docker build -t atlas:atlas-website .
 
-#run website locally on port 3333 (http://localhost:3333)
-$ docker run -d -p 3333:80 atlas:atlas-website
+#run website locally on port 3333 (http://localhost:3000)
+$ docker run -d -p 3000:3000 atlas:atlas-website
 
 #save website image as tar file
 $ docker save -o atlas-website-image.tar atlas:atlas-website
@@ -36,3 +36,18 @@ $ docker load -i atlas-website-image.tar
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## User Site Customization
+
+Create a .env file in the root of your project to set certain variables that can alter the website's appearance and data. Below is an example of the variables that can be set by the user:
+
+```
+#input a URL to activate the "Navigator" tab which will pull data from a repository to display MITRE ATLAS™ data alongside MITRE ATT&CK® Enterprise tactics and techniques
+NAVIGATOR_URL = https://mitre.github.io/atlas-navigator/
+```
+
+You can customize the docker version of the website by mounting in your custom version of the .env file with this command:
+
+```
+docker run -d -p 3000:3000 -v /<absolute path>/.env:/app/.env atlas:atlas-website
+```

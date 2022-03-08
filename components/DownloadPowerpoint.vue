@@ -4,12 +4,12 @@
       <v-checkbox
         v-model="pptCheckbox"
         label="Include Case Study PPT"
-        @change="changeCheckbox"
         elevation="0"
         color="inherit"
-      ></v-checkbox>
-      </v-container>
-    </v-row>
+        @change="changeCheckbox"
+      />
+    </v-container>
+  </v-row>
   <v-list-item
     v-else
     color="inherit"
@@ -107,10 +107,6 @@ export default {
         slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
       })
 
-      // if (!this.isBuilder) {
-      //   const studyTemp = { study: this.studyYaml }
-      //   this.studyYaml = studyTemp
-      // }
       this.titleSlide(ppt, this.studyYaml)
       this.detailSlide(ppt, this.studyYaml)
       this.procedureSlide(ppt, this.studyYaml)
@@ -224,7 +220,6 @@ export default {
           { timeZone: 'UTC', year: 'numeric', month: 'long' }
         )
       } else if (
-        // TODO some case studies have incident-date-granularity, remove this undefined check once fixed
         dateGranularity === undefined ||
         dateGranularity === 'DATE'
       ) {
@@ -366,24 +361,11 @@ export default {
         ]
       ]
       for (let i = 0; i < yaml.procedure.length; i++) {
-        // const tacticId = yaml.procedure[i].tactic
         const techniqueId = yaml.procedure[i].technique
         const description = yaml.procedure[i].description
 
-        // const tacticInfo = this.$store.getters.getTacticById(tacticId)
         const techniqueInfo = this.$store.getters.getTechniqueById(techniqueId)
 
-        // const tacticLabel = [
-        //   { text: tacticInfo.name },
-        //   this.linkText(tacticId, this.getUrlFromInfoObject(tacticInfo))
-        // ]
-        // const techniqueLabel = [
-        //   { text: techniqueInfo.name },
-        //   this.linkText(techniqueId, this.getUrlFromInfoObject(techniqueInfo))
-        // ]
-        // console.log(techniqueLabel, tacticLabel)
-
-        // const workaroundTacticLabel = `${tacticInfo.name}\n${tacticId}`
         const parentTechniqueId = this.$store.getters.getTechniqueById(techniqueId)['subtechnique-of']
         const parentTechnique = this.$store.getters.getTechniqueById(parentTechniqueId)
 
@@ -395,24 +377,15 @@ export default {
         }
 
         const row = [
-          // this.linkText(
-          //   workaroundTacticLabel,
-          //   this.getUrlFromInfoObject(tacticInfo)
-          // ),
           { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
           this.linkText(
             workaroundTecniqueLabel,
             this.getUrlFromInfoObject(techniqueInfo)
           ),
-          // { text: tacticLabel },
-          // { text: techniqueLabel },
-          // { text: techniqueInfo.name + '\n' + techniqueId },
           { text: description, options: { fontFace: 'Arial', fontSize: 10 } }
         ]
         rows.push(row)
       }
-      // const slide = ppt.addSlide({ masterName: 'Content' })
-      //   .addText('Procedure', { placeholder: 'title' })
 
       ppt.defineSlideMaster({
         title: 'Procedure',

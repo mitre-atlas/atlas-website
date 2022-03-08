@@ -3,36 +3,33 @@
     <v-card-title>
       <!-- {{ getTechniqueById(info.technique).name }} -->
       <span
-      v-if="techniqueId.startsWith('T')">
-        <a @click=openNewTab(techniqueId) style="color: inherit;">
-          {{techniqueName}}
+        v-if="techniqueId.startsWith('T')"
+      >
+        <a style="color: inherit;" @click="openNewTab(techniqueId)">
+          {{ techniqueName }}
         </a>
-          <!-- <sup class="red--text text--darken-3 text-caption">
-            &
-          </sup> -->
-          </span>
+      </span>
       <nuxt-link
         v-else-if="parentTech"
         :to="`/techniques/${techniqueId}`"
         style="color: inherit;"
-        >
-          {{ parentTechniqueName }}: {{ techniqueName }}
+      >
+        {{ parentTechniqueName }}: {{ techniqueName }}
       </nuxt-link>
       <nuxt-link
         v-else
         :to="`/techniques/${techniqueId}`"
         style="color: inherit;"
-        >
-          {{ techniqueName }}
+      >
+        {{ techniqueName }}
       </nuxt-link>
     </v-card-title>
     <v-card-subtitle>
-      <!-- {{ getTacticById(info.tactic).name }} -->
       <nuxt-link
         :to="`/tactics/${tacticId}`"
         style="color: inherit;"
-        >
-          {{ tacticName }}
+      >
+        {{ tacticName }}
       </nuxt-link>
     </v-card-subtitle>
     <v-card-text v-html="$md.render(info.description)" />
@@ -100,12 +97,6 @@ export default {
       }
       return technique.id
     }
-    // technique () {
-    //   return this.getTechniqueById(this.info.technique)
-    // },
-    // tactic () {
-    //   return this.getTacticById(this.info.tactic)
-    // }
   },
   methods: {
     openNewTab (id) {

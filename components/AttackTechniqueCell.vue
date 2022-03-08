@@ -1,12 +1,12 @@
 <template>
   <div :class="computedClass">
     <v-tooltip top>
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <nuxt-link
           :to="`/techniques/${technique.id}`"
           v-bind="attrs"
           v-on="on"
-          >
+        >
           {{ technique.name }}
         </nuxt-link>
       </template>

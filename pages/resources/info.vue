@@ -1,38 +1,29 @@
 <template>
-<div>
-  <page-title>{{ title }}</page-title>
+  <div>
+    <page-title>{{ title }}</page-title>
 
-  <!--
-    <page-section-title>Announcements</page-section-title>
-    <annoucement />
-  -->
+    <page-section-title>Data</page-section-title>
 
-  <page-section-title>Data</page-section-title>
+    The tactics and techniques referenced in {{ mitreTitle }} are drawn from:
+    <ul>
+      <li>Adversarial Machine Learning v{{ $config.advml.version }}</li>
+      <li><a :href="$config.attack.repo_url">MITRE ATT&CK<sup>&reg;</sup> Enterprise</a> v{{ $config.attack.version }}</li>
+    </ul>
 
-  The tactics and techniques referenced in {{ mitreTitle }} are drawn from:
-  <ul>
-    <!-- <a :href="$config.advml.repo_url">Adversarial machine learning</a> -->
-    <li>Adversarial Machine Learning v{{ $config.advml.version }}</li>
-    <li><a :href="$config.attack.repo_url">MITRE ATT&CK<sup>&reg;</sup> Enterprise</a> v{{ $config.attack.version }}</li>
-  </ul>
+    <br>
 
-  <br />
+    <p>
+      The first iteration of the adversarial machine learning threat matrix is at <a href="https://github.com/mitre/advmlthreatmatrix">https://github.com/mitre/advmlthreatmatrix</a>.
+    </p>
 
-  <p>
-    The first iteration of the adversarial machine learning threat matrix is at <a href="https://github.com/mitre/advmlthreatmatrix">https://github.com/mitre/advmlthreatmatrix</a>.
-  </p>
-
-  <page-section-title>Current Version</page-section-title>
-  <!-- <version-documentation :version-doc="version-docA" /> -->
-    <nuxt-content :document ="currentUpdatePageData"/>
-
-</div>
+    <page-section-title>Current Version</page-section-title>
+    <nuxt-content :document="currentUpdatePageData" />
+  </div>
 </template>
 <script>
 import packageData from '../../package.json'
 export default {
   async asyncData ({ $content }) {
-    // const currentUpdatePage = await $content('version-documentation').fetch()
     const currentUpdatePage = await $content('update-files').sortBy('slug', 'desc').limit(1).fetch()
     const currentUpdatePageData = currentUpdatePage[0]
     return {

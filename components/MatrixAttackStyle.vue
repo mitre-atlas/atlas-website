@@ -5,23 +5,23 @@
       <thead>
         <tr>
           <td
-            class="tactic name"
             v-for="(tactic, i) in matrix.tactics"
             :key="i"
-            >
+            class="tactic name"
+          >
             <nuxt-link
               :to="`/tactics/${tactic.id}`"
-              >
+            >
               {{ tactic.name }}
             </nuxt-link>
           </td>
         </tr>
         <tr>
           <td
-            class="tactic count"
             v-for="(tactic, i) in matrix.tactics"
             :key="i"
-            >
+            class="tactic count"
+          >
             {{ tactic.techniques.length + " " + (tactic.techniques.length == 1 ? "technique" : "techniques") }}
           </td>
         </tr>
@@ -29,10 +29,10 @@
       <tbody>
         <tr>
           <td
-            class="tactic"
             v-for="(tactic, i) in matrix.tactics"
             :key="i"
-            >
+            class="tactic"
+          >
             <table class="techniques-table">
               <tbody v-for="(technique, j) in tactic.techniques" :key="j">
                 <attack-technique-row :technique="technique" />

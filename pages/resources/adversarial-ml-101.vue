@@ -1,118 +1,119 @@
 <template>
-<div>
-  <page-title>{{ title }}</page-title>
+  <div>
+    <page-title>{{ title }}</page-title>
 
-  <p>
-    Informally, Adversarial ML is "subverting machine learning systems for fun and profit.""
-    The methods underpinning the production machine learning systems are systematically vulnerable to a
-    new class of vulnerabilities across the machine learning supply chain collectively known as Adversarial
-     Machine Learning. Adversaries can exploit these vulnerabilities to manipulate AI systems in order to alter
-     their behavior to serve a malicious end goal.
-  </p>
+    <p>
+      Informally, Adversarial ML is "subverting machine learning systems for fun and profit."
+      The methods underpinning the production machine learning systems are systematically vulnerable to a
+      new class of vulnerabilities across the machine learning supply chain collectively known as Adversarial
+      Machine Learning. Adversaries can exploit these vulnerabilities to manipulate AI systems in order to alter
+      their behavior to serve a malicious end goal.
+    </p>
 
-  <p>
-    Consider a typical ML pipeline shown below that is gated behind an API, wherein the only way to use the model
-    is to send a query and observe a response. In this example, we assume a blackbox setting: the attacker does NOT
-    have direct access to the training data, no knowledge of the algorithm used and no source code of the model. The
-    attacker only queries the model and observes the response. We will look at two broad categories of attacks:
-  </p>
+    <p>
+      Consider a typical ML pipeline shown below that is gated behind an API, wherein the only way to use the model
+      is to send a query and observe a response. In this example, we assume a blackbox setting: the attacker does NOT
+      have direct access to the training data, no knowledge of the algorithm used and no source code of the model. The
+      attacker only queries the model and observes the response. We will look at two broad categories of attacks:
+    </p>
 
-  <div class="text-h6">
-    Train time vs Inference time:
-  </div>
+    <div class="text-h6">
+      Train time vs Inference time:
+    </div>
 
-  <p>
-    Training refers to the process by which data is modeled. This process includes collecting and processing data, training a model,
-    validating the model works, and then finally deploying the model. An attack that happens at "train time" is an attack that happens
-    while the model is learning prior its deployment. After a model is deployed, consumers of the model can submit queries and receive
-    outputs (inferences).
-    An attack that happens at "inference time" is an attack where the learned state of the model does not change and the model is just
-    providing outputs. In practice, a model could be re-trained after every new query providing an attacker with some interesting scenarios
-    by which they could use an inference endpoint to perform a "train-time" attack. In any case, the delineation is useful to describe how
-    an attacker could be interacting with a target model.
-  </p>
+    <p>
+      Training refers to the process by which data is modeled. This process includes collecting and processing data, training a model,
+      validating the model works, and then finally deploying the model. An attack that happens at "train time" is an attack that happens
+      while the model is learning prior its deployment. After a model is deployed, consumers of the model can submit queries and receive
+      outputs (inferences).
+      An attack that happens at "inference time" is an attack where the learned state of the model does not change and the model is just
+      providing outputs. In practice, a model could be re-trained after every new query providing an attacker with some interesting scenarios
+      by which they could use an inference endpoint to perform a "train-time" attack. In any case, the delineation is useful to describe how
+      an attacker could be interacting with a target model.
+    </p>
 
-  <p>
-    With this in mind, we can jump into the attacks on ML systems.
-  </p>
+    <p>
+      With this in mind, we can jump into the attacks on ML systems.
+    </p>
 
-  <img src="~/assets/AdvML101.PNG" width="600"/>
+    <img src="~/assets/AdvML101.PNG" width="600">
 
-  <page-section-title>Machine Learning Attacks</page-section-title>
+    <page-section-title>Machine Learning Attacks</page-section-title>
 
-  <p>
-  Attacks on machine learning systems can be categorized as follows:
-  </p>
+    <p>
+      Attacks on machine learning systems can be categorized as follows:
+    </p>
 
-  <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <th class="text-left">
-          Attack
-        </th>
-        <th class="text-left">
-          Overview
-        </th>
-        <th>
-          Type
-        </th>
-      </thead>
-      <tbody>
-        <tr v-for="item in attacksTableData" :key="item.attack">
-          <td>{{ item.attack }}</td>
-          <td>{{ item.overview }}</td>
-          <td>{{ item.type }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
+    <v-simple-table>
+      <template #default>
+        <thead>
+          <th class="text-left">
+            Attack
+          </th>
+          <th class="text-left">
+            Overview
+          </th>
+          <th>
+            Type
+          </th>
+        </thead>
+        <tbody>
+          <tr v-for="item in attacksTableData" :key="item.attack">
+            <td>{{ item.attack }}</td>
+            <td>{{ item.overview }}</td>
+            <td>{{ item.type }}</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
 
-  <page-section-title>Attack Scenarios</page-section-title>
+    <page-section-title>Attack Scenarios</page-section-title>
 
-  <div class="text-h6">
-    Attack Scenario #1: Inference Attack
-  </div>
+    <div class="text-h6">
+      Attack Scenario #1: Inference Attack
+    </div>
 
-  <p>
-    Consider the most common deployment scenario where a model is deployed as an API endpoint. In this blackbox setting an attacker can only query the model and observe the response. The attacker controls the input to the model, but the attacker does not know how it is processed.
-  </p>
+    <p>
+      Consider the most common deployment scenario where a model is deployed as an API endpoint. In this blackbox setting an attacker can only query the model and observe the response. The attacker controls the input to the model, but the attacker does not know how it is processed.
+    </p>
 
-  <img src="~/assets/AdvML101_Inference.PNG" width="600"/>
+    <img src="~/assets/AdvML101_Inference.PNG" width="600">
 
-  <div class="text-h6">
-    Attack Scenario #2: Training Time Attack
-  </div>
+    <div class="text-h6">
+      Attack Scenario #2: Training Time Attack
+    </div>
 
-  <p>
-    Consider that an attacker has control over training data. This flavor of attack is shown in Tay Poisoning Case Study where the attacker was able to compromise the training data via the feedback mechanism.
-  </p>
+    <p>
+      Consider that an attacker has control over training data. This flavor of attack is shown in Tay Poisoning Case Study where the attacker was able to compromise the training data via the feedback mechanism.
+    </p>
 
-  <img src="~/assets/AdvML101_Traintime.PNG" width="600"/>
+    <img src="~/assets/AdvML101_Traintime.PNG" width="600">
 
-  <div class="text-h6">
-    Attack Scenario #3: Attack on Edge/Client
-  </div>
+    <div class="text-h6">
+      Attack Scenario #3: Attack on Edge/Client
+    </div>
 
-  <p>
-    Consider that a model exists on a client (like a phone) or on the edge (such as IoT) . An attacker might have access to model code through reversing the service on the client. This flavor of attack is shown in Bosch Case Study with EdgeAI.
-  </p>
+    <p>
+      Consider that a model exists on a client (like a phone) or on the edge (such as IoT) . An attacker might have access to model code through reversing the service on the client. This flavor of attack is shown in Bosch Case Study with EdgeAI.
+    </p>
 
-  <img src="~/assets/AdvML101_Client.PNG" width="600"/>
+    <img src="~/assets/AdvML101_Client.PNG" width="600">
 
-  <page-section-title>Important Notes</page-section-title>
+    <page-section-title>Important Notes</page-section-title>
 
-  <ol>
-    <li>This does not cover all kinds of attacks -- adversarial ML is an active area of research with new classes of attacks constantly being discovered.</li>
-    <li>Though the illustration shows blackbox attacks, these attacks have also been shown to work in whitebox (where the attacker has access to either model architecture, code or training data) settings.</li>
-    <li>Though we were not specific about what kind of data – image, audio, time series, or tabular data - research has shown that of these attacks are data agnostic.</li>
-  </ol>
+    <ol>
+      <li>This does not cover all kinds of attacks -- adversarial ML is an active area of research with new classes of attacks constantly being discovered.</li>
+      <li>Though the illustration shows blackbox attacks, these attacks have also been shown to work in whitebox (where the attacker has access to either model architecture, code or training data) settings.</li>
+      <li>Though we were not specific about what kind of data – image, audio, time series, or tabular data - research has shown that of these attacks are data agnostic.</li>
+    </ol>
 
-  <page-section-title>Next Recommended Reading</page-section-title>
+    <page-section-title>Next Recommended Reading</page-section-title>
 
-  <p>
-    Head over to the <NuxtLink to="/matrix">{{ shortName }} Matrix</NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
-  </p>
-
+    <p>
+      Head over to the <NuxtLink to="/matrix">
+        {{ shortName }} Matrix
+      </NuxtLink> page to see a compendium of attacks in MITRE ATT&CK<sup>&reg;</sup> style.
+    </p>
   </div>
 </template>
 

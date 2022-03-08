@@ -1,63 +1,64 @@
 <template>
   <v-dialog
-      v-model="show"
-      max-width="500px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on"
-          color="primary"
-          text
+    v-model="show"
+    max-width="500px"
+  >
+    <template #activator="{ on, attrs }">
+      <v-btn
+        v-bind="attrs"
+        color="primary"
+        text
+        v-on="on"
+      >
+        <v-icon left>
+          mdi-upload
+        </v-icon>
+        Load case study
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>Load case study</v-card-title>
+
+      <v-card-text>
+        To view or edit an existing case study, upload a .yaml file created by this website.
+
+        <v-file-input
+          v-model="chosenFile"
+          class="mt-4"
+          outlined
+          dense
+          :error="hasError"
+          :error-messages="errorMessages"
+          accept=".yaml"
+          label="Case study .yaml file"
+          @change="validateFileAsync"
+          @click:clear="clear"
         >
-          <v-icon left>
-            mdi-upload
-          </v-icon>
-          Load case study
+          <template #selection>
+            {{ initialFileName }}
+          </template>
+        </v-file-input>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          plain
+          color="grey"
+          @click="cancel"
+        >
+          Cancel
         </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>Load case study</v-card-title>
-
-          <v-card-text>
-              To view or edit an existing case study, upload a .yaml file created by this website.
-
-              <v-file-input
-                class="mt-4"
-                outlined
-                dense
-                v-model="chosenFile"
-                @change="validateFileAsync"
-                @click:clear="clear"
-                :error="hasError"
-                :error-messages="errorMessages"
-                accept=".yaml"
-                label="Case study .yaml file"
-            >
-            <template v-slot:selection>{{ initialFileName }}</template>
-            </v-file-input>
-
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            plain
-            color="grey"
-            @click="cancel"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            plain
-            color="primary"
-            :disabled="hasError || !chosenFile"
-            @click="loadDataFromFile"
-            >
-            OK
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+        <v-btn
+          plain
+          color="primary"
+          :disabled="hasError || !chosenFile"
+          @click="loadDataFromFile"
+        >
+          OK
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 <script>
@@ -111,8 +112,6 @@ export default {
       this.errorMessages = []
     },
     async validateFile (file) {
-      // did some testing and it seems Vue automatically escapes special charatcers when inserting into HTML
-      // does that mean we're fully safe from XSS attacks?
       const expectedTypes = ['.yaml']
 
       let fileType = ''
@@ -131,7 +130,7 @@ export default {
 
       // Check file extension (though accept prop is in effect)
       // Rename file name to prevent XSS
-      if (expectedTypes.includes(fileType)) { // nominal
+      if (expectedTypes.includes(fileType)) {
         // https://blog.yeswehack.com/yeswerhackers/file-upload-attacks-part-2/
 
         Object.defineProperty(file, 'name', { // prevents buffer overflow attack via name prop

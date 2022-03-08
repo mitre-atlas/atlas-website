@@ -2,8 +2,12 @@
   <div id="sourceRender">
     <v-card>
       <v-card-title>
-        <div v-if="index != null">Source {{index+1}}</div>
-        <div v-else>Add Source</div>
+        <div v-if="index != null">
+          Source {{ index+1 }}
+        </div>
+        <div v-else>
+          Add Source
+        </div>
       </v-card-title>
 
       <v-card-text>
@@ -25,12 +29,18 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">Cancel</v-btn>
-        <v-btn text color="green" @click="addSource">Save</v-btn>
+        <v-spacer />
+        <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
+          Cancel
+        </v-btn>
+        <v-btn text color="green" @click="addSource">
+          Save
+        </v-btn>
       </v-card-actions>
 
-      <v-alert v-if="addSourceErr" color="red" text type="error" dense>{{ addSourceErr }}</v-alert>
+      <v-alert v-if="addSourceErr" color="red" text type="error" dense>
+        {{ addSourceErr }}
+      </v-alert>
     </v-card>
   </div>
 </template>
@@ -51,7 +61,10 @@ export default {
       type: Boolean,
       default: false
     },
-    index: Number
+    index: {
+      type: Number,
+      default: 0
+    }
   },
   data () {
     return {
@@ -79,8 +92,7 @@ export default {
       // If url is not empty then it must be validated
       if (this.urlData !== '') {
         try {
-          url = new URL(this.urlData)
-          console.log(url)
+          url = new URL(this.urlData) // eslint-disable-line no-unused-vars
         } catch (_) {
           isUrlValid = false
           this.addSourceErr = 'URL cannot be found or does not start with http(s)://'
@@ -90,7 +102,6 @@ export default {
 
       // If there exists a title and url is validated
       if ((this.titleData === '' || this.titleData) && isUrlValid) {
-        console.log(this.urlData)
         const newSource = {
           title: this.titleData,
           url: this.urlData

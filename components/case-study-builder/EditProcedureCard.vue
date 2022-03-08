@@ -1,11 +1,11 @@
 <template>
   <v-card v-if="!editingData">
-    <v-card-title style="font-size: 1.1rem" v-if="parentTech">
+    <v-card-title v-if="parentTech" style="font-size: 1.1rem">
       {{ parentTechniqueName }}: {{ techniqueName }}
       <v-spacer />
       <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
-    <v-card-title style="font-size: 1.1rem" v-else>
+    <v-card-title v-else style="font-size: 1.1rem">
       {{ techniqueName }}
       <v-spacer />
       <v-icon>mdi-arrow-up-down</v-icon>
@@ -19,11 +19,11 @@
       <v-btn color="blue" icon @click="editStep">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-       <v-dialog
+      <v-dialog
         v-model="dialog"
         width="500"
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <v-btn
             color="red"
             icon
@@ -36,8 +36,8 @@
 
         <confirm-delete-dialog
           :name="comboName"
-          v-on:cancel="dialog = false"
-          v-on:delete="deleteStep"
+          @cancel="dialog = false"
+          @delete="deleteStep"
         >
           <div v-html="info.description" />
         </confirm-delete-dialog>
@@ -112,7 +112,6 @@ export default {
       return parentTechnique.name
     },
     techniqueName () {
-      console.log(this.info)
       const technique = this.$store.getters.getTechniqueById(this.info.technique)
 
       if (technique === undefined) {
@@ -143,14 +142,10 @@ export default {
     }
   },
   methods: {
-    // updateValue (inputVal) {
-    //   this.inputVal = inputVal
-    // },
     deleteStep () {
       this.$emit('deleteClick')
     },
     editStep () {
-      // console.log('edit clicked')
       this.editingData = true
       this.$emit('updateEdit', this.editingData)
     },
