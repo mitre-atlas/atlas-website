@@ -8,6 +8,13 @@
     <br><br>
     For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
     <br><br>
+
+    <page-section-title>Mailing List</page-section-title>
+
+    <p>
+    For discussions around {{ shortName }}, we invite everyone to join our <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ">Slack</a>, <a href="https://github.com/mitre-atlas">GitHub</a>, and or <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">Google</a> groups.
+    </p>
+
     <v-btn
         class="ma-2 white--text pa-6"
         color="#006400"
@@ -40,11 +47,7 @@
         Join the GitHub Group
     </v-btn>
 
-    <page-section-title>Mailing List</page-section-title>
-
-    <p>
-    For discussions around {{ shortName }}, we invite everyone to <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">join our Google Group</a>.
-    </p>
+    <br></br>
 
     <v-btn
         class="ma-2 black--text pa-6"
@@ -67,8 +70,8 @@
     <br><br>
 
     <v-alert text type="info">
-    Google Groups generally defaults to your personal email. If you would rather access this forum using your corporate email (as opposed to your gmail), you can create a Google account using your corporate email before joining the group.
-    Also most email clients route emails from Google Groups into "Other"/"Spam"/"Forums" folder. So, you may want to create a rule in your email client to have these emails go into your inbox instead.
+    Google Groups generally defaults to your personal email. If you would rather access this forum using your corporate email, create a Google account using your corporate email before joining the group.
+    Additionally, make sure to check if emails from Google Groups are being routed into your "Other"/"Spam"/"Forums" folder instead of your primary inbox.
     </v-alert>
   </div>
 </template>
