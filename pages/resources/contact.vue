@@ -4,15 +4,48 @@
 
     <!-- <page-section-title>Contact Us</page-section-title> -->
 
-    For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
+    For private comments/discussions and how organizations can get involved in the effort, please email:
+    <br><br>
+    <v-btn
+        class="ma-2 white--text pa-6"
+        color="#005B94"
+        light
+        href = 'mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com'
+        target = '_blank'
+      >
+        <img
+          src="../../assets/email-icon.png"
+          height="40px"
+          width="40px"
+          style="margin-right: 10px"
+          />
+        atlas@mitre.org
+    </v-btn>
+
     <br><br>
     For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
     <br><br>
 
-    <page-section-title>Mailing List</page-section-title>
+        <v-btn
+        class="ma-2 white--text pa-6"
+        color="#005B94"
+        light
+        href = '/resources/contribute'
+        target = '_blank'
+      >
+        <img
+          src="../../assets/lightbulb-icon.png"
+          height="35px"
+          width="35px"
+          style="margin-right: 10px"
+          />
+        Contribute
+    </v-btn>
+
+    <page-section-title>More Ways to Connect with MITRE ATLAS</page-section-title>
 
     <p>
-    For discussions around {{ shortName }}, we invite everyone to join our <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ">Slack</a>, <a href="https://github.com/mitre-atlas">GitHub</a>, and or <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">Google</a> groups.
+    For discussions around {{ shortName }}, we invite everyone to join our <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ">Slack</a>, <a href="https://github.com/mitre-atlas">GitHub</a>, and or <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">Google</a> groups. You can also find instructional demonstration videos on <a href="https://www.youtube.com/user/mitrecorp">MITRE's YouTube channel</a>.
     </p>
 
     <v-btn
@@ -20,11 +53,12 @@
         color="#006400"
         light
         href = 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
+        target = '_blank'
       >
         <img
           src="../../assets/slack-icon.png"
-          height="45px"
-          width="45px"
+          height="40px"
+          width="40px"
           style="margin-right: 10px"
           />
         Join the Mitre-Atlas Slack
@@ -37,6 +71,7 @@
         color="#6e5494"
         light
         href = 'https://github.com/mitre-atlas'
+        target = '_blank'
       >
         <img
           src="../../assets/github-icon.png"
@@ -47,13 +82,14 @@
         Join the GitHub Group
     </v-btn>
 
-    <br></br>
+    <br><br>
 
     <v-btn
         class="ma-2 black--text pa-6"
         color="#D3D3D3"
         light
         href = 'https://groups.google.com/forum/#!forum/advmlthreatmatrix/join'
+        target = '_blank'
       >
         <img
           src="../../assets/google-group-icon.png"
@@ -62,6 +98,24 @@
           style="margin-right: 10px"
           />
         Join the Google Group
+    </v-btn>
+
+    <br><br>
+
+    <v-btn
+        class="ma-2 white--text pa-6"
+        color="red"
+        light
+        href = 'https://www.youtube.com/user/mitrecorp'
+        target = '_blank'
+      >
+        <img
+          src="../../assets/youtube-icon.png"
+          height="45px"
+          width="45px"
+          style="margin-right: 10px"
+          />
+        MITRE ATLAS Video Playlist
     </v-btn>
 
     <br><br>
