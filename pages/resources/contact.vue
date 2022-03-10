@@ -10,7 +10,7 @@
         class="ma-2 white--text pa-6"
         color="#005B94"
         light
-        href = 'mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com'
+        href = 'mailto:atlas@mitre.org'
         target = '_blank'
       >
         <img
