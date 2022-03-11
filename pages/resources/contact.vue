@@ -70,7 +70,7 @@ export default {
     githubIcon: 'mdi-github',
     githubButtonText: 'Join the GitHub Group',
 
-    youtubeLink: 'https://www.youtube.com/user/mitrecorp',
+    youtubeLink: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu',
     youtubeIcon: 'mdi-youtube',
     youtubeButtonText: 'MITRE-ATLAS Video Playlist'
   }),
