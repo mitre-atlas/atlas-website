@@ -6,41 +6,14 @@
 
     For private comments/discussions and how organizations can get involved in the effort, please email:
     <br><br>
-    <v-btn
-        class="ma-2 white--text pa-6"
-        color="#005B94"
-        light
-        href = 'mailto:atlas@mitre.org'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/email-icon.png"
-          height="40px"
-          width="40px"
-          style="margin-right: 10px"
-          />
-        atlas@mitre.org
-    </v-btn>
+
+    <contact-button :color="basicButtonColor" :icon="emailIcon" :buttonText="emailButtonText" :link="emailLink"></contact-button>
 
     <br><br>
     For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
     <br><br>
 
-        <v-btn
-        class="ma-2 white--text pa-6"
-        color="#005B94"
-        light
-        href = '/resources/contribute'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/lightbulb-icon.png"
-          height="35px"
-          width="35px"
-          style="margin-right: 10px"
-          />
-        Contribute
-    </v-btn>
+    <contact-button :color="basicButtonColor" :icon="contributeIcon" :buttonText="contributeButtonText" :link="contributeLink"></contact-button>
 
     <page-section-title>More Ways to Connect with MITRE ATLAS</page-section-title>
 
@@ -48,75 +21,15 @@
     For discussions around {{ shortName }}, we invite everyone to join our <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ">Slack</a>, <a href="https://github.com/mitre-atlas">GitHub</a>, and or <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">Google</a> groups. You can also find instructional demonstration videos on <a href="https://www.youtube.com/user/mitrecorp">MITRE's YouTube channel</a>.
     </p>
 
-    <v-btn
-        class="ma-2 white--text pa-6"
-        color="#006400"
-        light
-        href = 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/slack-icon.png"
-          height="40px"
-          width="40px"
-          style="margin-right: 10px"
-          />
-        Join the Mitre-Atlas Slack
-    </v-btn>
+    <contact-button :color="slackButtonColor" :icon="slackIcon" :buttonText="slackButtonText" :link="slackLink"></contact-button>
 
     <br><br>
 
-    <v-btn
-        class="ma-2 white--text pa-6"
-        color="#6e5494"
-        light
-        href = 'https://github.com/mitre-atlas'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/github-icon.png"
-          height="45px"
-          width="45px"
-          style="margin-right: 10px"
-          />
-        Join the GitHub Group
-    </v-btn>
+    <contact-button :color="githubButtonColor" :icon="githubIcon" :buttonText="githubButtonText" :link="githubLink"></contact-button>
 
     <br><br>
 
-    <v-btn
-        class="ma-2 black--text pa-6"
-        color="#D3D3D3"
-        light
-        href = 'https://groups.google.com/forum/#!forum/advmlthreatmatrix/join'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/google-group-icon.png"
-          height="45px"
-          width="45px"
-          style="margin-right: 10px"
-          />
-        Join the Google Group
-    </v-btn>
-
-    <br><br>
-
-    <v-btn
-        class="ma-2 white--text pa-6"
-        color="red"
-        light
-        href = 'https://www.youtube.com/user/mitrecorp'
-        target = '_blank'
-      >
-        <img
-          src="../../assets/youtube-icon.png"
-          height="45px"
-          width="45px"
-          style="margin-right: 10px"
-          />
-        MITRE ATLAS Video Playlist
-    </v-btn>
+    <contact-button :color="youtubeButtonColor" :icon="youtubeIcon" :buttonText="youtubeButtonText" :link="youtubeLink"></contact-button>
 
     <br><br>
 
@@ -134,7 +47,32 @@ export default {
   data: ({ $config: { name } }) => ({
     shortName: name.short,
     title: 'Contact Us',
-    mitreTitle: name.mitre
+    mitreTitle: name.mitre,
+
+    basicButtonColor: '#005B94',
+    slackButtonColor: '#006400',
+    githubButtonColor: '#6e5494',
+    youtubeButtonColor: 'red',
+
+    emailLink: 'mailto:atlas@mitre.org',
+    emailIcon: 'mdi-email',
+    emailButtonText: 'atlas@mitre.org',
+
+    contributeLink: '/resources/contribute',
+    contributeIcon: 'mdi-lightbulb',
+    contributeButtonText: 'Contribute',
+
+    slackLink: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ',
+    slackIcon: 'mdi-slack',
+    slackButtonText: 'Join the MITRE-ATLAS Slack',
+
+    githubLink: 'https://github.com/mitre-atlas',
+    githubIcon: 'mdi-github',
+    githubButtonText: 'Join the GitHub Group',
+
+    youtubeLink: 'https://www.youtube.com/user/mitrecorp',
+    youtubeIcon: 'mdi-youtube',
+    youtubeButtonText: 'MITRE-ATLAS Video Playlist'
   }),
   head () {
     return {
