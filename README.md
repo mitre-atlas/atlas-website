@@ -1,7 +1,16 @@
 # ATLAS Website
 
 ## Git Setup
-This project uses the `data` project in this GitLab group as a Git submodule in `content/threat-matrix`.  Clone using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
+This project uses the `atlas-data` project in this GitLab group as a Git submodule in `static/atlas-data`.  Clone using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
+
+Once the submodule is available, run the following once to sparse checkout only the necessary files in the `dist` directory.
+```bash
+git -C static/atlas-data/ config core.sparseCheckout true
+echo 'dist/*' >> .git/modules/static/atlas-data/info/sparse-checkout
+git submodule update --force --checkout static/atlas-data/
+```
+
+To update `atlas-data`, run `git submodule update --remote` to get the latest from its main branch, then commit the result.
 
 ## Build Setup
 
