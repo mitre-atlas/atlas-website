@@ -1,13 +1,13 @@
 <template>
   <div>
         <v-btn
-            class="ma-2 white--text pa-6"
             :color= "colorProp"
-            light
+            dark
+            large
             :href = "linkProp"
             target = "_blank"
         >
-        <v-icon light size="35" class="ma-2 ml-0">
+        <v-icon left>
             {{icon}}
         </v-icon>
             {{buttonText}}
