@@ -31,15 +31,6 @@
 
     <contact-button :color="youtubeButtonColor" :icon="youtubeIcon" :buttonText="youtubeButtonText" :link="youtubeLink"></contact-button>
 
-    <br><br>
-
-     For general questions/comments/discussion, our public email group is <a href="mailto:advmlthreatmatrix-core@googlegroups.com">advmlthreatmatrix-core@googlegroups.com</a>. This emails all the members of the distribution group.
-    <br><br>
-
-    <v-alert text type="info">
-    Google Groups generally defaults to your personal email. If you would rather access this forum using your corporate email, create a Google account using your corporate email before joining the group.
-    Additionally, make sure to check if emails from Google Groups are being routed into your "Other"/"Spam"/"Forums" folder instead of your primary inbox.
-    </v-alert>
   </div>
 </template>
 <script>
