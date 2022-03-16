@@ -1,36 +1,35 @@
 <template>
   <div>
     <page-title>{{ title }}</page-title>
-
-    <!-- <page-section-title>Contact Us</page-section-title> -->
-
-    For private comments/discussions and how organizations can get involved in the effort, please email:
-    <br><br>
-
-    <contact-button :color="basicButtonColor" :icon="emailIcon" :buttonText="emailButtonText" :link="emailLink"></contact-button>
-
-    <br><br>
-    For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">Contribute</NuxtLink> page.
-    <br><br>
-
-    <contact-button :color="basicButtonColor" :icon="contributeIcon" :buttonText="contributeButtonText" :link="contributeLink"></contact-button>
-
-    <page-section-title>More Ways to Connect with MITRE ATLAS</page-section-title>
-
     <p>
-    For discussions around {{ shortName }}, we invite everyone to join our <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ">Slack</a>, <a href="https://github.com/mitre-atlas">GitHub</a>, and or <a href="https://groups.google.com/forum/#!forum/advmlthreatmatrix/join">Google</a> groups. You can also find instructional demonstration videos on <a href="https://www.youtube.com/user/mitrecorp">MITRE's YouTube channel</a>.
+      Join our collaborative community to shape future tool and framework developments in AI security, threat mitigation, bias, privacy and other critical aspects of AI assurance.
     </p>
 
-    <contact-button :color="slackButtonColor" :icon="slackIcon" :buttonText="slackButtonText" :link="slackLink"></contact-button>
+    <v-row>
+      <v-col
+        v-for="item in contacts"
+        :key="item.icon"
+        cols="12"
+        sm="6"
+      >
+        <contact-button :item="item" />
+      </v-col>
+    </v-row>
 
-    <br><br>
+    <page-section-title class="pt-5">
+      Other ways to engage
+    </page-section-title>
 
-    <contact-button :color="githubButtonColor" :icon="githubIcon" :buttonText="githubButtonText" :link="githubLink"></contact-button>
-
-    <br><br>
-
-    <contact-button :color="youtubeButtonColor" :icon="youtubeIcon" :buttonText="youtubeButtonText" :link="youtubeLink"></contact-button>
-
+    <v-row>
+      <v-col
+        v-for="item in engages"
+        :key="item.icon"
+        cols="12"
+        sm="6"
+      >
+        <contact-button :item="item" />
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script>
@@ -40,30 +39,45 @@ export default {
     title: 'Contact Us',
     mitreTitle: name.mitre,
 
-    basicButtonColor: '#005B94',
-    slackButtonColor: '#006400',
-    githubButtonColor: '#6e5494',
-    youtubeButtonColor: 'red',
-
-    emailLink: 'mailto:atlas@mitre.org',
-    emailIcon: 'mdi-email',
-    emailButtonText: 'atlas@mitre.org',
-
-    contributeLink: '/resources/contribute',
-    contributeIcon: 'mdi-lightbulb',
-    contributeButtonText: 'Contribute',
-
-    slackLink: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ',
-    slackIcon: 'mdi-slack',
-    slackButtonText: 'Join the MITRE-ATLAS Slack',
-
-    githubLink: 'https://github.com/mitre-atlas',
-    githubIcon: 'mdi-github',
-    githubButtonText: 'Join the GitHub Group',
-
-    youtubeLink: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu',
-    youtubeIcon: 'mdi-youtube',
-    youtubeButtonText: 'MITRE-ATLAS Video Playlist'
+    contacts: [
+      {
+        icon: 'mdi-email',
+        color: '#005B94',
+        title: 'Email atlas@mitre.org',
+        text: 'Contact the ATLAS team directly for private discussions and organization involvement',
+        link: 'mailto:atlas@mitre.org'
+      },
+      {
+        icon: 'mdi-slack',
+        color: 'green darken-3',
+        title: 'mitre-atlas Slack',
+        text: 'Join the Slack workspace for discussions with the broader community',
+        link: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
+      }
+    ],
+    engages: [
+      {
+        icon: 'mdi-lightbulb',
+        color: '#c7880a',
+        title: 'Contribute',
+        text: 'Find out how to contribute to the ATLAS framework',
+        link: '/resources/contribute'
+      },
+      {
+        icon: 'mdi-github',
+        color: '#6e5494',
+        title: 'mitre-atlas GitHub',
+        text: 'See data and tools at the mitre-atlas GitHub group',
+        link: 'https://github.com/mitre-atlas'
+      },
+      {
+        icon: 'mdi-youtube',
+        color: 'red darken-2',
+        title: 'ATLAS Video Playlist',
+        text: 'See demos and walkthroughs on YouTube',
+        link: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu'
+      }
+    ]
   }),
   head () {
     return {
