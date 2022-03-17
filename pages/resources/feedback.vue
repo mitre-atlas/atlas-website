@@ -4,7 +4,7 @@
 
     <!-- <page-section-title>Contact Us</page-section-title> -->
 
-    For private comments/discussions and how organizations can get involved in the effort, please email <a href="mailto:atlas@mitre.org?cc=ram.shankar@microsoft.com">atlas@mitre.org and CC ram.shankar@microsoft.com</a>.
+    For private comments/discussions and how organizations can get involved in the effort, please email <a :href="contactEmailLink"> {{ contactEmail }} </a>.
     <br><br>
     For {{ mitreTitle }} matrix and website feedback, please see the <NuxtLink to="/resources/contribute">
       Contribute
@@ -35,6 +35,14 @@ export default {
   head () {
     return {
       title: `${this.title} | ${this.mitreTitle}`
+    }
+  },
+  computed: {
+    contactEmail () {
+      return this.$config.contact_email
+    },
+    contactEmailLink () {
+      return 'mailto:' + this.$config.contact_email
     }
   }
 

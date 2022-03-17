@@ -151,6 +151,7 @@ export default {
       mitre: 'MITRE ATLAS™' //process.env?
     },
     navigator_url: process.env.NAVIGATOR_URL || '',
+    contact_email: process.env.CONTACT_EMAIL || 'atlas@mitre.org',
     advml: {
       repo_url: process.env.ADVML_DATA_URL || '#',
       version: process.env.ADVML_DATA_VERSION || 2
