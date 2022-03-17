@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-8">
     <breadcrumbs></breadcrumbs>
     <page-title>{{ title }}</page-title>
     <div class="mb-5">

@@ -1,6 +1,6 @@
 <template>
   <div class="breadcrumbs">
-    <v-breadcrumbs :items="items" large class="pl-0">
+    <v-breadcrumbs :items="items" class="pl-0">
       <template #divider>
         <v-icon>mdi-chevron-right</v-icon>
       </template>
