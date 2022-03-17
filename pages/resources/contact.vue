@@ -12,7 +12,7 @@
         cols="12"
         sm="6"
       >
-        <contact-button :item="item" />
+        <contact-card :item="item" />
       </v-col>
     </v-row>
 
@@ -27,7 +27,7 @@
         cols="12"
         sm="6"
       >
-        <contact-button :item="item" />
+        <contact-card :item="item" />
       </v-col>
     </v-row>
   </div>
@@ -44,7 +44,7 @@ export default {
         icon: 'mdi-email',
         color: '#005B94',
         title: 'Email atlas@mitre.org',
-        text: 'Contact the ATLAS team directly for private discussions and organization involvement',
+        text: 'Contact us for private discussions and organization involvement',
         link: 'mailto:atlas@mitre.org'
       },
       {
