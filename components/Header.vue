@@ -204,6 +204,9 @@ export default {
                 }
             }
             return this.links
+        },
+        newname() {
+          return "test"
         }
     }
 }

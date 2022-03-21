@@ -47,7 +47,7 @@
         </v-col>
         <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
           <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{ version }}
+            v{{ version_number }}
           </v-card-text>
         </v-row>
       </v-row>
@@ -70,7 +70,14 @@ export default {
     mobile () { return ['xs'].includes(this.$vuetify.breakpoint.name) },
     buttonClass () { return this.mobile ? 'px-1 py-1' : 'px-1' },
     mainButtons () { return this.buttons.filter(function (button) { return !button.important }) },
-    importantButtons () { return this.buttons.filter(function (button) { return button.important }) }
+    importantButtons () { return this.buttons.filter(function (button) { return button.important }) },
+    version_number () {
+      if (this.$config.site_version !== '') {
+        console.log(this.$config.site_version)
+        return this.$config.site_version
+      }
+      return this.version
+    }
 
   }
 }
