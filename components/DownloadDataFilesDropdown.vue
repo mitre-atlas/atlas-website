@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { downloadStudyFile } from 'static/data/tools.js'
+import { downloadStudyFile } from '~/assets/tools.js'
 
 export default {
   name: 'DownloadDataFilesDropdown',

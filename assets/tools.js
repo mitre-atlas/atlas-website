@@ -1,6 +1,6 @@
 import * as YAML from 'js-yaml'
 import { validate } from 'jsonschema'
-import schema from '@/static/data/cs_schema.json'
+import schema from '@/static/atlas-data/dist/schemas/atlas_case_study_schema.json'
 const path = require('path')
 
 const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
