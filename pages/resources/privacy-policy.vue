@@ -20,9 +20,9 @@
     <p>
       However, the {{ mitreTitle }} website is hosted on GitHub®.
       GitHub uses a free third-party software service called Google Analytics® to capture and analyze non-personally identifiable website usage information.
-      Cookies will be implemented by GitHub. For more information about GitHub’s collection and use of information,
+      Cookies will be implemented by GitHub. For more information about GitHub's collection and use of information,
       such as IP address, date and time of access, the requested URL, the referring URL (if provided by the Web browser),
-      and the browser type (if provided by the Web browser) please review GitHub’s Terms of Use and Privacy Policy at
+      and the browser type (if provided by the Web browser) please review GitHub's Terms of Use and Privacy Policy at
       <a href="https://docs.github.com/en/github/site-policy">https://docs.github.com/en/github/site-policy</a>.
     </p>
     <h4>Information Collected from E-mail and Web Forms</h4>
@@ -34,10 +34,10 @@
     </p>
     <h4>Information Collected from Third Party Software and Media Sites</h4>
     <p>
-      When Users visit the Site, Users may link to third party software and/or media sites when they link to another party’s website.
+      When Users visit the Site, Users may link to third party software and/or media sites when they link to another party's website.
       MITRE does not collect any information that may be collected by that third party;
       however, information you supply to that third-party software may be collected and/or used by that party.
-      For information about that third party’s privacy policy, please see their respective website.
+      For information about that third party's privacy policy, please see their respective website.
     </p>
     <h4>Changes to Our Privacy Policy</h4>
     <p>
