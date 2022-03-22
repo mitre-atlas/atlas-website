@@ -6,7 +6,7 @@ variables:
 default:
   before_script:
     # Enable ssh clone of submodules
-    - apk install open-ssh
+    - apk add openssh-client
 
 pages:
   script:
