@@ -6,8 +6,8 @@
       <v-row justify="center" align="center">
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
           <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
-          <a href="https://www.mitre.org/">
-            <img src="~/assets/mitre-logo-white.svg" :height="!mobile ? 45 : 25" class="d-block mx-auto">
+          <a :href="footer_logo_link" target="_blank">
+            <img :src="footer_logo_image" :height="!mobile ? 45 : 25" class="d-block mx-auto">
           </a>
         </v-col>
 
@@ -77,8 +77,18 @@ export default {
         return this.$config.site_version
       }
       return this.version
+    },
+    footer_logo_link () {
+      return this.$config.footer_logo_link
+    },
+    footer_logo_image () {
+      try {
+        const fileName = require('~/assets/' + this.$config.footer_logo_image)
+        return require('~/assets/' + this.$config.footer_logo_image)
+      } catch (e) {
+        return require('~/assets/mitre-logo-white.svg')
+      }
     }
-
   }
 }
 </script>
