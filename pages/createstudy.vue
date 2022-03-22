@@ -241,7 +241,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generateID, downloadStudyFile } from 'static/data/tools.js'
+import { generateID, downloadStudyFile } from '~/assets/tools.js'
 
 export default {
   beforeRouteLeave (to, from, next) {
