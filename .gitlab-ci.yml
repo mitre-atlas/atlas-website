@@ -3,6 +3,11 @@ image: node:16-alpine
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+default:
+  before_script:
+    # Enable ssh clone of submodules
+    - apk install open-ssh
+
 pages:
   script:
     - npm install
