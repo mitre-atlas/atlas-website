@@ -13,3 +13,5 @@ pages:
       - public
   tags:
     - docker
+  only:
+    - develop
