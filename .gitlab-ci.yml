@@ -1,5 +1,8 @@
 image: node:16-alpine
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 pages:
   script:
     - npm install
