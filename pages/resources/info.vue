@@ -1,16 +1,19 @@
 <template>
   <div>
-    <v-chip
-      class="ma-2"
-      color="primary"
-      pill
-      large
-      style="float: right"
-    >
-      Ver. {{ getVersion }}
-    </v-chip>
 
     <page-title>{{ title }}</page-title>
+
+    <v-chip
+      class="ma-1"
+      color="primary"
+      label
+      style="float: left"
+    >
+      <v-icon left>
+        mdi-database
+      </v-icon>
+      Ver. {{ getVersion }}
+    </v-chip>
 
     <page-section-title>Data</page-section-title>
 
@@ -25,6 +28,18 @@
     <p>
       The first iteration of the adversarial machine learning threat matrix is at <a href="https://github.com/mitre/advmlthreatmatrix">https://github.com/mitre/advmlthreatmatrix</a>.
     </p>
+
+    <v-chip
+      class="ma-1"
+      color="primary"
+      label
+      style="float: left"
+    >
+      <v-icon left>
+        mdi-code-tags
+      </v-icon>
+      Ver. {{ getVersion }}
+    </v-chip>
 
     <page-section-title>Current Version</page-section-title>
     <nuxt-content :document="currentUpdatePageData" />
