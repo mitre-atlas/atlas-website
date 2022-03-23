@@ -2,6 +2,18 @@
   <div>
     <page-title>{{ title }}</page-title>
 
+    <page-section-title>Instructional Videos</page-section-title>
+
+    The MITRE YouTube channel houses a <a target="_blank" href="https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu">video playlist</a> containing a collection of instructional videos for users of the {{ mitreTitle }} site.
+    <br><br>
+    <p>
+      Videos included:
+    </p>
+    <ul>
+      <li><a target="_blank" href="https://www.youtube.com/watch?v=3FN9v-y-C-w&list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu&index=1">{{ mitreTitle }} Website Overview</a></li>
+      <li><a target="_blank" href="https://www.youtube.com/watch?v=Np_ip14YJGg&list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu&index=2">Case Study Builder Walkthrough</a></li>
+    </ul>
+
     <page-section-title>Data</page-section-title>
 
     The tactics and techniques referenced in {{ mitreTitle }} are drawn from:

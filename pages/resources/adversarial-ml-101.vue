@@ -3,7 +3,6 @@
     <page-title>{{ title }}</page-title>
 
     <p>
-      Informally, Adversarial ML is "subverting machine learning systems for fun and profit."
       The methods underpinning the production machine learning systems are systematically vulnerable to a
       new class of vulnerabilities across the machine learning supply chain collectively known as Adversarial
       Machine Learning. Adversaries can exploit these vulnerabilities to manipulate AI systems in order to alter

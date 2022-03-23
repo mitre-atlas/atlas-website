@@ -62,7 +62,7 @@
   </v-dialog>
 </template>
 <script>
-import { generateID, yamlParse, validFormatYAML } from 'static/data/tools.js'
+import { generateID, yamlParse, validFormatYAML } from '~/assets/tools.js'
 
 export default {
   name: 'UploadFileDialog',
@@ -176,16 +176,6 @@ export default {
     },
     loadData (data) {
       this.loadedData = yamlParse(data)
-
-      // Handle format change from standalone data
-      if (this.loadedData.study.references && this.loadedData.study.references.length > 0 && 'sourceDescription' in this.loadedData.study.references[0]) {
-        // The reference object key "sourceDescription" is now expected to be "title"
-        this.loadedData.study.references.map((obj) => {
-          obj.title = obj.sourceDescription
-          delete obj.sourceDescription
-          return obj
-        })
-      }
 
       this.$emit('loaded-data', this.loadedData)
       this.$emit('loaded-filename', this.initialFileName)

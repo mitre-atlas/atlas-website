@@ -45,6 +45,10 @@
         </div>
 
         <div class="mt-2">
+          For more guidance, please watch this <a target="_blank" href="https://www.youtube.com/watch?v=Np_ip14YJGg&list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu&index=2">instructional video</a>.
+        </div>
+
+        <div class="mt-2">
           Please contact <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> with any questions.
         </div>
       </v-card-text>
