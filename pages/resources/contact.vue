@@ -30,10 +30,27 @@
         <contact-card :item="item" />
       </v-col>
     </v-row>
+
+    <upcoming-events :events="events" class="pt-5" />
   </div>
 </template>
 <script>
 export default {
+  async asyncData ({ $content }) {
+    let events = await $content('upcoming-events').sortBy('date').fetch()
+
+    events = events.map((event) => {
+      event.date = new Date(event.date).toLocaleDateString(
+        'default',
+        { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+      )
+      return event
+    })
+
+    return {
+      events
+    }
+  },
   data: ({ $config: { name } }) => ({
     shortName: name.short,
     title: 'Contact Us',
