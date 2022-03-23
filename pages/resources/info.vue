@@ -1,5 +1,15 @@
 <template>
   <div>
+    <v-chip
+      class="ma-2"
+      color="primary"
+      pill
+      large
+      style="float: right"
+    >
+      Ver. 3.0.0
+    </v-chip>
+
     <page-title>{{ title }}</page-title>
 
     <page-section-title>Data</page-section-title>

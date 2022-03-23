@@ -10,7 +10,8 @@ export const state = () => ({
     techandsubtechniques: [],
     studies: [],
     // Represents the populated tactics, techniques, and subtechniques
-    matrix: []
+    matrix: [],
+    version: ''
   }
 })
 
@@ -19,6 +20,9 @@ const isFiltered = t => t.id.startsWith('AML')
 
 export const getters = {
   // Simple getters
+  getVersion: (state) => {
+    return state.data.version
+  },
   getTactics: (state) => {
     return state.data.tactics
   },
