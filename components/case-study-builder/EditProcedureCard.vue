@@ -3,12 +3,10 @@
     <v-card-title v-if="parentTech" style="font-size: 1.1rem">
       {{ parentTechniqueName }}: {{ techniqueName }}
       <v-spacer />
-      <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
     <v-card-title v-else style="font-size: 1.1rem">
       {{ techniqueName }}
       <v-spacer />
-      <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
     <v-card-subtitle>
       {{ tacticName }}
