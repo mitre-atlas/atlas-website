@@ -1,6 +1,6 @@
 import * as YAML from 'js-yaml'
 import { validate } from 'jsonschema'
-import schema from '@/static/atlas-data/dist/schemas/atlas_case_study_schema.json'
+import schema from '@/static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 const path = require('path')
 
 const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
@@ -32,16 +32,16 @@ const yamlParse = t => YAML.load(t)
 
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
 function validFormatYAML (yamlObj) {
-  const yamlStudyData = yamlObj.study
-  // Keeping date in ISO format for date-time format validation
+  // Keeping date in ISO format for date format validation
   try {
-    yamlStudyData['incident-date'] = yamlStudyData['incident-date'].toISOString()
+    // i.e. 2022-01-01
+    yamlObj.study['incident-date'] = yamlObj.study['incident-date'].toISOString().substring(0, 10)
   } catch (e) {
     if (e instanceof TypeError) {
-      return 'instance.incident-date is not of a type(s) date-time'
+      return 'instance.incident-date is not of a type date'
     }
   }
-  const validObj = validate(yamlStudyData, schema, { nestedErrors: true })
+  const validObj = validate(yamlObj, schema, { nestedErrors: true })
   // If yaml file format is valid
   if (validObj.valid) {
     return ''
