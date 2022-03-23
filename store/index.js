@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs').promises
 const path = require('path')
 const yaml = require('js-yaml')
@@ -10,7 +11,8 @@ export const state = () => ({
     techandsubtechniques: [],
     studies: [],
     // Represents the populated tactics, techniques, and subtechniques
-    matrix: []
+    matrix: [],
+    version: 0.0
   }
 })
 
@@ -19,6 +21,9 @@ const isFiltered = t => t.id.startsWith('AML')
 
 export const getters = {
   // Simple getters
+  getVersion: (state) => {
+    return state.data.version
+  },
   getTactics: (state) => {
     return state.data.tactics
   },
@@ -129,6 +134,7 @@ export const actions = {
        const studies = doc['case-studies']
        const techniques = doc['techniques']
        const tactics = doc['tactics']
+       const version = doc['version']
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
@@ -215,7 +221,8 @@ export const actions = {
           techniques,
           techandsubtechniques: parentTechniques,
           studies,
-          matrix
+          matrix,
+          version
         }
 
         commit('SET_THREAT_MATRIX_DATA', payload)

@@ -70,7 +70,8 @@
           Procedure
         </v-card-title>
         <v-card-subtitle>
-          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
+          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. Add at least one step.
+          Steps can be can be edited, deleted, or dragged to re-order as needed.
         </v-card-subtitle>
 
         <v-card-text>
