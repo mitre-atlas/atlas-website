@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mx-8">
     <breadcrumbs />
     <page-title>{{ title }}</page-title>
     <p>
@@ -8,13 +8,11 @@
       <sup><a href="https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf">[1]</a></sup>
     </p>
     <p>
-      In some cases, the MITRE ATT&CK<sup>&reg;</sup> tactic definitions are stretched to include machine learning (ML) concepts. For example, poisoning training data leads to a different sort of persistence on a system.
-    </p>
-    <p>
-      We include {{ mitreTitle }} tactics that represent new adversary goals that are particular to systems that incorporate ML as well as tactics adapted from the ATT&CK Enterprise Matrix. Here, the adversary's tactical objective may involve an enterprise system that has ML components or an ML system.
+      {{ mitreTitle }} tactics represent new adversary goals particular to machine learning systems, as well as tactics adapted from the MITRE ATT&CK<sup>&reg;</sup> Enterprise Matrix.
+      In those cases, ATT&CK tactic definitions are stretched to include ML concepts.
     </p>
     <div v-html="description" />
-    <info-table :show-filter-button="true" :items="getFilteredTactics" />
+    <info-table :show-filter-button="false" :items="getFilteredTactics" />
   </div>
 </template>
 

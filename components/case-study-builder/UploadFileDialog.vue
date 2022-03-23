@@ -62,7 +62,7 @@
   </v-dialog>
 </template>
 <script>
-import { generateID, yamlParse, validFormatYAML } from 'static/data/tools.js'
+import { generateID, yamlParse, validFormatYAML } from '~/assets/tools.js'
 
 export default {
   name: 'UploadFileDialog',

@@ -1,42 +1,46 @@
 <template>
   <div>
-    <breadcrumbs />
-    <div class="text-h2 ml-6">
-      {{ info.name }}
+    <div class="mx-4">
+      <breadcrumbs />
+      <page-title>
+        {{ info.name }}
+      </page-title>
+      <!-- <div class="subtitle-1">{{info.id}}</div> -->
+
+      <v-row>
+        <v-col cols="8">
+          <page-section-title>
+            Summary
+          </page-section-title>
+          <v-list-item>
+            <!-- eslint-disable vue/no-v-html -->
+            <div v-html="$md.render(info.description)" />
+          </v-list-item>
+        </v-col>
+        <v-col cols="4">
+          <v-card flat class="mt-10">
+            <v-card-text>
+              <p>
+                <span class="font-weight-bold">ID:</span> {{ info.id }}
+              </p>
+
+              <p>
+                <span class="font-weight-bold">Number of techniques:</span> {{ numTotalTechniques }}
+              </p>
+
+              <p>
+                <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
+              </p>
+
+              <span v-if="info.id.startsWith('T')">
+                <a @click="openNewTab">View at MITRE ATT&CK</a>
+                <v-icon small>mdi-open-in-new</v-icon>
+              </span>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </div>
-    <!-- <div class="subtitle-1">{{info.id}}</div> -->
-
-    <v-row>
-      <v-col cols="8">
-        <page-section-title class="ml-7">
-          Summary
-        </page-section-title>
-        <!-- eslint-disable vue/no-v-html -->
-        <div class="my-5 ml-10" v-html="$md.render(info.description)" />
-      </v-col>
-      <v-col cols="4">
-        <v-card flat class="mt-10">
-          <v-card-text>
-            <p>
-              <span class="font-weight-bold">ID:</span> {{ info.id }}
-            </p>
-
-            <p>
-              <span class="font-weight-bold">Number of techniques:</span> {{ numTotalTechniques }}
-            </p>
-
-            <p>
-              <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
-            </p>
-
-            <span v-if="info.id.startsWith('T')">
-              <a @click="openNewTab">View at MITRE ATT&CK</a>
-              <v-icon small>mdi-open-in-new</v-icon>
-            </span>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
 
     <!-- <v-divider /> -->
 

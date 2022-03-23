@@ -1,56 +1,60 @@
 <template>
   <div>
-    <breadcrumbs />
-    <span v-if="'subtechnique-of' in info">
-      <page-title class="ml-5">{{ parentTechnique.name }}: {{ info.name }}</page-title>
-    </span>
-    <span v-else>
-      <page-title class="ml-5">{{ info.name }}</page-title>
-    </span>
-    <v-row>
-      <v-col cols="8">
-        <page-section-title class="ml-6">
-          Summary
-        </page-section-title>
-        <div class="my-5 ml-10" v-html="$md.render(info.description)" />
-      </v-col>
-      <v-col cols="4">
-        <v-card flat class="mt-10">
-          <v-card-text>
-            <p>
-              <span class="font-weight-bold">ID:</span> {{ info.id }}
-            </p>
+    <div class="mx-8">
+      <breadcrumbs />
+      <span v-if="'subtechnique-of' in info">
+        <page-title>{{ parentTechnique.name }}: {{ info.name }}</page-title>
+      </span>
+      <span v-else>
+        <page-title>{{ info.name }}</page-title>
+      </span>
+      <v-row>
+        <v-col cols="8">
+          <page-section-title>
+            Summary
+          </page-section-title>
+          <v-list-item>
+            <div v-html="$md.render(info.description)" />
+          </v-list-item>
+        </v-col>
+        <v-col cols="4">
+          <v-card flat class="mt-10">
+            <v-card-text>
+              <p>
+                <span class="font-weight-bold">ID:</span> {{ info.id }}
+              </p>
 
-            <p>
-              <span class="font-weight-bold">Tactics:</span>
-              <span v-for="(tactic, i) in referencedTactics" :key="i">
-                <span v-if="i != 0">,</span>
-                <nuxt-link :to="`/tactics/${tactic.id}`">{{ tactic.name }}</nuxt-link>
+              <p>
+                <span class="font-weight-bold">Tactics:</span>
+                <span v-for="(tactic, i) in referencedTactics" :key="i">
+                  <span v-if="i != 0">,</span>
+                  <nuxt-link :to="`/tactics/${tactic.id}`">{{ tactic.name }}</nuxt-link>
+                </span>
+              </p>
+
+              <p v-if="'subtechnique-of' in info">
+                <span class="font-weight-bold">Sub-technique of:</span>
+                <nuxt-link :to="`/techniques/${parentTechnique.id}`">
+                  {{ parentTechnique.name }}
+                </nuxt-link>
+              </p>
+              <p v-if="'subtechniques' in info">
+                <span class="font-weight-bold">Number of sub-techniques:</span> {{ info.subtechniques.length }}
+              </p>
+
+              <p>
+                <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
+              </p>
+
+              <span v-if="info.id.startsWith('T')">
+                <a @click="openNewTab">View at MITRE ATT&CK</a>
+                <v-icon small>mdi-open-in-new</v-icon>
               </span>
-            </p>
-
-            <p v-if="'subtechnique-of' in info">
-              <span class="font-weight-bold">Sub-technique of:</span>
-              <nuxt-link :to="`/techniques/${parentTechnique.id}`">
-                {{ parentTechnique.name }}
-              </nuxt-link>
-            </p>
-            <p v-if="'subtechniques' in info">
-              <span class="font-weight-bold">Number of sub-techniques:</span> {{ info.subtechniques.length }}
-            </p>
-
-            <p>
-              <span class="font-weight-bold">Number of case studies:</span> {{ relevantStudies.length }}
-            </p>
-
-            <span v-if="info.id.startsWith('T')">
-              <a @click="openNewTab">View at MITRE ATT&CK</a>
-              <v-icon small>mdi-open-in-new</v-icon>
-            </span>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
 
     <div v-if="'subtechniques' in info">
       <v-list-group

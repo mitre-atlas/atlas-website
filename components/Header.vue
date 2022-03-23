@@ -185,7 +185,7 @@ export default {
           },
           {
             name: 'Contact Us',
-            href: '/resources/feedback'
+            href: '/resources/contact'
           }
         ]
       }

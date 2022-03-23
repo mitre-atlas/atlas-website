@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="8">
+      <v-col :cols="(showFilterButton) ? 8 : 12">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
