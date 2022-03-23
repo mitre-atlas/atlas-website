@@ -11,7 +11,7 @@ export const state = () => ({
     studies: [],
     // Represents the populated tactics, techniques, and subtechniques
     matrix: [],
-    version: ''
+    version: 0.0
   }
 })
 
@@ -133,6 +133,7 @@ export const actions = {
        const studies = doc['case-studies']
        const techniques = doc['techniques']
        const tactics = doc['tactics']
+       const version = doc['version']
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
@@ -219,7 +220,8 @@ export const actions = {
           techniques,
           techandsubtechniques: parentTechniques,
           studies,
-          matrix
+          matrix,
+          version
         }
 
         commit('SET_THREAT_MATRIX_DATA', payload)

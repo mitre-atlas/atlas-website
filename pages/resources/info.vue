@@ -7,7 +7,7 @@
       large
       style="float: right"
     >
-      Ver. 3.0.0
+      Ver. {{ getVersion }}
     </v-chip>
 
     <page-title>{{ title }}</page-title>
@@ -31,7 +31,9 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import packageData from '../../package.json'
+
 export default {
   async asyncData ({ $content }) {
     const currentUpdatePage = await $content('update-files').sortBy('slug', 'desc').limit(1).fetch()
@@ -50,7 +52,9 @@ export default {
     return {
       title: `${this.title} | ${this.mitreTitle}`
     }
+  },
+  computed: {
+    ...mapGetters(['getVersion'])
   }
-
 }
 </script>
