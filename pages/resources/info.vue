@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <page-title>{{ title }}</page-title>
 
     <page-section-title>
@@ -7,6 +8,34 @@
     </page-section-title>
 
     <v-list subheader>
+      <v-list-item>
+        <div>
+          <v-chip
+            class="ma-1"
+            color="primary"
+            label
+            style="float: left"
+          >
+            <v-icon left>
+              mdi-code-tags
+            </v-icon>
+            Website v{{ getVersion }}
+          </v-chip>
+
+          <v-chip
+            class="ma-1"
+            color="secondary"
+            label
+            style="float: left"
+          >
+            <v-icon left>
+              mdi-database
+            </v-icon>
+            Data v{{ getVersion }}
+          </v-chip>
+        </div>
+      </v-list-item>
+
       <v-list-item
         to="/resources/updates"
         nuxt
@@ -39,7 +68,9 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import packageData from '../../package.json'
+
 export default {
   async asyncData ({ $content }) {
     const currentUpdatePage = await $content('update-files').sortBy('slug', 'desc').limit(1).fetch()
@@ -60,6 +91,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getVersion']),
     latestUpdateTitle () {
       // ex. March 2022
       return new Date(this.currentUpdatePageData.slug)
@@ -69,6 +101,5 @@ export default {
         )
     }
   }
-
 }
 </script>
