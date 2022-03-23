@@ -24,7 +24,7 @@
 
           <v-chip
             class="ma-1"
-            color="primary"
+            color="secondary"
             label
             style="float: left"
           >
