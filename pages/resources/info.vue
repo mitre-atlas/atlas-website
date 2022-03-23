@@ -8,6 +8,34 @@
     </page-section-title>
 
     <v-list subheader>
+      <v-list-item>
+        <div>
+          <v-chip
+            class="ma-1"
+            color="primary"
+            label
+            style="float: left"
+          >
+            <v-icon left>
+              mdi-code-tags
+            </v-icon>
+            Website v{{ getVersion }}
+          </v-chip>
+
+          <v-chip
+            class="ma-1"
+            color="primary"
+            label
+            style="float: left"
+          >
+            <v-icon left>
+              mdi-database
+            </v-icon>
+            Data v{{ getVersion }}
+          </v-chip>
+        </div>
+      </v-list-item>
+
       <v-list-item
         to="/resources/updates"
         nuxt
