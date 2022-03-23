@@ -6,7 +6,7 @@
 
     <page-section-title>Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or post on the <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank">#feedback-and-recommendations</a> Slack channel.
 
     <br><br>
 
