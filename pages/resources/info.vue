@@ -19,7 +19,7 @@
             <v-icon left>
               mdi-code-tags
             </v-icon>
-            Website v{{ getVersion }}
+            Website v{{ $config.site_version }}
           </v-chip>
 
           <v-chip
@@ -69,7 +69,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import packageData from '../../package.json'
 
 export default {
   async asyncData ({ $content }) {
@@ -80,7 +79,6 @@ export default {
     }
   },
   data: ({ $config: { name } }) => ({
-    version: packageData.version,
     mitreTitle: name.mitre,
     shortName: name.short,
     title: 'General Information'

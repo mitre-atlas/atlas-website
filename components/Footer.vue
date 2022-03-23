@@ -6,8 +6,8 @@
       <v-row justify="center" align="center">
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
           <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
-          <a href="https://www.mitre.org/">
-            <img src="~/assets/mitre-logo-white.svg" :height="!mobile ? 45 : 25" class="d-block mx-auto">
+          <a :href="$config.footer_logo_link" target="_blank">
+            <img :src="footer_logo_image" :height="!mobile ? 45 : 25" class="d-block mx-auto">
           </a>
         </v-col>
 
@@ -47,7 +47,7 @@
         </v-col>
         <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
           <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{ version }}
+            v{{ $config.site_version }}
           </v-card-text>
         </v-row>
       </v-row>
@@ -55,11 +55,9 @@
   </v-footer>
 </template>
 <script>
-import packageData from '../package.json'
 export default {
   name: 'Footer',
   data: () => ({
-    version: packageData.version,
     buttons: [
       { text: 'Contact', to: '/resources/contact', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
@@ -70,8 +68,14 @@ export default {
     mobile () { return ['xs'].includes(this.$vuetify.breakpoint.name) },
     buttonClass () { return this.mobile ? 'px-1 py-1' : 'px-1' },
     mainButtons () { return this.buttons.filter(function (button) { return !button.important }) },
-    importantButtons () { return this.buttons.filter(function (button) { return button.important }) }
-
+    importantButtons () { return this.buttons.filter(function (button) { return button.important }) },
+    footer_logo_image () {
+      try {
+        return require('~/assets/' + this.$config.footer_logo_image)
+      } catch (e) {
+        return require('~/assets/mitre-logo-white.svg')
+      }
+    }
   }
 }
 </script>

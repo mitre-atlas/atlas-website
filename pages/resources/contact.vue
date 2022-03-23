@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 export default {
   async asyncData ({ $content }) {
     let events = await $content('upcoming-events').sortBy('date').fetch()
@@ -51,7 +52,7 @@ export default {
       events
     }
   },
-  data: ({ $config: { name } }) => ({
+  data: ({ $config: { name, contact_email } }) => ({
     shortName: name.short,
     title: 'Contact Us',
     mitreTitle: name.mitre,
@@ -60,9 +61,9 @@ export default {
       {
         icon: 'mdi-email',
         color: '#005B94',
-        title: 'Email atlas@mitre.org',
+        title: `Email ${contact_email}`,
         text: 'Contact us for private discussions and organization involvement',
-        link: 'mailto:atlas@mitre.org'
+        link: `mailto:${contact_email}`
       },
       {
         icon: 'mdi-slack',
