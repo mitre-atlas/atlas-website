@@ -6,7 +6,7 @@
       <v-row justify="center" align="center">
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
           <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
-          <a :href="footer_logo_link" target="_blank">
+          <a :href="$config.footer_logo_link" target="_blank">
             <img :src="footer_logo_image" :height="!mobile ? 45 : 25" class="d-block mx-auto">
           </a>
         </v-col>
@@ -47,7 +47,7 @@
         </v-col>
         <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
           <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{ version_number }}
+            v{{ $config.site_version }}
           </v-card-text>
         </v-row>
       </v-row>
@@ -55,11 +55,9 @@
   </v-footer>
 </template>
 <script>
-import packageData from '../package.json'
 export default {
   name: 'Footer',
   data: () => ({
-    version: packageData.version,
     buttons: [
       { text: 'Contact', to: '/resources/contact', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
@@ -71,19 +69,8 @@ export default {
     buttonClass () { return this.mobile ? 'px-1 py-1' : 'px-1' },
     mainButtons () { return this.buttons.filter(function (button) { return !button.important }) },
     importantButtons () { return this.buttons.filter(function (button) { return button.important }) },
-    version_number () {
-      if (this.$config.site_version !== '') {
-        console.log(this.$config.site_version)
-        return this.$config.site_version
-      }
-      return this.version
-    },
-    footer_logo_link () {
-      return this.$config.footer_logo_link
-    },
     footer_logo_image () {
       try {
-        const fileName = require('~/assets/' + this.$config.footer_logo_image)
         return require('~/assets/' + this.$config.footer_logo_image)
       } catch (e) {
         return require('~/assets/mitre-logo-white.svg')
