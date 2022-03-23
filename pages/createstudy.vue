@@ -71,6 +71,7 @@
         </v-card-title>
         <v-card-subtitle>
           Construct a timeline of the incident, mapped to MITRE ATLAS&trade; and/or MITRE ATTACK<sup>&reg;</sup> Enterprise techniques. Add at least one step.
+          <v-spacer/> Procedures can be dragged and sorted if needed.
         </v-card-subtitle>
 
         <v-card-text>

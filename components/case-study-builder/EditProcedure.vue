@@ -3,12 +3,7 @@
     <draggable :list="procedureData" :disabled="editing" handle=".handle">
       <!-- Key with index and technique for uniqueness -->
       <v-timeline-item v-for="(p, i) in procedureData" :key="i + p.technique" small>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon class="fa fa-align-justify handle" v-bind="attrs" v-on="on">mdi-arrow-up-down</v-icon>
-          </template>
-          <span>Click here to drag procedures to sort them</span>
-        </v-tooltip>
+        <v-icon class="fa fa-align-justify handle">mdi-arrow-up-down</v-icon>
         <edit-procedure-card
           :info="p"
           :editing="editing"
