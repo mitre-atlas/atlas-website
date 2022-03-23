@@ -1,6 +1,6 @@
 {
-  "name": "adversarial-ml-threat-matrix",
-  "version": "1.0.0",
+  "name": "atlas-website",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "nuxt",
