@@ -110,42 +110,43 @@
           Optionally list sources for this case study.
         </v-card-subtitle>
 
-        <v-card-text>
-          <div
-            v-if="studyData.study.references.length"
-            class="mx-8"
-          >
-            <v-list flat>
-              <v-list-item-group>
-                <div
-                  v-for="(value, key) in studyData.study.references"
-                  :key="key"
-                >
-                  <toggleable-source
-                    :source="value"
-                    :index="key"
-                    @clicked="addSourceAt"
-                    @delete="deleteSourceAt"
-                  />
-                </div>
-              </v-list-item-group>
-            </v-list>
-          </div>
-          <add-source
-            v-if="addingSource"
-            ref="addSourceRef"
-            @clicked="addSource"
-            @addingBoolUpdate="addingSource = $event"
-          />
-          <div v-else>
-            <v-btn class="ma-2 mb-10" @click="addingSource = true">
-              <v-icon left>
-                mdi-plus
-              </v-icon>
-              Add New Source
-            </v-btn>
-          </div>
-        </v-card-text>
+      <v-card-text>
+        <div
+          v-if="studyData.study.references"
+          class="mx-8"
+        >
+          <v-list flat>
+            <v-list-item-group>
+              <div
+                v-for="(value, key) in studyData.study.references"
+                :key="key"
+              >
+                <toggleable-source
+                  :source="value"
+                  :index="key"
+                  @clicked="addSourceAt"
+                  v-on:delete="deleteSourceAt"
+                />
+              </div>
+            </v-list-item-group>
+          </v-list>
+        </div>
+        <add-source
+          v-if="addingSource"
+          ref="addSourceRef"
+          :index="studyData.study.references.length"
+          @clicked="addSource"
+          @addingBoolUpdate="addingSource = $event"
+        />
+        <div v-else>
+          <v-btn class="ma-2 mb-10" @click="addingSource = true">
+            <v-icon left>
+              mdi-plus
+            </v-icon>
+            Add New Source
+          </v-btn>
+        </div>
+      </v-card-text>
 
         <v-card-title>
           Download
@@ -240,7 +241,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generateID, downloadStudyFile } from 'static/data/tools.js'
+import { generateID, downloadStudyFile } from '~/assets/tools.js'
 
 export default {
   beforeRouteLeave (to, from, next) {

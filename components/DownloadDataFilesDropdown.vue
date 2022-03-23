@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { downloadUrlAsFile } from 'static/data/tools.js'
+import { downloadStudyFile } from '~/assets/tools.js'
 
 export default {
   name: 'DownloadDataFilesDropdown',
@@ -46,12 +46,10 @@ export default {
   methods: {
     downloadYaml () {
       // Construct full URL to case study data file on GitHub
-      const rawLink = this.$config.individual_case_study.yaml_raw_link
       const id = this.study.id
-      const suffix = this.$config.individual_case_study.yaml_file_suffix
-      const url = rawLink + id + suffix
+      const studyWrap = { study: this.studyYaml }
       // Serve up download of that file, named the same
-      downloadUrlAsFile(url)
+      downloadStudyFile(studyWrap, id)
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="8">
+      <v-col :cols="(showFilterButton) ? 8 : 12">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -52,14 +52,20 @@
         >
           {{ item.name }}
         </nuxt-link>
-      </template>
-      <template #[`item.description`]="{ item }">
-        <div
-          class="my-3"
-          v-html="$md.render(item.description)"
-        />
-      </template>
-    </v-data-table>
+    </template>
+    <template v-slot:[`item.description`]="{ item }">
+      <div
+        v-if="isCaseStudy"
+        v-html="$md.render(item.summary)"
+        class="my-3"
+      />
+      <div
+        v-else
+        v-html="$md.render(item.description)"
+        class="my-3"
+      />
+    </template>
+  </v-data-table>
 
     <scroll-to-top-button />
   </div>
@@ -68,10 +74,9 @@
 <script>
 export default {
   name: 'InfoTable',
-  props: ['items', 'showFilterButton'],
+  props: ['items', 'showFilterButton', 'isCaseStudy'],
   data: () => ({
-    search: '',
-    showAdvMlOnly: false
+    search: ''
   }),
   computed: {
     headers () {

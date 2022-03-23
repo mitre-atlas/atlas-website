@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { downloadUrlAsFile } from 'static/data/tools.js'
+import { downloadUrlAsFile } from '~/assets/tools.js'
 
 export default {
   name: 'NavigatorLayerDropdown',
