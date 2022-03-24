@@ -363,6 +363,8 @@ export default {
         this.errorMsg = ''
 
         // Metadata
+        // Initialize meta key if not exists
+        this.studyData.meta = this.studyData.meta || {}
         const nowDate = new Date()
         // Only set the date-created once upon study creation
         this.studyData.meta['date-created'] = this.studyData.meta['date-created'] ?? nowDate
