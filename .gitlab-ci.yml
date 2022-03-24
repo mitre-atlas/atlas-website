@@ -6,6 +6,7 @@ variables:
 pages:
   script:
     - npm install
+    - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
     - npm run generate
     - mv dist public
   artifacts:
