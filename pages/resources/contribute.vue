@@ -4,13 +4,11 @@
 
     {{ mitreTitle }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
-    <page-section-title>Corrections and Improvement</page-section-title>
+    <page-section-title class="pt-5">Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or post on the <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank">#feedback-and-recommendations</a> Slack channel.
 
-    <br><br>
-
-    <page-section-title>Contribute Case Studies</page-section-title>
+    <page-section-title class="pt-5">Contribute Case Studies</page-section-title>
 
     <p>We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers.</p>
 
@@ -30,10 +28,7 @@
       </v-card-actions>
     </p>
 
-    <page-section-title>Case study example</page-section-title>
-    <case-study-example />
-
-    <page-section-title>Contributors</page-section-title>
+    <page-section-title class="pt-5">Contributors</page-section-title>
 
     <p>
       Thank you to our many active contributors! Including, but not limited to:
