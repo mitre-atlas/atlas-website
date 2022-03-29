@@ -71,8 +71,15 @@ export default {
     importantButtons () { return this.buttons.filter(function (button) { return button.important }) },
     footer_logo_image () {
       try {
-        return require('~/assets/' + this.$config.footer_logo_image)
+        if (this.$config.footer_logo_image && this.$config.footer_logo_image.startsWith('http')) {
+          // External URL
+          return this.$config.footer_logo_image
+        } else {
+          // Assume path is relative to the assets directory
+          return require('~/assets/' + this.$config.footer_logo_image)
+        }
       } catch (e) {
+        // Use default logo
         return require('~/assets/mitre-logo-white.svg')
       }
     }
