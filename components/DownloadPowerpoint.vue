@@ -3,7 +3,7 @@
     <v-container>
       <v-checkbox
         v-model="pptCheckbox"
-        label="Include Case Study PPT"
+        label="Also download as PowerPoint"
         elevation="0"
         color="inherit"
         @change="changeCheckbox"
