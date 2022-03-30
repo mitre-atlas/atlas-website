@@ -11,7 +11,7 @@
           :headers="headers"
           :items="events"
           :items-per-page="5"
-          >
+        >
           <template #[`item.date`]="{ item }">
             <div class="text-right">
               {{
@@ -36,10 +36,10 @@
               </v-icon>
             </a>
           </template>
-          <template v-slot:[`item.description`]="{ item }">
+          <template #[`item.description`]="{ item }">
             <div
-              v-html="$md.render(item.description)"
               class="my-3"
+              v-html="$md.render(item.description)"
             />
           </template>
         </v-data-table>
