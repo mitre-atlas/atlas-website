@@ -15,15 +15,14 @@
       “Cookies” are data that may be sent to your web browser and stored on your computer.
       Most web browsers can be configured not to accept cookies, or to notify you if a cookie is sent to you.
       If you wish not to have cookies set during your visit to this MITRE managed Site, you can disable them in your web browser.
-      MITRE does not employ cookies for this Site.
     </p>
     <p>
-      However, the {{ mitreTitle }} website is hosted on GitHub®.
-      GitHub uses a free third-party software service called Google Analytics® to capture and analyze non-personally identifiable website usage information.
-      Cookies will be implemented by GitHub. For more information about GitHub's collection and use of information,
+      The {{ mitreTitle }} website is hosted on GitHub®.
+      This Site and GitHub use a free third-party software service called Google Analytics® that uses cookies to capture and analyze non-personally identifiable website usage information.
+      For more information about collection and use of information,
       such as IP address, date and time of access, the requested URL, the referring URL (if provided by the Web browser),
-      and the browser type (if provided by the Web browser) please review GitHub's Terms of Use and Privacy Policy at
-      <a href="https://docs.github.com/en/github/site-policy">https://docs.github.com/en/github/site-policy</a>.
+      and the browser type (if provided by the Web browser) please review
+      <a href="https://docs.github.com/en/github/site-policy" target="_blank">GitHub's privacy policy</a> and <a href="https://support.google.com/analytics/answer/6004245" target="_blank">Google Analytics' data practices</a>.
     </p>
     <h4>Information Collected from E-mail and Web Forms</h4>
     <p>

@@ -68,7 +68,7 @@ export default {
       {
         icon: 'mdi-slack',
         color: 'green darken-3',
-        title: 'mitre-atlas Slack',
+        title: 'MITRE | ATLAS Slack',
         text: 'Join the Slack workspace for discussions with the broader community',
         link: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
       }

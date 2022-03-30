@@ -6,7 +6,7 @@
 
     <page-section-title class="pt-5">Corrections and Improvement</page-section-title>
 
-    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or post on the <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank">#feedback-and-recommendations</a> Slack channel.
+    For immediate corrections to tactics, techniques, and case studies, please email <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ" target="_blank">join MITRE ATLAS on Slack</a> and post on the <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank">#feedback-and-recommendations</a> channel.
 
     <page-section-title class="pt-5">Contribute Case Studies</page-section-title>
 
