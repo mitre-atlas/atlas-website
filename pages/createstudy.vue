@@ -71,9 +71,8 @@
         </v-card-title>
         <v-card-subtitle>
           Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. Add at least one step.
-          Steps can be can be edited, deleted, or dragged to re-order as needed.
+          <procedure-legend />
         </v-card-subtitle>
-
         <v-card-text>
           <edit-procedure
             :key="studyData.study.procedure"
@@ -111,43 +110,43 @@
           Optionally list sources for this case study.
         </v-card-subtitle>
 
-      <v-card-text>
-        <div
-          v-if="studyData.study.references"
-          class="mx-8"
-        >
-          <v-list flat>
-            <v-list-item-group>
-              <div
-                v-for="(value, key) in studyData.study.references"
-                :key="key"
-              >
-                <toggleable-source
-                  :source="value"
-                  :index="key"
-                  @clicked="addSourceAt"
-                  v-on:delete="deleteSourceAt"
-                />
-              </div>
-            </v-list-item-group>
-          </v-list>
-        </div>
-        <add-source
-          v-if="addingSource"
-          ref="addSourceRef"
-          :index="studyData.study.references.length"
-          @clicked="addSource"
-          @addingBoolUpdate="addingSource = $event"
-        />
-        <div v-else>
-          <v-btn class="ma-2 mb-10" @click="addingSource = true">
-            <v-icon left>
-              mdi-plus
-            </v-icon>
-            Add New Source
-          </v-btn>
-        </div>
-      </v-card-text>
+        <v-card-text>
+          <div
+            v-if="studyData.study.references"
+            class="mx-8"
+          >
+            <v-list flat>
+              <v-list-item-group>
+                <div
+                  v-for="(value, key) in studyData.study.references"
+                  :key="key"
+                >
+                  <toggleable-source
+                    :source="value"
+                    :index="key"
+                    @clicked="addSourceAt"
+                    v-on:delete="deleteSourceAt"
+                  />
+                </div>
+              </v-list-item-group>
+            </v-list>
+          </div>
+          <add-source
+            v-if="addingSource"
+            ref="addSourceRef"
+            :index="studyData.study.references.length"
+            @clicked="addSource"
+            @addingBoolUpdate="addingSource = $event"
+          />
+          <div v-else>
+            <v-btn class="ma-2 mb-10" @click="addingSource = true">
+              <v-icon left>
+                mdi-plus
+              </v-icon>
+              Add New Source
+            </v-btn>
+          </div>
+        </v-card-text>
 
         <v-card-title>
           Download
