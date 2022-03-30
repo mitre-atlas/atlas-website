@@ -12,7 +12,7 @@
       <!-- Bound props above hide the opposite slot containing date and location
       when the screen is small and move the entire timeline to the left on large screens. -->
       <v-timeline-item
-        v-for="event in events"
+        v-for="event in formattedEvents"
         :key="event.name"
         :color="`${event.color} ${colorModifier}`"
         small
@@ -68,6 +68,18 @@ export default {
   data: () => ({
     // https://vuetifyjs.com/en/styles/colors/#material-colors
     colorModifier: 'darken-3'
-  })
+  }),
+  computed: {
+    formattedEvents () {
+      // Convert date field to readable format
+      return this.events.map((event) => {
+        event.date = event.date.toLocaleDateString(
+          'default',
+          { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+        )
+        return event
+      })
+    }
+  }
 }
 </script>

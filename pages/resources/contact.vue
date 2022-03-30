@@ -31,25 +31,45 @@
       </v-col>
     </v-row>
 
-    <upcoming-events :events="events" class="pt-5" />
+    <upcoming-events
+      v-if="upcomingEvents.length > 0"
+      :events="upcomingEvents"
+      class="pt-5"
+    />
+
+    <past-events
+      v-if="pastEvents.length > 0"
+      :events="pastEvents"
+      class="pt-5"
+    />
   </div>
 </template>
 <script>
 /* eslint-disable */
 export default {
   async asyncData ({ $content }) {
-    let events = await $content('upcoming-events').sortBy('date').fetch()
+    // Retrieve events list
+    const eventsContent = await $content('events').fetch()
+    let events = eventsContent.data
 
+    // Convert the date field to a Date object
     events = events.map((event) => {
-      event.date = new Date(event.date).toLocaleDateString(
-        'default',
-        { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
-      )
+      event.date = new Date(event.date)
       return event
     })
 
+    // Sort by date, oldest first
+    events.sort((a, b) => a.date - b.date)
+
+    // Split events into past and upcoming
+    const currentDate = new Date()
+    const currentIndex = events.findIndex((event) => event.date >= currentDate)
+    const pastEvents = events.slice(0, currentIndex)
+    const upcomingEvents = events.slice(currentIndex)
+
     return {
-      events
+      pastEvents,
+      upcomingEvents
     }
   },
   data: ({ $config: { name, contact_email } }) => ({
