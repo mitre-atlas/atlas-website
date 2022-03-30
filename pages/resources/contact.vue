@@ -64,7 +64,8 @@ export default {
     // Split events into past and upcoming
     const currentDate = new Date()
     const currentIndex = events.findIndex((event) => event.date >= currentDate)
-    const pastEvents = events.slice(0, currentIndex)
+    // Past events are shown with most recent first
+    const pastEvents = events.slice(0, currentIndex).reverse()
     const upcomingEvents = events.slice(currentIndex)
 
     return {
