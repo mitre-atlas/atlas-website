@@ -153,7 +153,7 @@
           Download
         </v-card-title>
         <v-card-subtitle>
-          Change file name here and download case study. Once downloaded, email your yaml file to atlas@mitre.org.
+          Download the case study data file, specifying the filename here. Once downloaded, email the file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
         </v-card-subtitle>
         <v-card-text>
           <v-row>
@@ -166,8 +166,8 @@
                 <v-text-field
                   v-model="fileName"
                   :rules="rules.fileName"
-                  label="Case Study File Name"
-                  hint="Name or change case study file name to be downloaded"
+                  label="Case study filename"
+                  hint="Filename of the case study. The .yaml extension will be auto-applied."
                   prepend-inner-icon="mdi-file-download"
                   outlined
                   clearable
