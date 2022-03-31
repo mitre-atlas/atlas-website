@@ -44,8 +44,8 @@ export default {
         },
         {
           name: 'ATLAS Navigator',
-          description: 'Static files for the ATLAS Navigator - a fork of the MITRE ATT&CK&reg; Navigator.',
-          url: 'https://github.com/mitre-atlas/attack-navigator'
+          description: 'ATLAS Navigator web app - a fork of the MITRE ATT&CK&reg; Navigator.',
+          url: 'https://github.com/mitre-atlas/atlas-navigator/tree/atlas'
         }
       ],
       data: [
