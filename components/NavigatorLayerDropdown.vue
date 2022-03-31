@@ -55,8 +55,13 @@ export default {
   data ({ $config: { individual_case_study } }) {
     return {
       // Construct full URL to individual case study Navigator Layer file on GitHub
-      rawJsonIndividualCaseStudyLayer: individual_case_study.raw_link + this.study.id + individual_case_study.suffix,
-      navigatorUrlIndividualCaseStudyLayer: individual_case_study.navigator_link + this.study.id + individual_case_study.suffix
+      rawJsonIndividualCaseStudyLayer: individual_case_study.raw_link + this.study.id + individual_case_study.suffix
+    }
+  },
+  computed: {
+    navigatorUrlIndividualCaseStudyLayer () {
+      // Full URL to Navigator with raw GitHub Navigator layer loaded
+      return this.$config.individual_case_study.navigator_link + this.rawJsonIndividualCaseStudyLayer
     }
   },
   /* eslint-enable camelcase */
