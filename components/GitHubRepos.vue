@@ -40,7 +40,7 @@ export default {
         {
           name: 'ATLAS Website',
           description: 'Static files for this atlas.mitre.org website.',
-          url: 'https://github.com/mitre/advmlthreatmatrix/tree/gh-pages'
+          url: 'https://github.com/mitre-atlas/atlas-website'
         },
         {
           name: 'ATLAS Navigator',
