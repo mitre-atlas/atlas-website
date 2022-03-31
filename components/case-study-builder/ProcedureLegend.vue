@@ -18,9 +18,9 @@
     <span>
       <v-card-title style="color:#424242">Procedure Steps Legend</v-card-title>
       <v-card-text style="color:#424242">
-        <li v-for="object in object" :key="object.value" style="list-style: none; margin-bottom: 2%">
-          <v-icon :color="object.color">{{object.icon}}</v-icon>
-          {{object.value}}
+        <li v-for="object in objects" :key="object.value" style="list-style: none; margin-bottom: 2%">
+          <v-icon :color="object.color">{{ object.icon }}</v-icon>
+          {{ object.value }}
         </li>
       </v-card-text>
     </span>
@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       show: this.doShow,
-      object: [
+      objects: [
         {
           icon: 'mdi-arrow-up-down',
           value: 'Hold and drag to move procedure cards.',
