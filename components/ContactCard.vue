@@ -3,6 +3,7 @@
     dark
     :color="item.color"
     :href="item.link"
+    target="_blank"
     >
     <div class="d-flex flex-no-wrap align-center">
       <v-avatar
