@@ -18,9 +18,10 @@
     <span>
       <v-card-title style="color:#424242">Procedure Steps Legend</v-card-title>
       <v-card-text style="color:#424242">
-        <li style="list-style: none; margin-bottom: 2%"> <v-icon>mdi-arrow-up-down</v-icon> Hold and drag to move procedure cards.</li>
-        <li style="list-style: none; margin-bottom: 2%"> <v-icon color="blue">mdi-pencil</v-icon> Click to edit procedure card.</li>
-        <li style="list-style: none; margin-bottom: 2%"> <v-icon color="red">mdi-delete</v-icon> Click to delete procedure card.</li>
+        <li v-for="object in object" :key="object.value" style="list-style: none; margin-bottom: 2%">
+          <v-icon :color="object.color">{{object.icon}}</v-icon>
+          {{object.value}}
+        </li>
       </v-card-text>
     </span>
   </v-tooltip>
@@ -33,7 +34,24 @@ export default {
   ],
   data () {
     return {
-      show: this.doShow
+      show: this.doShow,
+      object: [
+        {
+          icon: 'mdi-arrow-up-down',
+          value: 'Hold and drag to move procedure cards.',
+          color: 'grey'
+        },
+        {
+          icon: 'mdi-pencil',
+          value: 'Click to edit procedure card.',
+          color: 'blue'
+        },
+        {
+          icon: 'mdi-delete',
+          value: 'Click to delete procedure card.',
+          color: 'red'
+        }
+      ]
     }
   }
 }
