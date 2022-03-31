@@ -13,9 +13,8 @@
     <p>We are especially excited for new case-studies! We look forward to contributions from both industry and academic researchers.</p>
 
     <p>
-      Use the <NuxtLink to="/studies/create">
-        Case Study Builder
-      </NuxtLink> to craft a submission file with details and technique mappings,
+      Use the Case Study Builder
+      to craft a submission file with details and technique mappings,
       then email the file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
       The {{ $config.name.short }} team will review the submission and follow up with feedback.
     </p>
