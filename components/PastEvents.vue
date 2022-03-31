@@ -1,5 +1,8 @@
 <template>
-  <v-expansion-panels flat>
+  <v-expansion-panels
+    flat
+    hover
+    >
     <v-expansion-panel>
       <v-expansion-panel-header>
         <page-section-title>
