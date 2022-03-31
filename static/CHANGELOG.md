@@ -1,10 +1,11 @@
 # ATLAS Website Changelog
 
-## [3.0.0]() (2022-03-21)
+## [3.0.0]() (2022-03-31)
 
 #### Website
 - Added case study builder feature
 - Added ability to download case studies as Powerpoint files and raw YAML
+- Added events list and more ways to get involved on the contact page
 - Various fixes and language updates
 
 #### Data
