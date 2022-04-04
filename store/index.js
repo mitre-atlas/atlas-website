@@ -49,8 +49,13 @@ export const getters = {
   getMatrix: (state) => {
     return state.data.matrix
   },
-  getTacticStyling: (state) => {
-    return state.tacticStyling
+  getDataObjects: (state) => {
+    // Populated objects dynamic pages
+    const dataObjects = {
+      tactics: state.data.matrix.tactics,
+      techniques: state.data.techandsubtechniques
+    }
+    return dataObjects
   },
 
   // Find by ID (exact match)
