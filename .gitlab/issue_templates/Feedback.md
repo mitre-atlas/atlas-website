@@ -1,6 +1,6 @@
-<!-- This template is used for addiitonal feedback on ATLAS Website -->
+<!-- This template is used for additonal feedback on ATLAS Website -->
 
-### Feedback Summary
+# Feedback Summary
 
 <!-- Include the following detail as necessary:
 * What product or feature(s) affected?
@@ -9,7 +9,8 @@
 * Any other ideas or requests?
 -->
 
-### Further details
+
+# Further details
 
 <!--
 * Any concepts, procedures, reference info we could add to make it easier to successfully use ATLAS Website?
@@ -17,10 +18,12 @@
 * If adding content: What audience is it intended for? (What roles and scenarios?)
 -->
 
-### Proposal
+
+# Proposal
 
 <!-- Further specifics for how can we solve the problem. -->
 
-### Other links/references
+
+# Other links/references
 
 <!-- Add any references or examples for your proposal. -->
