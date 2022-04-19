@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs').promises
 const path = require('path')
 const yaml = require('js-yaml')
@@ -10,72 +11,9 @@ export const state = () => ({
     techandsubtechniques: [],
     studies: [],
     // Represents the populated tactics, techniques, and subtechniques
-    matrix: []
-  },
-  // Mapping of tactic names to v-icons
-  tacticStyling: {
-    'Model Evasion': {
-      icon: 'mdi-eye-off',
-      color: 'deep-purple'
-    },
-    Reconnaissance: {
-      icon: 'mdi-account-search',
-      color: 'green lighten-2'
-    },
-    'Resource Development': {
-      icon: 'mdi-apps',
-      color: 'green'
-    },
-    'Initial Access': {
-      icon: 'mdi-door-open',
-      color: 'light-green darken-2'
-    },
-    Execution: {
-      icon: 'mdi-xml',
-      color: 'lime darken-2'
-    },
-    Persistence: {
-      icon: 'mdi-lock-open-plus',
-      color: 'amber'
-    },
-    'Privilege Escalation': {
-      icon: 'mdi-shield-account',
-      color: 'orange'
-    },
-    'Defense Evasion': {
-      icon: 'mdi-security',
-      color: 'orange lighten-2'
-    },
-    'Credential Access': {
-      icon: 'mdi-key',
-      color: 'orange'
-    },
-    Discovery: {
-      icon: 'mdi-cloud-search',
-      color: 'orange darken-2'
-    },
-    'Lateral Movement': {
-      icon: 'mdi-swap-horizontal-bold',
-      color: 'deep-orange lighten-2'
-    },
-    Collection: {
-      icon: 'mdi-file-multiple',
-      color: 'deep-orange'
-    },
-    'Command and Control': {
-      icon: 'mdi-lan-connect',
-      color: 'red'
-    },
-    Exfiltration: {
-      icon: 'mdi-package-down',
-      color: 'red darken-2'
-    },
-    Impact: {
-      icon: 'mdi-fire',
-      color: 'red darken-4'
-    }
-  },
-  caseStudy: null
+    matrix: [],
+    version: 0.0
+  }
 })
 
 // defines the logic for all the "filtered" getters
@@ -83,6 +21,9 @@ const isFiltered = t => t.id.startsWith('AML')
 
 export const getters = {
   // Simple getters
+  getVersion: (state) => {
+    return state.data.version
+  },
   getTactics: (state) => {
     return state.data.tactics
   },
@@ -160,10 +101,6 @@ export const getters = {
 
   getFilteredTechniquesByTacticId: state => (tacticId) => {
     return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
-  },
-
-  getCaseStudyBuilderData: (state) => {
-    return state.caseStudy
   }
 }
 
@@ -186,84 +123,18 @@ export const actions = {
   // TODO Caching, also needs return or await
   async nuxtServerInit ({ commit }, context) {
     // Retrieve the threat matrix YAML data and populate store upon start
-    const getAtlasData = await fs.readFile('static/data/ATLAS-2.0.yaml', 'utf-8')
+    const getAtlasData = await fs.readFile('static/atlas-data/dist/ATLAS.yaml', 'utf-8')
 
     // Get all contents, then parse and commit payload
     const promise = Promise.resolve(getAtlasData)
       .then((contents) => {
-        /*
-        // Pre-parse actions
-        // Convert Markdown-style links, i.e. [name](full or relative URL)
-
-        // Internal links start with / and are converted to nuxt-links
-        // TODO nuxt-links do not resolve when using v-html, replacing with regular relative links
-        const internalLinkRegex = /\[([^[]+?)\]\((\/.*?)\)/gm
-
-        // Replace Markdown link syntax with HTML link for internal pages
-        // [name](relPath), where relPath is /techniques/123, for example
-        contents[1] = contents[1].replace(internalLinkRegex, (match, name, relPath) => {
-          // Construct the href, taking into consideration the router base
-          // Normalize to resolve possible //
-          const fullPath = path.normalize(context.$config.router_base + relPath)
-          // Construct the HTML link
-          const link = "<a href='" + fullPath + "'>" + name + '</a>'
-          return link
-        })
-
-        // External links start with http and are converted to HTML links
-        const externalLinkRegex = /\[([^[]+?)\]\((http.*?)\)/gm
-        contents[1] = contents[1].replace(externalLinkRegex, "<a href='$2'>$1</a>")
-
-        // Convert any external links in the case studies as well
-        contents[2] = contents[2].replace(externalLinkRegex, "<a href='$2'>$1</a>")
-
-        // Parse JSON files
-        const data = contents.map(JSON.parse)
-        let { 1: techniques } = data
-        const { 0: tactics, 2: studies } = data
-
-        // Replace any (Citation: <source_name> ) text in ATT&CK data with citation links
-        // using external references
-        const citationRegex = /(\(Citation: (.*?)\))/gm
-        techniques = techniques.map((technique) => {
-          // Find citations
-          let match = citationRegex.exec(technique.description)
-          // Reference superscript numbering
-          let refNum = 1
-
-          while (match != null) {
-            // 0 is whole match, 1 happens to also be the whole match, and 2 is the source name
-            const citation = match[1]
-            const sourceName = match[2]
-
-            // Look up the corresponding URL from external references by source name
-            const reference = technique.external_references.find((ef) => {
-              if (ef.source_name === sourceName) {
-                return true
-              }
-              return false
-            })
-
-            // Construct a superscript citation link
-            const refSuperscriptLink = `<sup><a href='${reference.url}'>[${refNum}]</a></sup>`
-            // Replace the entire citation text with the link
-            technique.description = technique.description.replace(citation, refSuperscriptLink)
-
-            // Move on to next match
-            match = citationRegex.exec(technique.description)
-            // Increment the reference for the next link
-            refNum += 1
-          }
-
-          return technique
-        })
-        */
 
        // Parse YAML
        const doc = yaml.load(contents)
        const studies = doc['case-studies']
        const techniques = doc['techniques']
        const tactics = doc['tactics']
+       const version = doc['version']
 
         // Build out tactics and techniques used in the case studies
         // with which to filter the ATT&CK data
@@ -350,7 +221,8 @@ export const actions = {
           techniques,
           techandsubtechniques: parentTechniques,
           studies,
-          matrix
+          matrix,
+          version
         }
 
         commit('SET_THREAT_MATRIX_DATA', payload)

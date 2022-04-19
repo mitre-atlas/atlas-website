@@ -5,8 +5,8 @@ between render with edit/delete and editable form. -->
     <add-source
       v-if="isInEditMode"
       :url="source.url"
-      :sourceDescription="source.sourceDescription"
-      :addingSource="isInEditMode"
+      :title="source.title"
+      :adding-source="isInEditMode"
       :index="index"
       @clicked="replaceSource"
       @addingBoolUpdate="isInEditMode = $event"
@@ -15,8 +15,8 @@ between render with edit/delete and editable form. -->
       v-else
       :source="source"
       :index="index"
-      v-on:edit-source="isInEditMode = $event"
-      v-on:delete="$emit('delete', index)"
+      @edit-source="isInEditMode = $event"
+      @delete="$emit('delete', index)"
     />
   </div>
 </template>

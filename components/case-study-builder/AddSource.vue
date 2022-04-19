@@ -3,16 +3,16 @@
     <v-card>
       <v-card-title>
         <div v-if="index != null">
-          Source {{index+1}}
+          Source {{ index+1 }}
         </div>
         <div v-else>
-        Add Source
+          Add Source
         </div>
       </v-card-title>
 
       <v-card-text>
         <v-text-field
-          v-model="sourceDescriptionData"
+          v-model="titleData"
           label="Description"
           hint="Brief description (optional)"
           outlined
@@ -29,7 +29,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
           Cancel
         </v-btn>
@@ -38,10 +38,9 @@
         </v-btn>
       </v-card-actions>
 
-        <v-alert v-if="addSourceErr" color="red" text type="error" dense>
-          {{ addSourceErr }}
-        </v-alert>
-
+      <v-alert v-if="addSourceErr" color="red" text type="error" dense>
+        {{ addSourceErr }}
+      </v-alert>
     </v-card>
   </div>
 </template>
@@ -49,15 +48,27 @@
 <script>
 export default {
   name: 'AddSource',
-  props: [
-    'sourceDescription',
-    'url',
-    'addingSource',
-    'index'
-  ],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    addingSource: {
+      type: Boolean,
+      default: false
+    },
+    index: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {
-      sourceDescriptionData: this.sourceDescription,
+      titleData: this.title,
       urlData: this.url,
       addSourceErr: '',
       addingBool: this.addingSource
@@ -68,9 +79,31 @@ export default {
       this.inputVal = inputVal
     },
     addSource () {
-      if (this.sourceDescriptionData || this.urlData) {
+      let url
+      // If url is empty, valid check remains true by default since field is optional
+      let isUrlValid = true
+
+      // If both title and url fields are empty
+      if (this.titleData === '' && this.urlData === '') {
+        this.addSourceErr = 'Please complete at least one field'
+        return
+      }
+
+      // If url is not empty then it must be validated
+      if (this.urlData !== '') {
+        try {
+          url = new URL(this.urlData) // eslint-disable-line no-unused-vars
+        } catch (_) {
+          isUrlValid = false
+          this.addSourceErr = 'URL cannot be found or does not start with http(s)://'
+          return
+        }
+      }
+
+      // If there exists a title and url is validated
+      if ((this.titleData === '' || this.titleData) && isUrlValid) {
         const newSource = {
-          sourceDescription: this.sourceDescriptionData,
+          title: this.titleData,
           url: this.urlData
         }
         this.$emit('clicked', newSource)
@@ -80,7 +113,7 @@ export default {
       }
     },
     clearSource () {
-      this.sourceDescriptionData = ''
+      this.titleData = ''
       this.urlData = ''
       this.addSourceErr = ''
     }

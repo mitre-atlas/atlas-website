@@ -1,11 +1,11 @@
 {
-  "name": "adversarial-ml-threat-matrix",
-  "version": "1.0.0",
+  "name": "atlas-website",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "PORT=7777 nuxt start",
+    "start": "nuxt start",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
@@ -17,6 +17,7 @@
     "@nuxtjs/markdownit": "^2.0.0",
     "core-js": "^3.11.0",
     "js-yaml": "^4.0.0",
+    "jsonschema": "^1.4.0",
     "nuxt": "^2.15.4",
     "pptxgenjs": "^3.7.1",
     "vue-gtag": "^1.16.1",
@@ -34,6 +35,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.25.0",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-vue": "^7.9.0"
+    "eslint-plugin-vue": "^7.9.0",
+    "push-dir": "^0.4.1"
   }
 }

@@ -1,8 +1,12 @@
-image: node:alpine3.13
+image: node:16
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
 
 pages:
   script:
     - npm install
+    - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
     - npm run generate
     - mv dist public
   artifacts:
@@ -10,4 +14,5 @@ pages:
       - public
   tags:
     - docker
-  when: manual
+  only:
+    - develop

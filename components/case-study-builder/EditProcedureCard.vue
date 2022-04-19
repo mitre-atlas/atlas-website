@@ -1,24 +1,27 @@
 <template>
   <v-card v-if="!editingData">
-    <v-card-title>
+    <v-card-title v-if="parentTech" style="font-size: 1.1rem">
+      {{ parentTechniqueName }}: {{ techniqueName }}
+      <v-spacer />
+    </v-card-title>
+    <v-card-title v-else style="font-size: 1.1rem">
       {{ techniqueName }}
       <v-spacer />
-      <v-icon>mdi-arrow-up-down</v-icon>
     </v-card-title>
     <v-card-subtitle>
       {{ tacticName }}
     </v-card-subtitle>
-    <v-card-text v-html="info.description" />
+    <v-card-text v-html="$md.render(info.description)" />
     <v-card-actions>
       <v-spacer />
       <v-btn color="blue" icon @click="editStep">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-       <v-dialog
+      <v-dialog
         v-model="dialog"
         width="500"
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <v-btn
             color="red"
             icon
@@ -31,8 +34,8 @@
 
         <confirm-delete-dialog
           :name="comboName"
-          v-on:cancel="dialog = false"
-          v-on:delete="deleteStep"
+          @cancel="dialog = false"
+          @delete="deleteStep"
         >
           <div v-html="info.description" />
         </confirm-delete-dialog>
@@ -90,6 +93,22 @@ export default {
       }
       return tactic.name
     },
+    parentTech () {
+      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
+      const parentTechnique = this.$store.getters.getTechniqueById(technique)
+      if (parentTechnique === undefined) {
+        return false
+      }
+      return true
+    },
+    parentTechniqueName () {
+      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
+      const parentTechnique = this.$store.getters.getTechniqueById(technique)
+      if (parentTechnique === undefined) {
+        return ''
+      }
+      return parentTechnique.name
+    },
     techniqueName () {
       const technique = this.$store.getters.getTechniqueById(this.info.technique)
 
@@ -121,14 +140,10 @@ export default {
     }
   },
   methods: {
-    // updateValue (inputVal) {
-    //   this.inputVal = inputVal
-    // },
     deleteStep () {
       this.$emit('deleteClick')
     },
     editStep () {
-      // console.log('edit clicked')
       this.editingData = true
       this.$emit('updateEdit', this.editingData)
     },

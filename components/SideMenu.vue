@@ -3,8 +3,8 @@
     app
     absolute
     clipped
-    style="height: calc(100% - 170px)"
-    >
+    style="height: calc(100% - 175px)"
+  >
     <v-list-item class="mt-10">
       <v-list-item-content>
         <v-list-item-title class="title">
@@ -13,20 +13,18 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list dense nav v-if="title === 'Tactics' || title === 'Case Studies'">
+    <v-list v-if="title === 'Tactics' || title === 'Case Studies'" dense nav>
       <v-list-item
         v-for="(item, i) in items"
         :key="i"
         :nuxt="true"
         :to="`/${basePath}/${item.id}`"
         :ripple="false"
-        >
+      >
         <v-list-item>
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
-            <!-- Font size and color to match v-expansion-panel-header style
-            class="blue--text text--darken-2" style="font-size: 0.9375rem;" -->
+            <!-- Font size and color to match v-expansion-panel-header style -->
             {{ item.name }}
-
           </v-list-item-content>
         </v-list-item>
       </v-list-item>
@@ -42,7 +40,7 @@
         :key="i"
         no-action
       >
-        <template v-slot:activator>
+        <template #activator>
           <v-list-item v-if="tactic.techniques.length > 0">
             <NuxtLink
               :to="`/tactics/${tactic.id}`"
@@ -55,127 +53,48 @@
         </template>
 
         <div
-            v-for="(technique, j) in tactic.techniques"
-            :key="j"
-          >
+          v-for="(technique, j) in tactic.techniques"
+          :key="j"
+        >
           <v-list-item
             :nuxt="true"
             :to="`/${basePath}/${technique.id}`"
             :ripple="false"
-            >
+          >
+            <v-list-item>
               <v-list-item>
-                <v-list-item>
-              <v-list-item-title style="font-weight: 400;">
-                <!-- Font size and color to match v-expansion-panel-header style -->
-                {{ technique.name }}
-              </v-list-item-title>
-              <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+                <v-list-item-title style="font-weight: 400;">
+                  <!-- Font size and color to match v-expansion-panel-header style -->
+                  {{ technique.name }}
+                </v-list-item-title>
+                <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
                   &
-              </v-list-item-icon>
+                </v-list-item-icon>
               </v-list-item>
-              </v-list-item>
+            </v-list-item>
           </v-list-item>
 
-            <v-list-item
-              v-for="(subtechnique, k) in technique.subtechniques"
-              :key="k"
-              :nuxt="true"
-              :to="`/${basePath}/${subtechnique.id}`"
-              :ripple="false"
-            >
+          <v-list-item
+            v-for="(subtechnique, k) in technique.subtechniques"
+            :key="k"
+            :nuxt="true"
+            :to="`/${basePath}/${subtechnique.id}`"
+            :ripple="false"
+          >
             <v-list-item>
-              <!-- <v-list-item> -->
-            <v-list-item>
-              <v-list-item-title class="pl-3" style="font-weight: 400;">
-                {{ subtechnique.name }}
-              </v-list-item-title >
-              <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
+              <v-list-item>
+                <v-list-item-title class="pl-3" style="font-weight: 400;">
+                  {{ subtechnique.name }}
+                </v-list-item-title>
+                <v-list-item-icon v-if="technique.id.startsWith('T')" class="red--text text--darken-3 text-caption">
                   &
-              </v-list-item-icon>
+                </v-list-item-icon>
+              </v-list-item>
             </v-list-item>
-              <!-- </v-list-item> -->
-            </v-list-item>
-            </v-list-item>
-
+          </v-list-item>
         </div>
       </v-list-group>
     </v-list>
-<!--
-    <v-expansion-panels
-      v-else
-      accordion
-      flat
-      multiple
-      hover
-      style="z-index: 0"
-    >
-
-      <v-expansion-panel
-        v-for="(tactic, i) in items"
-        :key="i"
-      >
-        <v-expansion-panel-header>
-          <NuxtLink
-            :to="`/tactics/${tactic.id}`"
-            style="text-decoration: none;"
-          >
-            {{ tactic.name }}
-          </NuxtLink>
-        </v-expansion-panel-header>
-
-        <v-expansion-panel-content>
-          <div
-            v-for="(technique, j) in tactic.techniques"
-            :key="j"
-          >
-
-            <v-expansion-panels
-              v-if="'subtechniques' in technique"
-              accordion
-              flat
-              multiple
-              hover
-            >
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  <NuxtLink
-                      :to="`/techniques/${technique.id}`"
-                      style="text-decoration: none; font-size: 0.9375rem;"
-                    >
-                    {{ technique.name }}
-                  </NuxtLink>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-expansion-panel-header
-                    hide-actions
-                    v-for="(subtechnique, k) in technique.subtechniques"
-                    :key="k"
-                  >
-                    <NuxtLink
-                        :to="`/techniques/${subtechnique.id}`"
-                        style="text-decoration: none; font-size: 0.9375rem;"
-                      >
-                      {{ subtechnique.name }}
-                    </NuxtLink>
-                  </v-expansion-panel-header>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-
-            <div v-else class="mb-3 ml-6" style="line-height: 1;">
-
-              <NuxtLink
-                  :to="`/techniques/${technique.id}`"
-                  style="text-decoration: none; font-size: 0.9375rem;"
-                >
-                {{ technique.name }}
-              </NuxtLink>
-            </div>
-          </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
--->
   </v-navigation-drawer>
 </template>
 
@@ -218,11 +137,6 @@ export default {
       return this.$route.path.split('/')[1]
     }
   },
-  methods: {
-    scrollTo (elementId) {
-      this.$emit('scroll-to', elementId)
-    }
-  },
   watch: {
     // TODO Only refresh when needed
     // '$route.name' (to, from) {
@@ -238,6 +152,11 @@ export default {
     //     this.items = this.$store.getters.getStudies
     //   }
     // }
+  },
+  methods: {
+    scrollTo (elementId) {
+      this.$emit('scroll-to', elementId)
+    }
   }
 }
 </script>

@@ -94,3 +94,6 @@ sw.*
 
 # Playwright videos
 test-results
+
+# Docker image
+atlas-website-image.tar

@@ -2,7 +2,7 @@
   <v-list-item-content>
     <v-list-item-title
       v-text="technique.name"
-    ></v-list-item-title>
+    />
     <v-list-item-subtitle>
       {{ technique.id }}
     </v-list-item-subtitle>

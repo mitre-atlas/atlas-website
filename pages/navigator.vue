@@ -1,29 +1,14 @@
 <template>
   <div>
-    <!-- <div class="text-h2">{{ title }}</div> -->
     <page-title>{{ title }}</page-title>
 
-    <!-- Below is just placeholder text for future language, for now I just put some language to start with so that it was there -->
-
     <p>
-      To view {{ mitreTitle }} data alongside MITRE ATT&CK<sup>&reg;</sup> Enterprise tactics and techniques, visit the {{ shortName }} customized version of the ATT&CK Navigator. It can be viewed on another page via the link below, or in the window further down this page.
+      The {{ mitreTitle }} version of the ATT&CK Navigator displays {{ shortName }} techniques and allows users to create and view complex visualizations.  In addition to the matrix, the Navigator also shows a frequency heat map of techniques used in {{ shortName }} case studies. View the {{ shortName }} Navigator below or at <a :href="$config.navigator_url" target="_blank">{{ $config.navigator_url }}<v-icon x-small>mdi-open-in-new</v-icon></a>.
     </p>
 
     <p>
-      <v-card-actions class="justify-center">
-        <v-btn target="_blank" :href=$config.navigator_url>
-          {{ title }}
-        </v-btn>
-      </v-card-actions>
+      For more information on the standard ATT&CK Navigator and how to use it, visit the <a target="_blank" href="https://github.com/mitre-attack/attack-navigator">project's GitHub page here</a> as well as watch a short <a target="_blank" href="https://www.youtube.com/watch?v=pcclNdwG8Vs.">demo video on YouTube</a>.
     </p>
-
-    <p>
-      This customized Navigator encodes the ATLAS techniques as an additional platform in ATT&CK, and allows users to create complex visualizations containing both machine learning and enterprise techniques. For more information on the standard ATT&CK Navigator and how to use it, visit the <a target="_blank" href="https://github.com/mitre-attack/attack-navigator">project’s GitHub page here</a> as well as watch a short <a target="_blank" href="https://www.youtube.com/watch?v=pcclNdwG8Vs.">demo video on YouTube</a>.
-    </p>
-
-    <!-- <v-row  class="mt-10">
-      <matrix-attack-style :matrix="getMatrix" />
-    </v-row> -->
 
     <div style="text-align: center;">
       <iframe
@@ -37,8 +22,6 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-
 export default {
   data: ({ $config: { name } }) => ({
     shortName: name.short,
@@ -50,9 +33,6 @@ export default {
       title: `${this.title} | ${this.mitreTitle}`
     }
   }
-//   computed: {
-//     ...mapGetters(['getMatrix'])
-//   }
 }
 </script>
 
