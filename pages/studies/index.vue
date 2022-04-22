@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav objectType="case-study" :items="getStudies" />
+    <data-side-nav :items="getStudies" />
   <div class="mx-8">
     <breadcrumbs></breadcrumbs>
     <page-title>{{ title }}</page-title>

@@ -16,7 +16,7 @@
         v-for="(item, i) in items"
         :key="i"
         :nuxt="true"
-        :to="`/${title}/${item.id}`"
+        :to="`/${route}/${item.id}`"
         :ripple="false"
       >
         <v-list-item>
@@ -30,12 +30,19 @@
   </v-navigation-drawer>
 </template>
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   name: 'DataSideNav',
-  props: ['objectTypePlural', 'items'],
+  props: ['items'],
   computed: {
     title () {
-      return this.objectTypePlural
+      // Plural object type with spaces instead of dashes, if any
+      return dataObjectToPluralTitle(this.items[0])
+    },
+    route () {
+      // URL part, the last word of the object type, pluralized
+      return dataObjectToPluralTitle(this.items[0], true)
     }
   }
 }

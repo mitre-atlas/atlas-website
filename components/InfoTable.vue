@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   name: 'InfoTable',
   props: ['items', 'showFilterButton', 'isCaseStudy'],
@@ -95,12 +97,8 @@ export default {
     },
     route () {
       // URL part, i.e. studies, tactics, techniques, etc.
-      // Typically the pluralization of the object type
-      if (this.isCaseStudy) {
-        return 'studies'
-      }
-      // Pluralize the object type
-      return `${this.items[0]['object-type']}s`
+      // A pluralization of the last word of the object type
+      return dataObjectToPluralTitle(this.items[0], true)
     }
   }
 }

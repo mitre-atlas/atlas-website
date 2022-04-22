@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :objectTypePlural="objectTypePlural" :items="items" />
+    <data-side-nav :items="items" />
 
     <div>
       <breadcrumbs />
