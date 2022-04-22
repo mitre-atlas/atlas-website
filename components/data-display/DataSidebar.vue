@@ -9,17 +9,24 @@
         <span class="font-weight-bold">ID:</span> {{ dataObject.id }}
       </p>
       <p
-        v-for="(relatedObjs, dataKey) in relatedObjects"
-        :key="dataKey"
+        v-for="(relatedObjs, objectType) in relatedObjects"
+        :key="objectType"
       >
-        <span class="font-weight-bold">Number of {{ dataKey }}:</span> {{ relatedObjs.length }}
+        <span class="font-weight-bold">Number of {{ pluralize(objectType) }}:</span> {{ relatedObjs.length }}
       </p>
     </v-card-text>
   </v-card>
 </template>
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   name: 'DataSidebar',
-  props: ['dataObject', 'relatedObjects']
+  props: ['dataObject', 'relatedObjects'],
+  methods: {
+    pluralize (objectType) {
+      return dataObjectToPluralTitle(objectType)
+    }
+  }
 }
 </script>

@@ -30,14 +30,12 @@
   </v-navigation-drawer>
 </template>
 <script>
-import { dataObjectToPluralTitle } from '~/assets/tools.js'
-
 export default {
   name: 'DataSideNav',
-  props: ['objectType', 'items'],
+  props: ['objectTypePlural', 'items'],
   computed: {
     title () {
-      return dataObjectToPluralTitle(this.objectType)
+      return this.objectTypePlural
     }
   }
 }

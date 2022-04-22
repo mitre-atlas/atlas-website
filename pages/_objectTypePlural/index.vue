@@ -1,19 +1,31 @@
 <template>
   <div>
-    <data-side-nav :objectType="objectType" :items="items" />
+    <data-side-nav :objectTypePlural="objectTypePlural" :items="items" />
 
     <div>
       <page-title class="text-capitalize">
-        {{ objectType }}
+        {{ objectTypePlural }}
       </page-title>
 
       <p
-        v-if="objectType in introText"
-        v-html="$md.render(introText[objectType])"
+        v-if="objectTypePlural in introText"
+        v-html="$md.render(introText[objectTypePlural])"
       />
+      <p
+        v-else
+        class="red--text text--darken-2"
+        >
+        Introductory text not found for {{ objectTypePlural }}.
+        Edit the file at <code>/static/content/data-list-page-intros.yaml</code>
+        to add <br>
+        <pre>
+        {{ objectTypePlural }}: |
+          Some text here, which can include newlines, Markdown or HTML syntaxes
+        </pre>
+      </p>
 
       <p>
-        The table below lists {{ objectType }} from {{ mitreTitle }}.
+        The table below lists {{ objectTypePlural }} from {{ mitreTitle }}.
         Scroll through the table or use the filter to narrow down the information.
       </p>
 
@@ -35,16 +47,16 @@ export default {
   },
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
-    objectType: params.objectType
+    objectTypePlural: params.objectTypePlural
   }),
   head () {
     return {
-      title: `${this.objectType} List | ${this.mitreTitle}`
+      title: `${this.objectTypePlural} List | ${this.mitreTitle}`
     }
   },
   computed: {
     items () {
-      return this.$store.getters.getDataObjectsByType(this.objectType)
+      return this.$store.getters.getDataObjectsByType(this.objectTypePlural)
     }
   }
 }

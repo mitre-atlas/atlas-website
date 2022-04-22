@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :objectType="objectType" :items="items" />
+    <data-side-nav :objectTypePlural="objectTypePlural" :items="items" />
 
     <div>
       <breadcrumbs />
@@ -26,9 +26,9 @@
       </v-row>
 
       <data-links
-        v-for="(relatedObjs, dataKey) in relatedObjects"
-        :key="dataKey"
-        :objectType="dataKey"
+        v-for="(relatedObjs, objectType) in relatedObjects"
+        :key="objectType"
+        :objectType="objectType"
         :items="relatedObjs"
       />
     </div>
@@ -38,7 +38,7 @@
 export default {
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
-    objectType: params.objectType,
+    objectTypePlural: params.objectTypePlural,
     id: params.id
   }),
   head () {
@@ -64,7 +64,7 @@ export default {
       return this.dataObject.name
     },
     items () {
-      return this.$store.getters.getDataObjectsByType(this.objectType)
+      return this.$store.getters.getDataObjectsByType(this.objectTypePlural)
     }
   }
 }

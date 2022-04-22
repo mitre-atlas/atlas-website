@@ -13,5 +13,4 @@ techniques: |
   where the adversary is typically creating or modifying an ML artifact that will be used in a subsequent tactical objective.
   There can be multiple techniques in each tactic category as there are many ways to achieve tactical objectives.
   <sup><a href="https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf">[1]</a></sup>
-mitigations: |
-  TODO introduction to mitigations
+
