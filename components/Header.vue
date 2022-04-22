@@ -134,23 +134,13 @@ import { dataObjectToPluralTitle } from '~/assets/tools.js'
 export default {
   data: ({ $config: { name } }) => ({
     title: `MITRE | ${name.short}`,
-    links: [
+    linksBeginning: [
       {
         name: 'Matrix',
         href: '/matrix'
-      },
-      {
-        name: 'Navigator',
-        href: '/navigator'
-      },
-      // {
-      //   name: 'Tactics',
-      //   href: '/tactics'
-      // },
-      // {
-      //   name: 'Techniques',
-      //   href: '/techniques'
-      // },
+      }
+    ],
+    linksEnding: [
       {
         name: 'Case Studies',
         isDropdown: true,
@@ -195,17 +185,18 @@ export default {
   }),
   computed: {
     linksModded () {
-      // if (!this.$config.navigator_url) {
-      //   for (const link of this.links) {
-      //     if (link.name === 'Navigator') {
-      //       const index = this.links.indexOf(link)
-      //       if (index !== -1) {
-      //         this.links.splice(index, 1)
-      //       }
-      //     }
-      //   }
-      // }
+      // Add the Navigator Header item if specified
+      let navLinks = []
+      if (this.$config.navigator_url) {
+        navLinks = [
+          {
+            name: 'Navigator',
+            href: '/navigator'
+          }
+        ]
+      }
 
+      // Add data object links
       const dataKeys = Object.keys(this.$store.state.data.objects)
       // Do not generate a route for case studies, which has its own defined templates
       const dynamicDataKeys = dataKeys.filter(k => k !== 'case-studies')
@@ -218,7 +209,8 @@ export default {
         }
       })
 
-      return this.links.concat(dataLinks)
+      // Sandwich data links between beginning and end links
+      return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
     }
   }
 }
