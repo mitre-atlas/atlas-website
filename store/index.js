@@ -58,6 +58,12 @@ export const getters = {
       }
     })
 
+    // Handle subtechnique-of title
+    if ('subtechnique-of' in referencedObjects) {
+      referencedObjects['parent-technique'] = referencedObjects['subtechnique-of']
+      delete referencedObjects['subtechnique-of']
+    }
+
     return referencedObjects
   },
 
@@ -79,7 +85,7 @@ export const getters = {
       objects = objects.concat(otherSubtechniques.filter(t => t.id !== id))
     }
 
-    // Add subtechniques if tactics TODO doesn't work
+    // Add subtechniques of tactics to the technique list
     if (argObj['object-type'] === 'tactic') {
       let subtechniques = []
       objects.forEach((obj) => {
@@ -89,7 +95,6 @@ export const getters = {
       })
       objects = objects.concat(subtechniques)
     }
-
 
     // Look for case studies with the singular key in its procedure, i.e. technique or tactic
     if (argObj['object-type'] === 'tactic' || argObj['object-type'] === 'technique') {
@@ -117,9 +122,9 @@ export const getters = {
 
     // Label subtechniques if available
     if ('technique' in results && argObj['object-type'] === 'technique') {
-      let subtechniqueKey = 'Subtechniques'
+      let subtechniqueKey = 'subtechniques'
       if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
-        subtechniqueKey = 'Other subtechniques'
+        subtechniqueKey = 'other subtechniques'
       }
       // Relabel the techniques found
       results[subtechniqueKey] = results['technique']
