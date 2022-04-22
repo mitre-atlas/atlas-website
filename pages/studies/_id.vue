@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav title="Studies" :items="$store.getters.getDataObjectsByType('case-studies')" />
+    <data-side-nav objectType="case-study" :items="$store.getters.getDataObjectsByType('case-studies')" />
   <div class="mx-8">
     <breadcrumbs />
     <page-title>

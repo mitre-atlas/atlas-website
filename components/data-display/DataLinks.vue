@@ -23,18 +23,20 @@
   </v-list-group>
 </template>
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   name: 'DataLinks',
-  props: ['title', 'items'],
+  props: ['objectType', 'items'],
+  computed: {
+    title () {
+      return dataObjectToPluralTitle(this.objectType)
+    }
+  },
   methods: {
     route (obj) {
-      // URL part, i.e. studies, tactics, techniques, etc.
-      // Typically the pluralization of the object type
-      if (obj['object-type'] === 'case-study') {
-        return 'studies'
-      }
-      // Pluralize the object type
-      return `${obj['object-type']}s`
+      // Plural last word of the object type, i.e. studies for case-study
+      return dataObjectToPluralTitle(obj, true)
     }
   }
 }

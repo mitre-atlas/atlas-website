@@ -129,6 +129,8 @@
 </template>
 
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   data: ({ $config: { name } }) => ({
     title: `MITRE | ${name.short}`,
@@ -211,8 +213,8 @@ export default {
         // const keyTokens = objectType.split('-')
 
         return {
-          name: objectType,
-          href: `/${objectType}`
+          name: `${dataObjectToPluralTitle(objectType)}`,
+          href: `/${dataObjectToPluralTitle(objectType, true)}`
         }
       })
 

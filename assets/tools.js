@@ -1,13 +1,9 @@
-import * as YAML from 'js-yaml'
+import path from 'path'
+import pluralize from 'pluralize'
+import { dump } from 'js-yaml'
 import { validate } from 'jsonschema'
+
 import schema from '@/static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
-const path = require('path')
-
-const timezoneOptions = { timeZone: 'UTC', timeZoneName: 'short' }
-
-function pad (value, max, padChar = '0') {
-  return String(value).padStart(max, padChar)
-}
 
 function generateID (template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
@@ -18,17 +14,6 @@ function generateID (template = 'xxxx-xxxx-xxxx') {
     return v.toString(16)
   })
 }
-
-function dateToString (dateObj, includeTime = false) {
-  const date = +pad(dateObj.getDate(), 2)
-  const month = +pad(dateObj.getMonth() + 1, 2)
-  const year = dateObj.getFullYear()
-
-  return (`${year}-${month}-${date}`) + (includeTime ? ' ' + dateObj.toLocaleTimeString([], timezoneOptions) : '')
-}
-
-const createYAML = o => YAML.dump(o)
-const yamlParse = t => YAML.load(t)
 
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
 function validFormatYAML (yamlObj) {
@@ -79,7 +64,7 @@ function download (filename, text) {
 }
 
 function downloadStudyFile (study, filename) {
-  const studyYAML = createYAML(study)
+  const studyYAML = dump(study)
   download(`${filename}.yaml`, studyYAML)
 }
 
@@ -101,4 +86,25 @@ function downloadUrlAsFile (url) {
   xhr.send()
 }
 
-export { createYAML, download, downloadUrlAsFile, dateToString, generateID, yamlParse, validFormatYAML, downloadStudyFile }
+function dataObjectToPluralTitle (objectType, returnLastWordOnly = false) {
+  // Check if an object was passed as the arg, otherwise use the type as-is
+  if (typeof objectType === 'object') {
+    objectType = objectType['object-type']
+  }
+  // Replace any dashes with spaces, i.e. case-study > case study
+  const tokens = objectType.split('-')
+  // Pluralize the last word
+  const lastWordIndex = tokens.length - 1
+  const pluralLastWord = pluralize(tokens[lastWordIndex])
+
+  // Return just the last word if requested
+  if (returnLastWordOnly) {
+    return pluralLastWord
+  }
+
+  // Otherwise return entire plural string with spaces
+  tokens[lastWordIndex] = pluralLastWord
+  return tokens.join(' ')
+}
+
+export { download, downloadUrlAsFile, generateID, validFormatYAML, downloadStudyFile, dataObjectToPluralTitle }

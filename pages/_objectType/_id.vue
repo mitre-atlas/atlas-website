@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :title="objectType" :items="items" />
+    <data-side-nav :objectType="objectType" :items="items" />
 
     <div>
       <breadcrumbs />
@@ -28,7 +28,7 @@
       <data-links
         v-for="(relatedObjs, dataKey) in relatedObjects"
         :key="dataKey"
-        :title="dataKey"
+        :objectType="dataKey"
         :items="relatedObjs"
       />
     </div>
@@ -65,17 +65,6 @@ export default {
     },
     items () {
       return this.$store.getters.getDataObjectsByType(this.objectType)
-    }
-  },
-  methods: {
-    route (obj) {
-      // URL part, i.e. studies, tactics, techniques, etc.
-      // Typically the pluralization of the object type
-      if (obj['object-type'] === 'case-study') {
-        return 'studies'
-      }
-      // Pluralize the object type
-      return `${obj['object-type']}s`
     }
   }
 }

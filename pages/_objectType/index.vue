@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :title="objectType" :items="items" />
+    <data-side-nav :objectType="objectType" :items="items" />
 
     <div>
       <page-title class="text-capitalize">

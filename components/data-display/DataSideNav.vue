@@ -5,7 +5,7 @@
     >
     <v-list-item class="mt-10">
       <v-list-item-content>
-        <v-list-item-title class="title">
+        <v-list-item-title class="title text-capitalize">
           {{ title }}
         </v-list-item-title>
       </v-list-item-content>
@@ -30,8 +30,15 @@
   </v-navigation-drawer>
 </template>
 <script>
+import { dataObjectToPluralTitle } from '~/assets/tools.js'
+
 export default {
   name: 'DataSideNav',
-  props: ['title', 'items']
+  props: ['objectType', 'items'],
+  computed: {
+    title () {
+      return dataObjectToPluralTitle(this.objectType)
+    }
+  }
 }
 </script>
