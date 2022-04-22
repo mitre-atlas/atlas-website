@@ -2,6 +2,7 @@ import fs from 'fs/promises'
 import yaml from 'js-yaml'
 
 import packageData from './package.json'
+import { dataObjectToPluralTitle } from './assets/tools.js'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -38,7 +39,8 @@ export default {
     dirs: [
       '~/components',
       '~/components/case-study-builder',
-      '~/components/data-display'
+      '~/components/data-display',
+      '~/components/resources'
     ]
   },
 
@@ -108,40 +110,21 @@ export default {
       return Promise.resolve(getAtlasData)
         .then((contents) => {
         // Parse YAML files
-          const doc = yaml.load(contents)
-          const studies = doc['case-studies']
-          const techniques = doc.techniques
-          const tactics = doc.tactics
+          const data = yaml.load(contents)
 
-          // Build out tactics and techniques used in the case studies
-          // with which to filter the ATT&CK data
-          const studyTactics = new Set()
-          const studyTechniques = new Set()
-          studies.forEach((study) => {
-            study.procedure.forEach((p) => {
-              studyTactics.add(p.tactic)
-              studyTechniques.add(p.technique)
-            })
+          // Collect data objects keyed via object-type under the key 'objects'
+          const {id, name, version, ...objects} = data
+          const result = {id, name, version, objects}
+          // Flatten the objects into a single array
+          const allDataObjects = Object.values(result.objects).flat()
+
+          // Construct each route as a pluralization of the object type (last word) and the object ID
+          const dynamicRoutes = allDataObjects.map((obj) => {
+            // i.e. studies for case-study, techniques for technique
+            const pluralLastWordOfObjectType = dataObjectToPluralTitle(obj, true)
+            return `/${pluralLastWordOfObjectType}/${obj.id}`
           })
 
-          // Use only tactics referenced in case studies
-          const filteredTactics = tactics.filter((tactic) => {
-          // return studyTactics.has(tactic.id) // Use only tactics referenced in case studies
-            return true
-          })
-          const filteredTechniques = techniques.filter((technique) => {
-          // return studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          // return true
-            return technique.id.startsWith('AML') // Use only ATLAS techniques
-          })
-
-          // Construct each dynamic route
-          const tacticRoutes = filteredTactics.map(t => `/tactics/${t.id}`)
-          const techniqueRoutes = filteredTechniques.map(t => `/techniques/${t.id}`)
-          const studyRoutes = studies.map(s => `/studies/${s.id}`)
-
-          // Combine into a single list and return
-          const dynamicRoutes = [...tacticRoutes, ...techniqueRoutes, ...studyRoutes]
           return dynamicRoutes
         })
     }

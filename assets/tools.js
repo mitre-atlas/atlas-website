@@ -3,7 +3,7 @@ import pluralize from 'pluralize'
 import { dump } from 'js-yaml'
 import { validate } from 'jsonschema'
 
-import schema from '@/static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
+import schema from '../static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 
 function generateID (template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
