@@ -13,11 +13,6 @@
 <script>
 export default {
   name: 'MatrixTacticToolbar',
-  props: ['tactic'],
-  computed: {
-    tacticStyle () {
-      return this.$store.getters.getTacticStyling[this.tactic.name]
-    }
-  }
+  props: ['tactic']
 }
 </script>

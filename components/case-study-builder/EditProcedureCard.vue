@@ -1,13 +1,10 @@
 <template>
   <v-card v-if="!editingData">
-    <v-card-title v-if="parentTech" style="font-size: 1.1rem">
-      {{ parentTechniqueName }}: {{ techniqueName }}
+    <v-card-title style="font-size: 1.1rem">
+      {{ techniqueTitle }}
       <v-spacer />
     </v-card-title>
-    <v-card-title v-else style="font-size: 1.1rem">
-      {{ techniqueName }}
-      <v-spacer />
-    </v-card-title>
+
     <v-card-subtitle>
       {{ tacticName }}
     </v-card-subtitle>
@@ -82,61 +79,38 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getTacticById',
-      'getTechniqueById'
+      'getDataObjectById',
+      'subtechnique/getParent'
     ]),
+    tactic () {
+      return this.getDataObjectById(this.selectTacticData)
+    },
+    technique () {
+      return this.getDataObjectById(this.selectTechniqueData)
+    },
     tacticName () {
-      const tactic = this.$store.getters.getTacticById(this.info.tactic)
-
-      if (tactic === undefined) {
-        return '(Name not found for technique ' + this.info.tactic + ')'
+      if (this.tactic === undefined) {
+        return '(Name not found for tactic ' + this.info.tactic + ')'
       }
-      return tactic.name
-    },
-    parentTech () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
-      const parentTechnique = this.$store.getters.getTechniqueById(technique)
-      if (parentTechnique === undefined) {
-        return false
-      }
-      return true
-    },
-    parentTechniqueName () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
-      const parentTechnique = this.$store.getters.getTechniqueById(technique)
-      if (parentTechnique === undefined) {
-        return ''
-      }
-      return parentTechnique.name
+      return this.tactic.name
     },
     techniqueName () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)
-
-      if (technique === undefined) {
+      if (this.technique === undefined) {
         return '(Name not found for technique ' + this.info.technique + ')'
       }
-      return technique.name
+      return this.technique.name
+    },
+    techniqueTitle () {
+      // Prepend parent technique name for a subtechnique
+      if ('subtechnique-of' in this.technique) {
+        const parentTechnique = this.$store.getters['subtechnique/getParent'](this.technique)
+        return `${parentTechnique.name}: ${this.technique.name}`
+      }
+      // Otherwise use the name
+      return this.technique.name
     },
     comboName () {
       return `${this.techniqueName} - ${this.tacticName}`
-    },
-    tacticId () {
-      const tactic = this.$store.getters.getTacticById(this.info.tactic)
-
-      if (tactic === undefined) {
-        // Dummy placeholder
-        return 'tactic_not_found'
-      }
-      return tactic.id
-    },
-    techniqueId () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)
-
-      if (technique === undefined) {
-        // Dummy placeholder
-        return 'technique_not_found'
-      }
-      return technique.id
     }
   },
   methods: {

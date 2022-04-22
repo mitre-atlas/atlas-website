@@ -14,7 +14,7 @@
         <v-col cols="12" lg="6">
           <v-autocomplete
             v-model="selectTacticData2"
-            :items="getTactics"
+            :items="getDataObjectsByType('tactics')"
             label="Tactic"
             outlined
             prepend-inner-icon="mdi-magnify"
@@ -114,10 +114,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTactics', 'getTechniquesByTacticId', 'getTechSubByTacticId', 'getTechniqueById']),
+    ...mapGetters(['getDataObjectsByType', 'getDataObjectsByTypeKeyContainingValue', 'subtechnique/getParent']),
     mapTechAndSub () {
       // Parent techniques that have the selecetd tactic as a parent
-      const techs = this.getTechSubByTacticId(this.selectTacticData2)
+      const techs = this.getDataObjectsByTypeKeyContainingValue('techniques', 'tactics', this.selectTacticData2)
 
       for (let i = 0; i < techs.length; i++) {
         // Add subtechniques, if exist
@@ -167,7 +167,7 @@ export default {
       // Also match subtechniques of matching techniques
       if ('subtechnique-of' in item && !isMatch) {
         // Get the parent technique name of this subtechnique
-        const parentTechniqueName = this.getTechniqueById(item['subtechnique-of']).name
+        const parentTechniqueName = this['subtechnique/getParent'](item).name
         // Check if that name matches the query
         isMatch = parentTechniqueName.toLocaleLowerCase().includes(queryText.toLocaleLowerCase())
       }

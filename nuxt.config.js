@@ -37,7 +37,8 @@ export default {
   components: {
     dirs: [
       '~/components',
-      '~/components/case-study-builder'
+      '~/components/case-study-builder',
+      '~/components/data-display'
     ]
   },
 
@@ -60,7 +61,8 @@ export default {
   // https://github.com/markdown-it/markdown-it
   markdownit: {
     breaks: false,
-    runtime: true
+    runtime: true,
+    html: true
   },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content

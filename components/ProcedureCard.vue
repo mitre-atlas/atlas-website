@@ -10,7 +10,7 @@
         </a>
       </span>
       <nuxt-link
-        v-else-if="parentTech"
+        v-else-if="parentTechnique !== undefined"
         :to="`/techniques/${techniqueId}`"
         style="color: inherit;"
       >
@@ -43,59 +43,48 @@ export default {
   name: 'ProcedureCard',
   props: ['info'],
   computed: {
-    ...mapGetters([
-      'getTacticById',
-      'getTechniqueById'
-    ]),
-    tacticName () {
-      const tactic = this.$store.getters.getTacticById(this.info.tactic)
-
-      if (tactic === undefined) {
-        return '(Name not found for technique ' + this.info.tactic + ')'
-      }
-      return tactic.name
+    ...mapGetters(['getDataObjectById']),
+    tactic () {
+      return this.getDataObjectById(this.info.tactic)
     },
-    parentTech () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
-      const parentTechnique = this.$store.getters.getTechniqueById(technique)
-      if (parentTechnique === undefined) {
-        return false
-      }
-      return true
-    },
-    parentTechniqueName () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)['subtechnique-of']
-      const parentTechnique = this.$store.getters.getTechniqueById(technique)
-      if (parentTechnique === undefined) {
-        return ''
-      }
-      return parentTechnique.name
-    },
-    techniqueName () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)
-
-      if (technique === undefined) {
-        return '(Name not found for technique ' + this.info.technique + ')'
-      }
-      return technique.name
+    technique () {
+      return this.getDataObjectById(this.info.technique)
     },
     tacticId () {
-      const tactic = this.$store.getters.getTacticById(this.info.tactic)
-
-      if (tactic === undefined) {
+      if (this.tactic === undefined) {
         // Dummy placeholder
         return 'tactic_not_found'
       }
-      return tactic.id
+      return this.tactic.id
     },
     techniqueId () {
-      const technique = this.$store.getters.getTechniqueById(this.info.technique)
-
-      if (technique === undefined) {
+      if (this.technique === undefined) {
         // Dummy placeholder
         return 'technique_not_found'
       }
-      return technique.id
+      return this.technique.id
+    },
+    tacticName () {
+      if (this.tactic === undefined) {
+        return '(Name not found for technique ' + this.info.tactic + ')'
+      }
+      return this.tactic.name
+    },
+    techniqueName () {
+      if (this.technique === undefined) {
+        return '(Name not found for technique ' + this.info.technique + ')'
+      }
+      return this.technique.name
+    },
+    parentTechnique () {
+      const parentTechniqueId = this.technique['subtechnique-of']
+      return this.getDataObjectById(parentTechniqueId)
+    },
+    parentTechniqueName () {
+      if (this.parentTechnique === undefined) {
+        return ''
+      }
+      return this.parentTechnique.name
     }
   },
   methods: {

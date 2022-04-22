@@ -41,7 +41,7 @@ export default {
     title: name.long
   }),
   computed: {
-    ...mapGetters(['getMatrix'])
+    ...mapGetters('matrix', ['getMatrix'])
   }
 }
 </script>

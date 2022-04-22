@@ -30,7 +30,7 @@
       <template #[`item.id`]="{ item }">
         <nuxt-link
           :id="item.id"
-          :to="`/${$route.name}/${item.id}`"
+          :to="`/${route}/${item.id}`"
         >
           <span v-if="'subtechnique-of' in item">
             {{ item.id.substring(item.id.lastIndexOf('.')) }}
@@ -48,7 +48,7 @@
       </template>
       <template #[`item.name`]="{ item }">
         <nuxt-link
-          :to="`/${$route.name}/${item.id}`"
+          :to="`/${route}/${item.id}`"
         >
           {{ item.name }}
         </nuxt-link>
@@ -92,6 +92,15 @@ export default {
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }
       ]
+    },
+    route () {
+      // URL part, i.e. studies, tactics, techniques, etc.
+      // Typically the pluralization of the object type
+      if (this.isCaseStudy) {
+        return 'studies'
+      }
+      // Pluralize the object type
+      return `${this.items[0]['object-type']}s`
     }
   }
 }

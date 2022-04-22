@@ -95,7 +95,7 @@
         </template>
         <v-list class="hidden-md-and-up">
           <div
-            v-for="(link, i) in links"
+            v-for="(link, i) in linksModded"
             :key="i"
           >
             <div v-if="link.isDropdown">
@@ -141,14 +141,14 @@ export default {
         name: 'Navigator',
         href: '/navigator'
       },
-      {
-        name: 'Tactics',
-        href: '/tactics'
-      },
-      {
-        name: 'Techniques',
-        href: '/techniques'
-      },
+      // {
+      //   name: 'Tactics',
+      //   href: '/tactics'
+      // },
+      // {
+      //   name: 'Techniques',
+      //   href: '/techniques'
+      // },
       {
         name: 'Case Studies',
         isDropdown: true,
@@ -191,20 +191,33 @@ export default {
       }
     ]
   }),
-    computed: {
-        linksModded() {
-            if (!this.$config.navigator_url) {
-                for (const link of this.links) {
-                    if (link.name === 'Navigator') {
-                        const index = this.links.indexOf(link)
-                        if (index !== -1) {
-                            this.links.splice(index, 1)
-                        }
-                    }
-                }
-            }
-            return this.links
+  computed: {
+    linksModded () {
+      // if (!this.$config.navigator_url) {
+      //   for (const link of this.links) {
+      //     if (link.name === 'Navigator') {
+      //       const index = this.links.indexOf(link)
+      //       if (index !== -1) {
+      //         this.links.splice(index, 1)
+      //       }
+      //     }
+      //   }
+      // }
+
+      const dataKeys = Object.keys(this.$store.state.data.objects)
+      // Do not generate a route for case studies, which has its own defined templates
+      const dynamicDataKeys = dataKeys.filter(k => k !== 'case-studies')
+      const dataLinks = dynamicDataKeys.map((objectType) => {
+        // const keyTokens = objectType.split('-')
+
+        return {
+          name: objectType,
+          href: `/${objectType}`
         }
+      })
+
+      return this.links.concat(dataLinks)
     }
+  }
 }
 </script>

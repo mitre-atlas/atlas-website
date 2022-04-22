@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <page-title>{{ title }}</page-title>
 
     <page-section-title>
@@ -31,7 +30,7 @@
             <v-icon left>
               mdi-database
             </v-icon>
-            Data v{{ getVersion }}
+            Data v{{ getDataAttribute('version') }}
           </v-chip>
         </div>
       </v-list-item>
@@ -89,7 +88,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getVersion']),
+    ...mapGetters(['getDataAttribute']),
     latestUpdateTitle () {
       // ex. March 2022
       return new Date(this.currentUpdatePageData.slug)

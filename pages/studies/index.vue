@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <data-side-nav title="Studies" :items="getStudies" />
   <div class="mx-8">
     <breadcrumbs></breadcrumbs>
     <page-title>{{ title }}</page-title>
@@ -24,11 +26,10 @@
     <info-table :items="getStudies" :isCaseStudy="true" />
 
   </div>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data: ({ $config: { name } }) => ({
     title: 'Case Studies',
@@ -40,7 +41,9 @@ export default {
     sortBy: 'name'
   }),
   computed: {
-    ...mapGetters(['getStudies'])
+    getStudies () {
+      return this.$store.getters.getDataObjectsByType('case-studies')
+    }
   },
   head () {
     return {
