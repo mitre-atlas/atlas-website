@@ -21,6 +21,7 @@
             item-text="name"
             item-value="id"
             @input="tacticUpdate(selectTacticData2)"
+            id="tactic_selection"
           >
             <template
               #item="data"
@@ -53,6 +54,7 @@
             item-value="id"
             :disabled="selectTacticData2 === null"
             @input="$emit('techniqueUpdate', selectTechniqueData2)"
+            id="technique_selection"
           >
             <template
               #item="data"

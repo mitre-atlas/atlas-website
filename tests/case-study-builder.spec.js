@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const { timeout } = require('../playwright.config');
 
 TIMEOUT_MS = 1500
 
@@ -9,15 +10,15 @@ test.describe('Case study builder', () => {
     await page.waitForTimeout(TIMEOUT_MS);
   })
 
-  test('minimal successful form fill', async ({ page }) => {
+  test('minimal successful case study form', async ({ page }) => {
     // Details
     await page.fill('id=titleInput', 'Playwright Test')
-    await page.fill('id=emailInput', 'test@mitre.org')
     await page.fill('id=reporterInput', 'Roboto')
     // Incident date
-    await page.click('[readonly="readonly"]')
-    await page.click('li >> text=2021')
+    await page.click('[readonly="readonly"]') // better date test.
+    await page.click('li >> text=2021') //check date field in case study if clicked one level
     await page.click('button >> text=OK')
+
     // Summary
     await page.fill('id=summaryInput', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')
 
@@ -40,28 +41,66 @@ test.describe('Case study builder', () => {
     await page.waitForTimeout(TIMEOUT_MS);
   })
 
-  test('source widget', async ({ page }) => {
+  test('reference source fill widget', async ({ page }) => {
     // ToggleableSource is the component rendering the source data
     const sources = page.locator('.toggleable_source')
     await expect(sources).toHaveCount(0) // Starts empty
 
     // Add source
     await page.click('button >> text=Add New Source')
-    await page.fill('input:below(:has-text("Add Source"))', 'Reference 1')
-    await page.fill('text=URL', 'www.mitre.org')
-    await page.click('button :text("Save"):below(:has-text("Add Source"))')
+    await page.fill('input:below(:has-text("Source"))', 'Reference 1')
+    await page.fill('text=URL', 'https://www.mitre.org')
+    await page.click('id=save_reference')
     await expect(sources).toHaveCount(1) // Additional item
     await page.waitForTimeout(TIMEOUT_MS);
 
     // Edit source
     await page.click('.mdi-pencil:below(:has-text("References"))')
-    await page.fill('input:below(:has-text("Source 1"))', 'Reference 1 (edited)')
-    await page.click('button :text("Save"):below(:has-text("Source 1"))')
+    await page.fill('input:below(:has-text("Source"))', 'Reference 1 (edited)')
+    await page.click('id=save_reference')
     await page.waitForTimeout(TIMEOUT_MS);
 
+    // Deleted source
     await page.click('.mdi-delete:below(:has-text("References"))')
     await page.click('button:has-text("Delete"):below(:has-text("Delete reference?"))')
     await expect(sources).toHaveCount(0) // Item has been deleted
     await page.waitForTimeout(TIMEOUT_MS)
+  })
+})
+
+test.describe('Case study builder', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/studies')
+    await page.waitForTimeout(TIMEOUT_MS);
+  })
+
+  test('Explore Case study test', async ({ page }) => {
+    await page.click('id=CaseStudy0')
+    await page.click('id=CaseStudy1')
+    await page.click('id=CaseStudy2')
+    await page.click('id=CaseStudy3')
+    await page.click('id=CaseStudy4')
+    await page.click('id=CaseStudy5')
+    await page.click('id=CaseStudy6')
+    await page.click('id=CaseStudy7')
+    await page.click('id=CaseStudy8')
+    await page.click('id=CaseStudy9')
+    await page.click('id=CaseStudy10')
+    await page.click('id=CaseStudy11')
+    await page.click('id=CaseStudy12')
+    await page.click('id=CaseStudy13')
+    await page.click('id=CaseStudy14')
+  })
+})
+
+test.describe('Atlas routes test', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/matrix')
+    await page.waitForTimeout(TIMEOUT_MS);
+    await page.goto('/tactics')
+    await page.waitForTimeout(TIMEOUT_MS);
+    await page.goto('/techniques')
+    await page.waitForTimeout(TIMEOUT_MS);
   })
 })

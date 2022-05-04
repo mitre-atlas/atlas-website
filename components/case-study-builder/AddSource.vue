@@ -33,7 +33,7 @@
         <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
           Cancel
         </v-btn>
-        <v-btn text color="green" @click="addSource">
+        <v-btn text color="green" @click="addSource" id="save_reference">
           Save
         </v-btn>
       </v-card-actions>
