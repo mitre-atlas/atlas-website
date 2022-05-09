@@ -13,6 +13,6 @@ pages:
     paths:
       - public
   tags:
-    - docker
+    - pages
   only:
     - develop
