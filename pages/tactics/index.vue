@@ -12,7 +12,7 @@
       In those cases, ATT&CK tactic definitions are stretched to include ML concepts.
     </p>
     <div v-html="description" />
-    <info-table :show-filter-button="false" :items="getFilteredTactics" />
+    <info-table :items="getFilteredTactics" />
   </div>
 </template>
 

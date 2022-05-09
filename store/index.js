@@ -175,8 +175,7 @@ export const actions = {
         // Build AdvML-relevant techniques and tactics for matrix use
         const filteredTechniques = techniques.filter((technique) => {
           // studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          return technique.id.startsWith('AML') // is an AdvML technique
-          // return true // No filter
+          return true // No filter
         })
 
         const tacticsIdsReferenced = new Set()

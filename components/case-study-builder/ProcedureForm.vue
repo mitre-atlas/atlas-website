@@ -107,7 +107,7 @@ export default {
       descriptionData2: this.descriptionData,
 
       mouseEvent: null,
-      hoverTargetID: 'AML.TA0000',
+      hoverTargetID: '',
       hoverOffset: 0,
       appearRight: false,
       fromRight: false

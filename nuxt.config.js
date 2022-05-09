@@ -122,20 +122,9 @@ export default {
             })
           })
 
-          // Use only tactics referenced in case studies
-          const filteredTactics = tactics.filter((tactic) => {
-          // return studyTactics.has(tactic.id) // Use only tactics referenced in case studies
-            return true
-          })
-          const filteredTechniques = techniques.filter((technique) => {
-          // return studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          // return true
-            return technique.id.startsWith('AML') // Use only ATLAS techniques
-          })
-
           // Construct each dynamic route
-          const tacticRoutes = filteredTactics.map(t => `/tactics/${t.id}`)
-          const techniqueRoutes = filteredTechniques.map(t => `/techniques/${t.id}`)
+          const tacticRoutes = tactics.map(t => `/tactics/${t.id}`)
+          const techniqueRoutes = techniques.map(t => `/techniques/${t.id}`)
           const studyRoutes = studies.map(s => `/studies/${s.id}`)
 
           // Combine into a single list and return
