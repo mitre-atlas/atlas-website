@@ -20,6 +20,7 @@
         :nuxt="true"
         :to="`/${basePath}/${item.id}`"
         :ripple="false"
+        :id="'CaseStudy'+ i"
       >
         <v-list-item>
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
