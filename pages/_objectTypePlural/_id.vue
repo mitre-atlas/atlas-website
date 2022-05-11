@@ -28,7 +28,7 @@
       <data-links
         v-for="(relatedObjs, objectType) in relatedObjects"
         :key="objectType"
-        :objectType="objectType"
+        :object-type="objectType"
         :items="relatedObjs"
       />
     </div>
