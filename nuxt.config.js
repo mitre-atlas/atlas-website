@@ -125,16 +125,6 @@ export default {
             return `/${pluralLastWordOfObjectType}/${obj.id}`
           })
 
-<<<<<<< HEAD
-=======
-          // Construct each dynamic route
-          const tacticRoutes = tactics.map(t => `/tactics/${t.id}`)
-          const techniqueRoutes = techniques.map(t => `/techniques/${t.id}`)
-          const studyRoutes = studies.map(s => `/studies/${s.id}`)
-
-          // Combine into a single list and return
-          const dynamicRoutes = [...tacticRoutes, ...techniqueRoutes, ...studyRoutes]
->>>>>>> origin/develop
           return dynamicRoutes
         })
     }
