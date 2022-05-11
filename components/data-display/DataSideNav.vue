@@ -16,7 +16,7 @@
         v-for="(item, i) in items"
         :key="i"
         :nuxt="true"
-        :to="`/${route}/${item.id}`"
+        :to="item.route"
         :ripple="false"
       >
         <v-list-item>
@@ -39,10 +39,6 @@ export default {
     title () {
       // Plural object type with spaces instead of dashes, if any
       return dataObjectToPluralTitle(this.items[0])
-    },
-    route () {
-      // URL part, the last word of the object type, pluralized
-      return dataObjectToPluralTitle(this.items[0], true)
     }
   }
 }

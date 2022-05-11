@@ -107,4 +107,11 @@ function dataObjectToPluralTitle (objectType, returnLastWordOnly = false) {
   return tokens.join(' ')
 }
 
-export { download, downloadUrlAsFile, generateID, validFormatYAML, downloadStudyFile, dataObjectToPluralTitle }
+function dataObjectToRoute (obj) {
+  // Construct each route as a pluralization of the object type (last word) and the object ID
+  // i.e. studies for case-study, techniques for technique
+  const pluralLastWordOfObjectType = dataObjectToPluralTitle(obj, true)
+  return `/${pluralLastWordOfObjectType}/${obj.id}`
+}
+
+export { download, downloadUrlAsFile, generateID, validFormatYAML, downloadStudyFile, dataObjectToPluralTitle, dataObjectToRoute }

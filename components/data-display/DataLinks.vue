@@ -11,7 +11,7 @@
     <div v-for="(d, i) in items" :key="i">
       <v-list-item
         :nuxt="true"
-        :to="`/${route(d)}/${d.id}`"
+        :to="d.route"
       >
         <v-list-item>
           <v-list-item-title>
@@ -23,7 +23,7 @@
   </v-list-group>
 </template>
 <script>
-import { dataObjectToPluralTitle } from '~/assets/tools.js'
+import { dataObjectToPluralTitle } from '@/assets/tools.js'
 
 export default {
   name: 'DataLinks',
@@ -31,12 +31,6 @@ export default {
   computed: {
     title () {
       return dataObjectToPluralTitle(this.objectType)
-    }
-  },
-  methods: {
-    route (obj) {
-      // Plural last word of the object type, i.e. studies for case-study
-      return dataObjectToPluralTitle(obj, true)
     }
   }
 }

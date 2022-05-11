@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import yaml from 'js-yaml'
 
 import packageData from './package.json'
-import { dataObjectToPluralTitle } from './assets/tools.js'
+import { dataObjectToRoute } from './assets/tools.js'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -115,14 +115,14 @@ export default {
           // Collect data objects keyed via object-type under the key 'objects'
           const {id, name, version, ...objects} = data
           const result = {id, name, version, objects}
+
           // Flatten the objects into a single array
           const allDataObjects = Object.values(result.objects).flat()
 
           // Construct each route as a pluralization of the object type (last word) and the object ID
           const dynamicRoutes = allDataObjects.map((obj) => {
             // i.e. studies for case-study, techniques for technique
-            const pluralLastWordOfObjectType = dataObjectToPluralTitle(obj, true)
-            return `/${pluralLastWordOfObjectType}/${obj.id}`
+            return dataObjectToRoute(obj)
           })
 
           return dynamicRoutes

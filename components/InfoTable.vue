@@ -23,7 +23,7 @@
       <template #[`item.id`]="{ item }">
         <nuxt-link
           :id="item.id"
-          :to="`/${route}/${item.id}`"
+          :to="item.route"
         >
           <span v-if="'subtechnique-of' in item">
             <!-- Display only last numeric portion of ID for subtechniques -->
@@ -36,7 +36,7 @@
       </template>
       <template #[`item.name`]="{ item }">
         <nuxt-link
-          :to="`/${route}/${item.id}`"
+          :to="item.route"
         >
           {{ item.name }}
         </nuxt-link>
@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import { dataObjectToPluralTitle } from '~/assets/tools.js'
-
 export default {
   name: 'InfoTable',
   props: ['items', 'isCaseStudy'],
@@ -79,11 +77,6 @@ export default {
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }
       ]
-    },
-    route () {
-      // URL part, i.e. studies, tactics, techniques, etc.
-      // A pluralization of the last word of the object type
-      return dataObjectToPluralTitle(this.items[0], true)
     }
   }
 }

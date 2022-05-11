@@ -1,7 +1,7 @@
 /* eslint-disable */
 const fs = require('fs').promises
 const yaml = require('js-yaml')
-
+import { dataObjectToRoute } from '@/assets/tools.js'
 
 export const state = () => ({
   data: {}
@@ -172,6 +172,12 @@ export const actions = {
         // Collect data objects under the key 'objects'
         const {id, name, version, ...objects} = data
         const result = {id, name, version, objects}
+
+        // Add a property for the data object's internal link
+        const dataObjs = Object.values(result.objects).flat()
+        dataObjs.forEach((dataObj) => {
+          dataObj.route = dataObjectToRoute(dataObj)
+        })
 
         commit('SET_ATLAS_DATA', result)
       })
