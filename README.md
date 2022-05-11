@@ -44,6 +44,33 @@ $ docker save -o atlas-website-image.tar atlas:atlas-website
 $ docker load -i atlas-website-image.tar
 ```
 
+## Tests
+
+Playwright tests are located in the tests directory.
+
+How to test with playwright:
+
+Make sure an instance of ATLAS is running – npm run dev
+
+In another terminal tab, run the tests:
+> URL=my-url npx playwright test
+
+Set the environment variable `URL` prior to making the test call with base URL of the instance to be tested.
+
+Examples:
+
+```
+> URL=http://localhost:3000 npx playwright test
+> URL=https://advml.lt.mitre.org npx playwright test
+```
+
+
+	Writing tests:
+
+For an example of a test, refer to tests/case-study-builder.spec.js
+In order to write more effective and robust tests, it is a good idea to ID as many page components as possible during development. This will make writing tests significantly easier, as you can reference specific components by ID. For more complicated components, ID their subcomponents for reference in tests.
+
+
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 ## User Site Customization

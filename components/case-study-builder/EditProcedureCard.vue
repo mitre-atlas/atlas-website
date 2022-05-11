@@ -55,7 +55,7 @@
       <v-btn class="ma-2" text color="grey" @click="cancelEdit">
         Cancel
       </v-btn>
-      <v-btn class="ma-2" text color="green" @click="submitEdit">
+      <v-btn id="save_procedure_button" class="ma-2" text color="green" @click="submitEdit">
         Save
       </v-btn>
     </v-card-actions>

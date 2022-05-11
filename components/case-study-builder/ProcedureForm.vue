@@ -21,6 +21,7 @@
             item-text="name"
             item-value="id"
             @input="tacticUpdate(selectTacticData2)"
+            id="tactic_selection"
           >
             <template
               #item="data"
@@ -53,6 +54,7 @@
             item-value="id"
             :disabled="selectTacticData2 === null"
             @input="$emit('techniqueUpdate', selectTechniqueData2)"
+            id="technique_selection"
           >
             <template
               #item="data"
@@ -82,6 +84,7 @@
       <v-textarea
         v-model="descriptionData2"
         :disabled="selectTacticData2 === null"
+        id="procedure_description"
         label="Description"
         hint="Describe how this technique was used in the case study"
         required
@@ -107,7 +110,7 @@ export default {
       descriptionData2: this.descriptionData,
 
       mouseEvent: null,
-      hoverTargetID: 'AML.TA0000',
+      hoverTargetID: '',
       hoverOffset: 0,
       appearRight: false,
       fromRight: false

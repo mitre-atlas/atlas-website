@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col :cols="(showFilterButton) ? 8 : 12">
+      <v-col :cols="12">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -9,13 +9,6 @@
           single-line
           hide-details
           class="pt-3 pb-2"
-        />
-      </v-col>
-      <v-col v-if="showFilterButton" cols="4">
-        <v-switch
-          v-if="$route.name === 'tactics' || $route.name === 'techniques'"
-          v-model="showAdvMlOnly"
-          :label="`Show only ${$config.name.short}`"
         />
       </v-col>
     </v-row>
@@ -33,16 +26,11 @@
           :to="`/${route}/${item.id}`"
         >
           <span v-if="'subtechnique-of' in item">
+            <!-- Display only last numeric portion of ID for subtechniques -->
             {{ item.id.substring(item.id.lastIndexOf('.')) }}
-            <sup v-if="item.id.startsWith('T')" class="red--text text--darken-3 text-caption">
-              &
-            </sup>
           </span>
           <span v-else>
             {{ item.id }}
-            <sup v-if="item.id.startsWith('T')" class="red--text text--darken-3 text-caption">
-              &
-            </sup>
           </span>
         </nuxt-link>
       </template>
@@ -52,20 +40,20 @@
         >
           {{ item.name }}
         </nuxt-link>
-    </template>
-    <template v-slot:[`item.description`]="{ item }">
-      <div
-        v-if="isCaseStudy"
-        v-html="$md.render(item.summary)"
-        class="my-3"
-      />
-      <div
-        v-else
-        v-html="$md.render(item.description)"
-        class="my-3"
-      />
-    </template>
-  </v-data-table>
+      </template>
+      <template #[`item.description`]="{ item }">
+        <div
+          v-if="isCaseStudy"
+          class="my-3"
+          v-html="$md.render(item.summary)"
+        />
+        <div
+          v-else
+          class="my-3"
+          v-html="$md.render(item.description)"
+        />
+      </template>
+    </v-data-table>
 
     <scroll-to-top-button />
   </div>
@@ -76,7 +64,7 @@ import { dataObjectToPluralTitle } from '~/assets/tools.js'
 
 export default {
   name: 'InfoTable',
-  props: ['items', 'showFilterButton', 'isCaseStudy'],
+  props: ['items', 'isCaseStudy'],
   data: () => ({
     search: ''
   }),
@@ -86,10 +74,7 @@ export default {
         {
           value: 'id',
           text: 'ID',
-          align: 'right',
-          filter: (value, search, time) => {
-            return this.showAdvMlOnly ? value.startsWith('AML') : true
-          }
+          align: 'right'
         },
         { value: 'name', text: 'Name', width: '25%' },
         { value: 'description', text: 'Description', sortable: false }

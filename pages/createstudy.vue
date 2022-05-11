@@ -35,6 +35,7 @@
             prepend-inner-icon="mdi-format-title"
             outlined
             required
+            id="titleInput"
           />
 
           <v-text-field
@@ -45,6 +46,7 @@
             prepend-inner-icon="mdi-account"
             outlined
             required
+            id="reporterInput"
           />
 
           <incident-date-picker
@@ -63,6 +65,7 @@
             outlined
             required
             auto-grow
+            id="summaryInput"
           />
         </v-card-text>
 
@@ -89,6 +92,7 @@
             :adding-step="addingStep"
             @clicked="addProcedureStep"
             @addingBoolUpdate="addingStep = $event"
+            :id="selection"
           />
           <div v-else>
             <v-btn
@@ -137,6 +141,7 @@
             :index="studyData.study.references.length"
             @clicked="addSource"
             @addingBoolUpdate="addingSource = $event"
+            :id="saveButton"
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingSource = true">
@@ -200,6 +205,7 @@
               <v-tooltip>
                 <template #activator="{ on, attrs }">
                   <v-btn
+                    id=download_case_study_button
                     color="primary"
                     :disabled="!valid"
                     v-bind="attrs"
@@ -261,6 +267,8 @@ export default {
 
       selectTactic: null,
       selectTechnique: null,
+      selection: null,
+      saveButton: null,
       description: '',
 
       // Case study data object

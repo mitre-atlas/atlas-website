@@ -1,7 +1,7 @@
 <!-- Reference/source for case study builder that toggles
 between render with edit/delete and editable form. -->
 <template>
-  <div>
+  <div class="toggleable_source">
     <add-source
       v-if="isInEditMode"
       :url="source.url"

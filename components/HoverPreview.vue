@@ -14,7 +14,7 @@
       @mouseleave="setPreviewSelf"
     >
       <v-card-title>{{ targetInfo.name }}</v-card-title>
-      <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type'] }} | {{ targetInfo.id }}</v-card-subtitle>
+      <v-card-subtitle>{{ targetInfo.id }}</v-card-subtitle>
       <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
       <v-card-text v-else id="text-fade" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
       <v-card-actions>
@@ -47,7 +47,7 @@
         light
       >
         <v-card-title>{{ targetInfo.name }}</v-card-title>
-        <v-card-subtitle>{{ (isTargetATTACK ? 'ATT&CK ' : 'ATLAS ') + targetInfo['object-type'] }} | {{ targetInfo.id }}</v-card-subtitle>
+        <v-card-subtitle>{{ targetInfo.id }}</v-card-subtitle>
         <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
         <v-card-text v-else id="text-fade" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
         <v-card-actions>
@@ -97,19 +97,8 @@ export default {
     cardCSS: { left: '-1px', top: '-1px' }
   }),
   computed: {
-    isTargetATTACK () { return !this.targetId.includes('AML.') },
-    isTargetATTACKTechnique () { return this.isTargetATTACK && this.targetInfo['object-type'] === 'technique' },
     characterLimit () { return this.maxLineHeight * 50 },
-    targetLocation () {
-      if (this.isTargetATTACKTechnique) {
-        // ATT&CK subtechniques are a level in from their parent techniques,
-        // i.e. https://attack.mitre.org/techniques/T1078/004/ vs. ATLAS's
-        const attackIdUrl = this.targetInfo.id.replace('.', '/')
-        return `https://attack.mitre.org/techniques/${attackIdUrl}`
-      } else {
-        return `/${this.targetInfo['object-type']}s/${this.targetId}`
-      }
-    },
+    targetLocation () { return `/${this.targetInfo['object-type']}s/${this.targetId}` },
     isMobile () { return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name) }, // TODO: change this, might not be robust enough
     targetInfo () {
       return (
