@@ -30,7 +30,7 @@
   </v-navigation-drawer>
 </template>
 <script>
-import { dataObjectToPluralTitle } from '~/assets/tools.js'
+import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',

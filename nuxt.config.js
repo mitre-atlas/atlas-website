@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import yaml from 'js-yaml'
 
 import packageData from './package.json'
-import { dataObjectToRoute } from './assets/tools.js'
+import { dataObjectToRoute } from './assets/dataHelpers.js'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target

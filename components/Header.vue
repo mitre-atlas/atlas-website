@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { dataObjectToPluralTitle } from '~/assets/tools.js'
+import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   data: ({ $config: { name } }) => ({
