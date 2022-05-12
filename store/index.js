@@ -1,7 +1,7 @@
 /* eslint-disable */
 const fs = require('fs').promises
 const yaml = require('js-yaml')
-import { dataObjectToRoute } from '@/assets/tools.js'
+import { dataObjectToRoute } from '@/assets/dataHelpers.js'
 
 export const state = () => ({
   data: {}
@@ -38,7 +38,8 @@ export const getters = {
       'id',
       'object-type',
       'name',
-      'description'
+      'description',
+      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
     ]
 
     // Get object keys that may be references, i.e. are not default
@@ -158,7 +159,7 @@ export const mutations = {
 export const actions = {
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
-  async nuxtServerInit ({ commit }) {
+  async nuxtServerInit ({ commit }, { store }) {
     // Retrieve the threat matrix YAML data and populate store upon start
     const getAtlasData = await fs.readFile('static/atlas-data/dist/ATLAS.yaml', 'utf-8')
 
@@ -173,12 +174,31 @@ export const actions = {
         const {id, name, version, ...objects} = data
         const result = {id, name, version, objects}
 
-        // Add a property for the data object's internal link
+        // Build up array of all data objects
         const dataObjs = Object.values(result.objects).flat()
         dataObjs.forEach((dataObj) => {
+          // Add a property for the data object's internal route
           dataObj.route = dataObjectToRoute(dataObj)
         })
 
+        // Commit data to the store, in preparation for using getters below
+        commit('SET_ATLAS_DATA', result)
+
+        // Link each data object to related objects
+        for (const [key, dataObjs] of Object.entries(result.objects)) {
+          // Add properties to each data object
+          dataObjs.forEach((dataObj) => {
+            // Add a property for the data object's internal link
+            dataObj.route = dataObjectToRoute(dataObj)
+            // Apply to all objects but case studies, which have their own template
+            if (key !== 'case-studies') {
+              // Add a property with other data objects referenced by this one or that reference this one
+              dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
+            }
+          })
+        }
+
+        // Commit the fully populated data
         commit('SET_ATLAS_DATA', result)
       })
 

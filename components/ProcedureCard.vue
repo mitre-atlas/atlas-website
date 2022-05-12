@@ -1,24 +1,16 @@
 <template>
   <v-card>
     <v-card-title>
-      <!-- {{ getTechniqueById(info.technique).name }} -->
-      <span
-        v-if="techniqueId.startsWith('T')"
-      >
-        <a style="color: inherit;" @click="openNewTab(techniqueId)">
-          {{ techniqueName }}
-        </a>
-      </span>
       <nuxt-link
-        v-else-if="parentTechnique !== undefined"
-        :to="`/techniques/${techniqueId}`"
+        v-if="parentTechnique !== undefined"
+        :to="technique.route"
         style="color: inherit;"
       >
         {{ parentTechniqueName }}: {{ techniqueName }}
       </nuxt-link>
       <nuxt-link
         v-else
-        :to="`/techniques/${techniqueId}`"
+        :to="technique.route"
         style="color: inherit;"
       >
         {{ techniqueName }}
@@ -26,7 +18,7 @@
     </v-card-title>
     <v-card-subtitle>
       <nuxt-link
-        :to="`/tactics/${tacticId}`"
+        :to="tactic.route"
         style="color: inherit;"
       >
         {{ tacticName }}

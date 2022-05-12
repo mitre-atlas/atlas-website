@@ -21,12 +21,12 @@
         </v-col>
 
         <v-col cols="4">
-          <data-sidebar :data-object="dataObject" :related-objects="relatedObjects" />
+          <data-sidebar :data-object="dataObject" :related-objects="dataObject.relatedObjects" />
         </v-col>
       </v-row>
 
       <data-links
-        v-for="(relatedObjs, objectType) in relatedObjects"
+        v-for="(relatedObjs, objectType) in dataObject.relatedObjects"
         :key="objectType"
         :object-type="objectType"
         :items="relatedObjs"
@@ -49,10 +49,6 @@ export default {
   computed: {
     dataObject () {
       return this.$store.getters.getDataObjectById(this.id)
-    },
-    relatedObjects () {
-      // Find other objects that reference this page's object
-      return this.$store.getters.getRelatedDataObjects(this.dataObject)
     },
     title () {
       // Prepend parent technique name for a subtechnique
