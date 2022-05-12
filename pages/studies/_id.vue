@@ -59,11 +59,6 @@ export default {
     study () {
       return this.$store.getters.getDataObjectById(this.$route.params.id)
     }
-  },
-  methods: {
-    openNewTab (url) {
-      window.open(url, '_blank')
-    }
   }
 }
 </script>

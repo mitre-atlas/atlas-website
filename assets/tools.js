@@ -4,7 +4,7 @@ import { validate } from 'jsonschema'
 
 import schema from '../static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 
-function generateID (template = 'xxxx-xxxx-xxxx') {
+export function generateID (template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
   // adapted from stackoverflow
   return template.replace(/x/g, function (c) {
@@ -15,7 +15,7 @@ function generateID (template = 'xxxx-xxxx-xxxx') {
 }
 
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
-function validFormatYAML (yamlObj) {
+export function validFormatYAML (yamlObj) {
   // Keeping date in ISO format for date format validation
   try {
     // i.e. 2022-01-01
@@ -51,7 +51,7 @@ function validFormatYAML (yamlObj) {
   return errorMessages
 }
 
-function download (filename, text) {
+export function download (filename, text) {
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plaincharset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
@@ -62,12 +62,12 @@ function download (filename, text) {
   document.body.removeChild(element)
 }
 
-function downloadStudyFile (study, filename) {
+export function downloadStudyFile (study, filename) {
   const studyYAML = dump(study)
   download(`${filename}.yaml`, studyYAML)
 }
 
-function downloadUrlAsFile (url) {
+export function downloadUrlAsFile (url) {
   // Downloads a file located at url
   // Parameter url is a string
   const xhr = new XMLHttpRequest()
@@ -85,4 +85,6 @@ function downloadUrlAsFile (url) {
   xhr.send()
 }
 
-export { download, downloadUrlAsFile, generateID, validFormatYAML, downloadStudyFile }
+export function openNewTab (url) {
+  window.open(url, '_blank')
+}

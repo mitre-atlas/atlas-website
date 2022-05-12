@@ -78,17 +78,6 @@ export default {
       }
       return this.parentTechnique.name
     }
-  },
-  methods: {
-    openNewTab (id) {
-      let url
-      if (id.includes('.')) {
-        url = 'https://attack.mitre.org/techniques/' + id.split('.')[0] + '/' + id.split('.')[1]
-      } else {
-        url = 'https://attack.mitre.org/techniques/' + id
-      }
-      window.open(url, '_blank')
-    }
   }
 }
 </script>
