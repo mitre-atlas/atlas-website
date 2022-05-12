@@ -9,7 +9,7 @@
         <span class="font-weight-bold">ID:</span> {{ dataObject.id }}
       </p>
       <p
-        v-for="(relatedObjs, objectType) in relatedObjects"
+        v-for="(relatedObjs, objectType) in dataObject.relatedObjects"
         :key="objectType"
       >
         <span class="font-weight-bold">Number of {{ pluralize(objectType) }}:</span> {{ relatedObjs.length }}
@@ -22,7 +22,7 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSidebar',
-  props: ['dataObject', 'relatedObjects'],
+  props: ['dataObject'],
   methods: {
     pluralize (objectType) {
       return dataObjectToPluralTitle(objectType)

@@ -21,7 +21,7 @@
         </v-col>
 
         <v-col cols="4">
-          <data-sidebar :data-object="dataObject" :related-objects="dataObject.relatedObjects" />
+          <data-sidebar :data-object="dataObject" />
         </v-col>
       </v-row>
 
