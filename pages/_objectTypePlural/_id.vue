@@ -43,7 +43,7 @@ export default {
   }),
   head () {
     return {
-      // title: `${this.title} List | ${this.mitreTitle}`
+      title: `${this.title} | ${this.mitreTitle}`
     }
   },
   computed: {

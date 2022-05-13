@@ -47,11 +47,12 @@ export default {
   },
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
-    objectTypePlural: params.objectTypePlural
+    objectTypePlural: params.objectTypePlural,
+    capitalizedObjectTypePlural: `${params.objectTypePlural[0].toUpperCase()}${params.objectTypePlural.slice(1)}`
   }),
   head () {
     return {
-      title: `${this.objectTypePlural} List | ${this.mitreTitle}`
+      title: `${this.capitalizedObjectTypePlural} List | ${this.mitreTitle}`
     }
   },
   computed: {
