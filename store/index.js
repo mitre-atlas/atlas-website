@@ -15,7 +15,9 @@ export const getters = {
 
   getDataObjectsByType: (state) => (objType) => {
     // Returns a list of data objects under the provided object type
-    return state.data.objects[objType]
+    // or an empty Array if not found
+    // Ex. in rendering the studies page when there is no case-studies key in the data
+    return state.data.objects[objType] ?? []
   },
 
   getDataObjectsByTypeKeyValue: (_, getters) => (objType, key, value) => {
@@ -68,7 +70,7 @@ export const getters = {
     return referencedObjects
   },
 
-  getDataObjectsReferencing: (_, getters) => (argObj) => {
+  getDataObjectsReferencing: (state, getters) => (argObj) => {
     // Return an object with key/object-type to array of objects that reference this object
 
     const id = argObj.id
@@ -97,8 +99,11 @@ export const getters = {
       objects = objects.concat(subtechniques)
     }
 
-    // Look for case studies with the singular key in its procedure, i.e. technique or tactic
-    if (argObj['object-type'] === 'tactic' || argObj['object-type'] === 'technique') {
+    // Look for case studies, if any, with the singular key in its procedure, i.e. technique or tactic
+    if (
+      'case-studies' in state.data.objects &&
+      (argObj['object-type'] === 'tactic' || argObj['object-type'] === 'technique')
+    ) {
       const studies = getters.getDataObjectsByType('case-studies')
         .filter(study => study.procedure
           // singular key, i.e. technique vs. techniques

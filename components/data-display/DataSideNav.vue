@@ -34,11 +34,20 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items'],
+  props: ['items', 'fixedTitle'],
+  data () {
+    return {
+      placeholderTitle: 'Placeholder Title'
+    }
+  },
   computed: {
     title () {
-      // Plural object type with spaces instead of dashes, if any
-      return dataObjectToPluralTitle(this.items[0])
+      if (this.items && this.items.length > 0) {
+        // Plural object type with spaces instead of dashes, if any
+        return dataObjectToPluralTitle(this.items[0])
+      }
+      // Otherwise use the specified title, or the default placeholder
+      return this.fixedTitle ?? this.placeholderTitle
     }
   }
 }
