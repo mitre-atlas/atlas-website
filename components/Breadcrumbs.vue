@@ -16,8 +16,7 @@ export default {
   props: ['setPath'],
   data () {
     return {
-      items: [],
-      idGetter: null
+      items: []
     }
   },
   computed: {
@@ -73,18 +72,8 @@ export default {
       }
       return str
     },
-    setStoreGetter (indexRoute) {
-      if (indexRoute === 'techniques') {
-        this.idGetter = this.$store.getters.getTechniqueById
-      } else if (indexRoute === 'tactics') {
-        this.idGetter = this.$store.getters.getTacticById
-      } else {
-        this.idGetter = this.$store.getters.getStudyById
-      }
-    },
     getNameFromID (id, idStem) {
-      this.setStoreGetter(idStem)
-      return this.idGetter(id).name
+      return this.$store.getters.getDataObjectById(id).name
     }
   }
 }

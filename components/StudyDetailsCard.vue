@@ -13,7 +13,7 @@
       <v-list-item>
         <download-data-files-dropdown :study="study" />
       </v-list-item>
-      <v-list-item>
+      <v-list-item v-if="$config.navigator_url" >
         <navigator-layer-dropdown :study="study" />
       </v-list-item>
     </v-list>

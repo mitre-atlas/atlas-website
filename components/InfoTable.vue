@@ -23,7 +23,7 @@
       <template #[`item.id`]="{ item }">
         <nuxt-link
           :id="item.id"
-          :to="`/${$route.name}/${item.id}`"
+          :to="item.route"
         >
           <span v-if="'subtechnique-of' in item">
             <!-- Display only last numeric portion of ID for subtechniques -->
@@ -36,7 +36,7 @@
       </template>
       <template #[`item.name`]="{ item }">
         <nuxt-link
-          :to="`/${$route.name}/${item.id}`"
+          :to="item.route"
         >
           {{ item.name }}
         </nuxt-link>

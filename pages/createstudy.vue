@@ -312,6 +312,11 @@ export default {
       ]
     }
   },
+  head () {
+    return {
+      title: `${this.title} | ${this.$config.name.mitre}`
+    }
+  },
   beforeMount () {
     window.addEventListener('beforeunload', this.handleBeforeUnload)
     window.addEventListener('popstate', this.handleBackButton)

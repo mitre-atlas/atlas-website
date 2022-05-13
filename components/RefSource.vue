@@ -25,6 +25,8 @@
   </div>
 </template>
 <script>
+import { openNewTab } from '~/assets/tools.js'
+
 export default {
   name: 'RefSource',
   props: [
@@ -34,9 +36,7 @@ export default {
     charactersThreshold: 300
   }),
   methods: {
-    openNewTab (url) {
-      window.open(url, '_blank')
-    }
+    openNewTab
   }
 }
 </script>

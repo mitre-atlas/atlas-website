@@ -1,127 +1,170 @@
 /* eslint-disable */
 const fs = require('fs').promises
-const path = require('path')
 const yaml = require('js-yaml')
+import { dataObjectToRoute } from '@/assets/dataHelpers.js'
 
 export const state = () => ({
-  data: {
-    // Represents the input threat matrix data
-    tactics: [],
-    techniques: [],
-    techandsubtechniques: [],
-    studies: [],
-    // Represents the populated tactics, techniques, and subtechniques
-    matrix: [],
-    version: 0.0
-  }
+  data: {}
 })
 
-// defines the logic for all the "filtered" getters
-const isFiltered = t => t.id.startsWith('AML')
-
 export const getters = {
-  // Simple getters
-  getVersion: (state) => {
-    return state.data.version
-  },
-  getTactics: (state) => {
-    return state.data.tactics
-  },
-  getTrueFilteredTactics: (state) => { // the tactic has no att&ck techniques
-    return state.data.tactics.filter(isFiltered)
-  },
-  getFilteredTactics: (state) => { // the tactic has atleast one atlas technique
-    return state.data.tactics.filter((t) => {
-      const isOfTactic = te => (('tactics') in te) && te.tactics.includes(t.id)
-      const filteredTechniquesOfTactic = state.data.techniques.filter(isFiltered).filter(isOfTactic)
-      return filteredTechniquesOfTactic.length > 0
-    })
-  },
-  getTechniques: (state) => {
-    return state.data.techniques
-  },
-  getFilteredTechniques: (state) => {
-    return state.data.techniques.filter(isFiltered)
-  },
-  getStudies: (state) => {
-    return state.data.studies
-  },
-  getMatrix: (state) => {
-    return state.data.matrix
-  },
-  getTacticStyling: (state) => {
-    return state.tacticStyling
+  getDataAttribute: (state) => (key) => state.data[key],
+
+  // Get a single array of all objects
+  getDataObjects: (state) => Object.values(state.data.objects).flat(),
+
+  getDataObjectsByType: (state) => (objType) => {
+    // Returns a list of data objects under the provided object type
+    // or an empty Array if not found
+    // Ex. in rendering the studies page when there is no case-studies key in the data
+    return state.data.objects[objType] ?? []
   },
 
-  // Find by ID (exact match)
-  getTacticById: state => (id) => {
-    return state.data.tactics.find(t => t.id === id)
+  getDataObjectsByTypeKeyValue: (_, getters) => (objType, key, value) => {
+    // Retrieves a list of data objects
+    const objs = getters.getDataObjectsByType(objType)
+    // Return the first data object whose key-value matches the provided value argument
+    return objs.filter(obj => obj[key] === value)
   },
-  getTechniqueById: state => (id) => {
-    return state.data.techniques.find(t => t.id === id)
-  },
-  getStudyById: state => (id) => {
-    return state.data.studies.find(s => s.id === id)
-  },
-
-  // Find by ID
-  getStudiesWhereTacticIdIn: state => (id) => {
-    return state.data.studies.filter((s) => {
-      return s.procedure.some((p) => {
-        return p.tactic === id
-      })
-    })
-  },
-  getStudiesWhereTechniqueIdIn: state => (id) => {
-    return state.data.studies.filter((s) => {
-      return s.procedure.some((p) => {
-        return p.technique === id
-      })
-    })
+  getDataObjectsByTypeKeyContainingValue: (_, getters) => (objType, key, value) => {
+    // Retrieves a list of data objects
+    const objs = getters.getDataObjectsByType(objType)
+    // Return the data objects whose key includes the provided value argument
+    return objs.filter(obj => (key in obj) && obj[key].includes(value))
   },
 
-  // Find techniques with potentially fully-qualified tactic ID references
-  // by short ID
-  getTechniquesByTacticId: state => (tacticId) => {
-    return state.data.techniques.filter((t) => {
-      // This is a subtechnique, does not have tactics in AdvML
-      if (!('tactics' in t)) {
-        return false
+  getReferencedDataObjects: (_, getters) => (argObj) => {
+    // Returns an object with key/object-type to array of objects referenced by this object
+
+    const defaultDataObjectKeys = [
+      'id',
+      'object-type',
+      'name',
+      'description',
+      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
+    ]
+
+    // Get object keys that may be references, i.e. are not default
+    const dataKeys = Object.keys(argObj).filter((value) => {
+      return !defaultDataObjectKeys.includes(value)
+    })
+
+    // IDs of objects directly referenced by this page's object
+    const referencedObjects = {}
+    dataKeys.forEach((key) => {
+      const value = argObj[key]
+      if (Array.isArray(value)) {
+        referencedObjects[key] = value.map(id => getters.getDataObjectById(id)).flat()
+      } else {
+        // Single value, create a single-element Array
+        referencedObjects[key] = [getters.getDataObjectById(value)]
       }
-      // Returns true when at least 1 of the referenced tactic matches the query
-      return t.tactics.includes(tacticId)
     })
+
+    // Handle subtechnique-of title
+    if ('subtechnique-of' in referencedObjects) {
+      referencedObjects['parent-technique'] = referencedObjects['subtechnique-of']
+      delete referencedObjects['subtechnique-of']
+    }
+
+    return referencedObjects
   },
 
-  getTechSubByTacticId: state => (tacticId) => {
-    return state.data.techandsubtechniques.filter((t) => {
-      return t.tactics.includes(tacticId)
+  getDataObjectsReferencing: (state, getters) => (argObj) => {
+    // Return an object with key/object-type to array of objects that reference this object
+
+    const id = argObj.id
+
+    // Find objects that reference this object's ID
+    let objects = getters.getDataObjects.filter((obj) => {
+      return obj.id !== id && Object.values(obj).flat().includes(id)
     })
+
+    // Other subtechniques
+    if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
+      const parentTechniqueId = id.substring(0, id.lastIndexOf('.'))
+      const otherSubtechniques = getters.getDataObjectsByTypeKeyValue('techniques', 'subtechnique-of', parentTechniqueId)
+      // Add other subtechniques that aren't this one
+      objects = objects.concat(otherSubtechniques.filter(t => t.id !== id))
+    }
+
+    // Add subtechniques of tactics to the technique list
+    if (argObj['object-type'] === 'tactic') {
+      let subtechniques = []
+      objects.forEach((obj) => {
+        if (obj['object-type'] === 'technique') {
+          subtechniques = subtechniques.concat(getters.getDataObjectsByTypeKeyValue('techniques', 'subtechnique-of', obj.id))
+        }
+      })
+      objects = objects.concat(subtechniques)
+    }
+
+    // Look for case studies, if any, with the singular key in its procedure, i.e. technique or tactic
+    if (
+      'case-studies' in state.data.objects &&
+      (argObj['object-type'] === 'tactic' || argObj['object-type'] === 'technique')
+    ) {
+      const studies = getters.getDataObjectsByType('case-studies')
+        .filter(study => study.procedure
+          // singular key, i.e. technique vs. techniques
+          .some(step => step[argObj['object-type']] === id)
+        )
+
+      objects = objects.concat(studies)
+    }
+
+    // Group by object type
+    const results = objects.reduce(
+      (acc, obj) => {
+        var objectType = obj['object-type']
+        if (!acc[objectType]) {
+          acc[objectType] = []
+        }
+        acc[objectType].push(obj)
+        return acc
+      },
+      {}
+    )
+
+    // Label subtechniques if available
+    if ('technique' in results && argObj['object-type'] === 'technique') {
+      let subtechniqueKey = 'subtechniques'
+      if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
+        subtechniqueKey = 'other subtechniques'
+      }
+      // Relabel the techniques found
+      results[subtechniqueKey] = results['technique']
+      delete results['technique']
+    }
+
+    return results
   },
 
-  getFilteredTechniquesByTacticId: state => (tacticId) => {
-    return state.data.techniques.filter(isFiltered).filter(t => ('tactics' in t) && t.tactics.includes(tacticId))
+  getRelatedDataObjects: (_, getters) => (argObj) => {
+    // Returns an object of key/object-type to array of data objects related to this object
+    return {
+      ...getters.getReferencedDataObjects(argObj),
+      ...getters.getDataObjectsReferencing(argObj)
+    }
+  },
+
+  getDataObjectById: (_, getters) => (value) => {
+    // Returns the data object with the corresponding ID
+    return getters.getDataObjects.find(obj => obj['id'] === value)
   }
 }
 
+
 export const mutations = {
-  SET_THREAT_MATRIX_DATA (state, payload) {
-    state.data = { ...state.data, ...payload }
-  },
-  SET_CASE_STUDY (state, inputCase) {
-    state.caseStudy = inputCase
-    console.log(state.caseStudy)
+  SET_ATLAS_DATA (state, payload) {
+    state.data = { ...state.data, ...payload}
   }
 }
 
 export const actions = {
-  submitCaseStudy ({ commit }, study) {
-    commit('SET_CASE_STUDY', { study })
-  },
-
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
-  async nuxtServerInit ({ commit }, context) {
+  async nuxtServerInit ({ commit }, { store }) {
     // Retrieve the threat matrix YAML data and populate store upon start
     const getAtlasData = await fs.readFile('static/atlas-data/dist/ATLAS.yaml', 'utf-8')
 
@@ -129,102 +172,39 @@ export const actions = {
     const promise = Promise.resolve(getAtlasData)
       .then((contents) => {
 
-       // Parse YAML
-       const doc = yaml.load(contents)
-       const studies = doc['case-studies']
-       const techniques = doc['techniques']
-       const tactics = doc['tactics']
-       const version = doc['version']
+        // Parse YAML
+        const data = yaml.load(contents)
 
-        // Build out tactics and techniques used in the case studies
-        // with which to filter the ATT&CK data
-        const studyTactics = new Set()
-        const studyTechniques = new Set()
-        studies.forEach((study) => {
-          study.procedure.forEach((p) => {
-            studyTactics.add(p.tactic)
-            studyTechniques.add(p.technique)
+        // Collect data objects under the key 'objects'
+        const {id, name, version, ...objects} = data
+        const result = {id, name, version, objects}
+
+        // Build up array of all data objects
+        const dataObjs = Object.values(result.objects).flat()
+        dataObjs.forEach((dataObj) => {
+          // Add a property for the data object's internal route
+          dataObj.route = dataObjectToRoute(dataObj)
+        })
+
+        // Commit data to the store, in preparation for using getters below
+        commit('SET_ATLAS_DATA', result)
+
+        // Link each data object to related objects
+        for (const [key, dataObjs] of Object.entries(result.objects)) {
+          // Add properties to each data object
+          dataObjs.forEach((dataObj) => {
+            // Add a property for the data object's internal link
+            dataObj.route = dataObjectToRoute(dataObj)
+            // Apply to all objects but case studies, which have their own template
+            if (key !== 'case-studies') {
+              // Add a property with other data objects referenced by this one or that reference this one
+              dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
+            }
           })
-        })
-
-        // Build a populated version of the data, where tactics hold parent techniques
-        // and parent techniques hold subtechniques
-
-        // Split out subtechniques
-        const parentTechniques = techniques.filter((technique) => {
-          return !('subtechnique-of' in technique)
-        })
-        const subtechniques = techniques.filter((technique) => {
-          return ('subtechnique-of' in technique)
-        })
-
-        // Populate parent techniques with subtechniques
-        subtechniques.forEach((subtechnique) => {
-          const parentTechniqueId = subtechnique['subtechnique-of']
-          const parentTechniqueIndex = parentTechniques.findIndex(t => t.id === parentTechniqueId)
-          const parentTechnique = parentTechniques[parentTechniqueIndex]
-
-          // Associate subtechnique with the parent technique
-          if ('subtechniques' in parentTechnique) {
-            parentTechnique.subtechniques.push(subtechnique)
-          } else {
-            parentTechnique.subtechniques = [subtechnique]
-          }
-        })
-
-        // Build AdvML-relevant techniques and tactics for matrix use
-        const filteredTechniques = techniques.filter((technique) => {
-          // studyTechniques.has(technique.id) // Use only techniques referenced in case studies
-          return true // No filter
-        })
-
-        const tacticsIdsReferenced = new Set()
-        filteredTechniques.forEach((technique) => {
-          // This is a subtechnique, does not have tactics in AdvML
-          if (!('tactics' in technique)) {
-            return false
-          }
-          // Otherwise, collect distinct tactic IDs
-          technique.tactics.forEach((tacticId) => {
-            tacticsIdsReferenced.add(tacticId)
-          })
-        })
-
-        const filteredTactics = tactics.filter((tactic) => {
-          // return studyTactics.has(tactic.id) // Use only tactics referenced in case studies
-          // return tactic.id.startsWith('AML') // is an AdvML tactic
-          return tacticsIdsReferenced.has(tactic.id) // Only tactics referenced by the above techniques
-          // return true // No filter
-        })
-
-        // Populate tactics with populated techniques
-        const populatedTactics = filteredTactics.map((tactic) => {
-          // Build up the top-level parent techniques
-          const relevantFullTechniques = filteredTechniques.filter((technique) => {
-            // Must be a parent-level technique that is under this tactic
-            return !('subtechnique-of' in technique) && technique.tactics.includes(tactic.id)
-          })
-
-          tactic.techniques = relevantFullTechniques
-
-          return tactic
-        })
-
-        const matrix = {
-          tactics: populatedTactics
         }
 
-        // Create an object with some keys named the same as these vars
-        const payload = {
-          tactics,
-          techniques,
-          techandsubtechniques: parentTechniques,
-          studies,
-          matrix,
-          version
-        }
-
-        commit('SET_THREAT_MATRIX_DATA', payload)
+        // Commit the fully populated data
+        commit('SET_ATLAS_DATA', result)
       })
 
     return promise

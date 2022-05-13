@@ -24,7 +24,7 @@ export default {
     mitreTitle: name.mitre
   }),
   computed: {
-    ...mapGetters(['getMatrix'])
+    ...mapGetters('matrix', ['getMatrix'])
   },
   head () {
     return {

@@ -19,6 +19,7 @@
     "js-yaml": "^4.0.0",
     "jsonschema": "^1.4.0",
     "nuxt": "^2.15.4",
+    "pluralize": "^8.0.0",
     "pptxgenjs": "^3.7.1",
     "vue-gtag": "^1.16.1",
     "vue-linkify": "^1.0.1",

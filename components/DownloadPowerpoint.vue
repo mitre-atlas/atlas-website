@@ -364,22 +364,21 @@ export default {
         const techniqueId = yaml.procedure[i].technique
         const description = yaml.procedure[i].description
 
-        const techniqueInfo = this.$store.getters.getTechniqueById(techniqueId)
+        const techniqueInfo = this.$store.getters.getDataObjectById(techniqueId)
 
-        const parentTechniqueId = this.$store.getters.getTechniqueById(techniqueId)['subtechnique-of']
-        const parentTechnique = this.$store.getters.getTechniqueById(parentTechniqueId)
+        const parentTechnique = this.$store.getters['subtechnique/getParent'](techniqueInfo)
 
-        let workaroundTecniqueLabel = null
+        let workaroundTechniqueLabel = null
         if (parentTechnique) {
-          workaroundTecniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
+          workaroundTechniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
         } else {
-          workaroundTecniqueLabel = `${techniqueInfo.name}`
+          workaroundTechniqueLabel = `${techniqueInfo.name}`
         }
 
         const row = [
           { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
           this.linkText(
-            workaroundTecniqueLabel,
+            workaroundTechniqueLabel,
             this.getUrlFromInfoObject(techniqueInfo)
           ),
           { text: description, options: { fontFace: 'Arial', fontSize: 10 } }

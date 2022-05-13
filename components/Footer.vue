@@ -1,5 +1,10 @@
 <template>
-  <v-footer padless dark>
+  <v-footer
+    app
+    padless
+    dark
+    style="z-index:2000;"
+    >
     <v-card class="pt-2" flat tile width="100%" color="grey darken-3">
       <!-- MTIRE Navy #0D2F4F -->
 

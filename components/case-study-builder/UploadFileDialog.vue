@@ -62,7 +62,8 @@
   </v-dialog>
 </template>
 <script>
-import { generateID, yamlParse, validFormatYAML } from '~/assets/tools.js'
+import { load } from 'js-yaml'
+import { generateID, validFormatYAML } from '~/assets/tools.js'
 
 export default {
   name: 'UploadFileDialog',
@@ -158,14 +159,14 @@ export default {
       if (isValid) {
         const tryYamlText = await file.text()
         try {
-          yamlParse(tryYamlText)
-          if (!(typeof tryYamlText === 'object' || typeof yamlParse(tryYamlText) === 'object')) {
+          load(tryYamlText)
+          if (!(typeof tryYamlText === 'object' || typeof load(tryYamlText) === 'object')) {
             addError('Invalid YAML')
           }
         } catch (e) {
           addError('Invalid YAML')
         }
-        const yamlErr = validFormatYAML(yamlParse(tryYamlText))
+        const yamlErr = validFormatYAML(load(tryYamlText))
         if (yamlErr !== '') {
           addError(yamlErr)
         }
@@ -175,7 +176,7 @@ export default {
       return isValid
     },
     loadData (data) {
-      this.loadedData = yamlParse(data)
+      this.loadedData = load(data)
 
       this.$emit('loaded-data', this.loadedData)
       this.$emit('loaded-filename', this.initialFileName)

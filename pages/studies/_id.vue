@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <data-side-nav :items="$store.getters.getDataObjectsByType('case-studies')" />
   <div class="mx-8">
     <breadcrumbs />
     <page-title>
@@ -37,6 +39,7 @@
       </v-col>
     </v-row>
   </div>
+  </div>
 </template>
 
 <script>
@@ -47,19 +50,14 @@ export default {
   }),
   head () {
     return {
-      title: this.$store.getters.getStudyById(this.$route.params.id).name +
+      title: this.study.name +
         ', Case Study: ' + this.$route.params.id +
         ` | ${this.$config.name.mitre}`
     }
   },
   computed: {
     study () {
-      return this.$store.getters.getStudyById(this.$route.params.id)
-    }
-  },
-  methods: {
-    openNewTab (url) {
-      window.open(url, '_blank')
+      return this.$store.getters.getDataObjectById(this.$route.params.id)
     }
   }
 }
