@@ -1,14 +1,20 @@
 <template>
   <v-footer
-    app
+    id="footer"
     padless
     dark
-    style="z-index:2000;"
+  >
+    <v-card
+      style="overflow: clip;"
+      class="pt-2"
+      flat
+      tile
+      width="100%"
+      color="grey darken-3"
     >
-    <v-card class="pt-2" flat tile width="100%" color="grey darken-3">
       <!-- MTIRE Navy #0D2F4F -->
 
-      <v-row justify="center" align="center">
+      <v-row justify="center" align="center" no-gutters>
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
           <!--  v-show="!mobile" :class="'pb-0 mb-n2' ? mobile : ''-->
           <a :href="$config.footer_logo_link" target="_blank">
