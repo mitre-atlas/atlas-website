@@ -8,12 +8,13 @@
       <!-- Is an Array of data objects -->
       <span v-for="(v, i) in value" :key="i">
         <span v-if="i > 0">,</span>
-        <nuxt-link :to="v.route">{{v.name}}</nuxt-link>
+        <nuxt-link :to="v.route">{{ v.name }}</nuxt-link>
       </span>
     </span>
   </div>
 </template>
 <script>
+import { capitalize } from '~/assets/tools.js'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
@@ -25,17 +26,27 @@ export default {
     }
   },
   computed: {
+    isStringProperty () {
+      // The value is a string, i.e. this key-value pair is a string property rather than a data object
+      return typeof this.relatedObjs === 'string'
+    },
     doShowInfo () {
-      // Display string properties or object links, max of a certain number
-      return typeof this.relatedObjs === 'string' || this.relatedObjs.length <= this.maxNumDisplay
+      // Display items if the number of values fall below the defined threshold
+      return Array.isArray(this.relatedObjs) && this.relatedObjs.length <= this.maxNumDisplay
     },
     key () {
       // Header
       const plural = dataObjectToPluralTitle(this.objectType)
 
-      if (this.doShowInfo) {
-        // Capitalize title
-        return `${plural[0].toUpperCase()}${plural.slice(1)}`
+      if (this.isStringProperty || this.relatedObjs.length === 1) {
+        // String property or singular item in list (if key happens to be singular)
+        // Capitalize the space-separated title, no auto-pluralization
+        const tokens = this.objectType.split('-')
+        const title = tokens.join(' ')
+        return capitalize(title)
+      } else if (this.doShowInfo) {
+        // Capitalize the plural version of the title
+        return capitalize(plural)
       } else {
         // Summarize count
         return `Number of ${plural}`
@@ -43,7 +54,7 @@ export default {
     },
     value () {
       // Display string property or object links under a certain threshold
-      if (this.doShowInfo) {
+      if (this.isStringProperty || this.doShowInfo) {
         return this.relatedObjs
       }
       // Summarize count
