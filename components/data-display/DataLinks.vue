@@ -30,6 +30,10 @@ export default {
   props: ['objectType', 'items'],
   computed: {
     title () {
+      if (Array.isArray(this.items) && this.items.length === 1) {
+        // Return what may be a singular version of this title
+        return this.objectType.replace('-', ' ')
+      }
       return dataObjectToPluralTitle(this.objectType)
     }
   }
