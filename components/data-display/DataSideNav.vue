@@ -12,7 +12,67 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list dense nav>
+    <v-list
+      v-if="title === 'techniques'"
+      dense
+      nav
+    >
+      <v-list-group
+        v-for="(tactic, i) in getMatrix.tactics"
+        :key="i"
+        no-action
+      >
+        <template #activator>
+          <v-list-item>
+            <NuxtLink
+              :to="tactic.route"
+              style="font-size: 0.9375rem;"
+            >
+              <!-- Smaller font size, similar to v-expansion-panel-header -->
+              {{ tactic.name }}
+            </NuxtLink>
+          </v-list-item>
+        </template>
+
+        <div
+          v-for="(technique, j) in tactic.techniques"
+          :key="j"
+        >
+          <v-list-item
+            :nuxt="true"
+            :to="technique.route"
+            :ripple="false"
+          >
+            <v-list-item>
+              <v-list-item>
+                <v-list-item-title style="font-weight: 400;">
+                  <!-- Font size and color to match v-expansion-panel-header style -->
+                  {{ technique.name }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-item>
+          </v-list-item>
+
+          <v-list-item
+            v-for="(subtechnique, k) in technique.subtechniques"
+            :key="k"
+            :nuxt="true"
+            :to="subtechnique.route"
+            :ripple="false"
+          >
+            <v-list-item>
+              <v-list-item>
+                <v-list-item-title class="pl-3" style="font-weight: 400;">
+                  {{ subtechnique.name }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-item>
+          </v-list-item>
+        </div>
+      </v-list-group>
+    </v-list>
+
+    <v-list v-else dense nav>
       <v-list-item
         v-for="(item, i) in items"
         :key="i"
@@ -28,9 +88,11 @@
         </v-list-item>
       </v-list-item>
     </v-list>
+
   </v-navigation-drawer>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
@@ -52,7 +114,8 @@ export default {
       }
       // Otherwise use the specified title, or the default placeholder
       return this.fixedTitle ?? this.placeholderTitle
-    }
+    },
+    ...mapGetters('matrix', ['getMatrix'])
   },
 
   mounted () {
