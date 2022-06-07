@@ -29,7 +29,7 @@
               style="font-size: 0.9375rem;"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
-              {{ tactic.name }}
+              {{ tactic.name }} {{selectedTech.description}}
             </NuxtLink>
           </v-list-item>
         </template>
@@ -97,12 +97,16 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items', 'fixedTitle'],
+  props: ['items', 'fixedTitle', 'selectedTech'],
   data () {
     return {
       placeholderTitle: 'Placeholder Title',
       footer: null,
-      observer: null
+      observer: null,
+      selectedID: 'AML.T0000.000',
+      selectedTech2: this.selectedTech,
+      // selectedTech: { id: selectedTech.id, tactic: selectedTech.tactics[0] },
+      model: 1
     }
   },
 
