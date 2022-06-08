@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :items="items" />
+    <data-side-nav :selected-object="dataObject" :items="items" />
 
     <div>
       <breadcrumbs />

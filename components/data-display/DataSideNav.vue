@@ -98,7 +98,7 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items', 'fixedTitle'],
+  props: ['items', 'fixedTitle', 'selectedObject'],
   data () {
     return {
       placeholderTitle: 'Placeholder Title',
@@ -146,18 +146,17 @@ export default {
     },
     isTacticInTechnique (tacticID) {
       if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
-        const techniqueID = this.$route.path.split('/').slice(1).filter(e => !!e)[1] // Takes in the URL and returns technique ID at the end of the string
-        if (!techniqueID) { // Returns false if no technique ID is found within current URL
+        if (!this.selectedObject) { // Returns false if no technique ID is found within current URL
           return false
         }
-        let techniqueObject = this.getDataObjectById(techniqueID)
-        const parentTechniqueID = techniqueObject['subtechnique-of'] // Handles case of sub-technique being selected
-        if (parentTechniqueID) {
-          techniqueObject = this.getDataObjectById(parentTechniqueID) // In this case parent technique is found in order to get parent tactic
+        if ('subtechnique-of' in this.selectedObject) { // Handles case of sub-technique being selected
+          const parentTechnique = this.$store.getters['subtechnique/getParent'](this.selectedObject)
+          this.tacticsList = parentTechnique.tactics
+        } else { // Otherwise use selected tactic
+          this.tacticsList = this.selectedObject.tactics
         }
-        this.tacticsList = techniqueObject.tactics
       }
-      return this.tacticsList.includes(tacticID)
+      return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
     },
 
     // Prevents data-side-nav from hiding behind footer
