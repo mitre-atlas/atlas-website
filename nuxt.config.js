@@ -113,26 +113,23 @@ export default {
         // Parse YAML files
           const data = yaml.load(contents)
 
-          //iterate matrices
+          // Empty list
           let allDataObjects = []
-          
+
+          // To grab the techniques and tactic objects under matrices and populate allDataObjects
           data.matrices.forEach((matrix) => {
             const {id, name, ...objects} = matrix
             allDataObjects = allDataObjects.concat(Object.values(objects))
           })
-          console.log('after foreach', allDataObjects)
+
           // Collect data objects keyed via object-type under the key 'objects'
           const {id, name, version, matrices, ...otherObjects} = data
 
+          // Concat the other objects (i.e casestudies objects) into dallDataObject list
           allDataObjects = allDataObjects.concat(Object.values(otherObjects))
 
           // Flatten the objects into a single array
           allDataObjects = allDataObjects.flat()
-
-          //Write to file
-          const debugFile = JSON.stringify(allDataObjects, null, 4)
-
-          fsFile.writeFileSync('debug.json', debugFile)
 
           // Construct each route as a pluralization of the object type (last word) and the object ID
           const dynamicRoutes = allDataObjects.map((obj) => {
