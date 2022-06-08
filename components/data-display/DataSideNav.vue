@@ -118,6 +118,7 @@ export default {
       return this.fixedTitle ?? this.placeholderTitle
     },
     ...mapGetters('matrix', ['getMatrix']),
+    ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
       return this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
     }
@@ -143,19 +144,16 @@ export default {
         this.observer.observe(this.footer)
       }
     },
-
-    ...mapGetters(['getDataObjectById']),
-
     isTacticInTechnique (tacticID) {
       if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
         const techniqueID = this.$route.path.split('/').slice(1).filter(e => !!e)[1] // Takes in the URL and returns technique ID at the end of the string
         if (!techniqueID) { // Returns false if no technique ID is found within current URL
           return false
         }
-        let techniqueObject = this.getDataObjectById(techniqueID)(techniqueID)
+        let techniqueObject = this.getDataObjectById(techniqueID)
         const parentTechniqueID = techniqueObject['subtechnique-of'] // Handles case of sub-technique being selected
         if (parentTechniqueID) {
-          techniqueObject = this.getDataObjectById(parentTechniqueID)(parentTechniqueID) // In this case parent technique is found in order to get parent tactic
+          techniqueObject = this.getDataObjectById(parentTechniqueID) // In this case parent technique is found in order to get parent tactic
         }
         this.tacticsList = techniqueObject.tactics
       }
