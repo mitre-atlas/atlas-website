@@ -175,37 +175,64 @@ export const actions = {
         // Parse YAML
         const data = yaml.load(contents)
 
-        // Collect data objects under the key 'objects'
-        const {id, name, version, ...objects} = data
-        const result = {id, name, version, objects}
+        // Collect top-level data objects under the key 'objects'
+        const {id, name, version, matrices, ...objects} = data
+        const result = {id, name, version, matrices, objects}
 
-        // Build up array of all data objects
-        const dataObjs = Object.values(result.objects).flat()
-        dataObjs.forEach((dataObj) => {
-          // Add a property for the data object's internal route
-          dataObj.route = dataObjectToRoute(dataObj)
+        // Hold on to all data objects, in a list-of-lists
+        // Starting with the top-level objects
+        let allDataObjects = Object.values(objects).flat()
+
+        // Build matrix-like structure under each data object type
+        matrices.forEach((matrix, i) => {
+          // Collect data objects within each matrix
+          const {id, name, ...matrix_objs} = matrix
+
+          // Iterate over objects and add them to the result
+          for (const [key, dataObjs] of Object.entries(matrix_objs)) {
+            // Add objects from this matrix into the result
+            if (key in objects) {
+              // Add to the existing object keyed by the matrix ID
+              objects[key][id] = dataObjs
+            } else {
+              // Otherwise initialize it
+              objects[key] = {
+                [id]: dataObjs
+              }
+            }
+
+            // Collect each matrix's objects for later operations
+            allDataObjects = allDataObjects.concat(dataObjs)
+
+            // Remove this key and values from the result's matrix
+            delete result.matrices[i][key]
+          }
         })
 
         // Commit data to the store, in preparation for using getters below
         commit('SET_ATLAS_DATA', result)
 
+
+
         // Link each data object to related objects
-        for (const [key, dataObjs] of Object.entries(result.objects)) {
-          // Add properties to each data object
-          dataObjs.forEach((dataObj) => {
-            // Add a property for the data object's internal link
-            dataObj.route = dataObjectToRoute(dataObj)
-            // Apply to all objects but case studies, which have their own template
-            if (key !== 'case-studies') {
-              // Add a property with other data objects referenced by this one or that reference this one
-              dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
-            }
-          })
-        }
+        allDataObjects.forEach((dataObj) => {
+          if (!('object-type' in dataObj)) {
+            console.log(dataObj)
+          }
+          // Add a property for the data object's internal route
+          dataObj.route = dataObjectToRoute(dataObj)
+
+          // Apply to all objects but case studies, which have their own template
+          if (dataObj['object-type'] != 'case-study') {
+            // Add a property with other data objects referenced by this one or that reference this one
+            // dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
+          }
+        })
 
         // Commit the fully populated data
         commit('SET_ATLAS_DATA', result)
-      })
+
+        })
 
     return promise
   }
