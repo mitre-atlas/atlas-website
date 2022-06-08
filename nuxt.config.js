@@ -1,4 +1,5 @@
 import fs from 'fs/promises'
+import fsFile from 'fs'
 import yaml from 'js-yaml'
 
 import packageData from './package.json'
@@ -112,12 +113,26 @@ export default {
         // Parse YAML files
           const data = yaml.load(contents)
 
+          //iterate matrices
+          let allDataObjects = []
+          
+          data.matrices.forEach((matrix) => {
+            const {id, name, ...objects} = matrix
+            allDataObjects = allDataObjects.concat(Object.values(objects))
+          })
+          console.log('after foreach', allDataObjects)
           // Collect data objects keyed via object-type under the key 'objects'
-          const {id, name, version, ...objects} = data
-          const result = {id, name, version, objects}
+          const {id, name, version, matrices, ...otherObjects} = data
+
+          allDataObjects = allDataObjects.concat(Object.values(otherObjects))
 
           // Flatten the objects into a single array
-          const allDataObjects = Object.values(result.objects).flat()
+          allDataObjects = allDataObjects.flat()
+
+          //Write to file
+          const debugFile = JSON.stringify(allDataObjects, null, 4)
+
+          fsFile.writeFileSync('debug.json', debugFile)
 
           // Construct each route as a pluralization of the object type (last word) and the object ID
           const dynamicRoutes = allDataObjects.map((obj) => {
