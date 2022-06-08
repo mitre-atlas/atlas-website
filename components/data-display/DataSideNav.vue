@@ -17,10 +17,12 @@
       dense
       nav
     >
+      <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
       <v-list-group
         v-for="(tactic, i) in getMatrix.tactics"
         :key="i"
         no-action
+        :value="(isTacticInTechnique(tactic.id))"
       >
         <template #activator>
           <v-list-item>
@@ -29,7 +31,7 @@
               style="font-size: 0.9375rem;"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
-              {{ tactic.name }} {{selectedTech.description}}
+              {{ tactic.name }}
             </NuxtLink>
           </v-list-item>
         </template>
@@ -88,7 +90,6 @@
         </v-list-item>
       </v-list-item>
     </v-list>
-
   </v-navigation-drawer>
 </template>
 <script>
@@ -97,16 +98,13 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items', 'fixedTitle', 'selectedTech'],
+  props: ['items', 'fixedTitle'],
   data () {
     return {
       placeholderTitle: 'Placeholder Title',
       footer: null,
       observer: null,
-      selectedID: 'AML.T0000.000',
-      selectedTech2: this.selectedTech,
-      // selectedTech: { id: selectedTech.id, tactic: selectedTech.tactics[0] },
-      model: 1
+      tacticsList: null
     }
   },
 
@@ -119,7 +117,10 @@ export default {
       // Otherwise use the specified title, or the default placeholder
       return this.fixedTitle ?? this.placeholderTitle
     },
-    ...mapGetters('matrix', ['getMatrix'])
+    ...mapGetters('matrix', ['getMatrix']),
+    currentTechniqueRouteID () {
+      return this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
+    }
   },
 
   mounted () {
@@ -141,6 +142,24 @@ export default {
         // Connect observer
         this.observer.observe(this.footer)
       }
+    },
+
+    ...mapGetters(['getDataObjectById']),
+
+    isTacticInTechnique (tacticID) {
+      if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
+        const techniqueID = this.$route.path.split('/').slice(1).filter(e => !!e)[1] // Takes in the URL and returns technique ID at the end of the string
+        if (!techniqueID) { // Returns false if no technique ID is found within current URL
+          return false
+        }
+        let techniqueObject = this.getDataObjectById(techniqueID)(techniqueID)
+        const parentTechniqueID = techniqueObject['subtechnique-of'] // Handles case of sub-technique being selected
+        if (parentTechniqueID) {
+          techniqueObject = this.getDataObjectById(parentTechniqueID)(parentTechniqueID) // In this case parent technique is found in order to get parent tactic
+        }
+        this.tacticsList = techniqueObject.tactics
+      }
+      return this.tacticsList.includes(tacticID)
     },
 
     // Prevents data-side-nav from hiding behind footer

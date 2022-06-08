@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :items="items" :selected-tech="dataObject"/>
+    <data-side-nav :items="items" />
 
     <div>
       <breadcrumbs />
