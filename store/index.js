@@ -217,7 +217,8 @@ export const actions = {
             // Collect each matrix's objects for later operations
             allDataObjects = allDataObjects.concat(dataObjs)
 
-            // Remove this key and values from the result's matrix
+            // Remove this key and values from the result's matrix,
+            // to reduce data duplciationg. Leaving ID and name
             delete result.matrices[i][key]
           }
         })
@@ -245,7 +246,6 @@ export const actions = {
 
         // Commit the fully populated data
         commit('SET_ATLAS_DATA', result)
-
       })
 
     return promise

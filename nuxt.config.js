@@ -1,5 +1,4 @@
 import fs from 'fs/promises'
-import fsFile from 'fs'
 import yaml from 'js-yaml'
 
 import packageData from './package.json'
