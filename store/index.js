@@ -11,24 +11,37 @@ export const getters = {
   getDataAttribute: (state) => (key) => state.data[key],
 
   // Get a single array of all objects
-  getDataObjects: (state) => Object.values(state.data.objects).flat(),
+  getDataObjects: (state) => state.data.allDataObjects,
 
-  getDataObjectsByType: (state) => (objType) => {
+  getDataObjectsByType: (state) => (objType, matrixId) => {
     // Returns a list of data objects under the provided object type
     // or an empty Array if not found
     // Ex. in rendering the studies page when there is no case-studies key in the data
-    return state.data.objects[objType] ?? []
+    const content = state.data.objects[objType]
+
+    if (typeof matrixId === 'undefined') {
+      // This is a top-level key containing an array of data objects
+      if (Array.isArray(content)) {
+        return content
+      }
+      // Otherwise this is an object keyed by matrix ID,
+      // and the ID is is not specified
+      // Return the first matrix's objects of this type
+      return Object.values(content)[0]
+    }
+    // Otherwise access the matrix's objects by ID
+    return content[matrixId] ?? []
   },
 
-  getDataObjectsByTypeKeyValue: (_, getters) => (objType, key, value) => {
+  getDataObjectsByTypeKeyValue: (_, getters) => (objType, key, value, matrixId) => {
     // Retrieves a list of data objects
-    const objs = getters.getDataObjectsByType(objType)
+    const objs = getters.getDataObjectsByType(objType, matrixId)
     // Return the first data object whose key-value matches the provided value argument
     return objs.filter(obj => obj[key] === value)
   },
-  getDataObjectsByTypeKeyContainingValue: (_, getters) => (objType, key, value) => {
+  getDataObjectsByTypeKeyContainingValue: (_, getters) => (objType, key, value, matrixId) => {
     // Retrieves a list of data objects
-    const objs = getters.getDataObjectsByType(objType)
+    const objs = getters.getDataObjectsByType(objType, matrixId)
     // Return the data objects whose key includes the provided value argument
     return objs.filter(obj => (key in obj) && obj[key].includes(value))
   },
@@ -175,33 +188,58 @@ export const actions = {
         // Parse YAML
         const data = yaml.load(contents)
 
-        // Collect data objects under the key 'objects'
-        const {id, name, version, ...objects} = data
-        const result = {id, name, version, objects}
+        // Collect top-level data objects under the key 'objects'
+        const {id, name, version, matrices, ...objects} = data
+        const result = {id, name, version, matrices, objects}
 
-        // Build up array of all data objects
-        const dataObjs = Object.values(result.objects).flat()
-        dataObjs.forEach((dataObj) => {
-          // Add a property for the data object's internal route
-          dataObj.route = dataObjectToRoute(dataObj)
+        // Hold on to all data objects, in a list-of-lists
+        // Starting with the top-level objects
+        let allDataObjects = Object.values(objects).flat()
+
+        // Build matrix-like structure under each data object type
+        matrices.forEach((matrix, i) => {
+          // Collect data objects within each matrix
+          const {id, name, ...matrix_objs} = matrix
+
+          // Iterate over objects and add them to the result
+          for (const [key, dataObjs] of Object.entries(matrix_objs)) {
+            // Add objects from this matrix into the result
+            if (key in objects) {
+              // Add to the existing object keyed by the matrix ID
+              objects[key][id] = dataObjs
+            } else {
+              // Otherwise initialize it
+              objects[key] = {
+                [id]: dataObjs
+              }
+            }
+
+            // Collect each matrix's objects for later operations
+            allDataObjects = allDataObjects.concat(dataObjs)
+
+            // Remove this key and values from the result's matrix,
+            // to reduce data duplciationg. Leaving ID and name
+            delete result.matrices[i][key]
+          }
         })
+
+        // Add all data objects to the store to facilitate finding by ID
+        result.allDataObjects = allDataObjects
 
         // Commit data to the store, in preparation for using getters below
         commit('SET_ATLAS_DATA', result)
 
         // Link each data object to related objects
-        for (const [key, dataObjs] of Object.entries(result.objects)) {
-          // Add properties to each data object
-          dataObjs.forEach((dataObj) => {
-            // Add a property for the data object's internal link
-            dataObj.route = dataObjectToRoute(dataObj)
-            // Apply to all objects but case studies, which have their own template
-            if (key !== 'case-studies') {
-              // Add a property with other data objects referenced by this one or that reference this one
-              dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
-            }
-          })
-        }
+        allDataObjects.forEach((dataObj) => {
+          // Add a property for the data object's internal route
+          dataObj.route = dataObjectToRoute(dataObj)
+
+          // Apply to all objects but case studies, which have their own template
+          if (dataObj['object-type'] != 'case-study') {
+            // Add a property with other data objects referenced by this one or that reference this one
+            dataObj.relatedObjects = store.getters.getRelatedDataObjects(dataObj)
+          }
+        })
 
         // Commit the fully populated data
         commit('SET_ATLAS_DATA', result)

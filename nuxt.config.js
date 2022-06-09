@@ -112,12 +112,23 @@ export default {
         // Parse YAML files
           const data = yaml.load(contents)
 
+          // Empty list
+          let allDataObjects = []
+
+          // To grab the techniques and tactic objects under matrices and populate allDataObjects
+          data.matrices.forEach((matrix) => {
+            const {id, name, ...objects} = matrix
+            allDataObjects = allDataObjects.concat(Object.values(objects))
+          })
+
           // Collect data objects keyed via object-type under the key 'objects'
-          const {id, name, version, ...objects} = data
-          const result = {id, name, version, objects}
+          const {id, name, version, matrices, ...otherObjects} = data
+
+          // Concat the other objects (i.e casestudies objects) into dallDataObject list
+          allDataObjects = allDataObjects.concat(Object.values(otherObjects))
 
           // Flatten the objects into a single array
-          const allDataObjects = Object.values(result.objects).flat()
+          allDataObjects = allDataObjects.flat()
 
           // Construct each route as a pluralization of the object type (last word) and the object ID
           const dynamicRoutes = allDataObjects.map((obj) => {
