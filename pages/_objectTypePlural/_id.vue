@@ -26,7 +26,7 @@
       </v-row>
 
       <data-links
-        v-for="(relatedObjs, objectType) in dataObject.relatedObjects"
+        v-for="(relatedObjs, objectType) in relatedObjects"
         :key="objectType"
         :object-type="objectType"
         :items="relatedObjs"
@@ -61,6 +61,18 @@ export default {
     },
     items () {
       return this.$store.getters.getDataObjectsByType(this.objectTypePlural)
+    },
+    relatedObjects () {
+      // Returns the entries of dataObject.relatedObjects that are actual data objects
+      // and not string properties that should be displayed as-is
+      return Object.fromEntries(
+        Object.entries(this.dataObject.relatedObjects)
+          .filter(([_, value]) => {
+            // Related data objects should be an Array.
+            // Value can also be a string, which is filtered out
+            return (Array.isArray(value) && typeof value !== 'string')
+          })
+      )
     }
   }
 }

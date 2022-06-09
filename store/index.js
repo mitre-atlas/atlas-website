@@ -69,8 +69,15 @@ export const getters = {
       if (Array.isArray(value)) {
         referencedObjects[key] = value.map(id => getters.getDataObjectById(id)).flat()
       } else {
-        // Single value, create a single-element Array
-        referencedObjects[key] = [getters.getDataObjectById(value)]
+        // Single object referenced by ID
+        const refObj = getters.getDataObjectById(value)
+        if (refObj) {
+          // Create a single-element Array
+          referencedObjects[key] = [refObj]
+        } else if (typeof value === 'string' && /[^\s]/.test(value)) {
+          // Add the key and value as-is, representing a declared property, if the value is a non-empty string
+          referencedObjects[key] = value
+        }
       }
     })
 
