@@ -28,7 +28,7 @@
       </v-col>
     </v-row>
     <v-row v-if="study.references">
-      <v-col>
+      <v-col v-if="study.references.length > 0">
         <page-section-title>Sources</page-section-title>
 
         <ol class="mt-2 mb-3">
