@@ -231,9 +231,6 @@ export const actions = {
 
         // Link each data object to related objects
         allDataObjects.forEach((dataObj) => {
-          if (!('object-type' in dataObj)) {
-            console.log(dataObj)
-          }
           // Add a property for the data object's internal route
           dataObj.route = dataObjectToRoute(dataObj)
 
