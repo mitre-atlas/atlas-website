@@ -12,6 +12,8 @@
       </v-list-item-content>
     </v-list-item>
 
+    <!-- Sidebar for techniques-->
+
     <v-list
       v-if="title === 'techniques'"
       dense
@@ -73,6 +75,55 @@
         </div>
       </v-list-group>
     </v-list>
+
+    <!-- Sidebar for TACTICS --------------------------------------------------->
+
+    <v-list
+      v-else-if="title === 'tactics'"
+      dense
+      nav
+    >
+      <v-list-group
+        v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
+        :key="i"
+        no-action
+        :value="(isTacticInMatrix(tacticObjects, matrixID))"
+      >
+        <template #activator>
+          <v-list-item>
+            <NuxtLink
+              :to="matrixID"
+              style="font-size: 0.9375rem;"
+            >
+              <!-- Smaller font size, similar to v-expansion-panel-header -->
+              {{ matrixID }}
+            </NuxtLink>
+          </v-list-item>
+        </template>
+
+        <div
+          v-for="(tactic, j) in tacticObjects"
+          :key="j"
+        >
+          <v-list-item
+            :nuxt="true"
+            :to="tactic.route"
+            :ripple="false"
+          >
+            <v-list-item>
+              <v-list-item>
+                <v-list-item-title style="font-weight: 400;">
+                  <!-- Font size and color to match v-expansion-panel-header style -->
+                  {{ tactic.name }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-item>
+          </v-list-item>
+        </div>
+      </v-list-group>
+    </v-list>
+
+    <!-- Sidebar for every other ENTITIES--------------------------------------------------->
 
     <v-list v-else dense nav>
       <v-list-item
@@ -143,6 +194,18 @@ export default {
         // Connect observer
         this.observer.observe(this.footer)
       }
+    },
+    isTacticInMatrix (tacticsObjects, matrixID) {
+      if (!this.selectedObject) { // Returns false if no tactic ID is found within current URL (if no tactic selected)
+        return false
+      }
+      const tacticsArrayLength = tacticsObjects.length
+      for (let i = 0; i < tacticsArrayLength; i++) {
+        if (tacticsObjects[i].id === this.selectedObject.id) { // If selected tactic is found within matrix's tactic list
+          return true
+        }
+      }
+      return false // Otherwise return false
     },
     isTacticInTechnique (tacticID) {
       if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
