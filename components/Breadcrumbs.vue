@@ -24,7 +24,6 @@ export default {
   },
   mounted () {
     const pathItems = this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
-    console.log(this.$route.path)
     const homeName = 'Home'
     const homeItem = { to: '/', text: homeName }
     const idStemItems = ['tactics', 'techniques', 'studies']

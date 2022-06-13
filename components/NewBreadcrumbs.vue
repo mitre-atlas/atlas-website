@@ -17,6 +17,11 @@ export default {
       pathItems: []
     }
   },
+  watch: {
+    $route () {
+      this.generateBreadcrumbs()
+    }
+  },
   mounted () {
     this.generateBreadcrumbs()
   },
@@ -24,26 +29,19 @@ export default {
     generateBreadcrumbs () {
       this.pathItems = []
       const items = this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
-      console.log('PATH ITEMS: ', items)
-      console.log('ROUTE OBJECT: ')
-      console.log(this.$route)
       this.pathItems.push({ to: '/', text: 'Home', exact: true })
       items.forEach((item, index) => {
         // generate path for this breadcrumb
         const basePath = this.pathItems.at(this.pathItems.length - 1).to
-        console.log('BASE PATH: ', basePath)
 
         // determine label for breadcrumb
         let text = ''
         if (this.$route.name.includes('-id') && index === items.length - 1) { // check if is data object
-          console.log('IS DATA OBJECT; GETTER OUTPUT: ')
           const dataObj = this.$store.getters.getDataObjectById(item)
-          console.log(dataObj)
           text = this.$store.getters.getDataObjectById(item).name
 
           // check if it's a subtechnique -- if so, insert parent technique before continuing
           if ('subtechnique-of' in dataObj) {
-            console.log('CRUMB IS DATA OBJECT')
             const parentID = dataObj['subtechnique-of']
             this.pathItems.push({
               text: this.$store.getters.getDataObjectById(parentID).name,
@@ -54,7 +52,6 @@ export default {
         } else {
           text = this.formatLocation(item)
         }
-        console.log('PUSHING NEXT CRUMB')
         this.pathItems.push({
           text,
           to: basePath + item + '/',
@@ -72,11 +69,6 @@ export default {
     },
     getNameFromID (id, idStem) {
       return this.$store.getters.getDataObjectById(id).name
-    }
-  },
-  watch: {
-    $route () {
-      this.generateBreadcrumbs()
     }
   }
 }
