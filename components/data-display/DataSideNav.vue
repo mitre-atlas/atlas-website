@@ -12,21 +12,40 @@
       </v-list-item-content>
     </v-list-item>
 
-    <!-- Sidebar for techniques-->
+    <!-- Sidebar for techniques---------------------------------------------------------------------->
 
     <v-list
       v-if="title === 'techniques'"
       dense
       nav
     >
-      <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
+
       <v-list-group
-        v-for="(tactic, i) in getMatrix.tactics"
+        v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
         :key="i"
         no-action
-        :value="(isTacticInTechnique(tactic.id))"
       >
         <template #activator>
+          <v-list-item>
+            <NuxtLink
+              :to="matrixID"
+              style="font-size: 0.9375rem;"
+            >
+              <!-- Smaller font size, similar to v-expansion-panel-header -->
+              {{ matrixID }}
+            </NuxtLink>
+          </v-list-item>
+        </template>
+
+      <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
+        <v-list-group
+          v-for="(tactic, i) in tacticObjects"
+          :key="i"
+          no-action
+          :value="(isTacticInTechnique(tactic.id))"
+        >
+        <template #activator>
+          <v-list-item>
           <v-list-item>
             <NuxtLink
               :to="tactic.route"
@@ -35,6 +54,7 @@
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ tactic.name }}
             </NuxtLink>
+          </v-list-item>
           </v-list-item>
         </template>
 
@@ -73,6 +93,7 @@
             </v-list-item>
           </v-list-item>
         </div>
+      </v-list-group>
       </v-list-group>
     </v-list>
 
@@ -210,6 +231,7 @@ export default {
     isTacticInTechnique (tacticID) {
       if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
         if (!this.selectedObject) { // Returns false if no technique ID is found within current URL
+          console.log('start')
           return false
         }
         if ('subtechnique-of' in this.selectedObject) { // Handles case of sub-technique being selected
@@ -219,6 +241,7 @@ export default {
           this.tacticsList = this.selectedObject.tactics
         }
       }
+      console.log('end')
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
     },
 
