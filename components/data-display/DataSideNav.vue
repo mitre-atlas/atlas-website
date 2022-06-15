@@ -42,6 +42,7 @@
           v-for="(tactic, i) in tacticObjects"
           :key="i"
           no-action
+          sub-group
           :value="(isTacticInTechnique(tactic.id))"
         >
         <template #activator>
