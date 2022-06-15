@@ -5,7 +5,7 @@
 
       <v-main>
         <v-container>
-          <new-breadcrumbs />
+          <breadcrumbs />
           <Nuxt />
         </v-container>
       </v-main>
