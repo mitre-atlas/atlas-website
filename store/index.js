@@ -208,6 +208,29 @@ export const actions = {
           // Collect data objects within each matrix
           const {id, name, ...matrix_objs} = matrix
 
+          // Create a populated tree of tactics > techniques > subtechniques in the current data
+
+          // Split techniques into top-level parents, and subtechniques
+          const parentTechniques = matrix_objs.techniques.filter(t => 'tactics' in t)
+          const subtechniques = matrix_objs.techniques.filter(t => 'subtechnique-of' in t)
+
+          // Add subtechniques to top-level techniques
+          const populatedTechniques = parentTechniques.map((t) => {
+            // Check if any subtechniques reference this technique
+            if (subtechniques.some(s => s['subtechnique-of'] === t.id)) {
+              // Add associated subtechniques to this technique
+              t.subtechniques = subtechniques.filter(s => s['subtechnique-of'] === t.id)
+            }
+            return t
+          })
+
+          // Add techniques to tactics
+          matrix_objs.tactics.map((t) => {
+            // Add techniques that reference this tactic
+            t.techniques = populatedTechniques.filter(pt => pt.tactics.includes(t.id))
+            return t
+          })
+
           // Iterate over objects and add them to the result
           for (const [key, dataObjs] of Object.entries(matrix_objs)) {
             // Add objects from this matrix into the result
