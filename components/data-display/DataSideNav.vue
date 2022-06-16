@@ -24,6 +24,7 @@
         v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
         :key="i"
         no-action
+        :value="(isTechniqueInMatrix(tacticObjects))"
       >
         <template #activator>
           <v-list-item>
@@ -229,10 +230,29 @@ export default {
       }
       return false // Otherwise return false
     },
+    isTechniqueInMatrix (tacticsObjects) {
+      if (!this.selectedObject) { // Returns false if no technique ID is found within current URL (if no technique selected)
+        return false
+      }
+      for (let i = 0; i < tacticsObjects.length; i++) {
+        for (let j = 0; j < tacticsObjects[i].techniques.length; j++) {
+          if (tacticsObjects[i].techniques[j].id === this.selectedObject.id) {
+            return true
+          }
+          if (tacticsObjects[i].techniques[j].subtechniques) {
+            for (let k = 0; k < tacticsObjects[i].techniques[j].subtechniques.length; k++) {
+              if (tacticsObjects[i].techniques[j].subtechniques[k].id === this.selectedObject.id) {
+                return true
+              }
+            }
+          }
+        }
+      }
+      return false // Otherwise return false
+    },
     isTacticInTechnique (tacticID) {
       if (!this.tacticsList) { // Tactics list will populate based on tactics list of selected technique
         if (!this.selectedObject) { // Returns false if no technique ID is found within current URL
-          console.log('start')
           return false
         }
         if ('subtechnique-of' in this.selectedObject) { // Handles case of sub-technique being selected
@@ -242,7 +262,6 @@ export default {
           this.tacticsList = this.selectedObject.tactics
         }
       }
-      console.log('end')
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
     },
 
