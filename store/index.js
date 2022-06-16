@@ -49,12 +49,14 @@ export const getters = {
   getReferencedDataObjects: (_, getters) => (argObj) => {
     // Returns an object with key/object-type to array of objects referenced by this object
 
+    // Keys that will not be considered as properties or references to other data objects
     const defaultDataObjectKeys = [
       'id',
       'object-type',
       'name',
       'description',
-      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
+      'route', // Note that this is added in nuxtServerInit, not originally part of the YAML data
+      'techniques' // Note that this applies only to tactics, as the matrix hierarchy is built out in nuxtServerInit
     ]
 
     // Get object keys that may be references, i.e. are not default
