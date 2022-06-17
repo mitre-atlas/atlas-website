@@ -85,7 +85,7 @@
         <v-list-item>
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
             <!-- Font size and color to match v-expansion-panel-header style -->
-            {{ item.name }}
+            {{ item.name }} {{ item.route }}
           </v-list-item-content>
         </v-list-item>
       </v-list-item>
@@ -110,15 +110,14 @@ export default {
 
   computed: {
     title () {
-      if (this.items && this.items.length > 0) {
+      if (this.items && this.items.length > 0 && !this.fixedTitle) {
         // Plural object type with spaces instead of dashes, if any
         return dataObjectToPluralTitle(this.items[0])
       }
       // Otherwise use the specified title, or the default placeholder
       return this.fixedTitle ?? this.placeholderTitle
     },
-    ...mapGetters('matrix', ['getMatrix']),
-    ...mapGetters(['getDataObjectById']),
+    ...mapGetters('matrix', ['getMatrix'], ['getDataObjectById']),
     currentTechniqueRouteID () {
       return this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
     }

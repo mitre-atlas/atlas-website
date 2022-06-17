@@ -1,5 +1,6 @@
 <template>
   <div>
+    <data-side-nav :items="getMatrices" fixed-title="Matrices" />
     <page-title>{{ title }}</page-title>
 
     <p>
@@ -24,7 +25,10 @@ export default {
     mitreTitle: name.mitre
   }),
   computed: {
-    ...mapGetters('matrix', ['getMatrix'])
+    ...mapGetters('matrix', ['getMatrix']),
+    getMatrices () {
+      return this.$store.state.data.matrices
+    }
   },
   head () {
     return {
