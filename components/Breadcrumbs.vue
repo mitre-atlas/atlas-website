@@ -51,14 +51,14 @@ export default {
           let text = ''
           if (this.$route.name.includes('-id') && index === items.length - 1) { // check if is data object
             const dataObj = this.$store.getters.getDataObjectById(item)
-            text = this.$store.getters.getDataObjectById(item).name
+            text = dataObj.name
 
             // check if it's a subtechnique -- if so, insert parent technique before continuing
-            if ('subtechnique-of' in dataObj) {
-              const parentID = dataObj['subtechnique-of']
+            const parent = this.$store.getters['subtechnique/getParent'](dataObj)
+            if (parent) {
               this.pathItems.push({
-                text: this.$store.getters.getDataObjectById(parentID).name,
-                to: basePath + parentID + '/',
+                text: parent.name,
+                to: basePath + parent.id + '/',
                 exact: true
               })
             }
@@ -82,7 +82,7 @@ export default {
     },
     isRouteValid (path) {
       let isValid = false
-      const isObj = this.$route.name.includes('objectTypePlural') && this.$store.getters.getIsValidType(this.$route.params.objectTypePlural)
+      const isObj = this.$route.name.includes('objectTypePlural') && this.$store.state.data.objects[this.$route.params.objectTypePlural]
 
       // check each possible route until valid one is found
       this.$router.getRoutes().forEach((route) => {
@@ -102,9 +102,6 @@ export default {
         str = str.replace(match[0], ' ' + match[1].toUpperCase())
       }
       return str
-    },
-    getNameFromID (id, idStem) {
-      return this.$store.getters.getDataObjectById(id).name
     }
   }
 }

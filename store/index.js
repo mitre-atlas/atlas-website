@@ -13,13 +13,6 @@ export const getters = {
   // Get a single array of all objects
   getDataObjects: (state) => state.data.allDataObjects,
 
-  getIsValidType: (state) => (objType) => {
-    const content = state.data.objects[objType]
-    console.log('CHECK IS VALID TYPE: ')
-    console.log(content)
-    return !!content
-  },
-
   getDataObjectsByType: (state) => (objType, matrixId) => {
     // Returns a list of data objects under the provided object type
     // or an empty Array if not found
