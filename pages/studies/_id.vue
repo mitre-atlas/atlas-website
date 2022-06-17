@@ -2,7 +2,6 @@
   <div>
     <data-side-nav :items="$store.getters.getDataObjectsByType('case-studies')" />
   <div class="mx-8">
-    <breadcrumbs />
     <page-title>
       {{ study.name }}
     </page-title>
