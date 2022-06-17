@@ -66,6 +66,11 @@
     <git-hub-repos />
   </div>
 </template>
+<router>
+  {
+    alias: '/resources'
+  }
+</router>
 <script>
 import { mapGetters } from 'vuex'
 

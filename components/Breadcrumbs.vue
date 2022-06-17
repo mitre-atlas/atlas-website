@@ -37,16 +37,6 @@ export default {
         let basePath = '/'
 
         items.forEach((item, index) => {
-          // generate path for this breadcrumb
-          let currPath = ''
-
-          // make sure the truncated path is valid. If not, use previous path
-          if (this.isRouteValid(basePath + item + '/')) {
-            currPath = basePath + item + '/'
-          } else {
-            currPath = this.pathItems.at(this.pathItems.length - 1).to
-          }
-
           // determine label for breadcrumb
           let text = ''
           if (this.$route.name.includes('-id') && index === items.length - 1) { // check if is data object
@@ -66,34 +56,19 @@ export default {
             text = this.formatLocation(item)
           }
 
-          // update basePath regardless of whether the truncated path is valid or not
+          // update basePath to current path
           basePath = basePath + item + '/'
 
           // add new path
           this.pathItems.push({
             text,
-            to: currPath,
+            to: basePath,
             exact: true
           })
         })
       } else {
         this.notHomePage = false
       }
-    },
-    isRouteValid (path) {
-      let isValid = false
-      const isObj = this.$route.name.includes('objectTypePlural') && this.$store.state.data.objects[this.$route.params.objectTypePlural]
-
-      // check each possible route until valid one is found
-      this.$router.getRoutes().forEach((route) => {
-        if (route.regex.test(path)) {
-          // make sure that if the matching route is for an object, the path is also for an object
-          if ((route.path.includes('objectTypePlural') && isObj) || !route.path.includes('objectTypePlural')) {
-            isValid = true
-          }
-        }
-      })
-      return isValid
     },
     formatLocation (str) { // hello-there-world -> Hello There World
       const reg = /-(\w)/g
