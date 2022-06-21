@@ -227,6 +227,7 @@ export const actions = {
             // Remove this key and values from the result's matrix,
             // to reduce data duplciationg. Leaving ID and name
             delete result.matrices[i][key]
+            result.matrices[i]["route"] = `/matrices/${id}`
           }
         })
 

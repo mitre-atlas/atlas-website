@@ -85,7 +85,7 @@
         <v-list-item>
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
             <!-- Font size and color to match v-expansion-panel-header style -->
-            {{ item.name }} {{ item.route }}
+            {{ item.name }}
           </v-list-item-content>
         </v-list-item>
       </v-list-item>

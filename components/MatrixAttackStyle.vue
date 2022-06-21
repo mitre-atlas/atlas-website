@@ -5,7 +5,7 @@
       <thead>
         <tr>
           <td
-            v-for="(tactic, i) in matrix.tactics"
+            v-for="(tactic, i) in tactics"
             :key="i"
             class="tactic name"
           >
@@ -18,7 +18,7 @@
         </tr>
         <tr>
           <td
-            v-for="(tactic, i) in matrix.tactics"
+            v-for="(tactic, i) in tactics"
             :key="i"
             class="tactic count"
           >
@@ -29,7 +29,7 @@
       <tbody>
         <tr>
           <td
-            v-for="(tactic, i) in matrix.tactics"
+            v-for="(tactic, i) in tactics"
             :key="i"
             class="tactic"
           >
@@ -48,7 +48,7 @@
 <script>
 export default {
   name: 'MatrixAttackStyle',
-  props: ['matrix']
+  props: ['tactics']
 }
 </script>
 
