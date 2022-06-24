@@ -101,9 +101,7 @@ export default {
     targetLocation () { return `/${this.targetInfo['object-type']}s/${this.targetId}` },
     isMobile () { return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name) }, // TODO: change this, might not be robust enough
     targetInfo () {
-      return (
-        this.$store.getters.getTacticById(this.targetId) ||
-        this.$store.getters.getTechniqueById(this.targetId))
+      return this.$store.getters.getDataObjectById(this.targetId)
     }
   },
   watch: {

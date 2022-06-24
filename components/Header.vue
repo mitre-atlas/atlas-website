@@ -204,7 +204,7 @@ export default {
         // const keyTokens = objectType.split('-')
 
         return {
-          name: `${dataObjectToPluralTitle(objectType)}`,       // Plural version
+          name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
           href: `/${dataObjectToPluralTitle(objectType, true)}` // Last word of the above
         }
       })

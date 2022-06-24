@@ -28,6 +28,7 @@
     "vuetify": "^2.5.8"
   },
   "devDependencies": {
+    "@linusborg/vue-simple-portal": "^0.1.5",
     "@nuxtjs/eslint-config": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/router-extras": "^1.1.1",
