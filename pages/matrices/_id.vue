@@ -15,6 +15,12 @@
   </div>
 </template>
 
+<router>
+  {
+    path: `/matrices/${this.getMatrixId}`
+  }
+</router>
+
 <script>
 import { mapGetters } from 'vuex'
 
