@@ -173,7 +173,10 @@ export const getters = {
   getDataObjectById: (_, getters) => (value) => {
     // Returns the data object with the corresponding ID
     return getters.getDataObjects.find(obj => obj['id'] === value)
-  }
+  },
+  getMatrixId: (state) => {
+    return state.data.matrices[0].id
+  },
 }
 
 
