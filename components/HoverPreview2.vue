@@ -20,6 +20,7 @@
             ref="preview-card"
             nuxt
             target="_blank"
+            :disabled="overrideDisable"
             :href="targetLocation"
             :light="isMobile"
             @mouseenter="() => setMouseHoverStateOverSelf(true)"
@@ -32,10 +33,7 @@
               ATLAS {{ targetDataObject['object-type'] }} |
               {{ targetDataObject.id }}
             </v-card-subtitle>
-            <v-card-text
-              id="text-fade"
-              v-html="$md.render(targetDataObject.description)"
-            />
+            <v-card-text v-html="$md.render(targetDataObject.description)" />
             <v-card-actions>
               <v-icon id="arrow-icon" ref="arrow-icon">
                 mdi-arrow-right
@@ -116,6 +114,9 @@ export default {
     attachEventListenersToAutocomplete () {
       // Below obtains references to the embeded list items of the v-autocomplete
       const autocompleteNode = this.$slots.default[0]
+      autocompleteNode.elm.addEventListener('focusout', event =>
+        this.catchMouseEvent(event, null)
+      )
       const listItemDataObjects = autocompleteNode.componentInstance.allItems // The externally provided data objects that define the list elms
       const menuVueComponent = autocompleteNode.componentInstance.$refs.menu
       if (!menuVueComponent) {
@@ -168,8 +169,9 @@ export default {
           this.isMouseHovering = false
           this.startLingering()
           break
+        case 'focusout':
         case 'click':
-          // Removes the preview if they click the element
+          // Removes the preview if they click or click out of the element
           this.overrideDisable = true
           if (this.isGroup) {
             this.reload()
@@ -289,7 +291,8 @@ export default {
         'click',
         'touchstart',
         'touchend',
-        'touchmove'
+        'touchmove',
+        'focusout'
       ]
       targetItems.forEach((targetItem) => {
         connectedEvents.forEach((eventName) => {
@@ -318,24 +321,28 @@ export default {
         arrowIcon: {
           transform: 'rotate(0deg)',
           color: inactiveColor,
-          opacity: 1
+          opacity: 1,
+          'font-size': '20px'
         },
         linkIcon: {
           transform: 'rotate(180deg)',
           color: inactiveColor,
-          opacity: 0
+          opacity: 0,
+          'font-size': '20px'
         }
       }
       const hoveredCSS = {
         arrowIcon: {
           transform: 'rotate(180deg)',
           color: activeColor,
-          opacity: 0
+          opacity: 0,
+          'font-size': '25px'
         },
         linkIcon: {
           transform: 'rotate(360deg)',
           color: activeColor,
-          opacity: 1
+          opacity: 1,
+          'font-size': '25px'
         }
       }
 
@@ -367,9 +374,16 @@ export default {
   max-height: 500px;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 20;
-  -webkit-box-orient: vertical;
+}
+
+.v-card__text::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(transparent 500px, white, white);
 }
 
 .v-overlay {
@@ -391,20 +405,5 @@ export default {
   position: absolute !important;
   right: 30px;
   bottom: 20px;
-}
-
-#text-fade {
-  background: linear-gradient(
-    160deg,
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0.7),
-    rgba(0, 0, 0, 0)
-  );
-  display: inline-block;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 </style>
