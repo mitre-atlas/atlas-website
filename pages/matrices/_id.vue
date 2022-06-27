@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data: ({ $config: { name }, $route: { params } }) => ({
     matrixId: params.id,
@@ -25,7 +23,6 @@ export default {
     mitreTitle: name.mitre
   }),
   computed: {
-    ...mapGetters('matrix', ['getMatrix']),
     getMatrices () {
       return this.$store.state.data.matrices
     },

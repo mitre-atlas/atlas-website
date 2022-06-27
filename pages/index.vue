@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data: ({ $config: { name } }) => ({
     shortName: name.short,
@@ -41,7 +39,6 @@ export default {
     title: name.long
   }),
   computed: {
-    ...mapGetters('matrix', ['getMatrix']),
     populatedTactics () {
       return Object.values(this.$store.state.data.objects.tactics)[0]
     }

@@ -191,7 +191,7 @@ export default {
       // Otherwise use the specified title, or the default placeholder
       return this.fixedTitle ?? this.placeholderTitle
     },
-    ...mapGetters('matrix', ['getMatrix'], ['getDataObjectById']),
+    ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
       return this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
     }
