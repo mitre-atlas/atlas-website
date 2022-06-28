@@ -56,7 +56,7 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 setSelector('app') // Portals the preview inside the Vue App component; otherwise we wouldn't have styling
 
 export default {
-  name: 'HoverPreviewGroup',
+  name: 'HoverPreview2',
   components: {
     Portal
   },
