@@ -83,13 +83,11 @@ export const getters = {
 
     // Handle subtechnique-of title
     if ('subtechnique-of' in referencedObjects) {
-      // Gets parent technique of current subtechnique
-      var parentTechnique = referencedObjects['parent-technique']
       // Assigns subtechnique to parent technique variable, deletes subtechnique
-      parentTechnique = referencedObjects['subtechnique-of']
+      referencedObjects['parent-technique'] = referencedObjects['subtechnique-of']
       delete referencedObjects['subtechnique-of']
       // Adds key of 'tactics' and assigns to value of the tactic to display on website
-      referencedObjects['tactics'] = parentTechnique[0].tactics.map(id => getters.getDataObjectById(id)).flat()
+      referencedObjects['tactics'] = referencedObjects['parent-technique'][0].tactics.map(id => getters.getDataObjectById(id)).flat()
     }
 
     return referencedObjects
@@ -199,6 +197,7 @@ export const actions = {
 
         // Parse YAML
         const data = yaml.load(contents)
+
         // Collect top-level data objects under the key 'objects'
         const {id, name, version, matrices, ...objects} = data
         const result = {id, name, version, matrices, objects}
@@ -239,6 +238,7 @@ export const actions = {
 
         // Commit data to the store, in preparation for using getters below
         commit('SET_ATLAS_DATA', result)
+        
         // Link each data object to related objects
         allDataObjects.forEach((dataObj) => {
           // Add a property for the data object's internal route
