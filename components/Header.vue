@@ -129,17 +129,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   data: ({ $config: { name } }) => ({
     title: `MITRE | ${name.short}`,
-    linksBeginning: [
-      {
-        name: 'Matrix',
-        href: '/matrix'
-      }
-    ],
     linksEnding: [
       {
         name: 'Case Studies',
@@ -184,6 +179,13 @@ export default {
     ]
   }),
   computed: {
+    ...mapGetters(['getFirstMatrixId']),
+    linksBeginning () {
+      return [{
+        name: 'Matrices',
+        href: `/matrices/${this.getFirstMatrixId}`
+      }]
+    },
     linksModded () {
       // Add the Navigator Header item if specified
       let navLinks = []
@@ -204,12 +206,15 @@ export default {
         // const keyTokens = objectType.split('-')
 
         return {
-          name: `${dataObjectToPluralTitle(objectType)}`,       // Plural version
+          name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
           href: `/${dataObjectToPluralTitle(objectType, true)}` // Last word of the above
         }
       })
 
       // Sandwich data links between beginning and end links
+      // if (this.linksBeginning) {
+      //   return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
+      // }
       return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
     }
   }
