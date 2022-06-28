@@ -60,9 +60,9 @@ export default {
   components: {
     Portal
   },
-  // if isGroup is true, the component will attach event listeners to the children of its slot,
+  // if isAutocomplete is true, the component will attach event listeners to the children of its slot,
   // Currently only implemented for v-autocomplete.
-  props: ['isGroup', 'dataObject'],
+  props: ['isAutocomplete', 'dataObject'],
   data: () => ({
     // 'reload' only necessary for group mode
     reload: null, // This keeps track of the function that reloads items and reattached listeners. Need this because for some reason, upon selecting a menu option, the listeners detach
@@ -71,14 +71,15 @@ export default {
     wasTouchHeld: false, // Is the target element currently under touch hold?
     isPreviewLingering: false, // Is the preview currently staying visible for a short time after the mouse is no longer hovering?
     targetElementRect: null, // Bounding box of the target element, used for positioning
+    hoverThread: null, // Keeps track of the thread used for enabling mouse hover after a duration
     lingerThread: null, // Keeps track of the thread used for disabling the preview linger after a duration
     touchHoldThread: null, // Keeps track of duration of touch hold, upon completion will activate preview
     targetDataObject: {}, // The data object who's information will be displayed
     positioningCSS: {
       position: 'absolute',
       transition: 'top 0.5s, left 0.5s',
-      left: '0px',
-      top: '0px'
+      left: 0,
+      top: 0
     }
   }),
   computed: {
@@ -87,6 +88,7 @@ export default {
       return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name)
     },
     targetLocation () {
+      if (!this.targetDataObject) { return '#' }
       // The location a user is sent to when they click the preview card
       return `/${dataObjectToPluralTitle(this.targetDataObject)}/${
         this.targetDataObject.id
@@ -96,9 +98,8 @@ export default {
   mounted () {
     // Group mode will attach listeners to every child
     // Note: to use on v-autocomplete, need eager prop on it
-    if (this.isGroup) {
+    if (this.isAutocomplete) {
       this.reload = this.attachEventListenersToAutocomplete
-
       this.reload()
     } else {
       // Otherwise just attach listeners to the slot item
@@ -141,39 +142,53 @@ export default {
     },
     // Processes the mouse events over target items
     catchMouseEvent (event, dataObject) {
+      const hoverDelay = 250
       switch (event.type) {
         case 'mouseenter':
-          // Enable the element if it was disabled before, if the user hovers over an option again
-          this.overrideDisable = false
-          this.targetElementRect = event.target.getBoundingClientRect()
+          // Clear any previous hover thread, start a new one
+          // Hover thread is used to implement a delay before the preview shows
+          clearTimeout(this.hoverThread)
+          this.hoverThread = setTimeout(() => {
+            // Enable the element if it was disabled before, if the user hovers over an option again
+            this.overrideDisable = false
+            this.targetElementRect = event.target.getBoundingClientRect()
 
-          // This is to prevent the preview from appearing from 0,0 which looks kinda weird
-          // Makes it appear from the middle instead
-          if (!this.isMouseHovering) {
-            this.positioningCSS.left = `${
-              this.targetElementRect.left +
-              this.targetElementRect.width / 2 +
-              window.scrollX
-            }px`
-            this.positioningCSS.top = `${
-              this.targetElementRect.top + window.scrollY
-            }px`
-          }
+            // This is to prevent the preview from appearing from 0,0 which looks kinda weird
+            // Makes it appear from the middle instead
+            if (!(this.isMouseHovering || this.isPreviewLingering)) {
+              if (this.positioningCSS.left === 0) {
+                // == 0 means not assigned yet by positionPreview
+                this.positioningCSS.left = `${
+                  this.targetElementRect.left +
+                  this.targetElementRect.width / 2 +
+                  window.scrollX
+                }px`
+                this.positioningCSS.top = `${
+                  this.targetElementRect.top + window.scrollY
+                }px`
+              }
+            }
 
-          this.targetDataObject = dataObject
-          this.isMouseHovering = true
-          this.positionPreview()
+            this.targetDataObject = dataObject
+            this.isMouseHovering = true
+            this.positionPreview()
+          }, hoverDelay)
           break
         case 'mouseleave':
+          // Clear the hover thread, since the user is no longer hovering
+          clearTimeout(this.hoverThread)
           // Start the linger timer if leave
-          this.isMouseHovering = false
           this.startLingering()
           break
         case 'focusout':
         case 'click':
           // Removes the preview if they click or click out of the element
+          if (this.isMobile) {
+            // Don't register this event on mobile (fires on long press, messes with preview state)
+            return
+          }
           this.overrideDisable = true
-          if (this.isGroup) {
+          if (this.isAutocomplete) {
             this.reload()
           }
 
@@ -203,20 +218,17 @@ export default {
       // The purpose of setTimeout is to let me reference the component being rendered while it is rendering
       // otherwise, the component may not exist yet
 
-      // The "this" and "that" business allows me to send a reference of "this" into the setTimeout thread,
-      // the reference being called "that"
-
       if (this.isMobile) {
         return
       } // Don't try to do positioning on mobile
       setTimeout(
-        (that) => {
+        () => {
           const anchorOffset = { x: 10, y: 10 } // Offset of the preview to the element
           const gutterSize = { x: 20, y: 20 } // Minimum whitepace required on the side of the preview
           const preferRight = true // Prefer the right of the preview to be attached to the item
           const preferTop = true // Prefer the top of the preview to be attached to the item
           const scrollbarOffset = 20 // Accounts for the scrollbar in the menu component
-          const previewElement = that.$refs['preview-card'].$el // A referenece to our own component
+          const previewElement = this.$refs['preview-card'].$el // A referenece to our own component
           const previewElementRect = previewElement.getBoundingClientRect()
           const absoluteViewport = {
             // The bounds of our viewport in absolute terms
@@ -225,9 +237,9 @@ export default {
           }
           // Calculate the absolute location of the target element
           const absoluteTargetRectLeft =
-            window.scrollX + that.targetElementRect.left
+            window.scrollX + this.targetElementRect.left
           const absoluteTargetRectTop =
-            window.scrollY + that.targetElementRect.top
+            window.scrollY + this.targetElementRect.top
 
           let leftOffset =
             absoluteTargetRectLeft - (previewElementRect.width + anchorOffset.x)
@@ -237,7 +249,7 @@ export default {
           if (leftOffset < gutterSize.x || !preferRight) {
             leftOffset =
               absoluteTargetRectLeft +
-              (that.targetElementRect.width + anchorOffset.x + scrollbarOffset)
+              (this.targetElementRect.width + anchorOffset.x + scrollbarOffset)
           }
 
           // If there's no space below the element, or we prefer the preview on the other side
@@ -249,15 +261,14 @@ export default {
             topOffset =
               absoluteTargetRectTop -
               previewElementRect.height +
-              that.targetElementRect.height
+              this.targetElementRect.height
           }
 
           // Set the CSS
-          that.positioningCSS.left = `${leftOffset}px`
-          that.positioningCSS.top = `${topOffset}px`
+          this.positioningCSS.left = `${leftOffset}px`
+          this.positioningCSS.top = `${topOffset}px`
         },
-        0, // Zero delay, since we just want parallel execution
-        this // Reference to "this"
+        0 // Zero delay, since we just want parallel execution
       )
     },
     // Handles what happens when the mouse goes to hover over the preview itself
@@ -273,8 +284,10 @@ export default {
     // Allows the preview to maintain display for a short duration after the user has stopped hovering
     startLingering () {
       const lingerDuration = 500
+      if (this.isMouseHovering) {
+        this.isPreviewLingering = true
+      }
       this.isMouseHovering = false
-      this.isPreviewLingering = true
       // Kills the previous linger thread. Otherwise, moving your mouse rapidly over a list of items would
       // cause lingering to be prematurely ended
       clearTimeout(this.lingerThread)
@@ -313,46 +326,65 @@ export default {
       if (!arrowIcon || !linkIcon) {
         return
       }
-      const activeColor = 'rgb(100, 181, 246)'
+      // CSS in raw values, so I can compute offsets to keep things centered when changing sizes
       const inactiveColor = 'rgba(0, 0, 0, 0.54)'
+      const activeColor = 'rgb(100, 181, 246)'
+      const inactiveIconSize = 25
+      const activeIconSize = 30
+      const inactiveIconOffset = {
+        bottom: 20,
+        right: 30
+      }
+      const sizingPositioningOffset = (activeIconSize - inactiveIconSize) / 2
+      const activeIconOffset = {
+        bottom: inactiveIconOffset.bottom - sizingPositioningOffset,
+        right: inactiveIconOffset.right - sizingPositioningOffset
+      }
 
       // CSS for different arrow states
-      const unhoveredCSS = {
+      const inactiveIconCSS = {
         arrowIcon: {
           transform: 'rotate(0deg)',
           color: inactiveColor,
           opacity: 1,
-          'font-size': '20px'
+          right: `${inactiveIconOffset.right}px`,
+          bottom: `${inactiveIconOffset.bottom}px`,
+          'font-size': `${inactiveIconSize}px`
         },
         linkIcon: {
           transform: 'rotate(180deg)',
           color: inactiveColor,
           opacity: 0,
-          'font-size': '20px'
+          right: `${inactiveIconOffset.right}px`,
+          bottom: `${inactiveIconOffset.bottom}px`,
+          'font-size': `${inactiveIconSize}px`
         }
       }
-      const hoveredCSS = {
+      const activeIconCSS = {
         arrowIcon: {
           transform: 'rotate(180deg)',
           color: activeColor,
           opacity: 0,
-          'font-size': '25px'
+          right: `${activeIconOffset.right}px`,
+          bottom: `${activeIconOffset.bottom}px`,
+          'font-size': `${activeIconSize}px`
         },
         linkIcon: {
           transform: 'rotate(360deg)',
           color: activeColor,
           opacity: 1,
-          'font-size': '25px'
+          right: `${activeIconOffset.right}px`,
+          bottom: `${activeIconOffset.bottom}px`,
+          'font-size': `${activeIconSize}px`
         }
       }
-
       // Replace the css
       if (!this.isMouseHovering) {
-        Object.assign(arrowIcon.style, unhoveredCSS.arrowIcon)
-        Object.assign(linkIcon.style, unhoveredCSS.linkIcon)
+        Object.assign(arrowIcon.style, inactiveIconCSS.arrowIcon)
+        Object.assign(linkIcon.style, inactiveIconCSS.linkIcon)
       } else {
-        Object.assign(arrowIcon.style, hoveredCSS.arrowIcon)
-        Object.assign(linkIcon.style, hoveredCSS.linkIcon)
+        Object.assign(arrowIcon.style, activeIconCSS.arrowIcon)
+        Object.assign(linkIcon.style, activeIconCSS.linkIcon)
       }
     }
   }
@@ -362,8 +394,8 @@ export default {
 <style scoped>
 #preview-card {
   width: 400px;
+  z-index: 3000;
 }
-
 #preview-container {
   padding: 0;
   margin: 0;
@@ -371,11 +403,10 @@ export default {
 .v-card__text,
 .v-card__title {
   word-break: normal;
-  max-height: 500px;
+  max-height: 40vh;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 .v-card__text::before {
   content: '';
   width: 100%;
@@ -383,24 +414,21 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  background: linear-gradient(transparent 500px, white, white);
+  background: linear-gradient(transparent 40vh, rgba(255, 255, 255, 0.7), white);
 }
-
 .v-overlay {
   z-index: 3000 !important;
 }
 .v-card-actions {
   position: relative;
 }
-
 #link-icon {
   opacity: 0;
   color: '#dc3545';
   transform: rotate(180deg);
 }
-
 .v-icon {
-  transition: color 0.2s, font 0.2s, right 0.2s, bottom 0.2s, transform 0.2s,
+  transition: color 0.3s, font 0.3s, right 0.3s, bottom 0.3s, transform 0.3s,
     opacity 0.5s;
   position: absolute !important;
   right: 30px;

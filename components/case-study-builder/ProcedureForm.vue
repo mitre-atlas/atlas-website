@@ -12,7 +12,7 @@
     <v-card-text class="px-md-4 mx-lg-auto">
       <v-row>
         <v-col cols="12" lg="6">
-          <hover-preview2 :is-group="true">
+          <hover-preview2 :is-autocomplete="true">
             <v-autocomplete
               id="tactic_selection"
               v-model="selectTacticData2"
@@ -34,7 +34,7 @@
           </hover-preview2>
         </v-col>
         <v-col cols="12" lg="6">
-          <hover-preview2 :is-group="true">
+          <hover-preview2 :is-autocomplete="true">
             <v-autocomplete
               id="technique_selection"
               v-model="selectTechniqueData2"
