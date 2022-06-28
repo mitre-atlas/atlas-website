@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :items="getMatrices" :to="`/matrix/${getMatrices.id}`" fixed-title="Matrices" />
+    <data-side-nav :items="getMatrices" fixed-title="Matrices" />
     <page-title>{{ title }}</page-title>
 
     <p>

@@ -179,11 +179,11 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters(['getMatrixId']),
+    ...mapGetters(['getFirstMatrixId']),
     linksBeginning () {
       return [{
         name: 'Matrices',
-        href: `/matrices/${this.getMatrixId}`
+        href: `/matrices/${this.getFirstMatrixId}`
       }]
     },
     linksModded () {
