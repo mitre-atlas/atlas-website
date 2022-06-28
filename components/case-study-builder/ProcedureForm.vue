@@ -1,18 +1,9 @@
 <template>
   <div>
-    <hover-preview
-      :y-off="-24"
-      :x-off="hoverOffset"
-      :appear-right="appearRight"
-      :from-right="fromRight"
-      :new-target-id="hoverTargetID"
-      :parent-event="mouseEvent"
-    />
-
     <v-card-text class="px-md-4 mx-lg-auto">
       <v-row>
         <v-col cols="12" lg="6">
-          <hover-preview2 :is-autocomplete="true">
+          <hover-preview :is-autocomplete="true">
             <v-autocomplete
               id="tactic_selection"
               v-model="selectTacticData2"
@@ -31,10 +22,10 @@
                 </div>
               </template>
             </v-autocomplete>
-          </hover-preview2>
+          </hover-preview>
         </v-col>
         <v-col cols="12" lg="6">
-          <hover-preview2 :is-autocomplete="true">
+          <hover-preview :is-autocomplete="true">
             <v-autocomplete
               id="technique_selection"
               v-model="selectTechniqueData2"
@@ -64,7 +55,7 @@
                 </div>
               </template>
             </v-autocomplete>
-          </hover-preview2>
+          </hover-preview>
         </v-col>
       </v-row>
 
