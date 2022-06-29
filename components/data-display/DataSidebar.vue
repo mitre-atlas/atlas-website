@@ -12,7 +12,7 @@
         v-for="(relatedObjs, objectType) in dataObject.relatedObjects"
         :key="objectType"
       >
-        <span class="font-weight-bold">Number of {{ pluralize(objectType) }}:</span> {{ relatedObjs.length }}
+        <data-sidebar-entry :objectType="objectType" :relatedObjs="relatedObjs" />
       </p>
     </v-card-text>
   </v-card>

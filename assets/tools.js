@@ -4,6 +4,11 @@ import { validate } from 'jsonschema'
 
 import schema from '../static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 
+// Capitalizes the first letter of the provided string
+export function capitalize (str) {
+  return `${str[0].toUpperCase()}${str.slice(1)}`
+}
+
 export function generateID (template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
   // adapted from stackoverflow

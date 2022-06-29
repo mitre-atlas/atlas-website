@@ -1,17 +1,17 @@
 <template>
   <v-app>
     <client-only>
-
       <Header />
 
       <v-main>
         <v-container>
+          <breadcrumbs />
           <Nuxt />
         </v-container>
       </v-main>
 
       <Footer />
-      </client-only>
+    </client-only>
   </v-app>
 </template>
 

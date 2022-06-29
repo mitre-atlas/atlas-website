@@ -2,7 +2,6 @@
   <div>
     <data-side-nav :items="$store.getters.getDataObjectsByType('case-studies')" />
   <div class="mx-8">
-    <breadcrumbs />
     <page-title>
       {{ study.name }}
     </page-title>
@@ -28,7 +27,7 @@
       </v-col>
     </v-row>
     <v-row v-if="study.references">
-      <v-col>
+      <v-col v-if="study.references.length > 0">
         <page-section-title>Sources</page-section-title>
 
         <ol class="mt-2 mb-3">

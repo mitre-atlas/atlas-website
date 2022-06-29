@@ -9,7 +9,6 @@
         @leave-page="leavePage"
       />
     </v-dialog>
-    <breadcrumbs />
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
