@@ -26,9 +26,7 @@ export function validFormatYAML (yamlObj) {
     // i.e. 2022-01-01
     yamlObj.study['incident-date'] = yamlObj.study['incident-date'].toISOString().substring(0, 10)
   } catch (e) {
-    if (e instanceof TypeError) {
-      return 'instance.incident-date is not of a type date'
-    }
+    // Error will be handled below
   }
   const validObj = validate(yamlObj, schema, { nestedErrors: true })
   // If yaml file format is valid
