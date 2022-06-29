@@ -49,12 +49,14 @@ export const getters = {
   getReferencedDataObjects: (_, getters) => (argObj) => {
     // Returns an object with key/object-type to array of objects referenced by this object
 
+    // Keys that will not be considered as properties or references to other data objects
     const defaultDataObjectKeys = [
       'id',
       'object-type',
       'name',
       'description',
-      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
+      'route', // Note that this is added in nuxtServerInit, not originally part of the YAML data
+      'techniques' // Note that this applies only to tactics, as the matrix hierarchy is built out in nuxtServerInit
     ]
 
     // Get object keys that may be references, i.e. are not default
@@ -174,7 +176,10 @@ export const getters = {
   getDataObjectById: (_, getters) => (value) => {
     // Returns the data object with the corresponding ID
     return getters.getDataObjects.find(obj => obj['id'] === value)
-  }
+  },
+  getFirstMatrixId: (state) => {
+    return state.data.matrices[0].id
+  },
 }
 
 
@@ -211,6 +216,29 @@ export const actions = {
           // Collect data objects within each matrix
           const {id, name, ...matrix_objs} = matrix
 
+          // Create a populated tree of tactics > techniques > subtechniques in the current data
+
+          // Split techniques into top-level parents, and subtechniques
+          const parentTechniques = matrix_objs.techniques.filter(t => 'tactics' in t)
+          const subtechniques = matrix_objs.techniques.filter(t => 'subtechnique-of' in t)
+
+          // Add subtechniques to top-level techniques
+          const populatedTechniques = parentTechniques.map((t) => {
+            // Check if any subtechniques reference this technique
+            if (subtechniques.some(s => s['subtechnique-of'] === t.id)) {
+              // Add associated subtechniques to this technique
+              t.subtechniques = subtechniques.filter(s => s['subtechnique-of'] === t.id)
+            }
+            return t
+          })
+
+          // Add techniques to tactics
+          matrix_objs.tactics.map((t) => {
+            // Add techniques that reference this tactic
+            t.techniques = populatedTechniques.filter(pt => pt.tactics.includes(t.id))
+            return t
+          })
+
           // Iterate over objects and add them to the result
           for (const [key, dataObjs] of Object.entries(matrix_objs)) {
             // Add objects from this matrix into the result
@@ -230,6 +258,7 @@ export const actions = {
             // Remove this key and values from the result's matrix,
             // to reduce data duplciationg. Leaving ID and name
             delete result.matrices[i][key]
+            result.matrices[i]["route"] = `/matrices/${id}`
           }
         })
 
