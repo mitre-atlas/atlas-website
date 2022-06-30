@@ -23,6 +23,7 @@
             :disabled="overrideDisable"
             :href="targetLocation"
             :light="isMobile"
+            :style="isMobile ? 'margin: auto;' : ''"
             @mouseenter="() => setMouseHoverStateOverSelf(true)"
             @mouseleave="() => setMouseHoverStateOverSelf(false)"
             @touchstart.native="wasTouchHeld = false"
@@ -393,6 +394,7 @@ export default {
 
 <style scoped>
 #preview-card {
+  max-width: 80%;
   width: 400px;
   z-index: 3000;
 }
