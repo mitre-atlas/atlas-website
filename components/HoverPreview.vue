@@ -12,7 +12,7 @@
           "
           id="preview-container"
           :style="isMobile ? {} : positioningCSS"
-          @touchstart="() => (wasTouchHeld = false)"
+          @touchstart="wasTouchHeld = false"
           @contextmenu="event => event.preventDefault()"
         >
           <v-card
@@ -25,12 +25,12 @@
             :light="isMobile"
             @mouseenter="() => setMouseHoverStateOverSelf(true)"
             @mouseleave="() => setMouseHoverStateOverSelf(false)"
-            @touchstart.native="() => (wasTouchHeld = false)"
+            @touchstart.native="wasTouchHeld = false"
             @contextmenu="event => event.preventDefault()"
           >
             <v-card-title>{{ targetDataObject.name }}</v-card-title>
-            <v-card-subtitle>
-              ATLAS {{ targetDataObject['object-type'] }} |
+            <v-card-subtitle class="text-capitalize">
+              {{ targetDataObject['object-type'] }} |
               {{ targetDataObject.id }}
             </v-card-subtitle>
             <v-card-text v-html="$md.render(targetDataObject.description)" />
