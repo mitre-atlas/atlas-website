@@ -10,35 +10,36 @@
               (wasTouchHeld && isMobile)) &&
               !overrideDisable
           "
-          id="preview-container"
+          class="preview-container"
           :style="isMobile ? {} : positioningCSS"
-          @touchstart="() => (wasTouchHeld = false)"
+          @touchstart="wasTouchHeld = false"
           @contextmenu="event => event.preventDefault()"
         >
           <v-card
-            id="preview-card"
             ref="preview-card"
+            class="preview-card"
             nuxt
             target="_blank"
             :disabled="overrideDisable"
-            :href="targetLocation"
+            :href="targetDataObject.route"
             :light="isMobile"
+            :style="cardStyle"
             @mouseenter="() => setMouseHoverStateOverSelf(true)"
             @mouseleave="() => setMouseHoverStateOverSelf(false)"
-            @touchstart.native="() => (wasTouchHeld = false)"
+            @touchstart.native="wasTouchHeld = false"
             @contextmenu="event => event.preventDefault()"
           >
             <v-card-title>{{ targetDataObject.name }}</v-card-title>
-            <v-card-subtitle>
-              ATLAS {{ targetDataObject['object-type'] }} |
+            <v-card-subtitle class="text-capitalize">
+              {{ targetDataObject['object-type'] }} |
               {{ targetDataObject.id }}
             </v-card-subtitle>
             <v-card-text v-html="$md.render(targetDataObject.description)" />
             <v-card-actions>
-              <v-icon id="arrow-icon" ref="arrow-icon">
+              <v-icon ref="arrow-icon" class="arrow-icon">
                 mdi-arrow-right
               </v-icon>
-              <v-icon id="link-icon" ref="link-icon">
+              <v-icon ref="link-icon" class="link-icon">
                 mdi-open-in-new
               </v-icon>
             </v-card-actions>
@@ -51,7 +52,6 @@
 
 <script>
 import { Portal, setSelector } from '@linusborg/vue-simple-portal' // Used for portaling the preview to a high parent for absolute positioning
-import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 setSelector('app') // Portals the preview inside the Vue App component; otherwise we wouldn't have styling
 
@@ -61,8 +61,7 @@ export default {
     Portal
   },
   // if isAutocomplete is true, the component will attach event listeners to the children of its slot,
-  // Currently only implemented for v-autocomplete.
-  props: ['isAutocomplete', 'dataObject'],
+  props: ['isAutocomplete', 'isListGroup', 'dataObjects'],
   data: () => ({
     // 'reload' only necessary for group mode
     reload: null, // This keeps track of the function that reloads items and reattached listeners. Need this because for some reason, upon selecting a menu option, the listeners detach
@@ -79,20 +78,39 @@ export default {
       position: 'absolute',
       transition: 'top 0.5s, left 0.5s',
       left: 0,
-      top: 0
+      top: 0,
+      'z-index': 3000
+    },
+    // Changes attributes for display
+    displayOptions: {
+      preferRight: true, // Prefer the top of the preview to be attached to the item
+      preferTop: true, // Prefer the right of the preview to be attached to the item
+      cardWidth: '600px',
+      attachmentDirection: 'horizontal', // Whether to put the card beside the element or on top/below it
+      attachmentOffset: { x: 10, y: 10 }, // Offset of the preview to the element
+      gutterSize: { x: 20, y: 20 }, // Minimum whitepace required on the side of the preview
+      scrollbarOffset: 20, // Accounts for the scrollbar in the menu component
+      hoverDelay: 250, // Delay from mouseover -> preview shows
+      lingerDuration: 500 // Delay from mouseleave -> preview goes away
     }
   }),
   computed: {
     // Uses breakpoints to check if we are on mobile
     isMobile () {
-      return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name)
+      return this.$vuetify.breakpoint.mobile
     },
-    targetLocation () {
-      if (!this.targetDataObject) { return '#' }
-      // The location a user is sent to when they click the preview card
-      return `/${dataObjectToPluralTitle(this.targetDataObject)}/${
-        this.targetDataObject.id
-      }`
+    // Sets the card style programatically, to handle mobile screens and different
+    // display options
+    cardStyle () {
+      const styleOptions = {
+        width: this.displayOptions.cardWidth,
+        'max-width': '80vh'
+      }
+      if (this.isMobile) {
+        styleOptions.margin = 'auto'
+      }
+
+      return styleOptions
     }
   },
   mounted () {
@@ -100,18 +118,39 @@ export default {
     // Note: to use on v-autocomplete, need eager prop on it
     if (this.isAutocomplete) {
       this.reload = this.attachEventListenersToAutocomplete
-      this.reload()
+    } else if (this.isListGroup) {
+      this.displayOptions.attachmentDirection = 'vertical'
+      this.reload = this.attachEventListenersToListGroup
     } else {
       // Otherwise just attach listeners to the slot item
       this.connectEventListenersToTargetItems([
         {
-          dataObject: this.dataObject,
+          dataObject: this.dataObjects,
           element: this.$slots.default[0].elm
         }
       ])
     }
+    if (this.reload) {
+      this.reload()
+    }
   },
   methods: {
+    attachEventListenersToListGroup () {
+      const listGroupNode = this.$slots.default[0]
+      const listItemElements = Array.from(
+        listGroupNode.elm.children[1].children
+      )
+      const listItems = listItemElements.map(
+        // Link the data objects to the child elements
+        (listItemElement, index) => {
+          return {
+            dataObject: this.dataObjects[index],
+            element: listItemElement
+          }
+        }
+      )
+      this.connectEventListenersToTargetItems(listItems)
+    },
     attachEventListenersToAutocomplete () {
       // Below obtains references to the embeded list items of the v-autocomplete
       const autocompleteNode = this.$slots.default[0]
@@ -142,7 +181,6 @@ export default {
     },
     // Processes the mouse events over target items
     catchMouseEvent (event, dataObject) {
-      const hoverDelay = 250
       switch (event.type) {
         case 'mouseenter':
           // Clear any previous hover thread, start a new one
@@ -172,7 +210,7 @@ export default {
             this.targetDataObject = dataObject
             this.isMouseHovering = true
             this.positionPreview()
-          }, hoverDelay)
+          }, this.displayOptions.hoverDelay)
           break
         case 'mouseleave':
           // Clear the hover thread, since the user is no longer hovering
@@ -223,11 +261,6 @@ export default {
       } // Don't try to do positioning on mobile
       setTimeout(
         () => {
-          const anchorOffset = { x: 10, y: 10 } // Offset of the preview to the element
-          const gutterSize = { x: 20, y: 20 } // Minimum whitepace required on the side of the preview
-          const preferRight = true // Prefer the right of the preview to be attached to the item
-          const preferTop = true // Prefer the top of the preview to be attached to the item
-          const scrollbarOffset = 20 // Accounts for the scrollbar in the menu component
           const previewElement = this.$refs['preview-card'].$el // A referenece to our own component
           const previewElementRect = previewElement.getBoundingClientRect()
           const absoluteViewport = {
@@ -240,30 +273,70 @@ export default {
             window.scrollX + this.targetElementRect.left
           const absoluteTargetRectTop =
             window.scrollY + this.targetElementRect.top
+          let leftOffset
+          let topOffset
 
-          let leftOffset =
-            absoluteTargetRectLeft - (previewElementRect.width + anchorOffset.x)
-          let topOffset = absoluteTargetRectTop
-
-          // If there's no space on the left, of the element, or we prefer the preview on the other side
-          if (leftOffset < gutterSize.x || !preferRight) {
+          // If we are attaching the preview to the side of the target elemement,
+          if (this.displayOptions.attachmentDirection === 'horizontal') {
+            leftOffset =
+              absoluteTargetRectLeft -
+              (previewElementRect.width +
+                this.displayOptions.attachmentOffset.x)
+            topOffset = absoluteTargetRectTop
+            // If there's no space on the left of the element, or we prefer the left of the preview to be attached
+            if (
+              leftOffset < this.displayOptions.gutterSize.x ||
+              !this.displayOptions.preferRight
+            ) {
+              leftOffset =
+                absoluteTargetRectLeft +
+                (this.targetElementRect.width +
+                  this.displayOptions.attachmentOffset.x +
+                  this.displayOptions.scrollbarOffset)
+            }
+            // If there's no space below the element, or we prefer bottom of the preview to be attached
+            if (
+              topOffset + previewElementRect.height >
+                absoluteViewport.y - this.displayOptions.gutterSize.y ||
+              !this.displayOptions.preferTop
+            ) {
+              topOffset =
+                absoluteTargetRectTop -
+                previewElementRect.height +
+                this.targetElementRect.height
+            }
+          // Otherwise, if we are attaching the preview to the top or bottom of the target element
+          } else if (this.displayOptions.attachmentDirection === 'vertical') {
             leftOffset =
               absoluteTargetRectLeft +
-              (this.targetElementRect.width + anchorOffset.x + scrollbarOffset)
-          }
-
-          // If there's no space below the element, or we prefer the preview on the other side
-          if (
-            topOffset + previewElementRect.height >
-              absoluteViewport.y - gutterSize.y ||
-            !preferTop
-          ) {
+              this.targetElementRect.width -
+              previewElementRect.width
             topOffset =
               absoluteTargetRectTop -
-              previewElementRect.height +
-              this.targetElementRect.height
+              (previewElementRect.height +
+                this.displayOptions.attachmentOffset.y)
+            // TODO: Change "prefer" logic to be more consistent with 'horizontal' (right now its flipped)
+            // If there's no space above the element, or we prefer the top of the preview to be attached
+            if (
+              topOffset < this.displayOptions.gutterSize.y + window.scrollY ||
+              !this.displayOptions.preferTop
+            ) {
+              topOffset =
+                absoluteTargetRectTop +
+                this.targetElementRect.height +
+                this.displayOptions.attachmentOffset.y
+              const distanceBelowScreen = absoluteTargetRectTop + previewElementRect.height - (document.body.scrollHeight - this.displayOptions.gutterSize.y)
+              // If there's no space below (and above) the element, make a compromise and position it in the middle
+              if (distanceBelowScreen > 0) {
+                topOffset =
+                absoluteTargetRectTop - distanceBelowScreen
+              }
+            }
+            // If we prefer the right of the preview to be attached
+            if (!this.displayOptions.preferRight) {
+              leftOffset = absoluteTargetRectLeft
+            }
           }
-
           // Set the CSS
           this.positioningCSS.left = `${leftOffset}px`
           this.positioningCSS.top = `${topOffset}px`
@@ -283,7 +356,6 @@ export default {
     },
     // Allows the preview to maintain display for a short duration after the user has stopped hovering
     startLingering () {
-      const lingerDuration = 500
       if (this.isMouseHovering) {
         this.isPreviewLingering = true
       }
@@ -294,7 +366,7 @@ export default {
       // Creates a new thread to end the preview after a short duration
       this.lingerThread = setTimeout(() => {
         this.isPreviewLingering = false
-      }, lingerDuration)
+      }, this.displayOptions.lingerDuration)
     },
     connectEventListenersToTargetItems (targetItems) {
       // For each of the target items, attach the necessary event listeners
@@ -392,11 +464,7 @@ export default {
 </script>
 
 <style scoped>
-#preview-card {
-  width: 400px;
-  z-index: 3000;
-}
-#preview-container {
+.preview-container {
   padding: 0;
   margin: 0;
 }
@@ -414,7 +482,11 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  background: linear-gradient(transparent 40vh, rgba(255, 255, 255, 0.7), white);
+  background: linear-gradient(
+    transparent 25vh,
+    rgba(255, 255, 255, 0.7),
+    white
+  );
 }
 .v-overlay {
   z-index: 3000 !important;
@@ -422,7 +494,7 @@ export default {
 .v-card-actions {
   position: relative;
 }
-#link-icon {
+.link-icon {
   opacity: 0;
   color: '#dc3545';
   transform: rotate(180deg);
