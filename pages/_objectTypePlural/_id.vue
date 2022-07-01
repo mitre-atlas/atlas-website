@@ -28,6 +28,7 @@
         :key="objectType"
         :object-type="objectType"
         :items="relatedObjs"
+        :procedure-step-technique-id="id"
       />
     </div>
   </div>
