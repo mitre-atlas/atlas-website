@@ -26,8 +26,8 @@ export const getters = {
       }
       // Otherwise this is an object keyed by matrix ID,
       // and the ID is is not specified
-      // Return the first matrix's objects of this type
-      return Object.values(content)[0]
+      // Return the all matrices' objects of this type
+      return Object.values(content).flat()
     }
     // Otherwise access the matrix's objects by ID
     return content[matrixId] ?? []
