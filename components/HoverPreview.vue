@@ -506,4 +506,7 @@ export default {
   right: 30px;
   bottom: 20px;
 }
+::v-deep a {
+  color: inherit;
+}
 </style>
