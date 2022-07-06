@@ -39,7 +39,10 @@ export default {
         items.forEach((item, index) => {
           // determine label for breadcrumb
           let text = ''
-          if (this.$route.name.includes('-id') && index === items.length - 1) { // check if is data object
+          if (this.$route.name.includes('matrices-id') && index === items.length - 1) {
+            const dataObj = this.$store.getters.getMatrixByID(item)
+            text = dataObj.name
+          } else if (this.$route.name.includes('-id') && index === items.length - 1) { // check if is data object
             const dataObj = this.$store.getters.getDataObjectById(item)
             text = dataObj.name
 
