@@ -70,12 +70,10 @@
               :ripple="false"
             >
               <v-list-item>
-                <!-- <v-list-item> -->
                 <v-list-item-title style="font-weight: 400;" class="text-wrap">
                   <!-- Font size and color to match v-expansion-panel-header style -->
                   {{ technique.name }}
                 </v-list-item-title>
-              <!-- </v-list-item> -->
               </v-list-item>
             </v-list-item>
 
