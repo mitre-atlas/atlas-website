@@ -21,13 +21,6 @@ export function generateID (template = 'xxxx-xxxx-xxxx') {
 
 // Verifies if user uploaded case study yaml file is in correct format for use in case builder
 export function validFormatYAML (yamlObj) {
-  // Keeping date in ISO format for date format validation
-  try {
-    // i.e. 2022-01-01
-    yamlObj.study['incident-date'] = yamlObj.study['incident-date'].toISOString().substring(0, 10)
-  } catch (e) {
-    // Error will be handled below
-  }
   const validObj = validate(yamlObj, schema, { nestedErrors: true })
   // If yaml file format is valid
   if (validObj.valid) {
@@ -66,7 +59,7 @@ export function download (filename, text) {
 }
 
 export function downloadStudyFile (study, filename) {
-  const studyYAML = dump(study)
+  const studyYAML = dump(study).replace('T00:00:00.000Z', '')
   download(`${filename}.yaml`, studyYAML)
 }
 
