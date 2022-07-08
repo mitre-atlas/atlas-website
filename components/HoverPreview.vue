@@ -471,7 +471,7 @@ export default {
 .v-card__text,
 .v-card__title {
   word-break: normal;
-  max-height: 40vh;
+  max-height: 15vh;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -483,7 +483,7 @@ export default {
   left: 0;
   top: 0;
   background: linear-gradient(
-    transparent 25vh,
+    transparent 15vh,
     rgba(255, 255, 255, 0.7),
     white
   );
