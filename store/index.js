@@ -191,6 +191,9 @@ export const getters = {
   getFirstMatrixId: (state) => {
     return state.data.matrices[0].id
   },
+  getMatrixByID: (state) => (value) => {
+    return state.data.matrices.find(obj => obj['id'] === value)
+  }
 }
 
 
