@@ -1,6 +1,6 @@
 <template>
   <div id="sourceRender">
-    <v-card>
+    <v-card outlined>
       <v-card-title>
         <div v-if="index != null">
           Source {{ index+1 }}
@@ -33,7 +33,7 @@
         <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
           Cancel
         </v-btn>
-        <v-btn text color="green" @click="addSource" id="save_reference">
+        <v-btn id="save_reference" text color="green" @click="addSource">
           Save
         </v-btn>
       </v-card-actions>

@@ -1,7 +1,11 @@
 <template>
   <div id="addForm">
-    <v-card class="my-5">
-      <v-card-title>
+    <v-card
+      class="my-5"
+      outlined
+      :style="[shouldShowErrorBorder ? { 'border-color': '#FF5252', 'border-width': '2px' } : {}]"
+    >
+      <v-card-title :style="shouldShowErrorBorder ? 'color: #FF5252' : ''">
         Add Procedure Step
         <v-spacer />
       </v-card-title>
@@ -40,14 +44,25 @@
 <script>
 export default {
   name: 'AddProcedureStep',
-  props: ['selectTactic', 'selectTechnique', 'description', 'addingStep'],
+  props: ['selectTactic', 'selectTechnique', 'description', 'addingStep', 'isError'],
   data () {
     return {
       selectTacticData: this.selectTactic,
       selectTechniqueData: this.selectTechnique,
       descriptionData: this.description,
       addStepErr: '',
-      addingBool: this.addingStep
+      addingBool: this.addingStep,
+      shouldShowErrorBorder: this.isError
+    }
+  },
+  watch: {
+    isError: {
+      // Ensures that the component data is up to date with error update from createstudy
+      immediate: true,
+      deep: true,
+      handler (newVal, oldVal) {
+        this.shouldShowErrorBorder = newVal
+      }
     }
   },
   methods: {

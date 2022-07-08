@@ -20,6 +20,7 @@
           readonly
           v-bind="attrs"
           :rules="rules"
+          :error-messages="errors"
           v-on="on"
         />
       </template>
@@ -56,7 +57,8 @@ export default {
   props: [
     'startDate',
     'startDateGranularity',
-    'initialRules'
+    'initialRules',
+    'initialErrors'
   ],
   data () {
     return {
@@ -64,7 +66,8 @@ export default {
       menu: false,
       date: this.startDate,
       dateGranularity: this.startDateGranularity,
-      rules: this.initialRules
+      rules: this.initialRules,
+      errors: this.initialErrors
     }
   },
   computed: {
@@ -101,6 +104,7 @@ export default {
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
+      this.$emit('isDatePickerOpen', val)
     },
     startDate: {
       // Ensures that the component data is up to date with prop change
@@ -124,6 +128,15 @@ export default {
       immediate: true,
       handler (newVal, oldVal) {
         this.rules = newVal
+      }
+    },
+    initialErrors: {
+      // Ensures that the component data is up to date with errors update from createstudy
+      // during form submit
+      immediate: true,
+      deep: true,
+      handler (newVal, oldVal) {
+        this.errors = newVal
       }
     }
   },
@@ -163,12 +176,18 @@ export default {
       // Close menu
       this.menu = false
 
+      // Reset any error messages
+      this.errors = []
+
       // Emit date pieces (1-indexed month) and date granularity
       this.$emit('selectedDate', this.date, this.dateGranularity)
     },
     cancel () {
       // Close menu
       this.menu = false
+
+      // Reset any error messages
+      this.errors = []
 
       // Reset to start elements
       this.date = this.startDate

@@ -27,6 +27,7 @@
 
         <v-card-text>
           <v-text-field
+            id="titleInput"
             v-model="studyData.study.name"
             :rules="rules.title"
             label="Title"
@@ -34,10 +35,10 @@
             prepend-inner-icon="mdi-format-title"
             outlined
             required
-            id="titleInput"
           />
 
           <v-text-field
+            id="reporterInput"
             v-model="studyData.study['reported-by']"
             :rules="rules.reportedBy"
             label="Reported by"
@@ -45,17 +46,19 @@
             prepend-inner-icon="mdi-account"
             outlined
             required
-            id="reporterInput"
           />
 
           <incident-date-picker
             :start-date="studyData.study['incident-date']"
             :start-date-granularity="studyData.study['incident-date-granularity']"
             :initial-rules="rules.incidentDate"
+            :initial-errors="errors.incidentDate"
+            @isDatePickerOpen="isDatePickerOpen = $event"
             @selectedDate="setIncidentDate"
           />
 
           <v-textarea
+            id="summaryInput"
             v-model="studyData.study.summary"
             :rules="rules.summary"
             label="Summary"
@@ -64,7 +67,6 @@
             outlined
             required
             auto-grow
-            id="summaryInput"
           />
         </v-card-text>
 
@@ -72,7 +74,7 @@
           Procedure
         </v-card-title>
         <v-card-subtitle>
-          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. Add at least one step.
+          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. <span :style="shouldErrorProcedureStepInput ? 'color: #FF5252' : ''">Add at least one step.</span>
           <procedure-legend />
         </v-card-subtitle>
         <v-card-text>
@@ -84,14 +86,15 @@
           />
           <add-procedure-step
             v-if="addingStep"
+            :id="selection"
             ref="addProcStepRef"
             :select-tactic="selectTactic"
             :select-technique="selectTechnique"
             :description="description"
             :adding-step="addingStep"
+            :is-error="shouldErrorProcedureStepInput"
             @clicked="addProcedureStep"
             @addingBoolUpdate="addingStep = $event"
-            :id="selection"
           />
           <div v-else>
             <v-btn
@@ -128,7 +131,7 @@
                     :source="value"
                     :index="key"
                     @clicked="addSourceAt"
-                    v-on:delete="deleteSourceAt"
+                    @delete="deleteSourceAt"
                   />
                 </div>
               </v-list-item-group>
@@ -136,11 +139,11 @@
           </div>
           <add-source
             v-if="addingSource"
+            :id="saveButton"
             ref="addSourceRef"
             :index="studyData.study.references.length"
             @clicked="addSource"
             @addingBoolUpdate="addingSource = $event"
-            :id="saveButton"
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingSource = true">
@@ -178,7 +181,7 @@
                   auto-grow
                 />
                 <v-alert
-                  v-if="errorMsg"
+                  v-if="!valid && errorMsg"
                   text
                   color="red"
                   type="error"
@@ -204,7 +207,7 @@
               <v-tooltip>
                 <template #activator="{ on, attrs }">
                   <v-btn
-                    id=download_case_study_button
+                    id="download_case_study_button"
                     color="primary"
                     :disabled="!valid"
                     v-bind="attrs"
@@ -297,23 +300,37 @@ export default {
       to: null,
       isEditing: false,
       pptSelected: '',
+      isDatePickerOpen: false,
 
-      // Initial empty obj bound to field rules prop - must start empty
-      rules: {},
       requiredRule: v => !!v || 'Required',
-      // rules.key that will get the above rule applied upon click Download
+      // Fields that should be required
       requiredFieldRuleKeys: [
         'title',
         'reportedBy',
         'summary',
         'incidentDate',
         'fileName'
-      ]
+      ],
+      // Custom error messages
+      errors: {
+        incidentDate: []
+      },
+      shouldErrorProcedureStepInput: false
     }
   },
   head () {
     return {
       title: `${this.title} | ${this.$config.name.mitre}`
+    }
+  },
+  computed: {
+    rules () {
+      // Rules for input fields
+      const rules = {}
+      this.requiredFieldRuleKeys.forEach((key) => {
+        rules[key] = [this.requiredRule]
+      })
+      return rules
     }
   },
   beforeMount () {
@@ -340,6 +357,14 @@ export default {
       if (this.studyData.study.references !== []) {
         this.addingSource = false
       }
+
+      // Reset sucess and/or error messages
+      this.errorMsg = ''
+      this.submissionMsg = ''
+      this.errors = {
+        incidentDate: []
+      }
+      this.shouldErrorProcedureStepInput = false
     },
     setIncidentDate (date, granularity) {
       // Called from incident date picker
@@ -352,6 +377,7 @@ export default {
     addProcedureStep (newStep) {
       this.studyData.study.procedure.push(newStep)
       this.addingStep = false
+      this.shouldErrorProcedureStepInput = false
     },
     addSource (newSource) {
       this.studyData.study.references.push(newSource)
@@ -365,12 +391,30 @@ export default {
       this.studyData.study.references.splice(index, 1)
       this.addingSource = false
     },
-    submitStudy () {
-      this.requiredFieldRuleKeys.forEach((key) => {
-        this.rules[key] = [this.requiredRule]
-      })
+    async submitStudy () {
+      // Form validation section
 
-      if (this.$refs.form.validate() && this.studyData.study.procedure.length && this.fileName) {
+      // Validate the form for required fields, which will update the bound variable "valid"
+      this.$refs.form.validate()
+
+      if ((!this.studyData.study['incident-date'] || this.studyData.study['incident-date-granularity']) && this.isDatePickerOpen) {
+        // Ensure incident date is defined, i.e. input menu is closed
+        this.errors.incidentDate.push('Select an incident date and click OK')
+      }
+
+      // Ensure there is at least one procedure step
+      if (!this.studyData.study.procedure.length) {
+        this.shouldErrorProcedureStepInput = true
+      }
+
+      // Wait until the DOM updates for validation to take place
+      await this.$nextTick()
+
+      // End form validation section
+
+      // Successful form fill
+      // this.valid covers all input fields, including date picker
+      if (this.valid && this.studyData.study.procedure.length && this.fileName) {
         this.errorMsg = ''
 
         // Metadata
@@ -394,10 +438,11 @@ export default {
         // Reset
         this.downloadedYaml = true
         this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
-      } else if (!this.$refs.form.validate()) {
-        this.errorMsg = 'Please complete all required fields'
-      } else if (!this.studyData.study.procedure.length) {
-        this.errorMsg = 'Please add at least one procedure step'
+      } else {
+        // Form has validation errors, display message to have users scroll up
+        this.errorMsg = 'Please address any errors above'
+        // Reset success message
+        this.submissionMsg = ''
       }
     },
     closeDialog () {
