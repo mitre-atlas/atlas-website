@@ -26,8 +26,8 @@ export const getters = {
       }
       // Otherwise this is an object keyed by matrix ID,
       // and the ID is is not specified
-      // Return the first matrix's objects of this type
-      return Object.values(content)[0]
+      // Return the all matrices' objects of this type
+      return Object.values(content).flat()
     }
     // Otherwise access the matrix's objects by ID
     return content[matrixId] ?? []
@@ -55,12 +55,17 @@ export const getters = {
       'object-type',
       'name',
       'description',
-      'route', // Note that this is added in nuxtServerInit, not originally part of the YAML data
-      'techniques' // Note that this applies only to tactics, as the matrix hierarchy is built out in nuxtServerInit
+      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
     ]
 
     // Get object keys that may be references, i.e. are not default
     const dataKeys = Object.keys(argObj).filter((value) => {
+      // Handle tactics having techniques attached from the matrix hierarchy building in nuxtServerInit,
+      // as the link already exists from the techniques > tactics direction
+      if (argObj['object-type'] === 'tactic' && value === 'techniques') {
+        return false
+      }
+      // Returns true if this key value should be considered a possible ID reference or property
       return !defaultDataObjectKeys.includes(value)
     })
 
@@ -85,7 +90,16 @@ export const getters = {
 
     // Handle subtechnique-of title
     if ('subtechnique-of' in referencedObjects) {
-      referencedObjects['parent-technique'] = referencedObjects['subtechnique-of']
+      // Access parent technique object from the array under the `subtechnique-of` key
+      const parentTechnique = referencedObjects['subtechnique-of'][0]
+
+      // Add the parent technique's tactic(s) to the subtechnique's related objects
+      referencedObjects['tactics'] = parentTechnique.tactics.map(id => getters.getDataObjectById(id))
+
+      // Re-key the parent technique object under the desired display label,
+      // which expects an array
+      referencedObjects['parent-technique'] = [parentTechnique]
+      // Remove the re-labeled key-value pair
       delete referencedObjects['subtechnique-of']
     }
 

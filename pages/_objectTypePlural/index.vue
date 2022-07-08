@@ -14,7 +14,7 @@
       <p
         v-else
         class="red--text text--darken-2"
-        >
+      >
         Introductory text not found for {{ objectTypePlural }}.
         Edit the file at <code>/static/content/data-list-page-intros.yaml</code>
         to add <br>
