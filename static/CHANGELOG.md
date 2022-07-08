@@ -4,10 +4,11 @@
 
 #### Website
 - Added multiple matrices support feature
-- All matrices can be found in "Matrix" page sidebar menu
-- "Tactics" and "Techniques" pages have each matrix listed in their sidebar menus for organizational purposes
-- Iformation tables for each page contain all objects from all matrices to faciliate keyword searches
+    - All matrices can be found in "Matrix" page sidebar menu
+    - "Tactics" and "Techniques" pages have each matrix listed in their sidebar menus for organizational purposes
+    - Iformation tables for each page contain all objects from all matrices to faciliate keyword searches
 - Breadcrumbs have been updated to have direct routes to each matrix
+- Users can define custom data object types
 
 #### Data
 - This version of ATLAS data contains 1 matrix, 12 tactics, 33 techniques, 17 sub-techniques, and 15 case studies.
