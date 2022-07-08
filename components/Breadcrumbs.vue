@@ -29,7 +29,6 @@ export default {
   methods: {
     generateBreadcrumbs () {
       this.pathItems = []
-      console.log(this.$route) // DELETEME
 
       if (this.$route.path !== '/') {
         this.notHomePage = true
@@ -40,7 +39,6 @@ export default {
 
         // check if path has an id or if it's undefined
         const hasID = !!this.$route.params.id
-        console.log('HAS ID? ', hasID)
 
         if (this.$route.name.includes('matrices-id')) {
           // add breadcrumb for matrices that points to the current matrix
@@ -53,13 +51,11 @@ export default {
           }
         } else {
           items.forEach((item, index) => {
-            console.log('PATH ITEM ', item)
             // determine label for breadcrumb
             let text = ''
 
             // check if is data object
             if (routeName.includes('-id') && index === items.length - 1 && hasID) {
-              console.log('HELLO FROM DATA OBJECT ID IF STATEMENT')
               const dataObj = this.$store.getters.getDataObjectById(item)
               text = dataObj.name
 
@@ -73,7 +69,6 @@ export default {
                 })
               }
             } else {
-              console.log('HELLO FROM ELSE STATEMENT')
               text = this.formatLocation(item)
             }
 
