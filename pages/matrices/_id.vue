@@ -24,9 +24,6 @@ export default {
 
       if (matrices.length > 0 && !!matrices[0].id) {
         this.$router.push({ path: this.$route.path + matrices[0].id })
-      } else {
-        // go to home page
-        this.$router.push({ path: '/' })
       }
     }
   },
