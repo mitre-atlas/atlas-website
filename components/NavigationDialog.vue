@@ -42,3 +42,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.v-card {
+  z-index: 4000;
+}
+</style>

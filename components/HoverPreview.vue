@@ -1,373 +1,512 @@
 <template>
-  <v-fade-transition v-if="!isMobile">
-    <v-card
-      v-if="(enablePreview || keepPreviewEnabled)"
-      id="hcard"
-      ref="hcard"
-      nuxt
-      target="_blank"
-      :href="targetLocation"
-      :width="cardWidth"
-      elevation="24"
-      :style="cardCSS"
-      @mouseenter="setPreviewSelf"
-      @mouseleave="setPreviewSelf"
-    >
-      <v-card-title>{{ targetInfo.name }}</v-card-title>
-      <v-card-subtitle>{{ targetInfo.id }}</v-card-subtitle>
-      <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
-      <v-card-text v-else id="text-fade" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
-      <v-card-actions>
-        <v-icon id="arrow-icon">
-          mdi-arrow-right
-        </v-icon>
-        <v-icon id="link-icon">
-          mdi-open-in-new
-        </v-icon>
-      </v-card-actions>
-      <div id="caret" />
-    </v-card>
-  </v-fade-transition>
-  <v-fade-transition v-else>
-    <v-overlay
-      v-if="enablePreview"
-      style="z-index: 3000;"
-
-      @touchstart.native="disableOverlay"
-    >
-      <v-card
-        v-if="enablePreview"
-        id="mhcard"
-        ref="mhcard"
-        style="z-index: 3000;"
-        target="_blank"
-        :href="targetLocation"
-        :width="cardWidth"
-        outlined
-        light
-      >
-        <v-card-title>{{ targetInfo.name }}</v-card-title>
-        <v-card-subtitle>{{ targetInfo.id }}</v-card-subtitle>
-        <v-card-text v-if="targetInfo.description.length < characterLimit" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
-        <v-card-text v-else id="text-fade" v-html="$md.renderInline(formatDesc(targetInfo.description))" />
-        <v-card-actions>
-          <v-icon id="arrow-icon">
-            mdi-arrow-right
-          </v-icon>
-          <v-icon id="link-icon">
-            mdi-open-in-new
-          </v-icon>
-        </v-card-actions>
-      </v-card>
-    </v-overlay>
-  </v-fade-transition>
+  <div>
+    <slot />
+    <portal>
+      <v-fade-transition>
+        <div
+          :is="isMobile ? 'v-overlay' : 'div'"
+          v-if="
+            (((isMouseHovering || isPreviewLingering) && !isMobile) ||
+              (wasTouchHeld && isMobile)) &&
+              !overrideDisable
+          "
+          class="preview-container"
+          :style="isMobile ? {} : positioningCSS"
+          @touchstart="wasTouchHeld = false"
+          @contextmenu="event => event.preventDefault()"
+        >
+          <v-card
+            ref="preview-card"
+            class="preview-card"
+            nuxt
+            target="_blank"
+            :disabled="overrideDisable"
+            :href="targetDataObject.route"
+            :light="isMobile"
+            :style="cardStyle"
+            @mouseenter="() => setMouseHoverStateOverSelf(true)"
+            @mouseleave="() => setMouseHoverStateOverSelf(false)"
+            @touchstart.native="wasTouchHeld = false"
+            @contextmenu="event => event.preventDefault()"
+          >
+            <v-card-title>{{ targetDataObject.name }}</v-card-title>
+            <v-card-subtitle class="text-capitalize">
+              {{ targetDataObject['object-type'] }} |
+              {{ targetDataObject.id }}
+            </v-card-subtitle>
+            <v-card-text v-html="$md.render(targetDataObject.description)" />
+            <v-card-actions>
+              <v-icon ref="arrow-icon" class="arrow-icon">
+                mdi-arrow-right
+              </v-icon>
+              <v-icon ref="link-icon" class="link-icon">
+                mdi-open-in-new
+              </v-icon>
+            </v-card-actions>
+          </v-card>
+        </div>
+      </v-fade-transition>
+    </portal>
+  </div>
 </template>
 
 <script>
-/* eslint vue/prop-name-casing: "off" */
+import { Portal, setSelector } from '@linusborg/vue-simple-portal' // Used for portaling the preview to a high parent for absolute positioning
+
+setSelector('app') // Portals the preview inside the Vue App component; otherwise we wouldn't have styling
+
 export default {
   name: 'HoverPreview',
-  props: {
-    'x-off': { default: 0, type: Number },
-    'y-off': { default: -50, type: Number }, // the 64 is the height of the topbar, -30 is so it wont overlap the text
-    'parent-event': { default: null },
-    appearRight: { default: false },
-    fromRight: { default: false },
-    appearBottom: { default: false },
-    fromBottom: { default: false },
-    newTargetId: { default: '', type: String },
-    delay: { default: 500, type: Number }
+  components: {
+    Portal
   },
+  // if isAutocomplete is true, the component will attach event listeners to the children of its slot,
+  props: ['isAutocomplete', 'isListGroup', 'dataObjects'],
   data: () => ({
-    inputHoldThread: null,
-    previewDebounce: false,
-    targetId: null,
-    isHoveringSelf: false,
-    cardWidth: 400,
-    enablePreview: false,
-    keepPreviewEnabled: false,
-    mousePosition: { x: 0, y: 0 },
-    isHovering: false,
-    baseYOffset: 64,
-    holdDuration: 750,
-    self: null,
-    maxLineHeight: 7,
-    thread: null,
-    selfThread: null,
-    cardCSS: { left: '-1px', top: '-1px' }
+    // 'reload' only necessary for group mode
+    reload: null, // This keeps track of the function that reloads items and reattached listeners. Need this because for some reason, upon selecting a menu option, the listeners detach
+    overrideDisable: false, // Turn off the preview completely, eg. the user clicked an option
+    isMouseHovering: false, // Is the mouse currently hovering over the target element?
+    wasTouchHeld: false, // Is the target element currently under touch hold?
+    isPreviewLingering: false, // Is the preview currently staying visible for a short time after the mouse is no longer hovering?
+    targetElementRect: null, // Bounding box of the target element, used for positioning
+    hoverThread: null, // Keeps track of the thread used for enabling mouse hover after a duration
+    lingerThread: null, // Keeps track of the thread used for disabling the preview linger after a duration
+    touchHoldThread: null, // Keeps track of duration of touch hold, upon completion will activate preview
+    targetDataObject: {}, // The data object who's information will be displayed
+    positioningCSS: {
+      position: 'absolute',
+      transition: 'top 0.5s, left 0.5s',
+      left: 0,
+      top: 0,
+      'z-index': 3000
+    },
+    // Changes attributes for display
+    displayOptions: {
+      preferRight: true, // Prefer the top of the preview to be attached to the item
+      preferTop: true, // Prefer the right of the preview to be attached to the item
+      cardWidth: '600px',
+      attachmentDirection: 'horizontal', // Whether to put the card beside the element or on top/below it
+      attachmentOffset: { x: 10, y: 10 }, // Offset of the preview to the element
+      gutterSize: { x: 20, y: 20 }, // Minimum whitepace required on the side of the preview
+      scrollbarOffset: 20, // Accounts for the scrollbar in the menu component
+      hoverDelay: 250, // Delay from mouseover -> preview shows
+      lingerDuration: 500 // Delay from mouseleave -> preview goes away
+    }
   }),
   computed: {
-    characterLimit () { return this.maxLineHeight * 50 },
-    targetLocation () { return `/${this.targetInfo['object-type']}s/${this.targetId}` },
-    isMobile () { return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name) }, // TODO: change this, might not be robust enough
-    targetInfo () {
-      return (
-        this.$store.getters.getTacticById(this.targetId) ||
-        this.$store.getters.getTechniqueById(this.targetId))
-    }
-  },
-  watch: {
-    // watch x/y values for slide transition
-    parentEvent (mouseEvent) {
-      if (this.isMobile) {
-        this.setPreviewMobile(mouseEvent)
-      } else {
-        this.setPreview(mouseEvent)
+    // Uses breakpoints to check if we are on mobile
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    },
+    // Sets the card style programatically, to handle mobile screens and different
+    // display options
+    cardStyle () {
+      const styleOptions = {
+        width: this.displayOptions.cardWidth,
+        'max-width': '80vh'
       }
+      if (this.isMobile) {
+        styleOptions.margin = 'auto'
+      }
+
+      return styleOptions
     }
   },
-
-  updated () {
-    // Puts preview in a really high parent so i can position absolutely relative to page
-    const hcard = this.$refs.hcard
-    if (hcard) {
-      this.self = hcard
-      const grandcestor = document.querySelector('.container').firstChild
-      // console.log(vMainWrap, 'vmw')
-      grandcestor.appendChild(this.$refs.hcard.$el)
+  mounted () {
+    // Group mode will attach listeners to every child
+    // Note: to use on v-autocomplete, need eager prop on it
+    if (this.isAutocomplete) {
+      this.reload = this.attachEventListenersToAutocomplete
+    } else if (this.isListGroup) {
+      this.displayOptions.attachmentDirection = 'vertical'
+      this.reload = this.attachEventListenersToListGroup
+    } else {
+      // Otherwise just attach listeners to the slot item
+      this.connectEventListenersToTargetItems([
+        {
+          dataObject: this.dataObjects,
+          element: this.$slots.default[0].elm
+        }
+      ])
+    }
+    if (this.reload) {
+      this.reload()
     }
   },
   methods: {
-    disableOverlay (event) {
-      this.enablePreview = false
-    },
-    setDebounce (that = this) {
-      that.previewDebounce = true
-      setTimeout(function () { that.previewDebounce = false }, that.delay)
-    },
-    formatDesc (text) {
-      const tagRegex = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
-      text = text.replace(tagRegex, '')
-      if (text.length > this.characterLimit) {
-        text = text + '...'
-      }
-      return text
-    },
-    setPreviewSelf (event) {
-      const disablePreviewEvents = ['mouseleave', 'wheel']
-      const eventName = event.type
-      const enablePreview = !disablePreviewEvents.includes(eventName)
-      const arrowIcon = document.querySelector('#arrow-icon')
-      const linkIcon = document.querySelector('#link-icon')
-      const linkColor = 'rgb(100, 181, 246)'
-      const inactiveColor = 'rgba(0, 0, 0, 0.54)'
-      let iconSize = 24
-      const factor = 1.2
-      if (enablePreview) {
-        if (this.previewDebounce) { return }
-        this.isHoveringSelf = true
-        arrowIcon.style.transform = 'rotate(180deg)'
-        arrowIcon.style.color = linkColor
-        arrowIcon.style.opacity = 0
-        linkIcon.style.color = linkColor
-        linkIcon.style.transform = 'rotate(360deg)'
-        linkIcon.style.opacity = 1
-
-        iconSize *= factor
-        this.keepPreviewEnabled = true
-      } else {
-        this.isHoveringSelf = false
-
-        arrowIcon.style.transform = 'rotate(0deg)'
-        arrowIcon.style.color = inactiveColor
-        arrowIcon.style.opacity = 1
-        linkIcon.style.color = inactiveColor
-        linkIcon.style.transform = 'rotate(180deg)'
-        linkIcon.style.opacity = 0
-
-        this.selfThread = setTimeout((that) => {
-          this.selfThread = null
-          if (!this.isHoveringSelf && !this.isHovering) {
-            that.keepPreviewEnabled = false
-            that.setDebounce(that)
-          }
-        }, this.delay, this)
-      }
-      const iconOffset = iconSize * (-5 / 8) + 45
-      arrowIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-      linkIcon.style.font = `normal normal normal ${iconSize}px/1 "Material Design Icons"`
-      arrowIcon.style.right = `${iconOffset}px`
-      linkIcon.style.right = `${iconOffset}px`
-      arrowIcon.style.bottom = `${iconOffset - 10}px`
-      linkIcon.style.bottom = `${iconOffset - 10}px`
-    },
-    setPreviewMobile (event) {
-      const eventName = event.type
-
-      clearTimeout(this.inputHoldThread)
-
-      if (eventName === 'touchstart') {
-        this.inputHoldThread = setTimeout(function (that) {
-          document.oncontextmenu = event => false
-
-          that.enablePreview = true
-          that.targetId = that.newTargetId
-          that.keepPreviewEnabled = false
-        }, this.holdDuration, this)
-      } else if (['touchend', 'touchcancel'].includes(eventName)) {
-        setTimeout(function () { document.oncontextmenu = event => true }, 0)
-      }
-    },
-    setPreview (event) {
-      const eventName = event.type
-      const element = event.target
-      const elementPos = element.getBoundingClientRect()
-      const disablePreviewEvents = ['mouseleave', 'wheel']
-      const enablePreview = !disablePreviewEvents.includes(eventName)
-      const previouslyDisabled = !(this.enablePreview || this.keepPreviewEnabled)
-      if (eventName === 'mousemove') { this.mousePosition = { x: event.pageX, y: event.pageY }; return }
-      if (eventName === 'click') { this.enablePreview = false; this.keepPreviewEnabled = false; return }
-      this.isHovering = enablePreview
-
-      clearTimeout(this.thread)
-      this.thread = setTimeout(function (that) {
-        if (enablePreview) {
-          that.enablePreview = true
-          that.targetId = that.newTargetId
-          that.keepPreviewEnabled = false
-
-          setTimeout(function () { // spawn a new thread so we can render AND get rendering info at the same time >:)
-            if (!that.self) { return }
-
-            const [x, y] = [
-              (that.xOff === 0) ? that.mousePosition.x : (that.appearRight ? elementPos.right : elementPos.left) + that.xOff,
-              (that.appearBottom ? elementPos.bottom : elementPos.top) + window.scrollY - (that.yOff + that.baseYOffset)
-            ]
-            let [left, top] = [`${x}px`, `${y}px`]
-            const selfElement = that.self.$el
-            const selfHeight = selfElement.getBoundingClientRect().height
-
-            const offscreenMargin = 75
-            const isOffscreenLeft = x + that.cardWidth > window.innerWidth - offscreenMargin
-            const isOffscreenTop = y + selfHeight - window.scrollY > window.innerHeight - offscreenMargin
-
-            let onLeft = true
-            let onTop = true
-
-            if (isOffscreenLeft) {
-              onLeft = false
-              left = `${x - that.cardWidth}px`
-            }
-
-            if (isOffscreenTop) {
-              onTop = false
-              top = `${y - selfHeight}px`
-            }
-
-            if (that.fromRight) {
-              onLeft = false
-              left = `${x - that.cardWidth}px`
-            }
-
-            const caret = document.querySelector('#caret')
-            if (caret) {
-              const caretSize = 15
-              const caretCSS = {}
-              caretCSS.width = `${caretSize}px`
-              caretCSS.height = `${caretSize}px`
-              caretCSS.display = 'block'
-
-              if (onLeft && onTop) {
-                caretCSS.inset = `0px auto auto ${-caretSize + 2}px`
-                caretCSS.transform = 'scaleX(1) scaleY(1)'
-              } else if (!onLeft && onTop) {
-                caretCSS.inset = `0px ${-caretSize + 2}px auto auto`
-                caretCSS.transform = 'scaleX(-1) scaleY(1)'
-              } else if (onLeft && !onTop) {
-                caretCSS.inset = `auto auto 0px ${-caretSize + 2}px`
-                caretCSS.transform = 'scaleX(1) scaleY(-1)'
-              } else {
-                caretCSS.inset = `auto ${-caretSize + 2}px 0px auto`
-                caretCSS.transform = 'scaleX(-1) scaleY(-1)'
-              }
-
-              for (const key in caretCSS) {
-                caret.style[key] = caretCSS[key]
-              }
-            }
-
-            setTimeout(function () {
-              selfElement.style.top = top
-            }, previouslyDisabled ? 0 : 50)
-
-            that.cardCSS = { left }
-          }, 0)
-        } else {
-          that.enablePreview = false
-          that.setDebounce(that)
-
-          if (that.keepPreviewEnabled) {
-            if (!that.selfThread && !that.isHoveringSelf) {
-              that.keepPreviewEnabled = false
-            }
+    attachEventListenersToListGroup () {
+      const listGroupNode = this.$slots.default[0]
+      const listItemElements = Array.from(
+        listGroupNode.elm.children[1].children
+      )
+      const listItems = listItemElements.map(
+        // Link the data objects to the child elements
+        (listItemElement, index) => {
+          return {
+            dataObject: this.dataObjects[index],
+            element: listItemElement
           }
         }
-      }, this.delay, this)
+      )
+      this.connectEventListenersToTargetItems(listItems)
+    },
+    attachEventListenersToAutocomplete () {
+      // Below obtains references to the embeded list items of the v-autocomplete
+      const autocompleteNode = this.$slots.default[0]
+      autocompleteNode.elm.addEventListener('focusout', event =>
+        this.catchMouseEvent(event, null)
+      )
+      const listItemDataObjects = autocompleteNode.componentInstance.allItems // The externally provided data objects that define the list elms
+      const menuVueComponent = autocompleteNode.componentInstance.$refs.menu
+      if (!menuVueComponent) {
+        return
+      } // This means the component is currently remounting, don't need to run
+      this.$nextTick(() => {
+        // Make sure all children are here before attaching
+        const listItemVueComponents = // The internal list element children
+          menuVueComponent.$children[0].$children[0].$children[0].$children
+        const listItems = listItemVueComponents.map(
+          // Link the data objects to the child elements
+          (listItemVueComponent, index) => {
+            return {
+              dataObject: listItemDataObjects[index],
+              element: listItemVueComponent.$el
+            }
+          }
+        )
+        // Connect event listeners to each of the list items
+        this.connectEventListenersToTargetItems(listItems)
+      })
+    },
+    // Processes the mouse events over target items
+    catchMouseEvent (event, dataObject) {
+      switch (event.type) {
+        case 'mouseenter':
+          // Clear any previous hover thread, start a new one
+          // Hover thread is used to implement a delay before the preview shows
+          clearTimeout(this.hoverThread)
+          this.hoverThread = setTimeout(() => {
+            // Enable the element if it was disabled before, if the user hovers over an option again
+            this.overrideDisable = false
+            this.targetElementRect = event.target.getBoundingClientRect()
+
+            // This is to prevent the preview from appearing from 0,0 which looks kinda weird
+            // Makes it appear from the middle instead
+            if (!(this.isMouseHovering || this.isPreviewLingering)) {
+              if (this.positioningCSS.left === 0) {
+                // == 0 means not assigned yet by positionPreview
+                this.positioningCSS.left = `${
+                  this.targetElementRect.left +
+                  this.targetElementRect.width / 2 +
+                  window.scrollX
+                }px`
+                this.positioningCSS.top = `${
+                  this.targetElementRect.top + window.scrollY
+                }px`
+              }
+            }
+
+            this.targetDataObject = dataObject
+            this.isMouseHovering = true
+            this.positionPreview()
+          }, this.displayOptions.hoverDelay)
+          break
+        case 'mouseleave':
+          // Clear the hover thread, since the user is no longer hovering
+          clearTimeout(this.hoverThread)
+          // Start the linger timer if leave
+          this.startLingering()
+          break
+        case 'focusout':
+        case 'click':
+          // Removes the preview if they click or click out of the element
+          if (this.isMobile) {
+            // Don't register this event on mobile (fires on long press, messes with preview state)
+            return
+          }
+          this.overrideDisable = true
+          if (this.isAutocomplete) {
+            this.reload()
+          }
+
+          break
+        case 'touchstart': {
+          // Set the data object, clear the previous hold thread if it exists and start a new one
+          this.targetDataObject = dataObject
+          const holdDuration = 500
+          clearTimeout(this.touchHoldThread)
+          // Wait some time, and if the thread still exists, means the user is holding touch
+          this.touchHoldThread = setTimeout(() => {
+            this.wasTouchHeld = true
+          }, holdDuration)
+          break
+        }
+        case 'touchmove':
+        case 'touchend':
+          // If use moves (like swiping list) or stops holding, clear touch hold thread
+          clearTimeout(this.touchHoldThread)
+          break
+      }
+    },
+    // Controls the appearance of the preview card. Calculates the correct offsets based on
+    // viewport, window, and target item information as well as initiates a new thread for
+    // linger control
+    positionPreview () {
+      // The purpose of setTimeout is to let me reference the component being rendered while it is rendering
+      // otherwise, the component may not exist yet
+
+      if (this.isMobile) {
+        return
+      } // Don't try to do positioning on mobile
+      setTimeout(
+        () => {
+          const previewElement = this.$refs['preview-card'].$el // A referenece to our own component
+          const previewElementRect = previewElement.getBoundingClientRect()
+          const absoluteViewport = {
+            // The bounds of our viewport in absolute terms
+            x: window.innerWidth + window.scrollX,
+            y: window.innerHeight + window.scrollY
+          }
+          // Calculate the absolute location of the target element
+          const absoluteTargetRectLeft =
+            window.scrollX + this.targetElementRect.left
+          const absoluteTargetRectTop =
+            window.scrollY + this.targetElementRect.top
+          let leftOffset
+          let topOffset
+
+          // If we are attaching the preview to the side of the target elemement,
+          if (this.displayOptions.attachmentDirection === 'horizontal') {
+            leftOffset =
+              absoluteTargetRectLeft -
+              (previewElementRect.width +
+                this.displayOptions.attachmentOffset.x)
+            topOffset = absoluteTargetRectTop
+            // If there's no space on the left of the element, or we prefer the left of the preview to be attached
+            if (
+              leftOffset < this.displayOptions.gutterSize.x ||
+              !this.displayOptions.preferRight
+            ) {
+              leftOffset =
+                absoluteTargetRectLeft +
+                (this.targetElementRect.width +
+                  this.displayOptions.attachmentOffset.x +
+                  this.displayOptions.scrollbarOffset)
+            }
+            // If there's no space below the element, or we prefer bottom of the preview to be attached
+            if (
+              topOffset + previewElementRect.height >
+                absoluteViewport.y - this.displayOptions.gutterSize.y ||
+              !this.displayOptions.preferTop
+            ) {
+              topOffset =
+                absoluteTargetRectTop -
+                previewElementRect.height +
+                this.targetElementRect.height
+            }
+          // Otherwise, if we are attaching the preview to the top or bottom of the target element
+          } else if (this.displayOptions.attachmentDirection === 'vertical') {
+            leftOffset =
+              absoluteTargetRectLeft +
+              this.targetElementRect.width -
+              previewElementRect.width
+            topOffset =
+              absoluteTargetRectTop -
+              (previewElementRect.height +
+                this.displayOptions.attachmentOffset.y)
+            // TODO: Change "prefer" logic to be more consistent with 'horizontal' (right now its flipped)
+            // If there's no space above the element, or we prefer the top of the preview to be attached
+            if (
+              topOffset < this.displayOptions.gutterSize.y + window.scrollY ||
+              !this.displayOptions.preferTop
+            ) {
+              topOffset =
+                absoluteTargetRectTop +
+                this.targetElementRect.height +
+                this.displayOptions.attachmentOffset.y
+              const distanceBelowScreen = absoluteTargetRectTop + previewElementRect.height - (document.body.scrollHeight - this.displayOptions.gutterSize.y)
+              // If there's no space below (and above) the element, make a compromise and position it in the middle
+              if (distanceBelowScreen > 0) {
+                topOffset =
+                absoluteTargetRectTop - distanceBelowScreen
+              }
+            }
+            // If we prefer the right of the preview to be attached
+            if (!this.displayOptions.preferRight) {
+              leftOffset = absoluteTargetRectLeft
+            }
+          }
+          // Set the CSS
+          this.positioningCSS.left = `${leftOffset}px`
+          this.positioningCSS.top = `${topOffset}px`
+        },
+        0 // Zero delay, since we just want parallel execution
+      )
+    },
+    // Handles what happens when the mouse goes to hover over the preview itself
+    setMouseHoverStateOverSelf (newState) {
+      if (newState) {
+        this.isMouseHovering = true
+      } else {
+        this.startLingering()
+      }
+
+      this.transitionIcons()
+    },
+    // Allows the preview to maintain display for a short duration after the user has stopped hovering
+    startLingering () {
+      if (this.isMouseHovering) {
+        this.isPreviewLingering = true
+      }
+      this.isMouseHovering = false
+      // Kills the previous linger thread. Otherwise, moving your mouse rapidly over a list of items would
+      // cause lingering to be prematurely ended
+      clearTimeout(this.lingerThread)
+      // Creates a new thread to end the preview after a short duration
+      this.lingerThread = setTimeout(() => {
+        this.isPreviewLingering = false
+      }, this.displayOptions.lingerDuration)
+    },
+    connectEventListenersToTargetItems (targetItems) {
+      // For each of the target items, attach the necessary event listeners
+      const connectedEvents = [
+        'mouseenter',
+        'mouseleave',
+        'click',
+        'touchstart',
+        'touchend',
+        'touchmove',
+        'focusout'
+      ]
+      targetItems.forEach((targetItem) => {
+        connectedEvents.forEach((eventName) => {
+          targetItem.element.addEventListener(eventName, event =>
+            this.catchMouseEvent(event, targetItem.dataObject)
+          )
+        })
+      })
+    },
+    // Just styling and fanciness
+    transitionIcons () {
+      // Arrow icon, eg the -->
+      const arrowIcon = this.$refs['arrow-icon'] && this.$refs['arrow-icon'].$el
+      // Link icon, eg the [/^]
+      const linkIcon = this.$refs['link-icon'] && this.$refs['link-icon'].$el
+
+      // Short circuit in case elements don't exist (transitioning out)
+      if (!arrowIcon || !linkIcon) {
+        return
+      }
+      // CSS in raw values, so I can compute offsets to keep things centered when changing sizes
+      const inactiveColor = 'rgba(0, 0, 0, 0.54)'
+      const activeColor = 'rgb(100, 181, 246)'
+      const inactiveIconSize = 25
+      const activeIconSize = 30
+      const inactiveIconOffset = {
+        bottom: 20,
+        right: 30
+      }
+      const sizingPositioningOffset = (activeIconSize - inactiveIconSize) / 2
+      const activeIconOffset = {
+        bottom: inactiveIconOffset.bottom - sizingPositioningOffset,
+        right: inactiveIconOffset.right - sizingPositioningOffset
+      }
+
+      // CSS for different arrow states
+      const inactiveIconCSS = {
+        arrowIcon: {
+          transform: 'rotate(0deg)',
+          color: inactiveColor,
+          opacity: 1,
+          right: `${inactiveIconOffset.right}px`,
+          bottom: `${inactiveIconOffset.bottom}px`,
+          'font-size': `${inactiveIconSize}px`
+        },
+        linkIcon: {
+          transform: 'rotate(180deg)',
+          color: inactiveColor,
+          opacity: 0,
+          right: `${inactiveIconOffset.right}px`,
+          bottom: `${inactiveIconOffset.bottom}px`,
+          'font-size': `${inactiveIconSize}px`
+        }
+      }
+      const activeIconCSS = {
+        arrowIcon: {
+          transform: 'rotate(180deg)',
+          color: activeColor,
+          opacity: 0,
+          right: `${activeIconOffset.right}px`,
+          bottom: `${activeIconOffset.bottom}px`,
+          'font-size': `${activeIconSize}px`
+        },
+        linkIcon: {
+          transform: 'rotate(360deg)',
+          color: activeColor,
+          opacity: 1,
+          right: `${activeIconOffset.right}px`,
+          bottom: `${activeIconOffset.bottom}px`,
+          'font-size': `${activeIconSize}px`
+        }
+      }
+      // Replace the css
+      if (!this.isMouseHovering) {
+        Object.assign(arrowIcon.style, inactiveIconCSS.arrowIcon)
+        Object.assign(linkIcon.style, inactiveIconCSS.linkIcon)
+      } else {
+        Object.assign(arrowIcon.style, activeIconCSS.arrowIcon)
+        Object.assign(linkIcon.style, activeIconCSS.linkIcon)
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-  #hcard {
-    position: absolute;
-    transition: top 0.5s, left 0.5s, height 0.5s;;
-  }
-
-  .v-overlay {
-    z-index: 3000;
-  }
-
-  .v-card {
-    z-index: 3000;
-  }
-
-  .v-card__text, .v-card__title {
-    word-break: normal;
-  }
-
-  .v-card__text {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 7;
-    -webkit-box-orient: vertical;
-    white-space: normal;
-  }
-
-  .v-card-actions {
-    position: relative;
-  }
-
-  #link-icon {
-    opacity: 0;
-    color: '#dc3545';
-    transform: rotate(180deg)
-  }
-
-  .v-icon {
-    transition: color 0.2s, font 0.2s, right 0.2s, bottom 0.2s, transform 0.2s, opacity 0.5s;
-    position: absolute !important;
-    right: 30px;
-    bottom: 20px;
-  }
-
-  #caret {
-    display: none;
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
-    background-color: white;
-    position: absolute;
-  }
-
-  #text-fade {
-    background:
-      linear-gradient(to bottom,
-        rgba(0, 0, 0, 0.6),
-        rgba(0, 0, 0, 0.5),
-        rgb(0, 0, 0, 0));
-    display: inline-block;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+.preview-container {
+  padding: 0;
+  margin: 0;
+}
+.v-card__text,
+.v-card__title {
+  word-break: normal;
+  max-height: 40vh;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.v-card__text::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: linear-gradient(
+    transparent 25vh,
+    rgba(255, 255, 255, 0.7),
+    white
+  );
+}
+.v-overlay {
+  z-index: 3000 !important;
+}
+.v-card-actions {
+  position: relative;
+}
+.link-icon {
+  opacity: 0;
+  color: '#dc3545';
+  transform: rotate(180deg);
+}
+.v-icon {
+  transition: color 0.3s, font 0.3s, right 0.3s, bottom 0.3s, transform 0.3s,
+    opacity 0.5s;
+  position: absolute !important;
+  right: 30px;
+  bottom: 20px;
+}
+::v-deep a {
+  color: inherit;
+}
 </style>
