@@ -208,6 +208,15 @@ export default {
     }
   },
 
+  watch: {
+    '$vuetify.breakpoint.mobile' (value) {
+      if (value) {
+        // Resize to accomodate footer when switching back to full
+        this.attachObserver()
+      }
+    }
+  },
+
   mounted () {
     this.attachObserver() // Try attaching as soon as page loads
     document.onreadystatechange = () => { this.attachObserver() } // Or if page has just finished loading
