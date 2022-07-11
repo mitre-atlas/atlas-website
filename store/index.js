@@ -7,6 +7,26 @@ export const state = () => ({
   data: {}
 })
 
+// Keys that will not be considered as properties or references to other data objects
+const DEFAULT_DATA_OBJECT_KEYS = [
+  'id',
+  'object-type',
+  'name',
+  'description',
+  'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
+]
+
+const deepCopyDefault = (obj, extraKeys) => {
+  // Creates a deep copy of the provided data object, limited to defined keys
+  // Used to provide a reference object for linking
+  let keysToKeep = DEFAULT_DATA_OBJECT_KEYS
+  if (typeof extraKeys !== 'undefined') {
+    // Add specified keys if present
+    keysToKeep = keysToKeep + extraKeys
+  }
+  return JSON.parse(JSON.stringify(obj, keysToKeep))
+}
+
 export const getters = {
   getDataAttribute: (state) => (key) => state.data[key],
 
@@ -39,6 +59,15 @@ export const getters = {
     // Return the first data object whose key-value matches the provided value argument
     return objs.filter(obj => obj[key] === value)
   },
+
+  getDataObjectsByTypeKeyValueDeepCopyDefault: (_, getters) => (objType, key, value, matrixId) => {
+    // Retrieves a deep copy of a list of data objects, keeping only default data keys
+    let objs = getters.getDataObjectsByTypeKeyValue(objType, key, value, matrixId)
+    // Deep copy only the default data keys, i.e. id, name, route for linking
+    objs = objs.map(obj => deepCopyDefault(obj))
+    return objs
+  },
+
   getDataObjectsByTypeKeyContainingValue: (_, getters) => (objType, key, value, matrixId) => {
     // Retrieves a list of data objects
     const objs = getters.getDataObjectsByType(objType, matrixId)
@@ -49,24 +78,15 @@ export const getters = {
   getReferencedDataObjects: (_, getters) => (argObj) => {
     // Returns an object with key/object-type to array of objects referenced by this object
 
-    // Keys that will not be considered as properties or references to other data objects
-    const defaultDataObjectKeys = [
-      'id',
-      'object-type',
-      'name',
-      'description',
-      'route' // Note that this is added in nuxtServerInit, not originally part of the YAML data
-    ]
-
     // Get object keys that may be references, i.e. are not default
     const dataKeys = Object.keys(argObj).filter((value) => {
-      // Handle tactics having techniques attached from the matrix hierarchy building in nuxtServerInit,
-      // as the link already exists from the techniques > tactics direction
-      if (argObj['object-type'] === 'tactic' && value === 'techniques') {
+      // Handle tactics having techniques attached, or techniques having subtechniques attached,
+      // from the matrix hierarchy building in nuxtServerInit, as the link already exists in the opposite direction
+      if ((argObj['object-type'] === 'tactic' && value === 'techniques') || (argObj['object-type'] === 'technique' && value === 'subtechniques')) {
         return false
       }
       // Returns true if this key value should be considered a possible ID reference or property
-      return !defaultDataObjectKeys.includes(value)
+      return !DEFAULT_DATA_OBJECT_KEYS.includes(value)
     })
 
     // IDs of objects directly referenced by this page's object
@@ -74,10 +94,10 @@ export const getters = {
     dataKeys.forEach((key) => {
       const value = argObj[key]
       if (Array.isArray(value)) {
-        referencedObjects[key] = value.map(id => getters.getDataObjectById(id)).flat()
+        referencedObjects[key] = value.map(id => getters.getDataObjectByIdDeepCopyDefault(id)).flat()
       } else {
         // Single object referenced by ID
-        const refObj = getters.getDataObjectById(value)
+        const refObj = getters.getDataObjectByIdDeepCopyDefault(value)
         if (refObj) {
           // Create a single-element Array
           referencedObjects[key] = [refObj]
@@ -91,10 +111,12 @@ export const getters = {
     // Handle subtechnique-of title
     if ('subtechnique-of' in referencedObjects) {
       // Access parent technique object from the array under the `subtechnique-of` key
-      const parentTechnique = referencedObjects['subtechnique-of'][0]
+      const parentTechniqueId = referencedObjects['subtechnique-of'][0]['id']
+      // Access full object, including the tactics key
+      const parentTechnique = getters.getDataObjectById(parentTechniqueId)
 
       // Add the parent technique's tactic(s) to the subtechnique's related objects
-      referencedObjects['tactics'] = parentTechnique.tactics.map(id => getters.getDataObjectById(id))
+      referencedObjects['tactics'] = parentTechnique.tactics.map(id => getters.getDataObjectByIdDeepCopyDefault(id))
 
       // Re-key the parent technique object under the desired display label,
       // which expects an array
@@ -107,7 +129,7 @@ export const getters = {
   },
 
   getDataObjectsReferencing: (state, getters) => (argObj) => {
-    // Return an object with key/object-type to array of objects that reference this object
+    // Return an object with key/object-type to array of deep-copied objects that reference this object
 
     const id = argObj.id
 
@@ -115,11 +137,13 @@ export const getters = {
     let objects = getters.getDataObjects.filter((obj) => {
       return obj.id !== id && Object.values(obj).flat().includes(id)
     })
+    // Make a deep copy of each object, with only default keys, i.e. id, name, route for linking
+    objects = objects.map(obj => deepCopyDefault(obj))
 
     // Other subtechniques
     if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
       const parentTechniqueId = id.substring(0, id.lastIndexOf('.'))
-      const otherSubtechniques = getters.getDataObjectsByTypeKeyValue('techniques', 'subtechnique-of', parentTechniqueId)
+      const otherSubtechniques = getters.getDataObjectsByTypeKeyValueDeepCopyDefault('techniques', 'subtechnique-of', parentTechniqueId)
       // Add other subtechniques that aren't this one
       objects = objects.concat(otherSubtechniques.filter(t => t.id !== id))
     }
@@ -129,7 +153,7 @@ export const getters = {
       let subtechniques = []
       objects.forEach((obj) => {
         if (obj['object-type'] === 'technique') {
-          subtechniques = subtechniques.concat(getters.getDataObjectsByTypeKeyValue('techniques', 'subtechnique-of', obj.id))
+          subtechniques = subtechniques.concat(getters.getDataObjectsByTypeKeyValueDeepCopyDefault('techniques', 'subtechnique-of', obj.id))
         }
       })
       objects = objects.concat(subtechniques)
@@ -140,11 +164,13 @@ export const getters = {
       'case-studies' in state.data.objects &&
       (argObj['object-type'] === 'tactic' || argObj['object-type'] === 'technique')
     ) {
-      const studies = getters.getDataObjectsByType('case-studies')
+      let studies = getters.getDataObjectsByType('case-studies')
         .filter(study => study.procedure
           // singular key, i.e. technique vs. techniques
           .some(step => step[argObj['object-type']] === id)
         )
+        // Make a deep copy of the array
+        studies = JSON.parse(JSON.stringify(studies))
 
       objects = objects.concat(studies)
     }
@@ -188,9 +214,19 @@ export const getters = {
     // Returns the data object with the corresponding ID
     return getters.getDataObjects.find(obj => obj['id'] === value)
   },
+
+  getDataObjectByIdDeepCopyDefault: (_, getters) => (value) => {
+    // Returns a deep copy of the the data object with the corresponding ID, with only default data keys present
+    let obj = getters.getDataObjectById(value)
+    // Deep copy, only keeping default keys, i.e. id, name, route, for linking
+    obj = deepCopyDefault(obj)
+    return obj
+  },
+
   getFirstMatrixId: (state) => {
     return state.data.matrices[0].id
   },
+
   getMatrixByID: (state) => (value) => {
     return state.data.matrices.find(obj => obj['id'] === value)
   }
@@ -225,10 +261,23 @@ export const actions = {
         // Starting with the top-level objects
         let allDataObjects = Object.values(objects).flat()
 
+        // Add the route to each top-level object
+        allDataObjects.forEach((dataObj) => {
+          // Add a property for each data object's internal route
+          dataObj.route = dataObjectToRoute(dataObj)
+        })
+
         // Build matrix-like structure under each data object type
         matrices.forEach((matrix, i) => {
           // Collect data objects within each matrix
           const {id, name, ...matrix_objs} = matrix
+
+          let allMatrixObjs = Object.values(matrix_objs).flat()
+          // Add the route to each matrix object
+          allMatrixObjs.forEach((dataObj) => {
+            // Add a property for each data object's internal route
+            dataObj.route = dataObjectToRoute(dataObj)
+          })
 
           // Create a populated tree of tactics > techniques > subtechniques in the current data
 
@@ -240,16 +289,18 @@ export const actions = {
           const populatedTechniques = parentTechniques.map((t) => {
             // Check if any subtechniques reference this technique
             if (subtechniques.some(s => s['subtechnique-of'] === t.id)) {
-              // Add associated subtechniques to this technique
-              t.subtechniques = subtechniques.filter(s => s['subtechnique-of'] === t.id)
+              // Add associated subtechniques to this technique, deep-copying and limited to default keys for linking
+              const associatedObjs = subtechniques.filter(s => s['subtechnique-of'] === t.id)
+              t.subtechniques = associatedObjs.map(obj => deepCopyDefault(obj))
             }
             return t
           })
 
           // Add techniques to tactics
           matrix_objs.tactics.map((t) => {
-            // Add techniques that reference this tactic
-            t.techniques = populatedTechniques.filter(pt => pt.tactics.includes(t.id))
+            // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
+            const associatedObjs = populatedTechniques.filter(pt => pt.tactics.includes(t.id))
+            t.techniques = associatedObjs.map(obj => deepCopyDefault(obj, ['subtechniques']))
             return t
           })
 
@@ -272,7 +323,7 @@ export const actions = {
             // Remove this key and values from the result's matrix,
             // to reduce data duplciationg. Leaving ID and name
             delete result.matrices[i][key]
-            result.matrices[i]["route"] = `/matrices/${id}`
+            result.matrices[i]['route'] = `/matrices/${id}`
           }
         })
 
