@@ -73,6 +73,12 @@ export default {
     liveEdit: false
   },
 
+  // https://github.com/nuxt-community/vuetify-module#options
+  vuetify: {
+    treeShake: true,
+    optionsPath: './vuetify.options.js'
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     // Needed for fast load-times
@@ -117,12 +123,12 @@ export default {
 
           // To grab the techniques and tactic objects under matrices and populate allDataObjects
           data.matrices.forEach((matrix) => {
-            const {id, name, ...objects} = matrix
+            const { id, name, ...objects } = matrix
             allDataObjects = allDataObjects.concat(Object.values(objects))
           })
 
           // Collect data objects keyed via object-type under the key 'objects'
-          const {id, name, version, matrices, ...otherObjects} = data
+          const { id, name, version, matrices, ...otherObjects } = data
 
           // Concat the other objects (i.e casestudies objects) into dallDataObject list
           allDataObjects = allDataObjects.concat(Object.values(otherObjects))
@@ -151,8 +157,8 @@ export default {
     navigator_url: process.env.NAVIGATOR_URL || '',
     contact_email: process.env.CONTACT_EMAIL || 'atlas@mitre.org',
     site_version: process.env.SITE_VERSION || packageData.version,
-    footer_logo_link: process.env.FOOTER_LOGO_LINK || "https://www.mitre.org/",
-    footer_logo_image: process.env.FOOTER_LOGO_IMAGE || "mitre-logo-white.svg",
+    footer_logo_link: process.env.FOOTER_LOGO_LINK || 'https://www.mitre.org/',
+    footer_logo_image: process.env.FOOTER_LOGO_IMAGE || 'mitre-logo-white.svg',
     analytics_id: process.env.ANALYTICS_ID || '',
     individual_case_study: {
       navigator_link: process.env.CASE_STUDY_DATA_URL || 'https://mitre-atlas.github.io/atlas-navigator/#layerURL=',

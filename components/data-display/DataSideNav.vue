@@ -220,6 +220,8 @@ export default {
   mounted () {
     this.attachObserver() // Try attaching as soon as page loads
     document.onreadystatechange = () => { this.attachObserver() } // Or if page has just finished loading
+    // Open the drawer on start if this is not mobile
+    this.setNavDrawer(!this.$vuetify.breakpoint.mobile)
   },
 
   methods: {
