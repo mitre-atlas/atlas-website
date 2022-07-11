@@ -20,7 +20,7 @@
       <instructions-dialog />
     </v-card-actions>
 
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" v-model="areDetailsValid" lazy-validation>
       <v-card flat>
         <v-card-title>Details</v-card-title>
         <v-card-subtitle>All fields required.</v-card-subtitle>
@@ -74,7 +74,7 @@
           Procedure
         </v-card-title>
         <v-card-subtitle>
-          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. <span :style="shouldErrorProcedureStepInput ? 'color: #FF5252' : ''">Add at least one step.</span>
+          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. <span :style="!isProcedureValid ? 'color: #FF5252' : ''">Add at least one step.</span>
           <procedure-legend />
         </v-card-subtitle>
         <v-card-text>
@@ -92,7 +92,7 @@
             :select-technique="selectTechnique"
             :description="description"
             :adding-step="addingStep"
-            :is-error="shouldErrorProcedureStepInput"
+            :is-error="!isProcedureValid"
             @clicked="addProcedureStep"
             @addingBoolUpdate="addingStep = $event"
           />
@@ -181,7 +181,7 @@
                   auto-grow
                 />
                 <v-alert
-                  v-if="!valid || errorMsg"
+                  v-if="errorMsg"
                   text
                   color="red"
                   type="error"
@@ -209,7 +209,7 @@
                   <v-btn
                     id="download_case_study_button"
                     color="primary"
-                    :disabled="!valid || errorMsg"
+                    :disabled="!isFormValid"
                     v-bind="attrs"
                     v-on="on"
                     @click="submitStudy"
@@ -264,7 +264,9 @@ export default {
   data () {
     return {
       title: 'Create A Case Study',
-      valid: true,
+      areDetailsValid: true,
+      // Keep the download button enabled (even if there are errors) until the user actually tries to submit
+      hasSubmissionBeenAttempted: false,
       initialFileName: '',
 
       selectTactic: null,
@@ -314,8 +316,7 @@ export default {
       // Custom error messages
       errors: {
         incidentDate: []
-      },
-      shouldErrorProcedureStepInput: false
+      }
     }
   },
   head () {
@@ -331,6 +332,13 @@ export default {
         rules[key] = [this.requiredRule]
       })
       return rules
+    },
+    isProcedureValid () {
+      return this.studyData.study.procedure.length > 0 || !this.hasSubmissionBeenAttempted
+    },
+    isFormValid () {
+      const isFilenameInputted = !!this.fileName
+      return (isFilenameInputted && this.areDetailsValid && this.isProcedureValid) || !this.hasSubmissionBeenAttempted
     }
   },
   beforeMount () {
@@ -364,7 +372,6 @@ export default {
       this.errors = {
         incidentDate: []
       }
-      this.shouldErrorProcedureStepInput = false
     },
     setIncidentDate (date, granularity) {
       // Called from incident date picker
@@ -377,7 +384,6 @@ export default {
     addProcedureStep (newStep) {
       this.studyData.study.procedure.push(newStep)
       this.addingStep = false
-      this.shouldErrorProcedureStepInput = false
     },
     addSource (newSource) {
       this.studyData.study.references.push(newSource)
@@ -392,6 +398,9 @@ export default {
       this.addingSource = false
     },
     async submitStudy () {
+      // Disable the download button until all input errors resolved
+      this.hasSubmissionBeenAttempted = true
+
       // Form validation section
 
       // Validate the form for required fields, which will update the bound variable "valid"
@@ -402,11 +411,6 @@ export default {
         this.errors.incidentDate.push('Select an incident date and click OK')
       }
 
-      // Ensure there is at least one procedure step
-      if (!this.studyData.study.procedure.length) {
-        this.shouldErrorProcedureStepInput = true
-      }
-
       // Wait until the DOM updates for validation to take place
       await this.$nextTick()
 
@@ -414,7 +418,7 @@ export default {
 
       // Successful form fill
       // this.valid covers all input fields, including date picker
-      if (this.valid && this.studyData.study.procedure.length && this.fileName) {
+      if (this.isFormValid) {
         this.errorMsg = ''
 
         // Metadata
