@@ -1,9 +1,11 @@
 <template>
   <v-navigation-drawer
+    v-model="doShowNavDrawer"
     clipped
     app
-    style="z-index: 0;"
+    style="z-index: 3000;"
     :width="325"
+    :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
@@ -31,6 +33,7 @@
             <NuxtLink
               :to="matrixID"
               style="font-size: 0.9375rem;"
+              @click.native="setNavDrawer(false)"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ matrixID }}
@@ -52,6 +55,7 @@
                 <NuxtLink
                   :to="tactic.route"
                   style="font-size: 0.9375rem;"
+                  @click.native="setNavDrawer(false)"
                 >
                   <!-- Smaller font size, similar to v-expansion-panel-header -->
                   {{ tactic.name }}
@@ -69,7 +73,7 @@
               :to="technique.route"
               :ripple="false"
             >
-              <v-list-item>
+              <v-list-item @click="setNavDrawer(false)">
                 <v-list-item-title style="font-weight: 400;" class="text-wrap">
                   <!-- Font size and color to match v-expansion-panel-header style -->
                   {{ technique.name }}
@@ -85,7 +89,7 @@
               :ripple="false"
             >
               <v-list-item>
-                <v-list-item>
+                <v-list-item @click="setNavDrawer(false)">
                   <v-list-item-title class="pl-1 text-wrap" style="font-weight: 400;">
                     {{ subtechnique.name }}
                   </v-list-item-title>
@@ -115,6 +119,7 @@
             <NuxtLink
               :to="matrixID"
               style="font-size: 0.9375rem;"
+              @click.native="setNavDrawer(false)"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ matrixID }}
@@ -132,7 +137,7 @@
             :ripple="false"
           >
             <v-list-item>
-              <v-list-item>
+              <v-list-item @click="setNavDrawer(false)">
                 <v-list-item-title style="font-weight: 400;">
                   <!-- Font size and color to match v-expansion-panel-header style -->
                   {{ tactic.name }}
@@ -154,7 +159,7 @@
         :to="item.route"
         :ripple="false"
       >
-        <v-list-item>
+        <v-list-item @click="setNavDrawer(false)">
           <v-list-item-content class="blue--text text--darken-2" style="font-size: 0.9375rem;">
             <!-- Font size and color to match v-expansion-panel-header style -->
             {{ item.name }}
@@ -165,7 +170,7 @@
   </v-navigation-drawer>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
@@ -192,6 +197,14 @@ export default {
     ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
       return this.$route.path.split('/').slice(1).filter(e => !!e)// '/this/is/path' -> ['this', 'is', 'path']
+    },
+    doShowNavDrawer: {
+      get () {
+        return this.$store.state.doShowNavDrawer
+      },
+      set (value) {
+        this.setNavDrawer(value)
+      }
     }
   },
 
@@ -273,7 +286,9 @@ export default {
         // Make data-side-nav full height
         this.$el.style.height = '100vh'
       }
-    }
+    },
+
+    ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' })
   }
 
 }
