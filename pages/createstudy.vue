@@ -181,7 +181,7 @@
                   auto-grow
                 />
                 <v-alert
-                  v-if="!valid && errorMsg"
+                  v-if="!valid || errorMsg"
                   text
                   color="red"
                   type="error"
@@ -209,7 +209,7 @@
                   <v-btn
                     id="download_case_study_button"
                     color="primary"
-                    :disabled="!valid"
+                    :disabled="!valid || errorMsg"
                     v-bind="attrs"
                     v-on="on"
                     @click="submitStudy"
