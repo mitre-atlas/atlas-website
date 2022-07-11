@@ -43,8 +43,8 @@
 
         <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
         <v-list-group
-          v-for="(tactic, i) in tacticObjects"
-          :key="i"
+          v-for="(tactic, j) in tacticObjects"
+          :key="j"
           no-action
           sub-group
           :value="(isTacticInTechnique(tactic.id))"
@@ -65,8 +65,8 @@
           </template>
 
           <div
-            v-for="(technique, j) in tactic.techniques"
-            :key="j"
+            v-for="(technique, k) in tactic.techniques"
+            :key="k"
           >
             <v-list-item
               :nuxt="true"
@@ -82,8 +82,8 @@
             </v-list-item>
 
             <v-list-item
-              v-for="(subtechnique, k) in technique.subtechniques"
-              :key="k"
+              v-for="(subtechnique, l) in technique.subtechniques"
+              :key="l"
               :nuxt="true"
               :to="subtechnique.route"
               :ripple="false"
