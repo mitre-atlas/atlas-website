@@ -24,29 +24,44 @@ import { dataObjectToPluralTitle } from '@/assets/dataHelpers.js'
 
 export default {
   name: 'DataLinks',
-  props: ['objectType', 'items', 'procedureStepTechniqueId'],
+  props: ['parentObject', 'items', 'itemType'],
   computed: {
     title () {
       if (Array.isArray(this.items) && this.items.length === 1) {
         // Return what may be a singular version of this title
-        return this.objectType.replace('-', ' ')
+        return this.itemType.replace('-', ' ')
       }
-      return dataObjectToPluralTitle(this.objectType)
+      return dataObjectToPluralTitle(this.itemType)
     },
     hoverDataObjects () { // Modifies the data objects passed into the preview if necessary
-      if (this.objectType === 'case-study') { // If a case study, process the object given to hover-preview
+      if (this.itemType === 'case-study') { // If a case study, process the object given to hover-preview
         const hoverItems = []
-        this.items.forEach((caseStudy) => {
-          caseStudy.procedure.forEach((step) => {
-            if (step.technique === this.procedureStepTechniqueId) {
-              hoverItems.push({
-                id: caseStudy.id,
-                name: caseStudy.name,
-                'object-type': caseStudy['object-type'].replace('-', ' '),
-                description: step.description,
-                route: caseStudy.route
-              })
+        this.items.forEach((caseStudy) => { // outer loop
+          caseStudy.procedure.every((step) => { // inner loop
+            if (this.parentObject['object-type'] === 'tactic') {
+              if (step.tactic === this.parentObject.id) { // match the first step that uses that tactic
+                hoverItems.push({
+                  id: caseStudy.id,
+                  name: caseStudy.name,
+                  'object-type': caseStudy['object-type'].replace('-', ' '),
+                  description: step.description,
+                  route: caseStudy.route
+                })
+                return false // eg break out of inner loop
+              }
+            } else if (this.parentObject['object-type'] === 'technique') { // match the first step that uses that technique
+              if (step.technique === this.parentObject.id) {
+                hoverItems.push({
+                  id: caseStudy.id,
+                  name: caseStudy.name,
+                  'object-type': caseStudy['object-type'].replace('-', ' '),
+                  description: step.description,
+                  route: caseStudy.route
+                })
+                return false // eg break out of inner loop
+              }
             }
+            return true // keep searching for match
           })
         })
         return hoverItems
