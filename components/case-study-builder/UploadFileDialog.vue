@@ -62,7 +62,7 @@
   </v-dialog>
 </template>
 <script>
-import { load } from 'js-yaml'
+import { CORE_SCHEMA, load } from 'js-yaml'
 import { generateID, validFormatYAML } from '~/assets/tools.js'
 
 export default {
@@ -158,15 +158,7 @@ export default {
       // only check if the other tests pass
       if (isValid) {
         const tryYamlText = await file.text()
-        try {
-          load(tryYamlText)
-          if (!(typeof tryYamlText === 'object' || typeof load(tryYamlText) === 'object')) {
-            addError('Invalid YAML')
-          }
-        } catch (e) {
-          addError('Invalid YAML')
-        }
-        const yamlErr = validFormatYAML(load(tryYamlText))
+        const yamlErr = validFormatYAML(load(tryYamlText, { schema: CORE_SCHEMA }))
         if (yamlErr !== '') {
           addError(yamlErr)
         }
