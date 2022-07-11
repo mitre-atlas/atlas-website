@@ -7,6 +7,8 @@
     color="grey darken-3"
     style="z-index:2000;"
   >
+    <v-app-bar-nav-icon v-if="$vuetify.breakpoint.mobile" @click.prevent="toggle(null)" />
+
     <v-toolbar-title>
       <nuxt-link to="/">
         <img src="~/assets/MITRE-brand_ATLAS_MITRE_tm_white.svg" width="200">
@@ -129,7 +131,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
@@ -217,6 +219,9 @@ export default {
       // }
       return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
     }
+  },
+  methods: {
+    ...mapMutations({ toggle: 'TOGGLE_NAV_DRAWER' })
   }
 }
 </script>
