@@ -1,32 +1,15 @@
 # ATLAS Website Changelog
 
-## [3.1.0]() (2022-07-08)
+## [3.1.0]() (2022-07-12)
 
 #### Website
-- Added multiple matrices support feature
-    - All matrices can be found in "Matrix" page sidebar menu
-    - "Tactics" and "Techniques" pages have each matrix listed in their sidebar menus for organizational purposes
-    - Iformation tables for each page contain all objects from all matrices to faciliate keyword searches
-- Breadcrumbs have been updated to have direct routes to each matrix
-- Users can define custom data object types
+- Supports display of custom data object types and string properties
+- Supports display of multiple matrices
+- Updated site navigation features with better support for small screens
+- Various fixes and updates
 
 #### Data
-- This version of ATLAS data contains 1 matrix, 12 tactics, 33 techniques, 17 sub-techniques, and 15 case studies.
-- There is a new top level key, "matrices"
-
-New data structure format example:
-* data:
-  * id:
-  * name:
-  * objects:
-    * matrices:
-      * ATLAS:
-        * tactics:
-        * techniques:
-    * case studies:
-
-#### Navigator Data
-- Supports multiple matrices and collections for ATT&CK Workbench compatibility.
+- Updated ATLAS data to version 4.0.0
 
 ## [3.0.0]() (2022-03-31)
 
