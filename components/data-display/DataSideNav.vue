@@ -209,10 +209,10 @@ export default {
   },
 
   watch: {
-    '$vuetify.breakpoint.mobile' (value) {
-      if (value) {
-        // Resize to accomodate footer when switching back to full
-        this.attachObserver()
+    '$vuetify.breakpoint.mobile' (isMobile) {
+      if (isMobile && this.doShowNavDrawer) {
+        // Close drawer when going to mobile with it open
+        this.setNavDrawer(false)
       }
     }
   },
