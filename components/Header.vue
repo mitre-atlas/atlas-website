@@ -7,7 +7,7 @@
     color="grey darken-3"
     style="z-index:2000;"
   >
-    <v-app-bar-nav-icon v-if="doShowNavIcon" @click.prevent="toggle()" />
+    <v-app-bar-nav-icon @click.prevent="toggle()" />
 
     <v-toolbar-title>
       <nuxt-link to="/">
