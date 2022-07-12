@@ -29,7 +29,7 @@
         <template #activator>
           <v-list-item>
             <NuxtLink
-              :to="/matrices/${matrixID}"
+              :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem;"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
@@ -113,7 +113,7 @@
         <template #activator>
           <v-list-item>
             <NuxtLink
-              :to="matrices/$matrixID"
+              :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem;"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
