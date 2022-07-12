@@ -1,5 +1,5 @@
 export default {
   breakpoint: {
-    mobileBreakpoint: 'sm'
+    mobileBreakpoint: 'md'
   }
 }
