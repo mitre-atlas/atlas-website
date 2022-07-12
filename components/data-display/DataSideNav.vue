@@ -31,7 +31,7 @@
         <template #activator>
           <v-list-item>
             <NuxtLink
-              :to="matrixID"
+              :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem;"
               @click.native="setNavDrawer(false)"
             >
@@ -117,7 +117,7 @@
         <template #activator>
           <v-list-item>
             <NuxtLink
-              :to="matrixID"
+              :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem;"
               @click.native="setNavDrawer(false)"
             >
