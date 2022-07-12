@@ -7,7 +7,7 @@
     color="grey darken-3"
     style="z-index:2000;"
   >
-    <v-app-bar-nav-icon @click.prevent="toggle()" />
+    <v-app-bar-nav-icon v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
     <v-toolbar-title>
       <nuxt-link to="/">
@@ -219,11 +219,9 @@ export default {
       // }
       return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
     },
-    doShowNavIcon () {
+    doesPageHaveSideNav () {
       // Only matrices, objectTypePlural, and studies routes have side navs
-      const pageHasSideNav = this.$route.name === 'matrices-id' || this.$route.name.includes('objectTypePlural') || this.$route.name.includes('studies')
-      // Only show icon if on small screen and page has side nav
-      return (this.$vuetify.breakpoint.mobile && pageHasSideNav)
+      return this.$route.name === 'matrices-id' || this.$route.name.includes('objectTypePlural') || this.$route.name.includes('studies')
     }
   },
   methods: {
