@@ -5,7 +5,7 @@
     app
     style="z-index: 3000;"
     :width="325"
-    :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
+    bottom
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
