@@ -6,7 +6,6 @@
     style="z-index: 3000;"
     :width="325"
     :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
-    :bottom="$vuetify.breakpoint.name === 'xs'"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
