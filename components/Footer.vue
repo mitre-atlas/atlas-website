@@ -3,6 +3,8 @@
     id="footer"
     padless
     dark
+    app
+    style="z-index: 4000;"
   >
     <v-card
       style="overflow: clip;"
