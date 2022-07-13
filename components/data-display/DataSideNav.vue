@@ -24,7 +24,7 @@
         v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
         :key="i"
         no-action
-        :value="(isTechniqueInMatrix(tacticObjects))"
+        :value="(isTechniqueInMatrix(tacticObjects, i))"
       >
         <template #activator>
           <v-list-item>
@@ -108,7 +108,7 @@
         v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
         :key="i"
         no-action
-        :value="(isTacticInMatrix(tacticObjects, matrixID))"
+        :value="(isTacticInMatrix(tacticObjects, matrixID, i))"
       >
         <template #activator>
           <v-list-item>
@@ -215,8 +215,12 @@ export default {
         this.observer.observe(this.footer)
       }
     },
-    isTacticInMatrix (tacticsObjects, matrixID) {
-      if (!this.selectedObject) { // Returns false if no tactic ID is found within current URL (if no tactic selected)
+    isTacticInMatrix (tacticsObjects, matrixID, i) {
+      if (!this.selectedObject) {
+        // If no tactic ID is found within current URL, return true for only the first matrix, false for others (on refresh/if no tactic selected)
+        if (i === 0) {
+          return true
+        }
         return false
       }
       const tacticsArrayLength = tacticsObjects.length
@@ -227,8 +231,12 @@ export default {
       }
       return false // Otherwise return false
     },
-    isTechniqueInMatrix (tacticsObjects) {
-      if (!this.selectedObject) { // Returns false if no technique ID is found within current URL (if no technique selected)
+    isTechniqueInMatrix (tacticsObjects, i) {
+      if (!this.selectedObject) {
+        // If no tactic ID is found within current URL, return true for only the first matrix, false for others (on refresh/if no tactic selected)
+        if (i === 0) {
+          return true
+        }
         return false
       }
       for (let i = 0; i < tacticsObjects.length; i++) {
