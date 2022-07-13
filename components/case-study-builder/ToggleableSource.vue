@@ -4,18 +4,19 @@ between render with edit/delete and editable form. -->
   <div class="toggleable_source">
     <add-source
       v-if="isInEditMode"
+      :submission-status="enableStatusHighlighting ? {type: 'warning', message: 'Unsaved changes'} : {}"
       :url="source.url"
       :title="source.title"
       :adding-source="isInEditMode"
       :index="index"
       @clicked="replaceSource"
-      @addingBoolUpdate="isInEditMode = $event"
+      @addingBoolUpdate="updateEditingState"
     />
     <edit-source-list-item
       v-else
       :source="source"
       :index="index"
-      @edit-source="isInEditMode = $event"
+      @edit-source="updateEditingState"
       @delete="$emit('delete', index)"
     />
   </div>
@@ -25,15 +26,21 @@ export default {
   name: 'ToggleableSource',
   props: [
     'source',
-    'index'
+    'index',
+    'enableStatusHighlighting'
   ],
   data: () => ({
     isInEditMode: false
   }),
   methods: {
+    updateEditingState (newEditState) {
+      this.isInEditMode = newEditState
+      this.$emit('isEditing', newEditState)
+    },
     replaceSource (event) {
       // Close the add source dialog
       this.isInEditMode = false
+      this.$emit('isEditing', false)
       // Return the source object and index in references array
       this.$emit('clicked', event, this.index)
     }

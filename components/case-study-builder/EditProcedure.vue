@@ -7,6 +7,7 @@
         <edit-procedure-card
           :info="p"
           :editing="editing"
+          :submission-status="(enableStatusHighlighting) ? {type: 'warning', message: 'Unsaved changes'} : {}"
           @deleteClick="deleteStep(i)"
           @editClick="editStep"
           @replace="replace(i)"
@@ -23,19 +24,31 @@ import draggable from 'vuedraggable'
 export default {
   name: 'EditProcedure',
   components: { draggable },
-  props: ['procedure'],
+  props: ['procedure', 'enableStatusHighlighting'],
   data () {
     return {
       procedureData: this.procedure,
       editedObj: {},
-      editing: false
+      editing: false,
+      editingCount: 0 // Count of the number of steps being edited
+    }
+  },
+  computed: {
+    areChangesUnsaved () {
+      return this.editingCount > 0
     }
   },
   methods: {
     editStep (editedObj) {
       this.editedObj = editedObj
     },
-    updateEdit () {
+    updateEdit (stepEditingState) {
+      if (stepEditingState) {
+        this.editingCount += 1
+      } else {
+        this.editingCount -= 1
+      }
+      this.$emit('areChangesUnsaved', this.areChangesUnsaved)
       this.editing = !this.editing
     },
     replace (i) {

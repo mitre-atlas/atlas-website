@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="!editingData">
+  <v-card v-if="!isEditing">
     <v-card-title style="font-size: 1.1rem">
       {{ techniqueTitle }}
       <v-spacer />
@@ -14,17 +14,9 @@
       <v-btn color="blue" icon @click="editStep">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-dialog
-        v-model="dialog"
-        width="500"
-      >
+      <v-dialog v-model="dialog" width="500">
         <template #activator="{ on, attrs }">
-          <v-btn
-            color="red"
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn color="red" icon v-bind="attrs" v-on="on">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
@@ -40,26 +32,43 @@
     </v-card-actions>
   </v-card>
 
-  <v-card v-else>
-    <procedure-form
-      :key="selectTacticData"
-      :select-tactic-data="selectTacticData"
-      :select-technique-data="selectTechniqueData"
-      :description-data="descriptionData"
-      @tacticUpdate="selectTacticData = $event"
-      @techniqueUpdate="selectTechniqueData = $event"
-      @descriptionUpdate="descriptionData = $event"
-    />
-    <v-card-actions>
-      <v-spacer />
-      <v-btn class="ma-2" text color="grey" @click="cancelEdit">
-        Cancel
-      </v-btn>
-      <v-btn id="save_procedure_button" class="ma-2" text color="green" @click="submitEdit">
-        Save
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+  <div v-else>
+    <v-card :style="cardStyle" :outlined="hasStatus">
+      <v-card-title :style="headerStyle">
+        Edit Procedure Step
+        <v-spacer />
+      </v-card-title>
+      <procedure-form
+        :key="selectTacticData"
+        :select-tactic-data="selectTacticData"
+        :select-technique-data="selectTechniqueData"
+        :description-data="descriptionData"
+        @tacticUpdate="selectTacticData = $event"
+        @techniqueUpdate="selectTechniqueData = $event"
+        @descriptionUpdate="descriptionData = $event"
+      />
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="ma-2" text color="grey" @click="cancelEdit">
+          Cancel
+        </v-btn>
+        <v-btn
+          id="save_procedure_button"
+          class="ma-2"
+          text
+          color="green"
+          @click="submitEdit"
+        >
+          Save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+    <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
+      {{
+        submissionStatus.message
+      }}
+    </v-card-subtitle>
+  </div>
 </template>
 
 <script>
@@ -67,7 +76,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditProcedureCard',
-  props: ['info', 'editedObj', 'editing'],
+  props: ['info', 'editedObj', 'editing', 'submissionStatus'],
   data () {
     return {
       editingData: this.editing,
@@ -78,10 +87,39 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'getDataObjectById',
-      'subtechnique/getParent'
-    ]),
+    ...mapGetters(['getDataObjectById', 'subtechnique/getParent']),
+    isEditing () {
+      return this.editingData
+    },
+    hasStatus () {
+      return !!(this.submissionStatus ?? {}).type
+    },
+    isInErrorState () {
+      return this.isEditing && (this.submissionStatus ?? {}).type === 'error'
+    },
+    isInWarningState () {
+      return this.isEditing && (this.submissionStatus ?? []).type === 'warning'
+    },
+    headerStyle () {
+      if (this.isInErrorState) {
+        return 'color: #FF5252'
+      } else if (this.isInWarningState) {
+        return 'color: #DAA520'
+      } else {
+        return ''
+      }
+    },
+    cardStyle () {
+      const style = {}
+      if (this.isInErrorState) {
+        style['border-color'] = '#FF5252'
+        style['border-width'] = '2px'
+      } else if (this.isInWarningState) {
+        style['border-color'] = '#DAA520'
+        style['border-width'] = '2px'
+      }
+      return style
+    },
     tactic () {
       return this.getDataObjectById(this.selectTacticData)
     },
@@ -103,7 +141,9 @@ export default {
     techniqueTitle () {
       // Prepend parent technique name for a subtechnique
       if ('subtechnique-of' in this.technique) {
-        const parentTechnique = this.$store.getters['subtechnique/getParent'](this.technique)
+        const parentTechnique = this.$store.getters['subtechnique/getParent'](
+          this.technique
+        )
         return `${parentTechnique.name}: ${this.technique.name}`
       }
       // Otherwise use the name

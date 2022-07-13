@@ -1,13 +1,44 @@
 <template>
   <div class="mx-8">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <navigation-dialog
-        @close="closeDialog"
-        @leave-page="leavePage"
-      />
+    <v-dialog v-model="dialog" width="500">
+      <navigation-dialog @close="closeDialog" @leave-page="leavePage" />
+    </v-dialog>
+    <v-dialog v-model="showSavePromptDialog" width="500">
+      <v-card>
+        <v-card-title> Unsaved changes </v-card-title>
+
+        <v-card-text>
+          <div class="content">
+            You have unsaved changes.
+            <v-spacer />
+            Continue submission without including changes?
+          </div>
+          <slot />
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="ma-1"
+            color="grey"
+            text
+            @click="showSavePromptDialog = false"
+          >
+            Return
+          </v-btn>
+          <v-btn
+            class="ma-1"
+            color="warning"
+            text
+            @click="
+              showSavePromptDialog = false
+              submitStudy(true)
+            "
+          >
+            Continue to download
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
     <page-title>{{ title }}</page-title>
 
@@ -50,9 +81,12 @@
 
           <incident-date-picker
             :start-date="studyData.study['incident-date']"
-            :start-date-granularity="studyData.study['incident-date-granularity']"
+            :start-date-granularity="
+              studyData.study['incident-date-granularity']
+            "
             :initial-rules="rules.incidentDate"
             :initial-errors="errors.incidentDate"
+            :submission-status="datePickerSubmissionStatus"
             @isDatePickerOpen="isDatePickerOpen = $event"
             @selectedDate="setIncidentDate"
           />
@@ -70,11 +104,13 @@
           />
         </v-card-text>
 
-        <v-card-title>
-          Procedure
-        </v-card-title>
+        <v-card-title> Procedure </v-card-title>
         <v-card-subtitle>
-          Construct a timeline of the incident, mapped to MITRE ATLAS&trade; techniques. <span :style="!isProcedureValid ? 'color: #FF5252' : ''">Add at least one step.</span>
+          Construct a timeline of the incident, mapped to MITRE ATLAS&trade;
+          techniques.
+          <span
+            :style="!isProcedureValid ? 'color: #FF5252' : ''"
+          >Add at least one step.</span>
           <procedure-legend />
         </v-card-subtitle>
         <v-card-text>
@@ -82,7 +118,10 @@
             :key="studyData.study.procedure"
             class="mx-8"
             :procedure="studyData.study.procedure"
+            :enable-status-highlighting="hasSubmissionBeenAttempted"
+            @isEditing="isProcedureUnsaved = $event"
             @updateProcedure="studyData.study.procedure = $event"
+            @areChangesUnsaved="areProcedureChangesUnsaved = $event"
           />
           <add-procedure-step
             v-if="addingStep"
@@ -92,15 +131,12 @@
             :select-technique="selectTechnique"
             :description="description"
             :adding-step="addingStep"
-            :is-error="!isProcedureValid"
+            :submission-status="addStepSubmissionStatus"
             @clicked="addProcedureStep"
             @addingBoolUpdate="addingStep = $event"
           />
           <div v-else>
-            <v-btn
-              class="ma-2 mb-10"
-              @click="addingStep = true"
-            >
+            <v-btn class="ma-2 mb-10" @click="addingStep = true">
               <v-icon left>
                 mdi-plus
               </v-icon>
@@ -109,18 +145,13 @@
           </div>
         </v-card-text>
 
-        <v-card-title>
-          References
-        </v-card-title>
+        <v-card-title> References </v-card-title>
         <v-card-subtitle>
           Optionally list sources for this case study.
         </v-card-subtitle>
 
         <v-card-text>
-          <div
-            v-if="studyData.study.references"
-            class="mx-8"
-          >
+          <div v-if="studyData.study.references" class="mx-8">
             <v-list flat>
               <v-list-item-group>
                 <div
@@ -130,7 +161,9 @@
                   <toggleable-source
                     :source="value"
                     :index="key"
+                    :enable-status-highlighting="hasSubmissionBeenAttempted"
                     @clicked="addSourceAt"
+                    @isEditing="updateReferenceEditingCount"
                     @delete="deleteSourceAt"
                   />
                 </div>
@@ -141,6 +174,7 @@
             v-if="addingSource"
             :id="saveButton"
             ref="addSourceRef"
+            :submission-status="addSourceSubmissionStatus"
             :index="studyData.study.references.length"
             @clicked="addSource"
             @addingBoolUpdate="addingSource = $event"
@@ -155,19 +189,15 @@
           </div>
         </v-card-text>
 
-        <v-card-title>
-          Download
-        </v-card-title>
+        <v-card-title> Download </v-card-title>
         <v-card-subtitle>
-          Download the case study data file, specifying the filename here. Once downloaded, email the file to <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+          Download the case study data file, specifying the filename here. Once
+          downloaded, email the file to
+          <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
         </v-card-subtitle>
         <v-card-text>
           <v-row>
-            <v-col
-              cols="12"
-              sm="3"
-              md="6"
-            >
+            <v-col cols="12" sm="3" md="6">
               <div>
                 <v-text-field
                   v-model="fileName"
@@ -180,15 +210,6 @@
                   required
                   auto-grow
                 />
-                <v-alert
-                  v-if="errorMsg"
-                  text
-                  color="red"
-                  type="error"
-                  dense
-                >
-                  {{ errorMsg }}
-                </v-alert>
               </div>
             </v-col>
             <v-col>
@@ -200,39 +221,41 @@
               />
             </v-col>
           </v-row>
-          <v-row style="margin-top:-25px">
-            <v-col
-              cols="3"
-            >
-              <v-tooltip>
-                <template #activator="{ on, attrs }">
-                  <v-btn
-                    id="download_case_study_button"
-                    color="primary"
-                    :disabled="!isFormValid"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="submitStudy"
-                  >
-                    <v-icon left>
-                      mdi-download
-                    </v-icon>
-                    Download Case Study
-                  </v-btn>
-                </template>
-              </v-tooltip>
+          <v-row style="margin-top: -25px">
+            <v-col cols="4">
+              <!-- <v-tooltip> -->
+              <!-- <template #activator="{ on, attrs }"> -->
+              <v-btn
+                id="download_case_study_button"
+                color="primary"
+                :disabled="!isFormValid"
+                v-bind="attrs"
+                class="mb-2"
+                block
+                v-on="on"
+                @click="submitStudy()"
+              >
+                <v-icon left>
+                  mdi-download
+                </v-icon>
+                Download Case Study
+              </v-btn>
+              <!-- </template> -->
+              <!-- </v-tooltip> -->
             </v-col>
             <v-col>
-              <v-alert
-                v-if="submissionMsg"
-                text
-                color="green"
-                type="success"
-                dense
-              >
-                {{ submissionMsg }}
-                <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>.
-              </v-alert>
+              <v-fade-transition>
+                <v-alert
+                  v-if="!!status.message"
+                  class="mb-0"
+                  :color="status.color"
+                  :type="status.type"
+                  text
+                  dense
+                >
+                  <span v-linkified v-html="status.message" />
+                </v-alert>
+              </v-fade-transition>
             </v-col>
           </v-row>
         </v-card-text>
@@ -303,8 +326,15 @@ export default {
       isEditing: false,
       pptSelected: '',
       isDatePickerOpen: false,
+      referenceEditingCount: 0, // Count of references being edited
+      areProcedureChangesUnsaved: false,
+      showSavePromptDialog: false,
 
-      requiredRule: v => !!v || 'Required',
+      status: {
+        message: '',
+        color: null
+      },
+
       // Fields that should be required
       requiredFieldRuleKeys: [
         'title',
@@ -334,11 +364,54 @@ export default {
       return rules
     },
     isProcedureValid () {
-      return this.studyData.study.procedure.length > 0 || !this.hasSubmissionBeenAttempted
+      return (
+        this.studyData.study.procedure.length > 0 ||
+        !this.hasSubmissionBeenAttempted
+      )
     },
     isFormValid () {
       const isFilenameInputted = !!this.fileName
-      return (isFilenameInputted && this.areDetailsValid && this.isProcedureValid) || !this.hasSubmissionBeenAttempted
+      return (
+        (isFilenameInputted && this.areDetailsValid && this.isProcedureValid) ||
+        !this.hasSubmissionBeenAttempted
+      )
+    },
+    areReferenceChangesUnsaved () {
+      return this.referenceEditingCount > 0
+    },
+    areChangesUnsaved () {
+      return (
+        this.addingSource ||
+        this.addingStep ||
+        this.areProcedureChangesUnsaved ||
+        this.areReferenceChangesUnsaved ||
+        this.isDatePickerOpen
+      )
+    },
+    // If the procedure is invalid, error
+    // If a step is currently being added (unsaved), warn
+    addStepSubmissionStatus () {
+      if (!this.isProcedureValid) {
+        return { type: 'error', message: 'At least one step is required' }
+        // this.hasSubmissionBeenAttempted ensures no warning until submission attempted
+      } else if (this.addingStep && this.hasSubmissionBeenAttempted) {
+        return { type: 'warning', message: 'Unsaved changes' }
+      }
+      return {}
+    },
+    // If a source is currently being added (unsaved), and the user has attempted to submit, warn
+    addSourceSubmissionStatus () {
+      if (this.addingSource && this.hasSubmissionBeenAttempted) {
+        return { type: 'warning', message: 'Unsaved changes' }
+      }
+      return {}
+    },
+
+    datePickerSubmissionStatus () {
+      if (this.isDatePickerOpen && this.hasSubmissionBeenAttempted) {
+        return { type: 'warning', message: 'Unsaved changes' }
+      }
+      return {}
     }
   },
   beforeMount () {
@@ -351,6 +424,56 @@ export default {
   },
   methods: {
     ...mapActions(['submitCaseStudy']),
+    // Keeps track of the count of references currently being edited in order as a condition for the
+    // unsaved warning modal
+    updateReferenceEditingCount (sourceEditingState) {
+      if (sourceEditingState) {
+        this.referenceEditingCount += 1
+      } else {
+        this.referenceEditingCount -= 1
+      }
+    },
+    // Sets messages for the alert component
+    setErrorStatus (message = 'Please address any errors above') {
+      this.status.type = 'error'
+      this.status.color = 'error'
+      this.status.message = message
+    },
+    setWarningStatus (message) {
+      this.status.type = 'warning'
+      this.status.color = 'warning'
+      this.status.message = message
+    },
+    setSuccessStatus (message) {
+      this.status.type = 'success'
+      this.status.color = 'success'
+      this.status.message = message
+    },
+    clearStatus () {
+      this.status.message = ''
+    },
+    // Checks if the value exists, and if it is more than whitespace
+    requiredRule (value) {
+      const emptyRule = value => !!value || 'Required'
+      const whitespaceRule = value =>
+        (!!value && !!value.trim()) || 'Field cannot be empty'
+
+      const passValues = [emptyRule(value), whitespaceRule(value)]
+
+      for (let i = 0; i < passValues.length; i++) {
+        const passValue = passValues[i]
+
+        // String value == error message
+        if (typeof passValue === 'string') {
+          if (this.status.message) {
+            this.setErrorStatus()
+          }
+          return passValue
+        }
+      }
+      this.clearStatus()
+      return true
+    },
     setFileName (loadedFileName) {
       this.fileName = loadedFileName
     },
@@ -367,8 +490,7 @@ export default {
       }
 
       // Reset sucess and/or error messages
-      this.errorMsg = ''
-      this.submissionMsg = ''
+      this.clearStatus()
       this.errors = {
         incidentDate: []
       }
@@ -397,19 +519,12 @@ export default {
       this.studyData.study.references.splice(index, 1)
       this.addingSource = false
     },
-    async submitStudy () {
+    async submitStudy (ignoreUnsavedChanges = false) {
       // Disable the download button until all input errors resolved
       this.hasSubmissionBeenAttempted = true
-
       // Form validation section
-
       // Validate the form for required fields, which will update the bound variable "valid"
       this.$refs.form.validate()
-
-      if ((!this.studyData.study['incident-date'] || this.studyData.study['incident-date-granularity']) && this.isDatePickerOpen) {
-        // Ensure incident date is defined, i.e. input menu is closed
-        this.errors.incidentDate.push('Select an incident date and click OK')
-      }
 
       // Wait until the DOM updates for validation to take place
       await this.$nextTick()
@@ -417,16 +532,23 @@ export default {
       // End form validation section
 
       // Successful form fill
-      // this.valid covers all input fields, including date picker
+      // this.isFormValid covers all input fields, including date picker
       if (this.isFormValid) {
-        this.errorMsg = ''
+        this.clearStatus()
+        // If there are unsaved changes and we are not ignoring them, stop the download process
+        if (this.areChangesUnsaved && !ignoreUnsavedChanges) {
+          this.setWarningStatus('You have unsaved changes')
+          this.showSavePromptDialog = true
+          return
+        }
 
         // Metadata
         // Initialize meta key if not exists
         this.studyData.meta = this.studyData.meta || {}
         const nowDate = new Date()
         // Only set the date-created once upon study creation
-        this.studyData.meta['date-created'] = this.studyData.meta['date-created'] ?? nowDate
+        this.studyData.meta['date-created'] =
+          this.studyData.meta['date-created'] ?? nowDate
         // Always update date-updated
         this.studyData.meta['date-updated'] = nowDate
         this.studyData.meta.uuid = this.studyData.meta.uuid ?? generateID()
@@ -441,12 +563,15 @@ export default {
 
         // Reset
         this.downloadedYaml = true
-        this.submissionMsg = 'Your case study has been downloaded! Email your yaml file to '
+        // Reset any error or warning states
+        this.hasSubmissionBeenAttempted = false
+        this.setSuccessStatus(
+          'Your case study has been downloaded! Email your yaml file to ' +
+            this.contactEmail
+        )
       } else {
         // Form has validation errors, display message to have users scroll up
-        this.errorMsg = 'Please address any errors above'
-        // Reset success message
-        this.submissionMsg = ''
+        this.setErrorStatus()
       }
     },
     closeDialog () {

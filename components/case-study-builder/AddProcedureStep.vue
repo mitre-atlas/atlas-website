@@ -1,11 +1,7 @@
 <template>
   <div id="addForm">
-    <v-card
-      class="my-5"
-      outlined
-      :style="[shouldShowErrorBorder ? { 'border-color': '#FF5252', 'border-width': '2px' } : {}]"
-    >
-      <v-card-title :style="shouldShowErrorBorder ? 'color: #FF5252' : ''">
+    <v-card class="mt-5" outlined :style="cardStyle">
+      <v-card-title :style="headerStyle">
         Add Procedure Step
         <v-spacer />
       </v-card-title>
@@ -14,6 +10,7 @@
         :select-tactic-data="selectTacticData"
         :select-technique-data="selectTechniqueData"
         :description-data="descriptionData"
+        :submission-status="submissionStatus"
         @tacticUpdate="selectTacticData = $event"
         @techniqueUpdate="selectTechniqueData = $event"
         @descriptionUpdate="descriptionData = $event"
@@ -28,46 +25,75 @@
         </v-btn>
       </v-card-actions>
 
-      <v-alert
-        v-if="addStepErr"
-        text
-        color="red"
-        type="error"
-        dense
-      >
+      <v-alert v-if="addStepErr" text color="red" type="error" dense>
         {{ addStepErr }}
       </v-alert>
     </v-card>
+    <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
+      {{
+        submissionStatus.message
+      }}
+    </v-card-subtitle>
   </div>
 </template>
 
 <script>
 export default {
   name: 'AddProcedureStep',
-  props: ['selectTactic', 'selectTechnique', 'description', 'addingStep', 'isError'],
+  props: [
+    'selectTactic',
+    'selectTechnique',
+    'description',
+    'addingStep',
+    'submissionStatus'
+  ],
   data () {
     return {
       selectTacticData: this.selectTactic,
       selectTechniqueData: this.selectTechnique,
       descriptionData: this.description,
       addStepErr: '',
-      addingBool: this.addingStep,
-      shouldShowErrorBorder: this.isError
+      addingBool: this.addingStep
     }
   },
-  watch: {
-    isError: {
-      // Ensures that the component data is up to date with error update from createstudy
-      immediate: true,
-      deep: true,
-      handler (newVal, oldVal) {
-        this.shouldShowErrorBorder = newVal
+  computed: {
+    hasStatus () {
+      return !!(this.submissionStatus ?? {}).type
+    },
+    isInErrorState () {
+      return (this.submissionStatus ?? {}).type === 'error'
+    },
+    isInWarningState () {
+      return (this.submissionStatus ?? []).type === 'warning'
+    },
+    headerStyle () {
+      if (this.isInErrorState) {
+        return 'color: #FF5252'
+      } else if (this.isInWarningState) {
+        return 'color: #DAA520'
+      } else {
+        return ''
       }
+    },
+    cardStyle () {
+      const style = {}
+      if (this.isInErrorState) {
+        style['border-color'] = '#FF5252'
+        style['border-width'] = '2px'
+      } else if (this.isInWarningState) {
+        style['border-color'] = '#DAA520'
+        style['border-width'] = '2px'
+      }
+      return style
     }
   },
   methods: {
     addProcedureStep () {
-      if (this.selectTacticData && this.selectTechniqueData && this.descriptionData) {
+      if (
+        this.selectTacticData &&
+        this.selectTechniqueData &&
+        this.descriptionData
+      ) {
         const newStep = {
           tactic: this.selectTacticData,
           technique: this.selectTechniqueData,
