@@ -17,16 +17,19 @@
 
 <script>
 export default {
-  beforeCreate () {
-    if (!this.$route.params.id) {
-      // find first valid id & go to valid id page
-      const matrices = this.$store.state.data.matrices
+  // beforeCreate () {
+  //   console.log(this.$route.params.id)
+  //   if (!this.$route.params.id) {
+  //     // find first valid id & go to valid id page
+  //     const matrices = this.$store.state.data.matrices
+  //     console.log(matrices)
 
-      if (matrices.length > 0 && !!matrices[0].id) {
-        this.$router.push({ path: this.$route.path + matrices[0].id })
-      }
-    }
-  },
+  //     if (matrices.length > 0 && !!matrices[0].id) {
+  //       this.$router.push({ path: this.$route.path + matrices[0].id })
+  //     }
+  //   }
+  //   console.log('in before create')
+  // },
   data: ({ $config: { name }, $route: { params } }) => ({
     matrixId: params.id,
     title: `${params.id} Matrix`,
