@@ -2,7 +2,6 @@
   <div class="mx-8">
     <v-dialog
       v-model="dialog"
-      width="500"
     >
       <navigation-dialog
         @close="closeDialog"
