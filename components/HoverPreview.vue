@@ -104,7 +104,7 @@ export default {
     cardStyle () {
       const styleOptions = {
         width: this.displayOptions.cardWidth,
-        'max-width': '80vh'
+        'max-width': '80vw'
       }
       if (this.isMobile) {
         styleOptions.margin = 'auto'
