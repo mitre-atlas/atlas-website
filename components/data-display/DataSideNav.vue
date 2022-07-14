@@ -6,6 +6,7 @@
     style="z-index: 3000;"
     :width="325"
     :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
+    v-resize="onResize"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
@@ -205,6 +206,9 @@ export default {
       set (value) {
         this.setNavDrawer(value)
       }
+    },
+    headerHeight () {
+      return this.$vuetify.application.top
     }
   },
 
@@ -218,8 +222,6 @@ export default {
   },
 
   mounted () {
-    this.attachObserver() // Try attaching as soon as page loads
-    document.onreadystatechange = () => { this.attachObserver() } // Or if page has just finished loading
     // Open the drawer on start if this is not mobile
     this.setNavDrawer(!this.$vuetify.breakpoint.mobile)
   },
@@ -286,17 +288,14 @@ export default {
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
     },
 
-    // Prevents data-side-nav from hiding behind footer
-    clampSideNavHeight (entries, observer) {
-      // Footer observation entry
-      const entry = entries[0]
-      if (entry.isIntersecting) { // Footer is in view
-        // Shorten data-side-nav so that options don't hide behind footer
-        this.$el.style.height = `calc(100vh - ${this.$el.offsetTop + entry.intersectionRect.height}px)`
-      } else { // Footer is not in view
-        // Make data-side-nav full height
-        this.$el.style.height = '100vh'
-      }
+    onResize () {
+      // Otherwise calculate the height for sidebar to fit between header and footer
+      const footer = document.querySelector('#footer')
+      // Bounding rect gives decimal height in pixels
+      const footerHeight = footer.getBoundingClientRect().height
+      const headerFooterHeight = this.headerHeight + footerHeight
+      // Set max height of the element
+      this.$el.style.maxHeight = `calc(100% - ${headerFooterHeight}px)`
     },
 
     ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' })

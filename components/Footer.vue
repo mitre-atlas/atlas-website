@@ -4,7 +4,7 @@
     padless
     dark
     :app="!$vuetify.breakpoint.mobile"
-    :style="($vuetify.breakpoint.mobile) ? 'z-index: 4000;' : ''"
+
   >
     <v-card
       style="overflow: clip;"
