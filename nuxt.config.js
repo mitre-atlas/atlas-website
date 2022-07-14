@@ -120,11 +120,15 @@ export default {
 
           // Empty list
           let allDataObjects = []
+          let matrixRoutes = []
 
           // To grab the techniques and tactic objects under matrices and populate allDataObjects
           data.matrices.forEach((matrix) => {
             const { id, name, ...objects } = matrix
             allDataObjects = allDataObjects.concat(Object.values(objects))
+            matrixRoutes.push(`/matrices/${id}`)
+            const dynamicDataKeys = Object.keys(objects).filter(k => k !== 'case-study')
+            matrixRoutes = matrixRoutes.concat(dynamicDataKeys.map(k => `/${k}`))
           })
 
           // Collect data objects keyed via object-type under the key 'objects'
@@ -142,7 +146,7 @@ export default {
             return dataObjectToRoute(obj)
           })
 
-          return dynamicRoutes
+          return dynamicRoutes.concat(matrixRoutes)
         })
     }
   },
