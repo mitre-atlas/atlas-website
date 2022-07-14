@@ -227,20 +227,6 @@ export default {
   },
 
   methods: {
-    // Looks for intersection changes to set the height of data-side-nav accordingly
-    attachObserver () {
-      if (document.readyState === 'complete') { // Wait for page to load
-        // Detect visibility changes as per granularity
-        const thresholdGranularity = 0.01
-        const options = { threshold: [] }
-        for (let i = 0; i < 1; i += thresholdGranularity) { options.threshold.push(i) }
-        // Grab footer, create observer to watch for visibility changes
-        this.footer = document.querySelector('#footer')
-        this.observer = new IntersectionObserver(this.clampSideNavHeight, options)
-        // Connect observer
-        this.observer.observe(this.footer)
-      }
-    },
     isTacticInMatrix (tacticsObjects, matrixID) {
       if (!this.selectedObject) { // Returns false if no tactic ID is found within current URL (if no tactic selected)
         return false
@@ -289,13 +275,16 @@ export default {
     },
 
     onResize () {
-      // Otherwise calculate the height for sidebar to fit between header and footer
-      const footer = document.querySelector('#footer')
-      // Bounding rect gives decimal height in pixels
-      const footerHeight = footer.getBoundingClientRect().height
-      const headerFooterHeight = this.headerHeight + footerHeight
-      // Set max height of the element
-      this.$el.style.maxHeight = `calc(100% - ${headerFooterHeight}px)`
+      // Only if not mobile
+      if (!this.$vuetify.breakpoint.mobile) {
+        // Calculate the max height for sidebar to fit between header and footer
+        const footer = document.querySelector('#footer')
+        // Bounding rect gives decimal height in pixels
+        const footerHeight = footer.getBoundingClientRect().height
+        const headerFooterHeight = this.headerHeight + footerHeight
+        // Set max height of the element
+        this.$el.style.maxHeight = `calc(100% - ${headerFooterHeight}px)`
+      }
     },
 
     ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' })
