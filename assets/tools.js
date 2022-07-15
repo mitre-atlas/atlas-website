@@ -58,13 +58,15 @@ export function download (filename, text) {
   document.body.removeChild(element)
 }
 
-export function downloadStudyFile (study, filename) {
-  const trimStrings = function (key, value) {
-    if (typeof value === 'string') {
-      return value.trim()
-    }
-    return value
+// Helper function for downloadStudyFile function
+const trimStrings = function (key, value) {
+  if (typeof value === 'string') {
+    return value.trim()
   }
+  return value
+}
+
+export function downloadStudyFile (study, filename) {
   const studyYAML = dump(study, { replacer: trimStrings }).replace('T00:00:00.000Z', '')
   download(`${filename}.yaml`, studyYAML)
 }
