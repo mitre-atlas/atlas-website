@@ -32,6 +32,7 @@
             text
             @click="
               showSavePromptDialog = false
+              cancelOpenInputEditors()
               submitStudy(true)
             "
           >
@@ -80,6 +81,7 @@
           />
 
           <incident-date-picker
+            ref="datePicker"
             :start-date="studyData.study['incident-date']"
             :start-date-granularity="
               studyData.study['incident-date-granularity']
@@ -115,11 +117,11 @@
         </v-card-subtitle>
         <v-card-text>
           <edit-procedure
+            ref="editProcedure"
             :key="studyData.study.procedure"
             class="mx-8"
             :procedure="studyData.study.procedure"
             :enable-status-highlighting="hasSubmissionBeenAttempted"
-            @isEditing="isProcedureUnsaved = $event"
             @updateProcedure="studyData.study.procedure = $event"
             @areChangesUnsaved="areProcedureChangesUnsaved = $event"
           />
@@ -159,6 +161,7 @@
                   :key="key"
                 >
                   <toggleable-source
+                    ref="toggleableSources"
                     :source="value"
                     :index="key"
                     :enable-status-highlighting="hasSubmissionBeenAttempted"
@@ -463,6 +466,15 @@ export default {
       this.status.type = 'success'
       this.status.color = 'success'
       this.status.message = message
+
+      setTimeout(() => {
+        // Reset status
+        this.status.type = ''
+        this.status.color = null
+        this.status.message = ''
+        // Reset download status
+        this.hasSubmissionBeenAttempted = false
+      }, 3000)
     },
     clearStatus () {
       this.status.message = ''
@@ -608,6 +620,40 @@ export default {
       }
       event.preventDefault()
       event.returnValue = ''
+    },
+    cancelOpenInputEditors () {
+      // Cancel date picker input if open
+      if (this.isDatePickerOpen) {
+        this.$refs.datePicker.cancel()
+      }
+      // Cancel any procedure step cards in edit mode
+      if (this.areProcedureChangesUnsaved) {
+        // Call cancel edit on nested edit procedure cards
+        this.$refs.editProcedure.$refs.editProcedureCards.forEach((card) => {
+          if (card.editing) {
+            card.cancelEdit()
+          }
+        })
+      }
+      // Close any add procedure steps
+      if (this.addingStep) {
+        this.addingStep = false
+      }
+
+      // Handle open source editors
+      if (this.referenceEditingCount > 0) {
+        this.$refs.toggleableSources.forEach((ts) => {
+          if (ts.isInEditMode) {
+            // Call event handler that eventually is hit by EditSourceListItem
+            ts.updateEditingState(false)
+          }
+        })
+      }
+
+      // Close any add source cards
+      if (this.addingSource) {
+        this.addingSource = false
+      }
     }
   }
 }

@@ -3,8 +3,11 @@
     <draggable :list="procedureData" :disabled="editing" handle=".handle">
       <!-- Key with index and technique for uniqueness -->
       <v-timeline-item v-for="(p, i) in procedureData" :key="i + p.technique" small>
-        <v-icon class="fa fa-align-justify handle">mdi-arrow-up-down</v-icon>
+        <v-icon class="fa fa-align-justify handle">
+          mdi-arrow-up-down
+        </v-icon>
         <edit-procedure-card
+          ref="editProcedureCards"
           :info="p"
           :editing="editing"
           :submission-status="(enableStatusHighlighting) ? {type: 'warning', message: 'Unsaved changes'} : {}"
