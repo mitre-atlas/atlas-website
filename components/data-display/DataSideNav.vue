@@ -216,42 +216,42 @@ export default {
       }
     },
     isTacticInMatrix (tacticsObjects, matrixID, i) {
-      if (!this.selectedObject) {
-        // If no tactic ID is found within current URL, return true for only the first matrix, false for others (on refresh/if no tactic selected)
-        if (i === 0) {
-          return true
+      if (this.selectedObject) {
+        // If tatic ID is in URL return true for appropriate field
+        const tacticsArrayLength = tacticsObjects.length
+        for (let i = 0; i < tacticsArrayLength; i++) {
+          if (tacticsObjects[i].id === this.selectedObject.id) { // If selected tactic is found within matrix's tactic list
+            return true
+          }
         }
-        return false
       }
-      const tacticsArrayLength = tacticsObjects.length
-      for (let i = 0; i < tacticsArrayLength; i++) {
-        if (tacticsObjects[i].id === this.selectedObject.id) { // If selected tactic is found within matrix's tactic list
-          return true
-        }
+      else if (i === 0) {
+        // If no tactic ID is found within current URL, return true for only the first matrix (on refresh/if no tactic selected)
+        return true
       }
       return false // Otherwise return false
     },
     isTechniqueInMatrix (tacticsObjects, i) {
-      if (!this.selectedObject) {
-        // If no tactic ID is found within current URL, return true for only the first matrix, false for others (on refresh/if no tactic selected)
-        if (i === 0) {
-          return true
-        }
-        return false
-      }
-      for (let i = 0; i < tacticsObjects.length; i++) {
-        for (let j = 0; j < tacticsObjects[i].techniques.length; j++) {
-          if (tacticsObjects[i].techniques[j].id === this.selectedObject.id) {
-            return true
-          }
-          if (tacticsObjects[i].techniques[j].subtechniques) {
-            for (let k = 0; k < tacticsObjects[i].techniques[j].subtechniques.length; k++) {
-              if (tacticsObjects[i].techniques[j].subtechniques[k].id === this.selectedObject.id) {
-                return true
+      if (this.selectedObject) {
+        // If tatic ID is in URL return true for appropriate field
+        for (let i = 0; i < tacticsObjects.length; i++) {
+          for (let j = 0; j < tacticsObjects[i].techniques.length; j++) {
+            if (tacticsObjects[i].techniques[j].id === this.selectedObject.id) {
+              return true
+            }
+            if (tacticsObjects[i].techniques[j].subtechniques) {
+              for (let k = 0; k < tacticsObjects[i].techniques[j].subtechniques.length; k++) {
+                if (tacticsObjects[i].techniques[j].subtechniques[k].id === this.selectedObject.id) {
+                  return true
+                }
               }
             }
           }
         }
+      }
+      else if (i === 0) {
+        // If no tactic ID is found within current URL, return true for only the first matrix (on refresh/if no tactic selected)
+        return true
       }
       return false // Otherwise return false
     },
