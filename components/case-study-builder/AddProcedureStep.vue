@@ -53,6 +53,7 @@ export default {
   methods: {
     addProcedureStep () {
       if (this.selectTacticData && this.selectTechniqueData && this.descriptionData) {
+        this.descriptionData = this.descriptionData.trim()
         const newStep = {
           tactic: this.selectTacticData,
           technique: this.selectTechniqueData,

@@ -59,7 +59,13 @@ export function download (filename, text) {
 }
 
 export function downloadStudyFile (study, filename) {
-  const studyYAML = dump(study).replace('T00:00:00.000Z', '')
+  const trimStrings = function (key, value) {
+    if (typeof value === 'string') {
+      return value.trim()
+    }
+    return value
+  }
+  const studyYAML = dump(study, { replacer: trimStrings }).replace('T00:00:00.000Z', '')
   download(`${filename}.yaml`, studyYAML)
 }
 
