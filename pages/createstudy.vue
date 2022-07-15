@@ -388,30 +388,45 @@ export default {
         this.isDatePickerOpen
       )
     },
+    hasDownloadIssue () {
+      // After download, and check existence of a non-status message with a populated message,
+      // as the message field is reset to empty upon valid conditions in clearStatus()
+      return this.hasSubmissionBeenAttempted && (this.status.message.type !== 'success' && this.status.message !== '')
+    },
     // If the procedure is invalid, error
     // If a step is currently being added (unsaved), warn
     addStepSubmissionStatus () {
       if (!this.isProcedureValid) {
         return { type: 'error', message: 'At least one step is required' }
         // this.hasSubmissionBeenAttempted ensures no warning until submission attempted
-      } else if (this.addingStep && this.hasSubmissionBeenAttempted) {
+      } else if (this.addingStep && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
     // If a source is currently being added (unsaved), and the user has attempted to submit, warn
     addSourceSubmissionStatus () {
-      if (this.addingSource && this.hasSubmissionBeenAttempted) {
+      if (this.addingSource && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
 
     datePickerSubmissionStatus () {
-      if (this.isDatePickerOpen && this.hasSubmissionBeenAttempted) {
+      if (this.isDatePickerOpen && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
+    }
+  },
+  watch: {
+    areChangesUnsaved (newVal, oldVal) {
+      if (this.hasSubmissionBeenAttempted && !newVal && oldVal) {
+        // User resolved unsaved changes after download attempt
+        this.clearStatus()
+        // Reset submission attempt to restart validation logic as if this were a newly filled form
+        this.hasSubmissionBeenAttempted = false
+      }
     }
   },
   beforeMount () {
