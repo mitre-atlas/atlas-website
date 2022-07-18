@@ -486,6 +486,9 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.v-card__title {
+  max-height: 20%
+}
 .v-card__text::before {
   content: '';
   width: 100%;
