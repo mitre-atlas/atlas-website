@@ -1,14 +1,18 @@
 # ATLAS Website
 
-## Git Setup
-This project uses the `atlas-data` project in this GitLab group as a Git submodule in `static/atlas-data`.  Clone using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
+## Initial Git Setup
+This project uses the `atlas-data` project in this GitLab group as a Git submodule in `static/atlas-data`.  
 
-Once the submodule is available, run the following once to sparse checkout only the necessary files in the `dist` directory.
+Git clone repo using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
+
+Once the submodule is available, run the following **once** to sparse checkout only the necessary files in the `dist` directory.
 ```bash
 git -C static/atlas-data/ config core.sparseCheckout true
 echo 'dist/*' >> .git/modules/static/atlas-data/info/sparse-checkout
 git submodule update --force --checkout static/atlas-data/
 ```
+
+## Updating Atlas Data
 
 To update `atlas-data`, run `git submodule update --remote` to get the latest from its main branch, then commit the result.
 
@@ -18,15 +22,15 @@ To update `atlas-data`, run `git submodule update --remote` to get the latest fr
 # install dependencies
 $ npm install
 
+# generate static project
+$ npm run generate
+
 # serve with hot reload at localhost:3000
 $ npm run dev
 
 # build for production and launch server
 $ npm run build
 $ npm run start
-
-# generate static project
-$ npm run generate
 ```
 
 ## Docker Setup/Build
@@ -46,16 +50,14 @@ $ docker load -i atlas-website-image.tar
 
 ## Tests
 
-Playwright tests are located in the tests directory.
+Playwright tests are located in the `/tests` directory.
 
 How to test with playwright:
 
-Make sure an instance of ATLAS is running – npm run dev
+1. Make sure an instance of ATLAS is running – npm run dev
 
-In another terminal tab, run the tests:
+In another terminal tab, run the tests and set the URL:
 > URL=my-url npx playwright test
-
-Set the environment variable `URL` prior to making the test call with base URL of the instance to be tested.
 
 Examples:
 
@@ -64,10 +66,9 @@ Examples:
 > URL=https://advml.lt.mitre.org npx playwright test
 ```
 
+Writing tests:
 
-	Writing tests:
-
-For an example of a test, refer to tests/case-study-builder.spec.js
+For an example of a test, refer to `tests/case-study-builder.spec.js`
 In order to write more effective and robust tests, it is a good idea to ID as many page components as possible during development. This will make writing tests significantly easier, as you can reference specific components by ID. For more complicated components, ID their subcomponents for reference in tests.
 
 

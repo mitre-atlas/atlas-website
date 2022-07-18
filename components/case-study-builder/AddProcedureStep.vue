@@ -89,11 +89,9 @@ export default {
   },
   methods: {
     addProcedureStep () {
-      if (
-        this.selectTacticData &&
-        this.selectTechniqueData &&
-        this.descriptionData
-      ) {
+      if (this.selectTacticData && this.selectTechniqueData && this.descriptionData) {
+        // .trim() doesn't modify original string
+        this.descriptionData = this.descriptionData.trim()
         const newStep = {
           tactic: this.selectTacticData,
           technique: this.selectTechniqueData,

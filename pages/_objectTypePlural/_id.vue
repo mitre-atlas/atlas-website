@@ -26,9 +26,9 @@
       <data-links
         v-for="(relatedObjs, objectType) in relatedObjects"
         :key="objectType"
-        :object-type="objectType"
+        :item-type="objectType"
         :items="relatedObjs"
-        :procedure-step-technique-id="id"
+        :parent-object="dataObject"
       />
     </div>
   </div>

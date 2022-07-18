@@ -3,6 +3,7 @@
     clipped
     app
     style="z-index: 0;"
+    :width="325"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
@@ -12,14 +13,13 @@
       </v-list-item-content>
     </v-list-item>
 
-    <!-- Sidebar for techniques---------------------------------------------------------------------->
+    <!-- Sidebar for TECHNIQUES---------------------------------------------------------------------->
 
     <v-list
       v-if="title === 'techniques'"
       dense
       nav
     >
-
       <v-list-group
         v-for="(tacticObjects, matrixID, i) in $store.state.data.objects.tactics"
         :key="i"
@@ -38,7 +38,7 @@
           </v-list-item>
         </template>
 
-      <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
+        <!-- The value prop below keeps the dropdown list unfolded based on the currently active/selected technique -->
         <v-list-group
           v-for="(tactic, i) in tacticObjects"
           :key="i"
@@ -46,56 +46,54 @@
           sub-group
           :value="(isTacticInTechnique(tactic.id))"
         >
-        <template #activator>
-          <v-list-item>
-          <v-list-item>
-            <NuxtLink
-              :to="tactic.route"
-              style="font-size: 0.9375rem;"
-            >
-              <!-- Smaller font size, similar to v-expansion-panel-header -->
-              {{ tactic.name }}
-            </NuxtLink>
-          </v-list-item>
-          </v-list-item>
-        </template>
-
-        <div
-          v-for="(technique, j) in tactic.techniques"
-          :key="j"
-        >
-          <v-list-item
-            :nuxt="true"
-            :to="technique.route"
-            :ripple="false"
-          >
+          <template #activator>
             <v-list-item>
               <v-list-item>
-                <v-list-item-title style="font-weight: 400;">
+                <NuxtLink
+                  :to="tactic.route"
+                  style="font-size: 0.9375rem;"
+                >
+                  <!-- Smaller font size, similar to v-expansion-panel-header -->
+                  {{ tactic.name }}
+                </NuxtLink>
+              </v-list-item>
+            </v-list-item>
+          </template>
+
+          <div
+            v-for="(technique, j) in tactic.techniques"
+            :key="j"
+          >
+            <v-list-item
+              :nuxt="true"
+              :to="technique.route"
+              :ripple="false"
+            >
+              <v-list-item>
+                <v-list-item-title style="font-weight: 400;" class="text-wrap">
                   <!-- Font size and color to match v-expansion-panel-header style -->
                   {{ technique.name }}
                 </v-list-item-title>
               </v-list-item>
             </v-list-item>
-          </v-list-item>
 
-          <v-list-item
-            v-for="(subtechnique, k) in technique.subtechniques"
-            :key="k"
-            :nuxt="true"
-            :to="subtechnique.route"
-            :ripple="false"
-          >
-            <v-list-item>
+            <v-list-item
+              v-for="(subtechnique, k) in technique.subtechniques"
+              :key="k"
+              :nuxt="true"
+              :to="subtechnique.route"
+              :ripple="false"
+            >
               <v-list-item>
-                <v-list-item-title class="pl-3" style="font-weight: 400;">
-                  {{ subtechnique.name }}
-                </v-list-item-title>
+                <v-list-item>
+                  <v-list-item-title class="pl-1 text-wrap" style="font-weight: 400;">
+                    {{ subtechnique.name }}
+                  </v-list-item-title>
+                </v-list-item>
               </v-list-item>
             </v-list-item>
-          </v-list-item>
-        </div>
-      </v-list-group>
+          </div>
+        </v-list-group>
       </v-list-group>
     </v-list>
 
@@ -146,7 +144,7 @@
       </v-list-group>
     </v-list>
 
-    <!-- Sidebar for every other ENTITIES--------------------------------------------------->
+    <!-- Sidebar for every other ENTITY--------------------------------------------------->
 
     <v-list v-else dense nav>
       <v-list-item

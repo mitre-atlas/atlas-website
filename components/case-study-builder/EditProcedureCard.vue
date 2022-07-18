@@ -166,6 +166,8 @@ export default {
       this.wasEditing = false
       this.editingData = false
       this.$emit('updateEdit', this.editingData)
+      // .trim() doesn't modify original string
+      this.descriptionData = this.descriptionData.trim()
       const editedObj = {
         tactic: this.selectTacticData,
         technique: this.selectTechniqueData,
