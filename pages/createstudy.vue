@@ -1,6 +1,6 @@
 <template>
   <div class="mx-8">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" max-width="500">
       <navigation-dialog @close="closeDialog" @leave-page="leavePage" />
     </v-dialog>
     <v-dialog v-model="showSavePromptDialog" width="500">
@@ -44,12 +44,22 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-      <upload-file-dialog
-        @loaded-data="setDataFromFile"
-        @loaded-filename="setFileName"
-      />
-      <v-spacer />
-      <instructions-dialog />
+      <v-row>
+        <v-col>
+          <v-row>
+            <upload-file-dialog
+              @loaded-data="setDataFromFile"
+              @loaded-filename="setFileName"
+            />
+          </v-row>
+        </v-col>
+        <v-col>
+          <!-- Left align on mobile screens (when buttons are stacked), right align otherwise (when buttons are in the same row) -->
+          <v-row justify-xs="start" justify-sm="end">
+            <instructions-dialog />
+          </v-row>
+        </v-col>
+      </v-row>
     </v-card-actions>
 
     <v-form ref="form" v-model="areDetailsValid" lazy-validation>
