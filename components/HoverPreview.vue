@@ -5,11 +5,7 @@
       <v-fade-transition>
         <div
           :is="isMobile ? 'v-overlay' : 'div'"
-          v-if="
-            (((isMouseHovering || isPreviewLingering)) ||
-              (wasTouchHeld && isMobile)) &&
-              !overrideDisable
-          "
+          v-if="isPreviewEnabled"
           class="preview-container"
           :style="isMobile ? {} : positioningCSS"
           @touchstart="wasTouchHeld = false"
@@ -98,11 +94,14 @@ export default {
   }),
   computed: {
     // Uses breakpoints to check if we are on mobile
-    // isMobile () {
-    //   return this.$vuetify.breakpoint.mobile
-    // },
     // Sets the card style programatically, to handle mobile screens and different
     // display options
+    isPreviewEnabled () {
+      return (
+        (this.isMouseHovering || this.isPreviewLingering || this.wasTouchHeld) &&
+        !this.overrideDisable
+      )
+    },
     cardStyle () {
       const styleOptions = {
         width: this.displayOptions.cardWidth,
@@ -185,7 +184,10 @@ export default {
     catchMouseEvent (event, dataObject) {
       switch (event.type) {
         case 'mouseenter':
-          this.isMobile = false
+          // We're not in mobile mode if we detect mouse input
+          if (!this.isPreviewEnabled) {
+            this.isMobile = false
+          }
           // Clear any previous hover thread, start a new one
           // Hover thread is used to implement a delay before the preview shows
           clearTimeout(this.hoverThread)
@@ -235,7 +237,10 @@ export default {
 
           break
         case 'touchstart': {
-          this.isMobile = true
+          // If we detect touch input, enable mobile mode
+          if (!this.isPreviewEnabled) {
+            this.isMobile = true
+          }
           // Set the data object, clear the previous hold thread if it exists and start a new one
           this.targetDataObject = dataObject
           const holdDuration = 500
@@ -309,7 +314,7 @@ export default {
                 previewElementRect.height +
                 this.targetElementRect.height
             }
-          // Otherwise, if we are attaching the preview to the top or bottom of the target element
+            // Otherwise, if we are attaching the preview to the top or bottom of the target element
           } else if (this.displayOptions.attachmentDirection === 'vertical') {
             leftOffset =
               absoluteTargetRectLeft +
@@ -329,11 +334,13 @@ export default {
                 absoluteTargetRectTop +
                 this.targetElementRect.height +
                 this.displayOptions.attachmentOffset.y
-              const distanceBelowScreen = absoluteTargetRectTop + previewElementRect.height - (document.body.scrollHeight - this.displayOptions.gutterSize.y)
+              const distanceBelowScreen =
+                absoluteTargetRectTop +
+                previewElementRect.height -
+                (document.body.scrollHeight - this.displayOptions.gutterSize.y)
               // If there's no space below (and above) the element, make a compromise and position it in the middle
               if (distanceBelowScreen > 0) {
-                topOffset =
-                absoluteTargetRectTop - distanceBelowScreen
+                topOffset = absoluteTargetRectTop - distanceBelowScreen
               }
             }
             // If we prefer the right of the preview to be attached
