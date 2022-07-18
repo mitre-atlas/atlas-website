@@ -4,7 +4,7 @@ between render with edit/delete and editable form. -->
   <div class="toggleable_source">
     <add-source
       v-if="isInEditMode"
-      :submission-status="enableStatusHighlighting ? {type: 'warning', message: 'Unsaved changes'} : {}"
+      :submission-status="(enableStatusHighlighting && wasInEditMode) ? {type: 'warning', message: 'Unsaved changes'} : {}"
       :url="source.url"
       :title="source.title"
       :adding-source="isInEditMode"
@@ -30,10 +30,12 @@ export default {
     'enableStatusHighlighting'
   ],
   data: () => ({
-    isInEditMode: false
+    isInEditMode: false,
+    wasInEditMode: false
   }),
   methods: {
     updateEditingState (newEditState) {
+      this.wasInEditMode = false
       this.isInEditMode = newEditState
       this.$emit('isEditing', newEditState)
     },

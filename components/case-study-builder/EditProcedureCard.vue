@@ -79,6 +79,7 @@ export default {
   props: ['info', 'editedObj', 'editing', 'submissionStatus'],
   data () {
     return {
+      wasEditing: false,
       editingData: this.editing,
       selectTacticData: this.info.tactic,
       selectTechniqueData: this.info.technique,
@@ -92,13 +93,13 @@ export default {
       return this.editingData
     },
     hasStatus () {
-      return !!(this.submissionStatus ?? {}).type
+      return this.wasEditing && (!!(this.submissionStatus ?? {}).type)
     },
     isInErrorState () {
-      return this.isEditing && (this.submissionStatus ?? {}).type === 'error'
+      return this.hasStatus && (this.submissionStatus ?? {}).type === 'error'
     },
     isInWarningState () {
-      return this.isEditing && (this.submissionStatus ?? []).type === 'warning'
+      return this.hasStatus && (this.submissionStatus ?? []).type === 'warning'
     },
     headerStyle () {
       if (this.isInErrorState) {
@@ -162,6 +163,7 @@ export default {
       this.$emit('updateEdit', this.editingData)
     },
     submitEdit () {
+      this.wasEditing = false
       this.editingData = false
       this.$emit('updateEdit', this.editingData)
       const editedObj = {
@@ -173,6 +175,7 @@ export default {
       this.$emit('replace')
     },
     cancelEdit () {
+      this.wasEditing = false
       this.editingData = false
       this.$emit('updateEdit', this.editingData)
     }

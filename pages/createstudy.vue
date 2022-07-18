@@ -135,7 +135,7 @@
             :adding-step="addingStep"
             :submission-status="addStepSubmissionStatus"
             @clicked="addProcedureStep"
-            @addingBoolUpdate="addingStep = $event"
+            @addingBoolUpdate="addingStep = $event; wasAddingStep = false"
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingStep = true">
@@ -180,7 +180,7 @@
             :submission-status="addSourceSubmissionStatus"
             :index="studyData.study.references.length"
             @clicked="addSource"
-            @addingBoolUpdate="addingSource = $event"
+            @addingBoolUpdate="addingSource = $event; wasAddingSource = false"
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingSource = true">
@@ -333,6 +333,10 @@ export default {
       areProcedureChangesUnsaved: false,
       showSavePromptDialog: false,
 
+      wasAddingSource: false,
+      wasAddingStep: false,
+      wasDatePickerOpen: false,
+
       status: {
         message: '',
         color: null
@@ -394,7 +398,7 @@ export default {
     hasDownloadIssue () {
       // After download, and check existence of a non-status message with a populated message,
       // as the message field is reset to empty upon valid conditions in clearStatus()
-      return this.hasSubmissionBeenAttempted && (this.status.message.type !== 'success' && this.status.message !== '')
+      return this.hasSubmissionBeenAttempted //  && (this.status.message.type !== 'success' && this.status.message !== '')
     },
     // If the procedure is invalid, error
     // If a step is currently being added (unsaved), warn
@@ -402,21 +406,21 @@ export default {
       if (!this.isProcedureValid) {
         return { type: 'error', message: 'At least one step is required' }
         // this.hasSubmissionBeenAttempted ensures no warning until submission attempted
-      } else if (this.addingStep && this.hasDownloadIssue) {
+      } else if (this.wasAddingStep && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
     // If a source is currently being added (unsaved), and the user has attempted to submit, warn
     addSourceSubmissionStatus () {
-      if (this.addingSource && this.hasDownloadIssue) {
+      if (this.wasAddingSource && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
 
     datePickerSubmissionStatus () {
-      if (this.isDatePickerOpen && this.hasDownloadIssue) {
+      if (this.wasDatePickerOpen && this.hasDownloadIssue) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
@@ -524,6 +528,7 @@ export default {
     },
     setIncidentDate (date, granularity) {
       // Called from incident date picker
+      this.wasDatePickerOpen = false
       this.studyData.study['incident-date'] = date
       this.studyData.study['incident-date-granularity'] = granularity
     },
@@ -565,6 +570,7 @@ export default {
         // If there are unsaved changes and we are not ignoring them, stop the download process
         if (this.areChangesUnsaved && !ignoreUnsavedChanges) {
           this.setWarningStatus('You have unsaved changes')
+          this.flagOpenInputEditors()
           this.showSavePromptDialog = true
           return
         }
@@ -621,6 +627,33 @@ export default {
       event.preventDefault()
       event.returnValue = ''
     },
+    flagOpenInputEditors () {
+      // Instantaneously checks if there are any open editors, and marks their flags accordingly
+      if (this.isDatePickerOpen) {
+        this.wasDatePickerOpen = true
+      }
+      if (this.areProcedureChangesUnsaved) {
+        this.$refs.editProcedure.$refs.editProcedureCards.forEach((card) => {
+          if (card.isEditing) {
+            console.log(card)
+            card.wasEditing = true
+          }
+        })
+      }
+      if (this.addingStep) {
+        this.wasAddingStep = true
+      }
+      if (this.areReferenceChangesUnsaved) {
+        this.$refs.toggleableSources.forEach((ts) => {
+          if (ts.isInEditMode) {
+            ts.wasInEditMode = true
+          }
+        })
+      }
+      if (this.addingSource) {
+        this.wasAddingSource = true
+      }
+    },
     cancelOpenInputEditors () {
       // Cancel date picker input if open
       if (this.isDatePickerOpen) {
@@ -630,7 +663,7 @@ export default {
       if (this.areProcedureChangesUnsaved) {
         // Call cancel edit on nested edit procedure cards
         this.$refs.editProcedure.$refs.editProcedureCards.forEach((card) => {
-          if (card.editing) {
+          if (card.isEditing) {
             card.cancelEdit()
           }
         })
@@ -641,7 +674,7 @@ export default {
       }
 
       // Handle open source editors
-      if (this.referenceEditingCount > 0) {
+      if (this.areReferenceChangesUnsaved) {
         this.$refs.toggleableSources.forEach((ts) => {
           if (ts.isInEditMode) {
             // Call event handler that eventually is hit by EditSourceListItem
