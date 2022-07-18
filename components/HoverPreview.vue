@@ -6,7 +6,7 @@
         <div
           :is="isMobile ? 'v-overlay' : 'div'"
           v-if="
-            (((isMouseHovering || isPreviewLingering) && !isMobile) ||
+            (((isMouseHovering || isPreviewLingering)) ||
               (wasTouchHeld && isMobile)) &&
               !overrideDisable
           "
@@ -14,6 +14,7 @@
           :style="isMobile ? {} : positioningCSS"
           @touchstart="wasTouchHeld = false"
           @contextmenu="event => event.preventDefault()"
+          @click="wasTouchHeld = false"
         >
           <v-card
             ref="preview-card"
@@ -63,6 +64,7 @@ export default {
   // if isAutocomplete is true, the component will attach event listeners to the children of its slot,
   props: ['isAutocomplete', 'isListGroup', 'dataObjects'],
   data: () => ({
+    isMobile: false,
     // 'reload' only necessary for group mode
     reload: null, // This keeps track of the function that reloads items and reattached listeners. Need this because for some reason, upon selecting a menu option, the listeners detach
     overrideDisable: false, // Turn off the preview completely, eg. the user clicked an option
@@ -96,9 +98,9 @@ export default {
   }),
   computed: {
     // Uses breakpoints to check if we are on mobile
-    isMobile () {
-      return this.$vuetify.breakpoint.mobile
-    },
+    // isMobile () {
+    //   return this.$vuetify.breakpoint.mobile
+    // },
     // Sets the card style programatically, to handle mobile screens and different
     // display options
     cardStyle () {
@@ -183,6 +185,7 @@ export default {
     catchMouseEvent (event, dataObject) {
       switch (event.type) {
         case 'mouseenter':
+          this.isMobile = false
           // Clear any previous hover thread, start a new one
           // Hover thread is used to implement a delay before the preview shows
           clearTimeout(this.hoverThread)
@@ -232,6 +235,7 @@ export default {
 
           break
         case 'touchstart': {
+          this.isMobile = true
           // Set the data object, clear the previous hold thread if it exists and start a new one
           this.targetDataObject = dataObject
           const holdDuration = 500
