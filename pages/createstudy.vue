@@ -44,7 +44,7 @@
     <page-title>{{ title }}</page-title>
 
     <v-card-actions>
-      <v-row>
+      <v-row class="mb-0">
         <v-col>
           <v-row>
             <upload-file-dialog
@@ -299,7 +299,7 @@ export default {
   },
   data () {
     return {
-      title: 'Create A Case Study',
+      title: 'Create a Case Study',
       areDetailsValid: true,
       // Keep the download button enabled (even if there are errors) until the user actually tries to submit
       hasSubmissionBeenAttempted: false,

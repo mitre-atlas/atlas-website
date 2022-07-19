@@ -50,7 +50,7 @@
             Cancel
           </v-btn>
           <v-btn text color="primary" @click="ok">
-            OK
+            Save
           </v-btn>
           <!-- </v-card-actions> -->
         </v-date-picker>

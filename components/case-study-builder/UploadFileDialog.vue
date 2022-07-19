@@ -21,7 +21,7 @@
 
       <v-card-text>
         To view or edit an existing case study, upload a .yaml file created by this website.
-
+        Loading a file will <b>overwrite any existing progress</b> in the form.
         <v-file-input
           v-model="chosenFile"
           class="mt-4"
