@@ -99,6 +99,16 @@ export default {
         }
         this.$emit('clicked', newStep)
         this.clearStepInput()
+      } else if (this.selectTacticData && this.selectTechniqueData) {
+        // .trim() doesn't modify original string
+        this.descriptionData = ''
+        const newStep = {
+          tactic: this.selectTacticData,
+          technique: this.selectTechniqueData,
+          description: this.descriptionData
+        }
+        this.$emit('clicked', newStep)
+        this.clearStepInput()
       } else {
         this.addStepErr = 'Please complete all fields'
       }
