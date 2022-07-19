@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div @contextmenu="event => event.preventDefault()">
     <slot />
-    <portal>
+    <portal :is="isMobile ? 'div' : 'portal'">
       <v-fade-transition>
-        <div
+        <v-overlay
           :is="isMobile ? 'v-overlay' : 'div'"
           v-if="isPreviewEnabled"
           class="preview-container"
@@ -41,7 +41,7 @@
               </v-icon>
             </v-card-actions>
           </v-card>
-        </div>
+        </v-overlay>
       </v-fade-transition>
     </portal>
   </div>
