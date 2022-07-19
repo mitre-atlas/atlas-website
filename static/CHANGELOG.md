@@ -1,5 +1,16 @@
 # ATLAS Website Changelog
 
+## [3.1.0]() (2022-07-12)
+
+#### Website
+- Supports display of custom data object types and string properties
+- Supports display of multiple matrices
+- Updated site navigation features with better support for small screens
+- Various fixes and updates
+
+#### Data
+- Updated ATLAS data to version 4.0.0
+
 ## [3.0.0]() (2022-03-31)
 
 #### Website
