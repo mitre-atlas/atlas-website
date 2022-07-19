@@ -145,7 +145,10 @@
             :adding-step="addingStep"
             :submission-status="addStepSubmissionStatus"
             @clicked="addProcedureStep"
-            @addingBoolUpdate="addingStep = $event; wasAddingStep = false"
+            @addingBoolUpdate="
+              addingStep = $event
+              wasAddingStep = false
+            "
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingStep = true">
@@ -190,7 +193,10 @@
             :submission-status="addSourceSubmissionStatus"
             :index="studyData.study.references.length"
             @clicked="addSource"
-            @addingBoolUpdate="addingSource = $event; wasAddingSource = false"
+            @addingBoolUpdate="
+              addingSource = $event
+              wasAddingSource = false
+            "
           />
           <div v-else>
             <v-btn class="ma-2 mb-10" @click="addingSource = true">
@@ -378,11 +384,18 @@ export default {
       this.requiredFieldRuleKeys.forEach((key) => {
         rules[key] = [this.requiredRule]
       })
+      rules.incidentDate.push(this.isDateValid || 'Entered value not yet saved')
       return rules
     },
     isProcedureValid () {
       return (
         this.studyData.study.procedure.length > 0 ||
+        !this.hasSubmissionBeenAttempted
+      )
+    },
+    isDateValid () {
+      return (
+        !!this.studyData.study['incident-date'] ||
         !this.hasSubmissionBeenAttempted
       )
     },
@@ -430,8 +443,12 @@ export default {
     },
 
     datePickerSubmissionStatus () {
-      if (this.wasDatePickerOpen && this.hasDownloadIssue) {
-        return { type: 'warning', message: 'Unsaved changes' }
+      if (this.hasDownloadIssue) {
+        if (this.wasDatePickerOpen) {
+          return { type: 'warning', message: 'Unsaved changes' }
+        } else if (!this.isDateValid) {
+          return { type: 'error', message: 'Date not selected' }
+        }
       }
       return {}
     }

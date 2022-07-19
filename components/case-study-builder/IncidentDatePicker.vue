@@ -26,7 +26,7 @@
         />
       </template>
 
-      <v-card :style="cardStyle" outlined>
+      <v-card :style="cardStyle" outlined class="mb-3">
         <v-date-picker
           v-model="dateISOString"
           no-title
