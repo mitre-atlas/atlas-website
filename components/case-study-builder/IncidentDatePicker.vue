@@ -23,6 +23,7 @@
           :rules="rules"
           :error-messages="errors"
           v-on="on"
+          @click="cancel"
         />
       </template>
 

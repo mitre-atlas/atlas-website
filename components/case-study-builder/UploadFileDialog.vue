@@ -40,6 +40,17 @@
         </v-file-input>
       </v-card-text>
 
+      <v-alert
+        v-if="errMessage"
+        color="red"
+        dense
+        outlined
+        text
+        type="error"
+      >
+        {{ errMessage }}
+      </v-alert>
+
       <v-card-actions>
         <v-spacer />
         <v-btn
@@ -77,7 +88,8 @@ export default {
       initialFileName: null,
       hasError: false,
       errorMessages: [],
-      loadedData: {}
+      loadedData: {},
+      errMessage: null
     }
   },
   methods: {
@@ -91,6 +103,7 @@ export default {
     clear () {
       // Clear file input, reset error states
       this.hasError = false
+      this.errMessage = null
       this.errorMessages = []
     },
     loadDataFromFile () {
@@ -158,9 +171,13 @@ export default {
       // only check if the other tests pass
       if (isValid) {
         const tryYamlText = await file.text()
-        const yamlErr = validFormatYAML(load(tryYamlText, { schema: CORE_SCHEMA }))
-        if (yamlErr !== '') {
+        try {
+          load(tryYamlText, { schema: CORE_SCHEMA })
+          this.errMessage = null
+        } catch {
+          const yamlErr = validFormatYAML()
           addError(yamlErr)
+          this.errMessage = 'This file does not follow the correct YAML format. Please fill out the Case Study Builder.'
         }
       }
 
