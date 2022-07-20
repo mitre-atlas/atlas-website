@@ -3,6 +3,8 @@
     id="footer"
     padless
     dark
+    :app="!$vuetify.breakpoint.mobile"
+
   >
     <v-card
       style="overflow: clip;"

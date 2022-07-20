@@ -7,6 +7,8 @@
     color="grey darken-3"
     style="z-index:2000;"
   >
+    <v-app-bar-nav-icon v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
+
     <v-toolbar-title>
       <nuxt-link to="/">
         <img src="~/assets/MITRE-brand_ATLAS_MITRE_tm_white.svg" width="200">
@@ -129,7 +131,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
@@ -216,7 +218,14 @@ export default {
       //   return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
       // }
       return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
+    },
+    doesPageHaveSideNav () {
+      // Only matrices, objectTypePlural, and studies routes have side navs
+      return this.$route.name === 'matrices-id' || this.$route.name.includes('objectTypePlural') || this.$route.name.includes('studies')
     }
+  },
+  methods: {
+    ...mapMutations({ toggle: 'TOGGLE_NAV_DRAWER' })
   }
 }
 </script>

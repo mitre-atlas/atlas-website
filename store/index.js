@@ -4,7 +4,8 @@ const yaml = require('js-yaml')
 import { dataObjectToRoute } from '@/assets/dataHelpers.js'
 
 export const state = () => ({
-  data: {}
+  data: {},
+  doShowNavDrawer: false
 })
 
 // Keys that will not be considered as properties or references to other data objects
@@ -236,6 +237,15 @@ export const getters = {
 export const mutations = {
   SET_ATLAS_DATA (state, payload) {
     state.data = { ...state.data, ...payload}
+  },
+  TOGGLE_NAV_DRAWER (state, status) {
+    if (typeof status === 'undefined') {
+      // Toggle state
+      state.doShowNavDrawer = !state.doShowNavDrawer
+    } else if (typeof status === 'boolean') {
+      // Set state
+      state.doShowNavDrawer = status
+    }
   }
 }
 
