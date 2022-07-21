@@ -42,8 +42,10 @@
 
     <p>With this in mind, we can jump into the attacks on ML systems.</p>
 
-    <img v-if="mobile === true" src="~/assets/AdvML101.PNG" width="90%">
-    <img v-else src="~/assets/AdvML101.PNG" width="600">
+    <img
+      src="~/assets/AdvML101.PNG"
+      :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
+    >
 
     <page-section-title>Machine Learning Attacks</page-section-title>
 
@@ -83,12 +85,19 @@
       model, but the attacker does not know how it is processed.
     </p>
 
+    <<<<<<< HEAD
     <img
       v-if="mobile === true"
       src="~/assets/AdvML101_Inference.PNG"
       width="90%"
     >
     <img v-else src="~/assets/AdvML101_Inference.PNG" width="600">
+    =======
+    <img
+      src="~/assets/AdvML101_Inference.PNG"
+      :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
+    >
+    >>>>>>> origin/develop
 
     <div class="text-h6">
       Attack Scenario #2: Training Time Attack
@@ -100,12 +109,19 @@
       compromise the training data via the feedback mechanism.
     </p>
 
+    <<<<<<< HEAD
     <img
       v-if="mobile === true"
       src="~/assets/AdvML101_Traintime.PNG"
       width="90%"
     >
     <img v-else src="~/assets/AdvML101_Traintime.PNG" width="600">
+    =======
+    <img
+      src="~/assets/AdvML101_Traintime.PNG"
+      :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
+    >
+    >>>>>>> origin/develop
 
     <div class="text-h6">
       Attack Scenario #3: Attack on Edge/Client
@@ -118,12 +134,19 @@
       Bosch Case Study with EdgeAI.
     </p>
 
+    <<<<<<< HEAD
     <img
       v-if="mobile === true"
       src="~/assets/AdvML101_Client.PNG"
       width="90%"
     >
     <img v-else src="~/assets/AdvML101_Client.PNG" width="600">
+    =======
+    <img
+      src="~/assets/AdvML101_Client.PNG"
+      :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
+    >
+    >>>>>>> origin/develop
 
     <page-section-title>Important Notes</page-section-title>
 
@@ -162,6 +185,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   data: ({ $config: { name } }) => ({
+    mobileImgWidth: '90%',
     title: 'Adversarial Machine Learning 101',
     shortName: name.short,
     mitreTitle: name.mitre,
@@ -203,10 +227,10 @@ export default {
     }
   },
   computed: {
-    mobile () {
-      return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name)
-    },
-    ...mapGetters(['getFirstMatrixId'])
+    ...mapGetters(['getFirstMatrixId']),
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    }
   }
 }
 </script>

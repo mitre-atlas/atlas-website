@@ -1,7 +1,7 @@
 <template>
   <div id="sourceRender">
-    <v-card>
-      <v-card-title>
+    <v-card outlined :style="cardStyle">
+      <v-card-title :style="headerStyle">
         <div v-if="index != null">
           Source {{ index+1 }}
         </div>
@@ -33,7 +33,7 @@
         <v-btn text color="grey" @click="$emit('addingBoolUpdate', false)">
           Cancel
         </v-btn>
-        <v-btn text color="green" @click="addSource" id="save_reference">
+        <v-btn id="save_reference" text color="green" @click="addSource">
           Save
         </v-btn>
       </v-card-actions>
@@ -42,6 +42,11 @@
         {{ addSourceErr }}
       </v-alert>
     </v-card>
+    <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
+      {{
+        submissionStatus.message
+      }}
+    </v-card-subtitle>
   </div>
 </template>
 
@@ -63,7 +68,11 @@ export default {
     },
     index: {
       type: Number,
-      default: 0
+      default: null
+    },
+    submissionStatus: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -72,6 +81,37 @@ export default {
       urlData: this.url,
       addSourceErr: '',
       addingBool: this.addingSource
+    }
+  },
+  computed: {
+    hasStatus () {
+      return !!(this.submissionStatus ?? {}).type
+    },
+    isInErrorState () {
+      return (this.submissionStatus ?? {}).type === 'error'
+    },
+    isInWarningState () {
+      return (this.submissionStatus ?? []).type === 'warning'
+    },
+    headerStyle () {
+      if (this.isInErrorState) {
+        return 'color: #FF5252'
+      } else if (this.isInWarningState) {
+        return 'color: #DAA520'
+      } else {
+        return ''
+      }
+    },
+    cardStyle () {
+      const style = {}
+      if (this.isInErrorState) {
+        style['border-color'] = '#FF5252'
+        style['border-width'] = '2px'
+      } else if (this.isInWarningState) {
+        style['border-color'] = '#DAA520'
+        style['border-width'] = '2px'
+      }
+      return style
     }
   },
   methods: {
