@@ -58,11 +58,6 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
-          <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{ $config.site_version }}
-          </v-card-text>
-        </v-row>
       </v-row>
     </v-card>
   </v-footer>

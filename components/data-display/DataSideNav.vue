@@ -3,10 +3,9 @@
     v-model="doShowNavDrawer"
     clipped
     app
-    style="z-index: 3000;"
+    style="z-index: 3000; overflow:auto;"
     :width="325"
     :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
-    v-resize="onResize"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
@@ -236,8 +235,7 @@ export default {
             return true
           }
         }
-      }
-      else if (i === 0) {
+      } else if (i === 0) {
         // If no tactic ID is found within current URL, return true for only the first matrix (on refresh/if no tactic selected)
         return true
       }
@@ -260,8 +258,7 @@ export default {
             }
           }
         }
-      }
-      else if (i === 0) {
+      } else if (i === 0) {
         // If no tactic ID is found within current URL, return true for only the first matrix (on refresh/if no tactic selected)
         return true
       }
@@ -280,19 +277,6 @@ export default {
         }
       }
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
-    },
-
-    onResize () {
-      // Only if not mobile
-      if (!this.$vuetify.breakpoint.mobile) {
-        // Calculate the max height for sidebar to fit between header and footer
-        const footer = document.querySelector('#footer')
-        // Bounding rect gives decimal height in pixels
-        const footerHeight = footer.getBoundingClientRect().height
-        const headerFooterHeight = this.headerHeight + footerHeight
-        // Set max height of the element
-        this.$el.style.maxHeight = `calc(100% - ${headerFooterHeight}px)`
-      }
     },
 
     ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' })
