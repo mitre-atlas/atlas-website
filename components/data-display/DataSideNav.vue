@@ -197,7 +197,6 @@ export default {
         return this.$store.state.doShowNavDrawer
       },
       set (value) {
-        console.log(value)
         this.setNavDrawer(value)
       }
     },
