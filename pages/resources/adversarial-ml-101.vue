@@ -35,8 +35,7 @@
       With this in mind, we can jump into the attacks on ML systems.
     </p>
 
-    <img v-if="mobile === true" src="~/assets/AdvML101.PNG" width="90%">
-    <img v-else src="~/assets/AdvML101.PNG" width="600">
+    <img src="~/assets/AdvML101.PNG" :style="`width:${isMobile ? mobileImgWidth: '600px'};`">
 
     <page-section-title>Machine Learning Attacks</page-section-title>
 
@@ -77,8 +76,7 @@
       Consider the most common deployment scenario where a model is deployed as an API endpoint. In this blackbox setting an attacker can only query the model and observe the response. The attacker controls the input to the model, but the attacker does not know how it is processed.
     </p>
 
-    <img v-if="mobile === true" src="~/assets/AdvML101_Inference.PNG" width="90%">
-    <img v-else src="~/assets/AdvML101_Inference.PNG" width="600">
+    <img src="~/assets/AdvML101_Inference.PNG" :style="`width:${isMobile ? mobileImgWidth : '600px'};`">
 
     <div class="text-h6">
       Attack Scenario #2: Training Time Attack
@@ -88,8 +86,7 @@
       Consider that an attacker has control over training data. This flavor of attack is shown in Tay Poisoning Case Study where the attacker was able to compromise the training data via the feedback mechanism.
     </p>
 
-    <img v-if="mobile === true" src="~/assets/AdvML101_Traintime.PNG" width="90%">
-    <img v-else src="~/assets/AdvML101_Traintime.PNG" width="600">
+    <img src="~/assets/AdvML101_Traintime.PNG" :style="`width:${isMobile ? mobileImgWidth : '600px'};`">
 
     <div class="text-h6">
       Attack Scenario #3: Attack on Edge/Client
@@ -99,8 +96,7 @@
       Consider that a model exists on a client (like a phone) or on the edge (such as IoT) . An attacker might have access to model code through reversing the service on the client. This flavor of attack is shown in Bosch Case Study with EdgeAI.
     </p>
 
-    <img v-if="mobile === true" src="~/assets/AdvML101_Client.PNG" width="90%">
-    <img v-else src="~/assets/AdvML101_Client.PNG" width="600">
+    <img src="~/assets/AdvML101_Client.PNG" :style="`width:${isMobile ? mobileImgWidth : '600px'};`">
 
     <page-section-title>Important Notes</page-section-title>
 
@@ -123,6 +119,7 @@
 <script>
 export default {
   data: ({ $config: { name } }) => ({
+    mobileImgWidth: '90%',
     title: 'Adversarial Machine Learning 101',
     shortName: name.short,
     mitreTitle: name.mitre,
@@ -160,7 +157,9 @@ export default {
     }
   },
   computed: {
-    mobile () { return ['xs', 'sm'].includes(this.$vuetify.breakpoint.name) }
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
+    }
   }
 }
 </script>
