@@ -31,7 +31,7 @@
             </v-card-text>
           </v-row>
 
-          <v-row :class="`mt-n5 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
+          <v-row :class="`mt-n7 mb-2 text-center ${mobile ? 'flex-row' : ''}`" justify="center">
             <v-col v-for="button in mainButtons" :key="button.text" :class="buttonClass" cols="auto">
               <v-btn
                 :outlined="button.outline"
@@ -45,7 +45,7 @@
         </v-col>
 
         <v-col cols="12" sm="2">
-          <v-row class="text-center" justify="center" align="center">
+          <v-row :class="`text-center ${mobile ? 'mb-5' : ''}`" justify="center" align="center">
             <v-col v-for="button in importantButtons" :key="button.text" class="text-center" :class="buttonClass" cols="auto">
               <v-btn
                 class="mx-auto"
@@ -58,16 +58,12 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-row :class="`mt-n10 text-center ${mobile ? 'flex-column' : ''}`" justify="center">
-          <v-card-text style="color: #bababa; margin-top:1%;" :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`">
-            v{{ $config.site_version }}
-          </v-card-text>
-        </v-row>
       </v-row>
     </v-card>
   </v-footer>
 </template>
 <script>
+
 export default {
   name: 'Footer',
   data: () => ({

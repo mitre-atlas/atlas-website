@@ -122,8 +122,7 @@
           <v-list-item :nuxt="true" :to="tactic.route" :ripple="false">
             <v-list-item>
               <v-list-item @click="closeTemporaryDrawer">
-                <v-list-item-title style="font-weight: 400">
-                  <!-- Font size and color to match v-expansion-panel-header style -->
+                <v-list-item-title>
                   {{ tactic.name }}
                 </v-list-item-title>
               </v-list-item>
