@@ -249,7 +249,7 @@ export const mutations = {
     }
   },
   SET_NAV_DRAWER_ITEMS (state, items) {
-    state.navDrawerItems = items
+    state.navDrawerItems = [...items]
   }
 }
 
