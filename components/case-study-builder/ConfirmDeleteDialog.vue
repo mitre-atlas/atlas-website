@@ -2,7 +2,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Delete {{ name }}?
+      Delete "{{ name }}"?
     </v-card-title>
 
     <v-card-text>

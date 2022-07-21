@@ -21,7 +21,7 @@
 
       <v-card-text>
         To view or edit an existing case study, upload a .yaml file created by this website.
-
+        Loading a file will <b>overwrite any existing progress</b> in the form.
         <v-file-input
           v-model="chosenFile"
           class="mt-4"
@@ -29,6 +29,7 @@
           dense
           :error="hasError"
           :error-messages="errorMessages"
+          :error-count="5"
           accept=".yaml"
           label="Case study .yaml file"
           @change="validateFileAsync"
@@ -158,12 +159,16 @@ export default {
       // only check if the other tests pass
       if (isValid) {
         const tryYamlText = await file.text()
-        const yamlErr = validFormatYAML(load(tryYamlText, { schema: CORE_SCHEMA }))
-        if (yamlErr !== '') {
-          addError(yamlErr)
+        try {
+          load(tryYamlText, { schema: CORE_SCHEMA })
+        } catch {
+          const yamlErr = validFormatYAML()
+          if (yamlErr !== '') {
+            addError(yamlErr)
+          }
+          addError('Invalid YAML syntax.')
         }
       }
-
       this.errorMessages = errors
       return isValid
     },
