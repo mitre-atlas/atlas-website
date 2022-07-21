@@ -5,8 +5,7 @@
 
       <v-main>
         <v-container>
-              <data-side-nav :items="$store.getters.getDataObjectsByType('case-studies')" />
-
+          <data-side-nav />
           <breadcrumbs />
           <Nuxt />
         </v-container>
@@ -18,7 +17,5 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>

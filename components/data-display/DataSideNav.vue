@@ -162,7 +162,6 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items', 'fixedTitle', 'selectedObject'],
   data () {
     return {
       placeholderTitle: 'Placeholder Title',
@@ -177,12 +176,14 @@ export default {
       return this.$store.state.navDrawerItems
     },
     title () {
-      if (this.navItems && this.navItems.length > 0 && !this.fixedTitle) {
+      // if (this.navItems && this.navItems.length > 0 && !this.fixedTitle) {
+      if (this.navItems && this.navItems.length > 0) {
         // Plural object type with spaces instead of dashes, if any
         return dataObjectToPluralTitle(this.navItems[0])
       }
       // Otherwise use the specified title, or the default placeholder
-      return this.fixedTitle ?? this.placeholderTitle
+      // return this.fixedTitle ?? this.placeholderTitle
+      return this.placeholderTitle
     },
     ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
