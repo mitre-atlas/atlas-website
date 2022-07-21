@@ -29,6 +29,7 @@
           dense
           :error="hasError"
           :error-messages="errorMessages"
+          :error-count="5"
           accept=".yaml"
           label="Case study .yaml file"
           @change="validateFileAsync"
@@ -39,17 +40,6 @@
           </template>
         </v-file-input>
       </v-card-text>
-
-      <v-alert
-        v-if="errMessage"
-        color="red"
-        dense
-        outlined
-        text
-        type="error"
-      >
-        {{ errMessage }}
-      </v-alert>
 
       <v-card-actions>
         <v-spacer />
@@ -88,8 +78,7 @@ export default {
       initialFileName: null,
       hasError: false,
       errorMessages: [],
-      loadedData: {},
-      errMessage: null
+      loadedData: {}
     }
   },
   methods: {
@@ -103,7 +92,6 @@ export default {
     clear () {
       // Clear file input, reset error states
       this.hasError = false
-      this.errMessage = null
       this.errorMessages = []
     },
     loadDataFromFile () {
@@ -173,14 +161,14 @@ export default {
         const tryYamlText = await file.text()
         try {
           load(tryYamlText, { schema: CORE_SCHEMA })
-          this.errMessage = null
         } catch {
           const yamlErr = validFormatYAML()
-          addError(yamlErr)
-          this.errMessage = 'This file does not follow the correct YAML format. Please fill out the Case Study Builder.'
+          if (yamlErr !== '') {
+            addError(yamlErr)
+          }
+          addError('Invalid YAML syntax.')
         }
       }
-
       this.errorMessages = errors
       return isValid
     },
