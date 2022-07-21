@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <data-side-nav :items="items" /> -->
-
     <div>
       <page-title class="text-capitalize">
         {{ objectTypePlural }}

@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <data-side-nav :selected-object="dataObject" :items="items" /> -->
-
     <div>
       <page-title>
         {{ title }}
