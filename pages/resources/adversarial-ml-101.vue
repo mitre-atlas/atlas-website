@@ -85,19 +85,10 @@
       model, but the attacker does not know how it is processed.
     </p>
 
-    <<<<<<< HEAD
-    <img
-      v-if="mobile === true"
-      src="~/assets/AdvML101_Inference.PNG"
-      width="90%"
-    >
-    <img v-else src="~/assets/AdvML101_Inference.PNG" width="600">
-    =======
     <img
       src="~/assets/AdvML101_Inference.PNG"
       :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
     >
-    >>>>>>> origin/develop
 
     <div class="text-h6">
       Attack Scenario #2: Training Time Attack
@@ -109,19 +100,10 @@
       compromise the training data via the feedback mechanism.
     </p>
 
-    <<<<<<< HEAD
-    <img
-      v-if="mobile === true"
-      src="~/assets/AdvML101_Traintime.PNG"
-      width="90%"
-    >
-    <img v-else src="~/assets/AdvML101_Traintime.PNG" width="600">
-    =======
     <img
       src="~/assets/AdvML101_Traintime.PNG"
       :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
     >
-    >>>>>>> origin/develop
 
     <div class="text-h6">
       Attack Scenario #3: Attack on Edge/Client
@@ -134,19 +116,10 @@
       Bosch Case Study with EdgeAI.
     </p>
 
-    <<<<<<< HEAD
-    <img
-      v-if="mobile === true"
-      src="~/assets/AdvML101_Client.PNG"
-      width="90%"
-    >
-    <img v-else src="~/assets/AdvML101_Client.PNG" width="600">
-    =======
     <img
       src="~/assets/AdvML101_Client.PNG"
       :style="`width:${isMobile ? mobileImgWidth : '600px'};`"
     >
-    >>>>>>> origin/develop
 
     <page-section-title>Important Notes</page-section-title>
 
