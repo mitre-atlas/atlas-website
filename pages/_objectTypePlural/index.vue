@@ -1,6 +1,6 @@
 <template>
   <div>
-    <data-side-nav :items="items" />
+    <!-- <data-side-nav :items="items" /> -->
 
     <div>
       <page-title class="text-capitalize">
@@ -37,6 +37,7 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 export default {
   async asyncData ({ $content }) {
     // Retrieve intro text from YAML file in static/content/
@@ -44,6 +45,10 @@ export default {
     return {
       introText: content
     }
+  },
+  layout: 'side-nav',
+  mounted () {
+    this.setNavItems(this.items)
   },
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
@@ -59,6 +64,9 @@ export default {
     items () {
       return this.$store.getters.getDataObjectsByType(this.objectTypePlural)
     }
+  },
+  methods: {
+    ...mapMutations({ setNavItems: 'SET_NAV_DRAWER_ITEMS' })
   }
 }
 </script>
