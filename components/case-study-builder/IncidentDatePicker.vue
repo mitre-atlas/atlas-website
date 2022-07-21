@@ -7,6 +7,7 @@
       :close-on-click="false"
       transition="scale-transition"
       top
+      content-class="elevation-0"
       offset-y
       min-width="auto"
     >
@@ -20,29 +21,37 @@
           readonly
           v-bind="attrs"
           :rules="rules"
+          :error-messages="errors"
           v-on="on"
+          @click="cancel"
         />
       </template>
 
-      <v-card>
+      <v-card :style="cardStyle" outlined class="mb-3">
         <v-date-picker
           v-model="dateISOString"
-          flat
           no-title
           :active-picker.sync="activePicker"
-          :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+          :max="
+            new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+              .toISOString()
+              .substr(0, 10)
+          "
           min="1970-01-01"
           @click:year="yearSelected"
           @click:month="monthSelected"
           @click:date="dateSelected"
         >
           <!-- <v-card-actions> -->
+          <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
+            {{ submissionStatus.message }}
+          </v-card-subtitle>
           <v-spacer />
           <v-btn text color="secondary" @click="cancel">
             Cancel
           </v-btn>
           <v-btn text color="primary" @click="ok">
-            OK
+            Save
           </v-btn>
           <!-- </v-card-actions> -->
         </v-date-picker>
@@ -56,7 +65,9 @@ export default {
   props: [
     'startDate',
     'startDateGranularity',
-    'initialRules'
+    'initialRules',
+    'initialErrors',
+    'submissionStatus'
   ],
   data () {
     return {
@@ -64,10 +75,40 @@ export default {
       menu: false,
       date: this.startDate,
       dateGranularity: this.startDateGranularity,
-      rules: this.initialRules
+      rules: this.initialRules,
+      errors: this.initialErrors
     }
   },
   computed: {
+    hasStatus () {
+      return !!(this.submissionStatus ?? {}).type
+    },
+    isInErrorState () {
+      return (this.submissionStatus ?? {}).type === 'error'
+    },
+    isInWarningState () {
+      return (this.submissionStatus ?? []).type === 'warning'
+    },
+    headerStyle () {
+      if (this.isInErrorState) {
+        return 'color: #FF5252'
+      } else if (this.isInWarningState) {
+        return 'color: #DAA520'
+      } else {
+        return ''
+      }
+    },
+    cardStyle () {
+      const style = {}
+      if (this.isInErrorState) {
+        style['border-color'] = '#FF5252'
+        style['border-width'] = '2px'
+      } else if (this.isInWarningState) {
+        style['border-color'] = '#DAA520'
+        style['border-width'] = '2px'
+      }
+      return style
+    },
     dateISOString () {
       // Set the date-picker date
       if (this.date != null) {
@@ -78,21 +119,27 @@ export default {
     displayedIncidentDate () {
       if (this.date != null) {
         if (this.dateGranularity === 'YEAR') {
-          return this.date.toLocaleDateString(
-            'default',
-            { timeZone: 'UTC', year: 'numeric' }
-          )
+          return this.date.toLocaleDateString('default', {
+            timeZone: 'UTC',
+            year: 'numeric'
+          })
         } else if (this.dateGranularity === 'MONTH') {
-          return this.date.toLocaleDateString(
-            'default',
-            { timeZone: 'UTC', year: 'numeric', month: 'long' }
-          )
-        } else if (this.dateGranularity == null || this.dateGranularity === 'DATE') {
+          return this.date.toLocaleDateString('default', {
+            timeZone: 'UTC',
+            year: 'numeric',
+            month: 'long'
+          })
+        } else if (
+          this.dateGranularity == null ||
+          this.dateGranularity === 'DATE'
+        ) {
           // If dateGranularity is DATE, or there is no date granularity
-          return this.date.toLocaleDateString(
-            'default',
-            { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
-          )
+          return this.date.toLocaleDateString('default', {
+            timeZone: 'UTC',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })
         }
       }
       return null
@@ -101,6 +148,7 @@ export default {
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
+      this.$emit('isDatePickerOpen', val)
     },
     startDate: {
       // Ensures that the component data is up to date with prop change
@@ -124,6 +172,15 @@ export default {
       immediate: true,
       handler (newVal, oldVal) {
         this.rules = newVal
+      }
+    },
+    initialErrors: {
+      // Ensures that the component data is up to date with errors update from createstudy
+      // during form submit
+      immediate: true,
+      deep: true,
+      handler (newVal, oldVal) {
+        this.errors = newVal
       }
     }
   },
@@ -163,12 +220,18 @@ export default {
       // Close menu
       this.menu = false
 
+      // Reset any error messages
+      this.errors = []
+
       // Emit date pieces (1-indexed month) and date granularity
       this.$emit('selectedDate', this.date, this.dateGranularity)
     },
     cancel () {
       // Close menu
       this.menu = false
+
+      // Reset any error messages
+      this.errors = []
 
       // Reset to start elements
       this.date = this.startDate

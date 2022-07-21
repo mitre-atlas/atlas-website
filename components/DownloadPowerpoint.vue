@@ -110,7 +110,7 @@ export default {
       this.titleSlide(ppt, this.studyYaml)
       this.detailSlide(ppt, this.studyYaml)
       this.procedureSlide(ppt, this.studyYaml)
-      if (this.studyYaml.references) {
+      if (this.studyYaml.references !== []) {
         this.referenceSlide(ppt, this.studyYaml)
       }
 
