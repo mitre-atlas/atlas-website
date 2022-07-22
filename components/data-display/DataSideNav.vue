@@ -1,7 +1,6 @@
 <template>
   <v-navigation-drawer
     v-model="doShowNavDrawer"
-    v-resize="onResize"
     clipped
     app
     style="z-index: 3000"
@@ -294,19 +293,6 @@ export default {
         }
       }
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
-    },
-
-    onResize () {
-      // Only if not mobile
-      if (!this.$vuetify.breakpoint.mobile) {
-        // Calculate the max height for sidebar to fit between header and footer
-        const footer = document.querySelector('#footer')
-        // Bounding rect gives decimal height in pixels
-        const footerHeight = footer.getBoundingClientRect().height
-        const headerFooterHeight = this.headerHeight + footerHeight
-        // Set max height of the element
-        this.$el.style.maxHeight = `calc(100% - ${headerFooterHeight}px)`
-      }
     }
   }
 }
