@@ -5,7 +5,7 @@
     app
     style="z-index: 3000"
     :width="325"
-    :temporary="doShowNavDrawer && $vuetify.breakpoint.mobile"
+    :temporary="isDrawerTemporary"
   >
     <v-list-item class="mt-10">
       <v-list-item-content>
@@ -30,7 +30,7 @@
             <NuxtLink
               :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem"
-              @click.native="setNavDrawer(false)"
+              @click.native="closeTemporaryDrawer"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ matrixID }}
@@ -52,7 +52,7 @@
                 <NuxtLink
                   :to="tactic.route"
                   style="font-size: 0.9375rem"
-                  @click.native="setNavDrawer(false)"
+                  @click.native="closeTemporaryDrawer"
                 >
                   <!-- Smaller font size, similar to v-expansion-panel-header -->
                   {{ tactic.name }}
@@ -63,7 +63,7 @@
 
           <div v-for="(technique, k) in tactic.techniques" :key="k">
             <v-list-item :nuxt="true" :to="technique.route" :ripple="false">
-              <v-list-item @click="setNavDrawer(false)">
+              <v-list-item @click="closeTemporaryDrawer">
                 <v-list-item-title style="font-weight: 400" class="text-wrap">
                   <!-- Font size and color to match v-expansion-panel-header style -->
                   {{ technique.name }}
@@ -79,7 +79,7 @@
               :ripple="false"
             >
               <v-list-item>
-                <v-list-item @click="setNavDrawer(false)">
+                <v-list-item @click="closeTemporaryDrawer">
                   <v-list-item-title
                     class="pl-1 text-wrap"
                     style="font-weight: 400"
@@ -109,7 +109,7 @@
             <NuxtLink
               :to="`/matrices/${matrixID}`"
               style="font-size: 0.9375rem"
-              @click.native="setNavDrawer(false)"
+              @click.native="closeTemporaryDrawer"
             >
               <!-- Smaller font size, similar to v-expansion-panel-header -->
               {{ matrixID }}
@@ -120,9 +120,8 @@
         <div v-for="(tactic, j) in tacticObjects" :key="j">
           <v-list-item :nuxt="true" :to="tactic.route" :ripple="false">
             <v-list-item>
-              <v-list-item @click="setNavDrawer(false)">
-                <v-list-item-title style="font-weight: 400">
-                  <!-- Font size and color to match v-expansion-panel-header style -->
+              <v-list-item @click="closeTemporaryDrawer">
+                <v-list-item-title>
                   {{ tactic.name }}
                 </v-list-item-title>
               </v-list-item>
@@ -136,13 +135,13 @@
 
     <v-list v-else dense nav>
       <v-list-item
-        v-for="(item, i) in items"
+        v-for="(item, i) in navItems"
         :key="i"
         :nuxt="true"
         :to="item.route"
         :ripple="false"
       >
-        <v-list-item @click="setNavDrawer(false)">
+        <v-list-item>
           <v-list-item-content
             class="blue--text text--darken-2"
             style="font-size: 0.9375rem"
@@ -161,24 +160,28 @@ import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
-  props: ['items', 'fixedTitle', 'selectedObject'],
   data () {
     return {
       placeholderTitle: 'Placeholder Title',
       footer: null,
       observer: null,
+      fal: false,
       tacticsList: null
     }
   },
-
   computed: {
+    navItems () {
+      return this.$store.state.navDrawerItems
+    },
     title () {
-      if (this.items && this.items.length > 0 && !this.fixedTitle) {
+      // if (this.navItems && this.navItems.length > 0 && !this.fixedTitle) {
+      if (this.navItems && this.navItems.length > 0) {
         // Plural object type with spaces instead of dashes, if any
-        return dataObjectToPluralTitle(this.items[0])
+        return dataObjectToPluralTitle(this.navItems[0])
       }
       // Otherwise use the specified title, or the default placeholder
-      return this.fixedTitle ?? this.placeholderTitle
+      // return this.fixedTitle ?? this.placeholderTitle
+      return this.placeholderTitle
     },
     ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
@@ -195,6 +198,9 @@ export default {
         this.setNavDrawer(value)
       }
     },
+    isDrawerTemporary () {
+      return this.doShowNavDrawer && this.$vuetify.breakpoint.mobile
+    },
     headerHeight () {
       return this.$vuetify.application.top
     }
@@ -204,17 +210,18 @@ export default {
     '$vuetify.breakpoint.mobile' (isMobile) {
       if (isMobile && this.doShowNavDrawer) {
         // Close drawer when going to mobile with it open
-        this.setNavDrawer(false)
+        this.doShowNavDrawer = false
       }
     }
   },
 
   mounted () {
     // Open the drawer on start if this is not mobile
-    this.setNavDrawer(!this.$vuetify.breakpoint.mobile)
+    this.doShowNavDrawer = !this.$vuetify.breakpoint.mobile
   },
 
   methods: {
+    ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' }),
     isTacticInMatrix (tacticsObjects, matrixID, i) {
       if (this.selectedObject) {
         // If tatic ID is in URL return true for appropriate field
@@ -230,6 +237,12 @@ export default {
         return true
       }
       return false // Otherwise return false
+    },
+    closeTemporaryDrawer () {
+      // Only close the nav drawer if in temporary mode
+      if (this.isDrawerTemporary) {
+        this.doShowNavDrawer = false
+      }
     },
     isTechniqueInMatrix (tacticsObjects, i) {
       if (this.selectedObject) {
@@ -280,9 +293,7 @@ export default {
         }
       }
       return this.tacticsList.includes(tacticID) // Let list item know whether or not to select itself
-    },
-
-    ...mapMutations({ setNavDrawer: 'TOGGLE_NAV_DRAWER' })
+    }
   }
 }
 </script>

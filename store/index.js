@@ -5,7 +5,8 @@ import { dataObjectToRoute } from '@/assets/dataHelpers.js'
 
 export const state = () => ({
   data: {},
-  doShowNavDrawer: false
+  doShowNavDrawer: false,
+  navDrawerItems: []
 })
 
 // Keys that will not be considered as properties or references to other data objects
@@ -246,6 +247,9 @@ export const mutations = {
       // Set state
       state.doShowNavDrawer = status
     }
+  },
+  SET_NAV_DRAWER_ITEMS (state, items) {
+    state.navDrawerItems = [...items]
   }
 }
 
