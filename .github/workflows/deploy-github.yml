@@ -35,7 +35,11 @@ jobs:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         run: echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator\nANALYTICS_ID=$GOOGLE_ANALYTICS_ID" > .env
 
-      - run: npm run generate
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate static files
+        run: npm run generate
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
