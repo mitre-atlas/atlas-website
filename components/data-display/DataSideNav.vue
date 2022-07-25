@@ -121,9 +121,12 @@
           <v-list-item :nuxt="true" :to="tactic.route" :ripple="false">
             <v-list-item>
               <v-list-item @click="closeTemporaryDrawer">
-                <v-list-item-title>
+                <v-list-item-content
+                  class="blue--text text--darken-2"
+                  style="font-size: 0.9375rem"
+                >
                   {{ tactic.name }}
-                </v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
             </v-list-item>
           </v-list-item>
@@ -156,7 +159,6 @@
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
 export default {
   name: 'DataSideNav',
@@ -174,14 +176,7 @@ export default {
       return this.$store.state.navDrawerItems
     },
     title () {
-      // if (this.navItems && this.navItems.length > 0 && !this.fixedTitle) {
-      if (this.navItems && this.navItems.length > 0) {
-        // Plural object type with spaces instead of dashes, if any
-        return dataObjectToPluralTitle(this.navItems[0])
-      }
-      // Otherwise use the specified title, or the default placeholder
-      // return this.fixedTitle ?? this.placeholderTitle
-      return this.placeholderTitle
+      return this.$store.state.navDrawerTitle
     },
     ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {

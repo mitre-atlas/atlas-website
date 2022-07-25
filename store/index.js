@@ -1,12 +1,13 @@
 /* eslint-disable */
 const fs = require('fs').promises
 const yaml = require('js-yaml')
-import { dataObjectToRoute } from '@/assets/dataHelpers.js'
+import { dataObjectToPluralTitle, dataObjectToRoute } from '@/assets/dataHelpers.js'
 
 export const state = () => ({
   data: {},
   doShowNavDrawer: false,
-  navDrawerItems: []
+  navDrawerItems: [],
+  navDrawerTitle: 'Placeholder Title'
 })
 
 // Keys that will not be considered as properties or references to other data objects
@@ -249,7 +250,21 @@ export const mutations = {
     }
   },
   SET_NAV_DRAWER_ITEMS (state, items) {
-    state.navDrawerItems = [...items]
+
+    if (Array.isArray(items) && items.length > 0 && 'object-type' in items[0]) {
+      // Payload is an array of data objects
+      state.navDrawerItems = [...items]
+      // Plural object type with spaces instead of dashes, if any
+      state.navDrawerTitle = dataObjectToPluralTitle(items[0])
+
+    } else if (typeof items === 'object' && items !== null && 'data' in items && 'title' in items) {
+      // Payload is an object { data, title }
+      state.navDrawerItems = [...items.data]
+      state.navDrawerTitle = items.title
+
+    } else {
+      console.error('Unexpected payload for SET_NAV_DRAWER_ITEMS', items)
+    }
   }
 }
 
