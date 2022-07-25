@@ -16,20 +16,9 @@
 </template>
 
 <script>
-export default {
-  // beforeCreate () {
-  //   console.log(this.$route.params.id)
-  //   if (!this.$route.params.id) {
-  //     // find first valid id & go to valid id page
-  //     const matrices = this.$store.state.data.matrices
-  //     console.log(matrices)
+import { mapMutations } from 'vuex'
 
-  //     if (matrices.length > 0 && !!matrices[0].id) {
-  //       this.$router.push({ path: this.$route.path + matrices[0].id })
-  //     }
-  //   }
-  //   console.log('in before create')
-  // },
+export default {
   data: ({ $config: { name }, $route: { params } }) => ({
     matrixId: params.id,
     title: `${params.id} Matrix`,
@@ -50,10 +39,19 @@ export default {
       return this.$store.state.data.objects.tactics[this.matrixId]
     }
   },
+  mounted () {
+    this.setNavItems({
+      data: this.getMatrices,
+      title: 'Matrices'
+    })
+  },
   head () {
     return {
       title: `${this.title} | ${this.mitreTitle}`
     }
+  },
+  methods: {
+    ...mapMutations({ setNavItems: 'SET_NAV_DRAWER_ITEMS' })
   }
 }
 </script>

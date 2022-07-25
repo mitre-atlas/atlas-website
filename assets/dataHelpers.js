@@ -4,7 +4,7 @@ import pluralize from 'pluralize'
 
 export function dataObjectToPluralTitle (objectType, returnLastWordOnly = false) {
   // Check if an object was passed as the arg, otherwise use the type as-is
-  if (typeof objectType === 'object') {
+  if (typeof objectType === 'object' && 'object-type' in objectType) {
     objectType = objectType['object-type']
   }
   // Replace any dashes with spaces, i.e. case-study > case study
