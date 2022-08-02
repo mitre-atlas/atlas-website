@@ -35,7 +35,7 @@ jobs:
         shell: bash
         env:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
-        run: echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator\nANALYTICS_ID=$GOOGLE_ANALYTICS_ID" > .env
+        run: echo -e "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator\nANALYTICS_ID=$GOOGLE_ANALYTICS_ID" > .env
 
       - name: Install dependencies
         run: npm install
