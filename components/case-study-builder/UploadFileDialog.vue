@@ -160,12 +160,12 @@ export default {
       if (isValid) {
         const tryYamlText = await file.text()
         try {
-          load(tryYamlText, { schema: CORE_SCHEMA })
-        } catch {
-          const yamlErr = validFormatYAML()
+          const yamlObj = load(tryYamlText, { schema: CORE_SCHEMA })
+          const yamlErr = validFormatYAML(yamlObj)
           if (yamlErr !== '') {
             addError(yamlErr)
           }
+        } catch {
           addError('Invalid YAML syntax.')
         }
       }
