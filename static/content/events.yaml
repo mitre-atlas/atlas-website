@@ -48,7 +48,7 @@ data:
     date: 2022-08-12
     location: Virtual
     description: |
-      The ML Model Attribution Challenge (MLMAC) is a four week event that lasts from August 12th to September 9th (AoE).
+      The ML Model Attribution Challenge (MLMAC) is a four-week event from August 12th to September 9th (AoE).
       
       MLMAC challenges contestants to develop creative technical solutions for LLM attribution. This competition works toward AI assurance by developing forensic capabilities and establishing the difficulty of model attribution in natural language processing, and could contribute to the maturation of AI forensics as a subfield of AI security.
 
