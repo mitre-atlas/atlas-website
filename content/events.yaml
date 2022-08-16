@@ -41,6 +41,18 @@ data:
       The Australian Defence Science, Technology and Research Summit (ADSTAR) is taking place from July 20 - 22.
       This conference brings together industry, academia, and government to collaborate and share defense-related research and innovation.
 
-      The ATLAS team will be at the MITRE booth!
+      The ATLAS team was present at the MITRE booth!
     url: https://www.adstarsummit.com.au/event/3ea1388a-66ec-4605-b5a7-1c53931b9341/summary
     color: 'orange'
+  - name: MLMAC
+    date: 2022-08-12
+    location: Virtual
+    description: |
+      The ML Model Attribution Challenge (MLMAC) is a four-week event from August 12th to September 9th (AoE).
+      
+      MLMAC challenges contestants to develop creative technical solutions for LLM attribution. This competition works toward AI assurance by developing forensic capabilities and establishing the difficulty of model attribution in natural language processing, and could contribute to the maturation of AI forensics as a subfield of AI security.
+
+      MITRE an major organizer of this challenge, along with various other organizations!
+    url: https://mlmac.io
+    color: 'deep-purple'
+
