@@ -31,7 +31,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     'plugins/vue-gtag.client.js',
-    'plugins/vue-linkify.client.js'
+    'plugins/vue-linkify.client.js',
+    'plugins/vuetify.client.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -76,7 +77,8 @@ export default {
   // https://github.com/nuxt-community/vuetify-module#options
   vuetify: {
     treeShake: true,
-    optionsPath: './vuetify.options.js'
+    optionsPath: './vuetify.options.js',
+    defaultAssets: false
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
