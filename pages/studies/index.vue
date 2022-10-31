@@ -42,7 +42,7 @@
         {{ description }}
       </div>
 
-      <info-table :items="getStudies" :is-case-study="true" />
+      <info-table :items="getStudies" :matrices="[]" :is-case-study="true" />
     </div>
   </div>
 </template>

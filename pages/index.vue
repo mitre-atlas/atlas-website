@@ -40,7 +40,7 @@ export default {
   }),
   computed: {
     populatedTactics () {
-      return Object.values(this.$store.state.data.objects.tactics)[0]
+      return this.$store.getters.getDataObjectsByType('tactics', 'ATLAS')
     }
   }
 }

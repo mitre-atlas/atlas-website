@@ -100,7 +100,6 @@ export default {
         this.$emit('clicked', newStep)
         this.clearStepInput()
       } else if (this.selectTacticData && this.selectTechniqueData) {
-        // .trim() doesn't modify original string
         this.descriptionData = ''
         const newStep = {
           tactic: this.selectTacticData,

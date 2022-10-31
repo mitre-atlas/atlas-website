@@ -28,7 +28,6 @@
       </p>
 
       <info-table
-        :show-filter-button="false"
         :items="items"
       />
     </div>
@@ -37,6 +36,7 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
+  layout: 'side-nav',
   async asyncData ({ $content }) {
     // Retrieve intro text from YAML file in static/content/
     const content = await $content('data-list-page-intros').fetch()
@@ -44,14 +44,11 @@ export default {
       introText: content
     }
   },
-  layout: 'side-nav',
-  mounted () {
-    this.setNavItems(this.items)
-  },
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
     objectTypePlural: params.objectTypePlural,
-    capitalizedObjectTypePlural: `${params.objectTypePlural[0].toUpperCase()}${params.objectTypePlural.slice(1)}`
+    capitalizedObjectTypePlural: `${params.objectTypePlural[0].toUpperCase()}${params.objectTypePlural.slice(1)}`,
+    selectedMatrices: []
   }),
   head () {
     return {
@@ -60,8 +57,12 @@ export default {
   },
   computed: {
     items () {
-      return this.$store.getters.getDataObjectsByType(this.objectTypePlural)
+      // Retrieve the object of matrix IDs mapped to data objects
+      return this.$store.getters.getDataObjectsByType(this.objectTypePlural, undefined, true)
     }
+  },
+  mounted () {
+    this.setNavItems(this.$store.getters.getDataObjectsByType(this.objectTypePlural))
   },
   methods: {
     ...mapMutations({ setNavItems: 'SET_NAV_DRAWER_ITEMS' })

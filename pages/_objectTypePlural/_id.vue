@@ -48,12 +48,9 @@ export default {
       return this.$store.getters.getDataObjectById(this.id)
     },
     title () {
-      // Prepend parent technique name for a subtechnique
-      if ('subtechnique-of' in this.dataObject) {
-        const parentTechnique = this.$store.getters['subtechnique/getParent'](
-          this.dataObject
-        )
-        return `${parentTechnique.name}: ${this.dataObject.name}`
+      // If it's a technique or subtechnique, use the label property
+      if ('label' in this.dataObject) {
+        return this.dataObject.label
       }
       // Otherwise use the name
       return this.dataObject.name

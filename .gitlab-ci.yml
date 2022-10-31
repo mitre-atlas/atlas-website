@@ -3,16 +3,41 @@ image: node:16
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .npm/
+
+default:
+  before_script:
+    # Install and cache dependencies
+    - npm install --cache .npm --prefer-offline
+
 pages:
+  stage: test
   script:
-    - npm install
+    # Configure to set Navigator URL, etc.
     - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
+    # Generate static files
     - npm run generate
+    # Make static files available to GitLab Pages
     - mv dist public
   artifacts:
     paths:
       - public
   tags:
     - pages
+  only:
+    - develop
+
+ui-tests:
+  stage: deploy
+  needs: [pages]
+  image: mcr.microsoft.com/playwright:v1.25.0-focal
+  script:
+    # Install browsers
+    - npx playwright install
+    # Test the built site
+    - URL=https://advml.pages.mitre.org/ npx playwright test
   only:
     - develop

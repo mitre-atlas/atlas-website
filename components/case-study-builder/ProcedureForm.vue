@@ -44,7 +44,7 @@
                 <div class="menu-item">
                   <!-- Small icon with left and right padding to slightly indent and offset from subtechnique name -->
                   <v-icon
-                    v-if="'subtechnique-of' in data.item"
+                    v-if="!('tactics' in data.item)"
                     small
                     left
                     right
@@ -101,7 +101,7 @@ export default {
       'subtechnique/getParent'
     ]),
     mapTechAndSub () {
-      // Parent techniques that have the selecetd tactic as a parent
+      // Parent techniques that have the selected tactic as a parent
       const techs = this.getDataObjectsByTypeKeyContainingValue(
         'techniques',
         'tactics',
@@ -124,8 +124,8 @@ export default {
   },
   methods: {
     tacticUpdate (selectTacticData2) {
-      this.selectTacticData2 = selectTacticData2
       this.$emit('tacticUpdate', selectTacticData2)
+      this.$emit('techniqueUpdate', '')
     },
     // techniqueUpdate (selectTechniqueData2) {
     //   this.$emit('techniqueUpdate', selectTechniqueData2)

@@ -1,5 +1,16 @@
 # ATLAS Website Changelog
 
+## [3.2.0]() (2022-10-28)
+
+#### Website
+- Supports new case study fields: case study type, reporter, target, and actor
+- Added FAQ page in "Resources" navigation menu
+- Added "Key Info" button on individual case study pages
+- Various fixes and updates
+
+#### Data
+- Updated ATLAS data to version 4.1.0
+
 ## [3.1.0]() (2022-07-12)
 
 #### Website

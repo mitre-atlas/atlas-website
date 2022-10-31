@@ -1,14 +1,14 @@
 <template>
-  <v-card v-if="!isEditing">
+  <v-card v-if="!editingData">
     <v-card-title style="font-size: 1.1rem">
-      {{ techniqueTitle }}
+      {{ techniqueLabel }}
       <v-spacer />
     </v-card-title>
 
     <v-card-subtitle>
       {{ tacticName }}
     </v-card-subtitle>
-    <v-card-text v-html="$md.render(info.description)" />
+    <v-card-text style="color: black" v-html="$md.render(info.description)" />
     <v-card-actions>
       <v-spacer />
       <v-btn color="blue" icon @click="editStep">
@@ -62,6 +62,9 @@
           Save
         </v-btn>
       </v-card-actions>
+      <v-alert v-if="saveEditErr" text color="red" type="error" dense>
+        {{ saveEditErr }}
+      </v-alert>
     </v-card>
     <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
       {{
@@ -76,24 +79,23 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditProcedureCard',
-  props: ['info', 'editedObj', 'editing', 'submissionStatus'],
+  props: ['info', 'editedObj', 'submissionStatus'],
   data () {
     return {
       wasEditing: false,
-      editingData: this.editing,
+      editingData: false,
       selectTacticData: this.info.tactic,
       selectTechniqueData: this.info.technique,
       descriptionData: this.info.description,
+      saveEditErr: '',
       dialog: false
     }
   },
   computed: {
-    ...mapGetters(['getDataObjectById', 'subtechnique/getParent']),
-    isEditing () {
-      return this.editingData
-    },
+    ...mapGetters(['getDataObjectById']),
     hasStatus () {
       return this.wasEditing && (!!(this.submissionStatus ?? {}).type)
+      // return (!!(this.submissionStatus ?? {}).type)
     },
     isInErrorState () {
       return this.hasStatus && (this.submissionStatus ?? {}).type === 'error'
@@ -139,16 +141,8 @@ export default {
       }
       return this.technique.name
     },
-    techniqueTitle () {
-      // Prepend parent technique name for a subtechnique
-      if ('subtechnique-of' in this.technique) {
-        const parentTechnique = this.$store.getters['subtechnique/getParent'](
-          this.technique
-        )
-        return `${parentTechnique.name}: ${this.technique.name}`
-      }
-      // Otherwise use the name
-      return this.technique.name
+    techniqueLabel () {
+      return this.technique.label
     },
     comboName () {
       return `${this.techniqueName} - ${this.tacticName}`
@@ -163,22 +157,28 @@ export default {
       this.$emit('updateEdit', this.editingData)
     },
     submitEdit () {
-      this.wasEditing = false
-      this.editingData = false
-      this.$emit('updateEdit', this.editingData)
-      // .trim() doesn't modify original string
-      this.descriptionData = this.descriptionData.trim()
-      const editedObj = {
-        tactic: this.selectTacticData,
-        technique: this.selectTechniqueData,
-        description: this.descriptionData
+      if (!this.selectTechniqueData) {
+        this.saveEditErr = 'Please complete all fields'
+      } else {
+        this.wasEditing = false
+        this.editingData = false
+        this.$emit('updateEdit', this.editingData)
+        // .trim() doesn't modify original string
+        this.descriptionData = this.descriptionData.trim()
+        const editedObj = {
+          tactic: this.selectTacticData,
+          technique: this.selectTechniqueData,
+          description: this.descriptionData
+        }
+        this.$emit('editClick', editedObj)
+        this.$emit('replace')
       }
-      this.$emit('editClick', editedObj)
-      this.$emit('replace')
     },
     cancelEdit () {
       this.wasEditing = false
       this.editingData = false
+      this.selectTacticData = this.info.tactic
+      this.selectTechniqueData = this.info.technique
       this.$emit('updateEdit', this.editingData)
     }
   }

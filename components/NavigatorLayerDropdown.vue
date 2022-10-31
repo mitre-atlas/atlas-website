@@ -2,10 +2,12 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <v-btn
+        class="mx-5 px-4"
         color="inherit"
         v-bind="attrs"
         v-on="on"
       >
+        <img width="35" height="35" class="mr-3 ml-0" src="../assets/nav-layer-icon.png" />
         Navigator Layer
         <v-icon right>
           mdi-menu-down

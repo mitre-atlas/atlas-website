@@ -33,12 +33,17 @@
       Thank you to our many active contributors! Including, but not limited to:
     </p>
 
-    <v-row>
+    <v-row v-if="!$vuetify.breakpoint.mobile">
       <v-col>
         <contributors-list :contributors="contributorsA" />
       </v-col>
       <v-col>
         <contributors-list :contributors="contributorsB" />
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col>
+        <contributors-list :contributors="contributors" />
       </v-col>
     </v-row>
   </div>
@@ -59,11 +64,11 @@ export default {
     contributors.sort((a, b) => (a.organization > b.organization) ? 1 : ((a.organization < b.organization) ? -1 : 0))
 
     // Split into two columns
-    const splitIndex = contributors.length / 2
-    const contributorsA = contributors.splice(0, splitIndex)
-    const contributorsB = contributors.splice(-splitIndex)
+    const splitIndex = Math.ceil(contributors.length / 2)
+    const contributorsA = contributors.slice().splice(0, splitIndex)
+    const contributorsB = contributors.slice().splice(splitIndex, contributors.length)
 
-    return { contributorsA, contributorsB }
+    return { contributors, contributorsA, contributorsB }
   },
   data: ({ $config: { name } }) => ({
     mitreTitle: name.mitre,

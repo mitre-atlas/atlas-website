@@ -6,7 +6,7 @@
       <v-main>
         <v-container>
           <data-side-nav />
-          <breadcrumbs />
+          <breadcrumbs-bar />
           <Nuxt />
         </v-container>
       </v-main>

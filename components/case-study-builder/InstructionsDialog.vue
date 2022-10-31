@@ -2,6 +2,7 @@
   <v-dialog
     v-model="show"
     max-width="500px"
+    @input="scrollToTop"
   >
     <template #activator="{ on, attrs }">
       <v-btn
@@ -17,7 +18,7 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>Case study considerations</v-card-title>
+      <v-card-title id="top" style='word-break: break-word;'>Case study considerations</v-card-title>
       <v-card-text>
         <ol>
           <li>The attack exploits one or more vulnerabilities that compromise the confidentiality, integrity, or availability of a ML system.</li>
@@ -28,7 +29,7 @@
 
       <v-divider class="mx-4" />
 
-      <v-card-title>How to use this case study builder</v-card-title>
+      <v-card-title style='word-break: break-word;'>How to use this case study builder</v-card-title>
       <v-card-text>
         <ol>
           <li>Fill out the form.</li>
@@ -58,8 +59,8 @@
         <v-btn
           plain
           color="primary"
-          @click="show = false"
-          @keyup.enter="show = false"
+          @click="scrollToTop(false)"
+          @keyup.enter="scrollToTop(false)"
         >
           OK
         </v-btn>
@@ -76,6 +77,14 @@ export default {
   data () {
     return {
       show: this.doShow
+    }
+  },
+  methods: {
+    scrollToTop (show) {
+      if (!show) {
+        document.getElementById('top').scrollIntoView()
+        this.show = show
+      }
     }
   }
 }
