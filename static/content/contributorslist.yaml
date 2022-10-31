@@ -31,6 +31,10 @@ data:
       - Andy Applebaum
       - Jonathan Broadbent
       - Isabel Tuson
+      - Anna Snarski
+      - Danny Nsouli
+      - Angela Tong
+      - Amanda Vu
 
   -
     organization: Microsoft
@@ -159,3 +163,35 @@ data:
       - Yu Fu
       - Ajaya Neupane
       - Lei Xu
+
+  -
+    organization: University of Chinese Academy of Sciences
+    contributors:
+      - Neil Yale
+      - Ying Zonghao
+
+  -
+    organization: Kaspersky
+    contributors:
+      - Alexey Antonov
+      - Alexey Kogtenkov
+
+  -
+    organization: spiderSilk
+    contributors:
+      - Mossab Hussein
+
+  -
+    organization: Silent Break Security
+    contributors:
+      - Will Pearce
+      - Nick Landers
+
+  - 
+    organization: Brown University
+    contributors: 
+      - Vanya Cohen
+      - Aaron Gokaslan
+      - Ellie Pavlick
+      - Stefanie Tellex
+      

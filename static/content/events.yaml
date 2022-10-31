@@ -5,26 +5,26 @@ data:
     description: |
       MITRE and Microsoft facilitated the [ATT&CK® for Adversarial Machine Learning: Tacky or Tasty?](https://www.rsaconference.com/library/Presentation/USA/2021/attck-for-adversarial-machine-learning-tacky-or-tasty) session.
     url: https://www.rsaconference.com/events/2021-usa
-    color: "red"
+    color: red
   - name: WACV
     date: 2022-01-04
     location: Waikoloa, HI
     description: |
       MITRE ATLAS hosted a booth at the Workshop on Applications of Computer Vision.
     url: https://wacv2022.thecvf.com/
-    color: "blue"
+    color: blue
   - name: NAML
     date: 2022-03-22
     location: Virtual
     description: ATLAS & AI security were presented at the Naval Applications of Machine Learning virtual conference in March!
     url: https://sites.google.com/go.spawar.navy.mil/naml/agenda
-    color: "cyan"
+    color: cyan
   - name: Purple Hats
     date: 2022-04-21
     location: Virtual
     description: We presented on ATLAS & AI security at ATTACK IQ's Purple Hats virtual conference in April
     url: https://www.purplehats.org/2022
-    color: "deep-purple"
+    color: deep-purple
   - name: RSA
     date: 2022-06-06
     location: San Francisco, CA
@@ -33,7 +33,7 @@ data:
 
       Our ATLAS team was present at the MITRE booth all week.
     url: https://www.rsaconference.com/usa
-    color: "red"
+    color: red
   - name: ADSTAR
     date: 2022-07-20
     location: Sydney, Australia / Virtual
@@ -43,13 +43,55 @@ data:
 
       The ATLAS team was present at the MITRE booth!
     url: https://www.adstarsummit.com.au/event/3ea1388a-66ec-4605-b5a7-1c53931b9341/summary
-    color: "orange"
+    color: orange
   - name: MLMAC
     date: 2022-08-12
     location: Virtual
     description: |
       The ML Model Attribution Challenge (MLMAC) is a four-week event from August 12th to September 9th (AoE).
 
-      MLMAC challenges contestants to develop creative technical solutions for LLM attribution. This competition works toward AI assurance by developing forensic capabilities and establishing the difficulty of model attribution in natural language processing, and could contribute to the maturation of AI forensics as a subfield of AI security.
+      MLMAC challenges contestants to develop creative technical solutions for large language model attribution. This competition works toward AI assurance by developing forensic capabilities and establishing the difficulty of model attribution in natural language processing, and could contribute to the maturation of AI forensics as a subfield of AI security.
     url: https://mlmac.io
-    color: "deep-purple"
+    color: deep-purple
+  - name: AIPR
+    date: 2022-10-11
+    location: Washington, DC
+    description: |
+      IEEE International Conference on AI and Pattern Recognition (AIPR) - MITRE helped organize and participate in the 51st annual AIPR workshop to continue pioneering new topics in applied image and visual understanding including topics around assured AI, explainable AI, and secure intelligent systems.
+    url: https://sites.google.com/aipr-workshop.org/aipr
+    color: yellow-darken-1
+  - name: CAMLIS
+    date: 2022-10-20
+    location: Arlington, VA
+    description: |
+      Conference on Applied Machine Learning (CAMLIS) - MITRE participated in this single track conference with presentations, posters, and tutorials on ML techniques and information security problems
+    url: https://www.camlis.org/
+    color: blue
+  - name: 15th ACM Workshop on Artificial Intelligence and Security (AISec)
+    date: 2022-11-11
+    description: |
+      Launching the second round of the Machine Learning Model Attribution Challenge (MLMAC).
+    location: Los Angeles, CA / Virtual
+    url: https://aisec.cc/
+    color: red
+  - name: AAAI Fall Symposium "The Role of AI in Responding to Climate Challenges"
+    date: 2022-11-17
+    location: Arlington, VA
+    description: |
+      Join us from November 17-19 for an action-packed program including keynotes, expert panels, contributed talks, and participatory discussions on how to best move the field of AI & climate change forward.
+    url: https://aaai.org/Symposia/Fall/fss22.php
+    color: blue-grey
+  - name: WACV
+    date: 2023-01-04
+    location: Waikoloa, HI
+    description: |
+      IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) is the premier international computer vision event comprising the main conference and several co-located workshops and tutorials. With its high quality and low cost, it provides an exceptional value for students, academics and industry researchers.
+    url: https://wacv2023.thecvf.com/home
+    color: light-blue
+  - name: IEEE Conference on Secure and Trustworthy Machine Learning (SaTML)
+    date: 2023-02-08
+    location: Raleigh, NC
+    description: |
+      This conference will expand on the theoretical and practical understandings of vulnerabilities inherent to ML systems, explore the robustness of ML algorithms and systems, and aid in developing a unified, coherent scientific community which aims to build trustworthy ML systems.  Results from the first round of the Machine Learning Model Attribution Challenge (MLMAC) will be announced.
+    url: https://satml.org/
+    color: orange

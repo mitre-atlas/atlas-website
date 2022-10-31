@@ -1,6 +1,6 @@
 <template>
   <v-timeline v-if="procedureData.length" align-top dense>
-    <draggable :list="procedureData" :disabled="editing" handle=".handle">
+    <draggable :list="procedureData" :disabled="areChangesUnsaved" handle=".handle">
       <!-- Key with index and technique for uniqueness -->
       <v-timeline-item v-for="(p, i) in procedureData" :key="i + p.technique" small>
         <v-icon class="fa fa-align-justify handle">
@@ -9,7 +9,7 @@
         <edit-procedure-card
           ref="editProcedureCards"
           :info="p"
-          :editing="editing"
+          :id="i + p.technique"
           :submission-status="(enableStatusHighlighting) ? {type: 'warning', message: 'Unsaved changes'} : {}"
           @deleteClick="deleteStep(i)"
           @editClick="editStep"
@@ -32,7 +32,6 @@ export default {
     return {
       procedureData: this.procedure,
       editedObj: {},
-      editing: false,
       editingCount: 0 // Count of the number of steps being edited
     }
   },
@@ -52,7 +51,6 @@ export default {
         this.editingCount -= 1
       }
       this.$emit('areChangesUnsaved', this.areChangesUnsaved)
-      this.editing = !this.editing
     },
     replace (i) {
       this.procedureData.splice(i, 1, this.editedObj)

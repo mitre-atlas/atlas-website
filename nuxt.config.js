@@ -4,6 +4,8 @@ import yaml from 'js-yaml'
 import packageData from './package.json'
 import { dataObjectToRoute } from './assets/dataHelpers.js'
 
+import schema from './static/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -161,6 +163,7 @@ export default {
     navigator_url: process.env.NAVIGATOR_URL || '',
     contact_email: process.env.CONTACT_EMAIL || 'atlas@mitre.org',
     site_version: process.env.SITE_VERSION || packageData.version,
+    study_schema_version: JSON.stringify(schema.$version) || null,
     footer_logo_link: process.env.FOOTER_LOGO_LINK || 'https://www.mitre.org/',
     footer_logo_image: process.env.FOOTER_LOGO_IMAGE || 'mitre-logo-white.svg',
     analytics_id: process.env.ANALYTICS_ID || '',

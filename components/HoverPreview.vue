@@ -26,7 +26,7 @@
             @touchstart.native="wasTouchHeld = false"
             @contextmenu="event => event.preventDefault()"
           >
-            <v-card-title>{{ targetDataObject.name }}</v-card-title>
+            <v-card-title>{{ getLabelById(targetDataObject.id) || targetDataObject.name }}</v-card-title>
             <v-card-subtitle class="text-capitalize">
               {{ targetDataObject['object-type'] }} |
               {{ targetDataObject.id }}
@@ -257,6 +257,9 @@ export default {
           clearTimeout(this.touchHoldThread)
           break
       }
+    },
+    getLabelById (id) {
+      return this.$store.getters.getDataObjectById(id).label
     },
     // Controls the appearance of the preview card. Calculates the correct offsets based on
     // viewport, window, and target item information as well as initiates a new thread for

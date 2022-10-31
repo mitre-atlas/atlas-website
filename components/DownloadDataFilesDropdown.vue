@@ -6,7 +6,10 @@
         v-bind="attrs"
         v-on="on"
       >
-        Case study data
+        <v-icon left>
+          mdi-download
+        </v-icon>
+        Download Data
         <v-icon right>
           mdi-menu-down
         </v-icon>
@@ -19,12 +22,12 @@
       <v-list-item @click="downloadYaml">
         <v-list-item-icon style="margin-right: 0px;">
           <v-icon small>
-            mdi-arrow-collapse-down
+            mdi-file
           </v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
-            Download as raw data (.yaml)
+            Raw data (.yaml)
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

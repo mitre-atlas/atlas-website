@@ -3,45 +3,23 @@
     <v-dialog v-model="dialog" max-width="500">
       <navigation-dialog @close="closeDialog" @leave-page="leavePage" />
     </v-dialog>
-    <v-dialog v-model="showSavePromptDialog" width="500">
-      <v-card>
-        <v-card-title> Unsaved changes </v-card-title>
 
-        <v-card-text>
-          <div class="content">
-            You have unsaved changes.
-            <v-spacer />
-            Continue submission without including changes?
-          </div>
-          <slot />
-        </v-card-text>
+    <unsaved-changes-dialog
+      :show-save-prompt-dialog="showSavePromptDialog"
+      @clickReturn="updateSavePromptBool"
+      @clickDownload="
+        updateSavePromptBool
+        cancelOpenInputEditors()
+        submitStudy(true)
+      "
+    />
 
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            class="ma-1"
-            color="grey"
-            text
-            @click="showSavePromptDialog = false"
-          >
-            Return
-          </v-btn>
-          <v-btn
-            class="ma-1"
-            color="warning"
-            text
-            @click="
-              showSavePromptDialog = false
-              cancelOpenInputEditors()
-              submitStudy(true)
-            "
-          >
-            Continue to download
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <page-title>{{ title }}</page-title>
+    <v-row :align="center" no-gutters>
+      <page-title>{{ title }}</page-title>
+      <v-chip class="mt-10 ml-2" small>
+        v{{ $config.study_schema_version }}
+      </v-chip>
+    </v-row>
 
     <v-card-actions>
       <v-row class="mb-0">
@@ -68,26 +46,56 @@
         <v-card-subtitle>All fields required.</v-card-subtitle>
 
         <v-card-text>
+          <case-study-type
+            id="cs-type-card"
+            :case-study-type="studyData.study['case-study-type']"
+            :study-types="studyTypes"
+            :fields="fields"
+            :rules="rules['case-study-type']"
+            :has-submission-been-attempted="hasSubmissionBeenAttempted"
+            @studyTypeUpdate="updateCaseStudyType"
+          />
+
           <v-text-field
             id="titleInput"
             v-model="studyData.study.name"
-            :rules="rules.title"
+            :rules="rules.name"
             label="Title"
-            hint="Name for this case study"
-            prepend-inner-icon="mdi-format-title"
+            :hint="fields.name.description"
+            :prepend-inner-icon="fields.name.icon"
             outlined
-            required
+          />
+
+          <v-text-field
+            id="targetInput"
+            v-model="studyData.study['target']"
+            :rules="rules.target"
+            label="Target"
+            :hint="fields.target.description"
+            :prepend-inner-icon="fields.target.icon"
+            outlined
+          />
+
+          <v-text-field
+            id="actorInput"
+            v-model="studyData.study['actor']"
+            :rules="rules.actor"
+            label="Actor"
+            :hint="fields.actor.description"
+            :prepend-inner-icon="fields.actor.icon"
+            outlined
           />
 
           <v-text-field
             id="reporterInput"
-            v-model="studyData.study['reported-by']"
-            :rules="rules.reportedBy"
-            label="Reported by"
-            hint="Name(s) of the original authors of the study"
-            prepend-inner-icon="mdi-account"
+            ref="reporterInput"
+            v-model="studyData.study['reporter']"
+            :rules="rules.reporter"
+            label="Reporter"
+            :hint="fields.reporter.description"
+            :prepend-inner-icon="fields.reporter.icon"
             outlined
-            required
+            :disabled="isReporterDisabled"
           />
 
           <incident-date-picker
@@ -108,10 +116,9 @@
             v-model="studyData.study.summary"
             :rules="rules.summary"
             label="Summary"
-            hint="Description of the incident"
-            prepend-inner-icon="mdi-text"
+            :hint="fields.summary.description"
+            :prepend-inner-icon="fields.summary.icon"
             outlined
-            required
             auto-grow
           />
         </v-card-text>
@@ -208,76 +215,18 @@
           </div>
         </v-card-text>
 
-        <v-card-title> Download </v-card-title>
-        <v-card-subtitle>
-          Download the case study data file, specifying the filename here. Once
-          downloaded, email the file to
-          <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
-        </v-card-subtitle>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" sm="3" md="6">
-              <div>
-                <v-text-field
-                  v-model="fileName"
-                  :rules="rules.fileName"
-                  label="Case study filename"
-                  hint="Filename of the case study. The .yaml extension will be auto-applied."
-                  prepend-inner-icon="mdi-file-download"
-                  outlined
-                  clearable
-                  required
-                  auto-grow
-                />
-              </div>
-            </v-col>
-            <v-col>
-              <download-powerpoint
-                ref="formatPpt"
-                :study="studyData.study"
-                :builder="builder"
-                @updateCheckbox="updateCheckbox"
-              />
-            </v-col>
-          </v-row>
-          <v-row style="margin-top: -25px">
-            <v-col cols="4">
-              <!-- <v-tooltip> -->
-              <!-- <template #activator="{ on, attrs }"> -->
-              <v-btn
-                id="download_case_study_button"
-                color="primary"
-                :disabled="!isFormValid"
-                v-bind="attrs"
-                class="mb-2"
-                block
-                v-on="on"
-                @click="submitStudy()"
-              >
-                <v-icon left>
-                  mdi-download
-                </v-icon>
-                Download Case Study
-              </v-btn>
-              <!-- </template> -->
-              <!-- </v-tooltip> -->
-            </v-col>
-            <v-col>
-              <v-fade-transition>
-                <v-alert
-                  v-if="!!status.message"
-                  class="mb-0"
-                  :color="status.color"
-                  :type="status.type"
-                  text
-                  dense
-                >
-                  <span v-linkified v-html="status.message" />
-                </v-alert>
-              </v-fade-transition>
-            </v-col>
-          </v-row>
-        </v-card-text>
+        <download-case-study
+          ref="downloadCaseStudy"
+          :status="status"
+          :file-name="fileName"
+          :initial-rules="rules.fileName"
+          :study-data="studyData"
+          :is-form-valid="isFormValid"
+          :builder="builder"
+          @updateFileName="setFileName"
+          @submitForm="submitStudy"
+          @makePpt="updateCheckbox"
+        />
       </v-card>
     </v-form>
   </div>
@@ -291,7 +240,13 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { generateID, downloadStudyFile } from '~/assets/tools.js'
+import { downloadStudyFile, setMetaData } from '~/assets/tools.js'
+import {
+  clearStatus,
+  setErrorStatus,
+  setWarningStatus,
+  setSuccessStatus
+} from '~/assets/validation.js'
 
 export default {
   beforeRouteLeave (to, from, next) {
@@ -303,13 +258,23 @@ export default {
       this.dialog = true
     }
   },
+  async asyncData ({ $content }) {
+    // Retrieve legend/hints text from YAML file
+    const yamlContent = await $content('case-study-legend').fetch()
+    return {
+      // Store case study field legend info (including hints) from YAML file
+      fields: yamlContent.legend,
+
+      // Store case study types from YAML file
+      studyTypes: yamlContent.legend.case_study_type.options
+    }
+  },
   data () {
     return {
       title: 'Create a Case Study',
       areDetailsValid: true,
       // Keep the download button enabled (even if there are errors) until the user actually tries to submit
       hasSubmissionBeenAttempted: false,
-      initialFileName: '',
 
       selectTactic: null,
       selectTechnique: null,
@@ -326,7 +291,10 @@ export default {
           'incident-date': null,
           'incident-date-granularity': null,
           procedure: [],
-          'reported-by': '',
+          reporter: '',
+          actor: '',
+          target: '',
+          'case-study-type': '',
           references: []
         }
       },
@@ -334,8 +302,6 @@ export default {
       addingStep: true,
       addingSource: false,
 
-      errorMsg: '',
-      submissionMsg: '',
       fileName: '',
       downloadedYaml: true,
       builder: true,
@@ -354,14 +320,29 @@ export default {
       wasDatePickerOpen: false,
 
       status: {
+        type: '',
         message: '',
         color: null
       },
 
+      isReporterDisabled: true,
+      caseStudyTypeRule: v => !!v,
+      reporterRule: (v) => {
+        // Reporter is not required only when case study type is exercise OR on page load
+        if (
+          this.studyData.study['case-study-type'] === 'exercise' ||
+          this.studyData.study['case-study-type'] === ''
+        ) {
+          return true
+        }
+        return this.requiredRule(v)
+      },
+      // rules.key that will get the above rule applied upon click Download
       // Fields that should be required
       requiredFieldRuleKeys: [
-        'title',
-        'reportedBy',
+        'name',
+        'target',
+        'actor',
         'summary',
         'incidentDate',
         'fileName'
@@ -369,7 +350,8 @@ export default {
       // Custom error messages
       errors: {
         incidentDate: []
-      }
+      },
+      selectStudyType: null
     }
   },
   head () {
@@ -381,10 +363,17 @@ export default {
     rules () {
       // Rules for input fields
       const rules = {}
-      this.requiredFieldRuleKeys.forEach((key) => {
-        rules[key] = [this.requiredRule]
-      })
-      rules.incidentDate.push(this.isDateValid || 'Entered value not yet saved')
+      if (this.hasSubmissionBeenAttempted) {
+        this.requiredFieldRuleKeys.forEach((key) => {
+          rules[key] = [this.requiredRule]
+        })
+
+        rules.incidentDate.push(
+          this.isDateValid || 'Entered value not yet saved'
+        )
+        rules['case-study-type'] = [this.caseStudyTypeRule]
+        rules.reporter = [this.reporterRule]
+      }
       return rules
     },
     isProcedureValid () {
@@ -418,32 +407,27 @@ export default {
         this.isDatePickerOpen
       )
     },
-    hasDownloadIssue () {
-      // After download, and check existence of a non-status message with a populated message,
-      // as the message field is reset to empty upon valid conditions in clearStatus()
-      return this.hasSubmissionBeenAttempted //  && (this.status.message.type !== 'success' && this.status.message !== '')
-    },
     // If the procedure is invalid, error
     // If a step is currently being added (unsaved), warn
     addStepSubmissionStatus () {
       if (!this.isProcedureValid) {
         return { type: 'error', message: 'At least one step is required' }
         // this.hasSubmissionBeenAttempted ensures no warning until submission attempted
-      } else if (this.wasAddingStep && this.hasDownloadIssue) {
+      } else if (this.wasAddingStep && this.hasSubmissionBeenAttempted) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
     // If a source is currently being added (unsaved), and the user has attempted to submit, warn
     addSourceSubmissionStatus () {
-      if (this.wasAddingSource && this.hasDownloadIssue) {
+      if (this.wasAddingSource && this.hasSubmissionBeenAttempted) {
         return { type: 'warning', message: 'Unsaved changes' }
       }
       return {}
     },
 
     datePickerSubmissionStatus () {
-      if (this.hasDownloadIssue) {
+      if (this.hasSubmissionBeenAttempted) {
         if (this.wasDatePickerOpen) {
           return { type: 'warning', message: 'Unsaved changes' }
         } else if (!this.isDateValid) {
@@ -457,9 +441,9 @@ export default {
     areChangesUnsaved (newVal, oldVal) {
       if (this.hasSubmissionBeenAttempted && !newVal && oldVal) {
         // User resolved unsaved changes after download attempt
-        this.clearStatus()
+        this.status = clearStatus(this.status)
         // Reset submission attempt to restart validation logic as if this were a newly filled form
-        this.hasSubmissionBeenAttempted = false
+        // this.hasSubmissionBeenAttempted = false
       }
     }
   },
@@ -482,35 +466,6 @@ export default {
         this.referenceEditingCount -= 1
       }
     },
-    // Sets messages for the alert component
-    setErrorStatus (message = 'Please address any errors above') {
-      this.status.type = 'error'
-      this.status.color = 'error'
-      this.status.message = message
-    },
-    setWarningStatus (message) {
-      this.status.type = 'warning'
-      this.status.color = 'warning'
-      this.status.message = message
-    },
-    setSuccessStatus (message) {
-      this.status.type = 'success'
-      this.status.color = 'success'
-      this.status.message = message
-
-      setTimeout(() => {
-        // Reset status
-        this.status.type = ''
-        this.status.color = null
-        this.status.message = ''
-        // Reset download status
-        this.hasSubmissionBeenAttempted = false
-      }, 3000)
-    },
-    clearStatus () {
-      this.status.message = ''
-    },
-    // Checks if the value exists, and if it is more than whitespace
     requiredRule (value) {
       const emptyRule = value => !!value || 'Required'
       const whitespaceRule = value =>
@@ -524,12 +479,12 @@ export default {
         // String value == error message
         if (typeof passValue === 'string') {
           if (this.status.message) {
-            this.setErrorStatus()
+            this.status = setErrorStatus(this.status)
           }
           return passValue
         }
       }
-      this.clearStatus()
+      this.status = clearStatus(this.status)
       return true
     },
     setFileName (loadedFileName) {
@@ -547,10 +502,18 @@ export default {
         this.addingSource = false
       }
 
-      // Reset sucess and/or error messages
-      this.clearStatus()
+      // Reset success and/or error messages
+      this.status = clearStatus(this.status)
+      // Clears validation for when file is uploaded, so validation doesn't show up upon file upload.
+      this.$refs.form.resetValidation()
       this.errors = {
         incidentDate: []
+      }
+      if (this.studyData.study['case-study-type'] === 'incident') {
+        this.isReporterDisabled = false
+      } else {
+        this.isReporterDisabled = true
+        this.studyData.study.reporter = ''
       }
     },
     setIncidentDate (date, granularity) {
@@ -562,21 +525,38 @@ export default {
     updateCheckbox (newval) {
       this.pptSelected = newval
     },
+    updateSavePromptBool (newVal) {
+      this.showSavePromptDialog = newVal
+    },
+    updateCaseStudyType (newType) {
+      this.studyData.study['case-study-type'] = newType
+      if (this.studyData.study['case-study-type'] !== 'exercise') {
+        this.isReporterDisabled = false
+      } else {
+        // Reset so that reporter field are not required
+        this.isReporterDisabled = true
+        this.studyData.study.reporter = ''
+        this.$refs.reporterInput.validate(true)
+      }
+      if (this.hasSubmissionBeenAttempted) {
+        this.$refs.reporterInput.validate(true)
+      }
+    },
     addProcedureStep (newStep) {
       this.studyData.study.procedure.push(newStep)
       this.addingStep = false
+      this.wasAddingStep = false
     },
     addSource (newSource) {
       this.studyData.study.references.push(newSource)
       this.addingSource = false
+      this.wasAddingSource = false
     },
     addSourceAt (newSource, index) {
       this.studyData.study.references.splice(index, 1, newSource)
-      this.addingSource = false
     },
     deleteSourceAt (index) {
       this.studyData.study.references.splice(index, 1)
-      this.addingSource = false
     },
     async submitStudy (ignoreUnsavedChanges = false) {
       // Disable the download button until all input errors resolved
@@ -593,45 +573,52 @@ export default {
       // Successful form fill
       // this.isFormValid covers all input fields, including date picker
       if (this.isFormValid) {
-        this.clearStatus()
+        this.status = clearStatus(this.status)
         // If there are unsaved changes and we are not ignoring them, stop the download process
         if (this.areChangesUnsaved && !ignoreUnsavedChanges) {
-          this.setWarningStatus('You have unsaved changes')
+          this.status = setWarningStatus(
+            this.status,
+            'You have unsaved changes'
+          )
           this.flagOpenInputEditors()
           this.showSavePromptDialog = true
           return
         }
 
         // Metadata
-        // Initialize meta key if not exists
-        this.studyData.meta = this.studyData.meta || {}
-        const nowDate = new Date()
-        // Only set the date-created once upon study creation
-        this.studyData.meta['date-created'] =
-          this.studyData.meta['date-created'] ?? nowDate
-        // Always update date-updated
-        this.studyData.meta['date-updated'] = nowDate
-        this.studyData.meta.uuid = this.studyData.meta.uuid ?? generateID()
+        this.studyData.meta = setMetaData(
+          this.studyData,
+          this.$config.study_schema_version
+        )
 
         // next 2 lines call actions to create store case study object and download file
         // this.submitCaseStudy(study) // <-- stores case study in store
         downloadStudyFile(this.studyData, this.fileName)
 
         if (this.pptSelected === true) {
-          this.$refs.formatPpt.makePPT(this.fileName)
+          // this.$refs.formatPpt.makePPT(this.fileName)
+          this.$refs.downloadCaseStudy.$refs.formatPpt.makePPT(this.fileName)
         }
 
         // Reset
         this.downloadedYaml = true
         // Reset any error or warning states
         this.hasSubmissionBeenAttempted = false
-        this.setSuccessStatus(
+        this.status = setSuccessStatus(
+          this.status,
+          this.hasSubmissionBeenAttempted,
           'Your case study has been downloaded! Email your yaml file to ' +
             this.contactEmail
-        )
+        )[0]
+        this.hasSubmissionBeenAttempted = setSuccessStatus(
+          this.status,
+          this.hasSubmissionBeenAttempted,
+          'Your case study has been downloaded! Email your yaml file to ' +
+            this.contactEmail
+        )[1]
       } else {
         // Form has validation errors, display message to have users scroll up
-        this.setErrorStatus()
+        this.status = setErrorStatus(this.status)
       }
     },
     closeDialog () {
@@ -661,8 +648,7 @@ export default {
       }
       if (this.areProcedureChangesUnsaved) {
         this.$refs.editProcedure.$refs.editProcedureCards.forEach((card) => {
-          if (card.isEditing) {
-            console.log(card)
+          if (card.editingData) {
             card.wasEditing = true
           }
         })

@@ -19,12 +19,12 @@
   >
     <v-list-item-icon style="margin-right: 0px;">
       <v-icon small>
-        mdi-arrow-collapse-down
+        mdi-file-powerpoint-box-outline
       </v-icon>
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title>
-        Download as Powerpoint (.pptx)
+        PowerPoint (.pptx)
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -33,6 +33,8 @@
 <script>
 import Pptxgen from 'pptxgenjs'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
+import { formatCaseStudyIncidentDate } from '~/assets/tools.js'
+
 export default {
   name: 'DownloadPowerpoint',
   props: ['study', 'builder'],
@@ -122,6 +124,11 @@ export default {
       ppt.writeFile({ fileName: `${filename}.pptx` })
     },
     titleSlide (ppt, yaml) {
+      let textLabel = 'ATLAS Case Study'
+      if (yaml['case-study-type']) {
+        const type = yaml['case-study-type']
+        textLabel += ' - ' + type.slice(0, 1).toUpperCase() + type.slice(1, type.length)
+      }
       ppt.defineSlideMaster({
         title: 'Title',
         background: { color: 'FFFFFF' },
@@ -155,7 +162,7 @@ export default {
           },
           {
             text: {
-              text: 'ATLAS Case Study',
+              text: textLabel,
               options: {
                 y: '78%',
                 w: '100%',
@@ -187,7 +194,7 @@ export default {
           {
             placeholder: {
               options: {
-                name: 'reportedBy',
+                name: 'involved',
                 type: 'body',
                 y: '88%',
                 w: '100%',
@@ -197,49 +204,59 @@ export default {
                 color: '0D2F4F',
                 isTextBox: true
               },
-              text: 'Reported by'
+              text: 'Target | Actor | Reporter'
             }
           }
         ]
       })
 
-      let formattedDate = null
-      let dateGranularity = yaml['incident-date-granularity']
-      // Handle existing individual case studies with previous key
-      if ('dateGranularity' in yaml) {
-        dateGranularity = yaml.dateGranularity
-      }
-      if (dateGranularity === 'YEAR') {
-        formattedDate = yaml['incident-date'].toLocaleDateString(
-          'default',
-          { timeZone: 'UTC', year: 'numeric' }
-        )
-      } else if (dateGranularity === 'MONTH') {
-        formattedDate = yaml['incident-date'].toLocaleDateString(
-          'default',
-          { timeZone: 'UTC', year: 'numeric', month: 'long' }
-        )
-      } else if (
-        dateGranularity === undefined ||
-        dateGranularity === 'DATE'
-      ) {
-        // If dateGranularity is DATE, or there is no date granularity
-        formattedDate = yaml['incident-date'].toLocaleDateString(
-          'default',
-          { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
-        )
-      }
+      // Convert incident date to a locale date string,
+      // depending on specified date granularity
+      const formattedDate = formatCaseStudyIncidentDate(yaml)
 
       // Workaround for erroneous list item, TBD removal
-      let reportedBy = yaml['reported-by']
-      if (Array.isArray(reportedBy)) {
-        reportedBy = reportedBy[0]
+      let reporter = yaml.reporter
+      if (Array.isArray(reporter)) {
+        reporter = reporter[0]
       }
 
       ppt
         .addSlide({ masterName: 'Title' })
         .addText(yaml.name, { placeholder: 'title' })
-        .addText(reportedBy, { placeholder: 'reportedBy' })
+        .addText(
+          [
+            {
+              text: 'Actor: '
+            },
+            {
+              text: yaml.actor ? yaml.actor : 'Unknown',
+              options: {
+                bold: true
+              }
+            },
+            {
+              text: ' | Target: '
+            },
+            {
+              text: yaml.target ? yaml.target : 'Unknown',
+              options: {
+                bold: true
+              }
+            },
+            {
+              text: yaml.reporter ? ' | Reporter: ' : ''
+            },
+            {
+              text: yaml.reporter ? yaml.reporter : '',
+              options: {
+                bold: true
+              }
+            }
+          ],
+          {
+            placeholder: 'involved'
+          }
+        )
         .addText(formattedDate, { placeholder: 'incidentDate' })
     },
     detailSlide (ppt, yaml) {
@@ -366,19 +383,10 @@ export default {
 
         const techniqueInfo = this.$store.getters.getDataObjectById(techniqueId)
 
-        const parentTechnique = this.$store.getters['subtechnique/getParent'](techniqueInfo)
-
-        let workaroundTechniqueLabel = null
-        if (parentTechnique) {
-          workaroundTechniqueLabel = `${parentTechnique.name}: ${techniqueInfo.name}`
-        } else {
-          workaroundTechniqueLabel = `${techniqueInfo.name}`
-        }
-
         const row = [
           { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
           this.linkText(
-            workaroundTechniqueLabel,
+            techniqueInfo.label,
             this.getUrlFromInfoObject(techniqueInfo)
           ),
           { text: description, options: { fontFace: 'Arial', fontSize: 10 } }

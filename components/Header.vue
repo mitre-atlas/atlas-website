@@ -84,7 +84,7 @@
         rounded="b-lg t-0"
         transition="slide-y-transition"
         content-class="elevation-2"
-        style="z-index:-100;"
+        style="z-index:4000;"
       >
         <template #activator="{ on, attrs }">
           <v-btn
@@ -167,6 +167,10 @@ export default {
           {
             name: 'Contribute',
             href: '/resources/contribute'
+          },
+          {
+            name: 'FAQ',
+            href: '/resources/faq'
           },
           {
             name: 'Updates',

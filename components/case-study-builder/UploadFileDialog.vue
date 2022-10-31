@@ -2,6 +2,7 @@
   <v-dialog
     v-model="show"
     max-width="500px"
+    @click:outside="cancel"
   >
     <template #activator="{ on, attrs }">
       <v-btn
@@ -21,7 +22,7 @@
 
       <v-card-text>
         To view or edit an existing case study, upload a .yaml file created by this website.
-        Loading a file will <b>overwrite any existing progress</b> in the form.
+        Loading a file will <b>overwrite any existing progress</b> in the form. The current case study schema version is {{ $config.study_schema_version }}.
         <v-file-input
           v-model="chosenFile"
           class="mt-4"
@@ -39,6 +40,14 @@
             {{ initialFileName }}
           </template>
         </v-file-input>
+        <v-alert
+          v-if="schemaOutdated"
+          dense
+          text
+          type="warning"
+        >
+          Case study schema version is either not up to date or found in file. As a result, some data may not be transferrable. (Current Version: <strong>{{ $config.study_schema_version }}</strong>)
+        </v-alert>
       </v-card-text>
 
       <v-card-actions>
@@ -64,7 +73,7 @@
 </template>
 <script>
 import { CORE_SCHEMA, load } from 'js-yaml'
-import { generateID, validFormatYAML } from '~/assets/tools.js'
+import { generateID, validFormatYAML, isSchemaOutdated } from '~/assets/tools.js'
 
 export default {
   name: 'UploadFileDialog',
@@ -78,7 +87,8 @@ export default {
       initialFileName: null,
       hasError: false,
       errorMessages: [],
-      loadedData: {}
+      loadedData: {},
+      schemaOutdated: false
     }
   },
   methods: {
@@ -93,11 +103,13 @@ export default {
       // Clear file input, reset error states
       this.hasError = false
       this.errorMessages = []
+      this.schemaOutdated = false
     },
     loadDataFromFile () {
       this.loadYaml()
       // Close dialog
       this.show = false
+      this.schemaOutdated = false
       this.chosenFile = null
     },
     loadYaml () {
@@ -112,6 +124,7 @@ export default {
       this.chosenFile = null
       this.hasError = false
       this.errorMessages = []
+      this.schemaOutdated = false
     },
     async validateFile (file) {
       const expectedTypes = ['.yaml']
@@ -162,11 +175,12 @@ export default {
         try {
           const yamlObj = load(tryYamlText, { schema: CORE_SCHEMA })
           const yamlErr = validFormatYAML(yamlObj)
-          if (yamlErr !== '') {
-            addError(yamlErr)
+          for (let i = 0; i < yamlErr.length; i++) {
+            addError(yamlErr[i])
           }
-        } catch {
-          addError('Invalid YAML syntax.')
+        } catch (yamlErr) {
+          addError(yamlErr.reason)
+          // addError('Invalid YAML syntax.')
         }
       }
       this.errorMessages = errors

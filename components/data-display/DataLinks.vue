@@ -7,11 +7,11 @@
           {{ title }}
         </page-section-title>
       </template>
-      <div v-for="(d, i) in items" :key="i">
+      <div v-for="(d, i) in itemsList" :key="i">
         <v-list-item :nuxt="true" :to="d.route">
           <v-list-item>
             <v-list-item-title>
-              {{ d.name }}
+              {{ getLabelById(d.id) || d.name }}
             </v-list-item-title>
           </v-list-item>
         </v-list-item>
@@ -20,23 +20,28 @@
   </hover-preview>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import { dataObjectToPluralTitle } from '@/assets/dataHelpers.js'
 
 export default {
   name: 'DataLinks',
   props: ['parentObject', 'items', 'itemType'],
   computed: {
+    ...mapGetters(['getDataObjectById']),
     title () {
-      if (Array.isArray(this.items) && this.items.length === 1) {
+      if (Array.isArray(this.itemsList) && this.itemsList.length === 1) {
         // Return what may be a singular version of this title
         return this.itemType.replace('-', ' ')
       }
       return dataObjectToPluralTitle(this.itemType)
     },
+    itemsList () {
+      return [...this.items].sort((a, b) => (a.id > b.id) ? 1 : -1)
+    },
     hoverDataObjects () { // Modifies the data objects passed into the preview if necessary
       if (this.itemType === 'case-study') { // If a case study, process the object given to hover-preview
         const hoverItems = []
-        this.items.forEach((caseStudy) => { // outer loop
+        this.itemsList.forEach((caseStudy) => { // outer loop
           caseStudy.procedure.every((step) => { // inner loop
             if (this.parentObject['object-type'] === 'tactic') {
               if (step.tactic === this.parentObject.id) { // match the first step that uses that tactic
@@ -66,8 +71,13 @@ export default {
         })
         return hoverItems
       } else { // Otherwise just return the items
-        return this.items
+        return this.itemsList
       }
+    }
+  },
+  methods: {
+    getLabelById (id) {
+      return this.getDataObjectById(id).label
     }
   }
 }

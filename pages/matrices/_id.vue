@@ -1,6 +1,5 @@
 <template>
   <div>
-    <data-side-nav :items="getMatrices" fixed-title="Matrices" />
     <page-title>{{ title }}</page-title>
 
     <p>
@@ -19,11 +18,17 @@
 import { mapMutations } from 'vuex'
 
 export default {
+  layout: 'side-nav',
   data: ({ $config: { name }, $route: { params } }) => ({
     matrixId: params.id,
     title: `${params.id} Matrix`,
     mitreTitle: name.mitre
   }),
+  head () {
+    return {
+      title: `${this.title} | ${this.mitreTitle}`
+    }
+  },
   computed: {
     getMatrices () {
       return this.$store.state.data.matrices
@@ -44,11 +49,6 @@ export default {
       data: this.getMatrices,
       title: 'Matrices'
     })
-  },
-  head () {
-    return {
-      title: `${this.title} | ${this.mitreTitle}`
-    }
   },
   methods: {
     ...mapMutations({ setNavItems: 'SET_NAV_DRAWER_ITEMS' })

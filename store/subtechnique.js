@@ -5,5 +5,14 @@ export const getters = {
       return rootGetters.getDataObjectById(parentTechniqueId)
     }
     return null
+  },
+
+  getParentName: (state, getters, rootState, rootGetters) => (id) => {
+    const techniqueObj = rootGetters.getDataObjectById(id)
+    if ('subtechnique-of' in techniqueObj) {
+      const parentObj = rootGetters.getDataObjectById(techniqueObj['subtechnique-of'])
+      return parentObj.name + ': '
+    }
+    return ''
   }
 }

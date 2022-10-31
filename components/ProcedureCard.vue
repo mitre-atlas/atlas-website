@@ -2,35 +2,23 @@
   <v-card>
     <v-card-title>
       <nuxt-link
-        v-if="parentTechnique !== undefined"
         :to="technique.route"
-        style="color: inherit;"
       >
-        {{ parentTechniqueName }}: {{ techniqueName }}
-      </nuxt-link>
-      <nuxt-link
-        v-else
-        :to="technique.route"
-        style="color: inherit;"
-      >
-        {{ techniqueName }}
+        {{ techniqueLabel }}
       </nuxt-link>
     </v-card-title>
     <v-card-subtitle>
       <nuxt-link
         :to="tactic.route"
-        style="color: inherit;"
       >
         {{ tacticName }}
       </nuxt-link>
     </v-card-subtitle>
-    <v-card-text v-html="$md.render(info.description)" />
+    <v-card-text style="color: black" v-html="$md.render(info.description)" />
   </v-card>
 </template>
-
 <script>
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'ProcedureCard',
   props: ['info'],
@@ -62,22 +50,24 @@ export default {
       }
       return this.tactic.name
     },
-    techniqueName () {
+    techniqueLabel () {
       if (this.technique === undefined) {
         return '(Name not found for technique ' + this.info.technique + ')'
       }
-      return this.technique.name
-    },
-    parentTechnique () {
-      const parentTechniqueId = this.technique['subtechnique-of']
-      return this.getDataObjectById(parentTechniqueId)
-    },
-    parentTechniqueName () {
-      if (this.parentTechnique === undefined) {
-        return ''
-      }
-      return this.parentTechnique.name
+      return this.technique.label
     }
   }
 }
 </script>
+<style scoped>
+
+  /* Inbuilt nuxt title classes styled to highlight titles as links  */
+  .v-card__title :hover, .v-card__subtitle :hover {
+    text-decoration: underline;
+  }
+
+  a {
+    color: inherit !important;
+  }
+
+</style>
