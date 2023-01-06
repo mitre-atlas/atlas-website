@@ -109,6 +109,12 @@ export default {
       handler (newVal, oldVal) {
         this.rules = newVal
       }
+    },
+    studyData: {
+      immediate: true,
+      handler (newYaml, oldYaml) {
+        this.caseStudyData = newYaml
+      }
     }
   },
   methods: {
