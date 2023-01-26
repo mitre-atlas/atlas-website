@@ -95,3 +95,31 @@ data:
       This conference will expand on the theoretical and practical understandings of vulnerabilities inherent to ML systems, explore the robustness of ML algorithms and systems, and aid in developing a unified, coherent scientific community which aims to build trustworthy ML systems.  Results from the first round of the Machine Learning Model Attribution Challenge (MLMAC) will be announced.
     url: https://satml.org/
     color: orange
+  - name: Responsible AI in Military Global Summit
+    date: 2023-02-15
+    location: The Hague, Netherlands
+    description: |
+      The government of the Netherlands is hosting the first global Summit on Responsible Artificial Intelligence in the Military Domain (REAIM) on February 15 and 16 2023. REAIM 2023 will be a platform for all stakeholders to discuss the key opportunities, challenges and risks associated with military applications of AI. The MITRE ATLAS team will be showcasing ATLAS as part of the REIAM Innovation Hub events as well as engaging with other stakeholders around the world.
+    url: https://www.government.nl/ministries/ministry-of-foreign-affairs/events/reaim
+    color: blue
+  - name: MITRE Cybersecurity Days 2023
+    date: 2023-03-28
+    location: Virtual
+    description: |
+      MITRE Cybersecurity Days is being held from March 28 to 30, 2023.  This event showcases virtual technical presentations by MITRE cyber experts to discuss ways to address current and emerging technical cybersecurity trends and challenges, innovative approaches to meeting government needs and solving problems for a safer world, and future research directions.
+    url: \#
+    color: blue
+  - name: WiCyS Conference
+    date: 2023-03-16
+    location: Denver, CO
+    description: |
+      The WiCyS conference is the premier event to RECRUIT, RETAIN and ADVANCE women in cybersecurity. WiCyS brings together women in cybersecurity from academia, research, government, and industry. MITRE women will be giving a presentation on "Introduction to AI Red Teaming" during the event, which runs from March 16 to 18, 2023.
+    url: https://www.wicys.org/events/wicys-2023/
+    color: light-green
+  - name: RSA
+    date: 2023-04-27
+    location: San Francisco, CA
+    description: |
+      In the cybersecurity industry, no one goes it alone. Instead, we build on each other's diverse knowledge to create the next breakthrough—exchanging ideas, sharing our success stories, and bravely examining our failures. RSA Conference 2023: April 24 - 27.
+    url: https://www.rsaconference.com/usa
+    color: red

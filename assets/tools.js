@@ -10,6 +10,21 @@ export function capitalize (str) {
   return `${str[0].toUpperCase()}${str.slice(1)}`
 }
 
+// Splits text into array, capitalizes each word, joins into one string
+export function capitalizeSidebar (str, splitter) {
+  const tokens = str.split(splitter)
+  for (let i = 0; i < tokens.length; i++) {
+    tokens[i] = capitalize(tokens[i])
+  }
+  return tokens.join(' ')
+}
+
+// Finds last word in a string
+export function lastWord (str) {
+  const textArr = str.split(' ')
+  return textArr[textArr.length - 1]
+}
+
 export function generateID (template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
   // adapted from stackoverflow

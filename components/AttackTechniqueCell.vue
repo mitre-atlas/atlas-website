@@ -7,7 +7,11 @@
           v-bind="attrs"
           v-on="on"
         >
-          {{ technique.name }}
+          {{ technique.name.substr(0, (technique.name.length - techniqueLastWord.length)) }}
+          <div style="white-space: nowrap;">
+            {{ techniqueLastWord }}
+            <span v-if="'ATT&CK-reference' in technique" class="attack-and">&</span>
+          </div>
         </nuxt-link>
       </template>
       <span>{{ technique.id }}</span>
@@ -16,6 +20,7 @@
 </template>
 
 <script>
+import { lastWord } from '~/assets/tools.js'
 export default {
   name: 'AttackTechniqueCell',
   props: [
@@ -29,6 +34,9 @@ export default {
         className += ' supertechniquecell'
       }
       return className
+    },
+    techniqueLastWord () {
+      return lastWord(this.technique.name)
     }
   }
 }

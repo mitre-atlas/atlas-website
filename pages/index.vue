@@ -12,18 +12,19 @@
               threats to machine learning systems
             </NuxtLink>. ML is increasingly used across a variety of industries. There are a growing number of vulnerabilities in ML, and its use increases the attack surface of existing systems. We developed {{ shortName }} to raise awareness of these threats and present them in a way familiar to security researchers.
           </p>
-          <img src="~/assets/ATLAS_tm_black.png" height="60" class="d-block mx-auto">
+          <img src="~/assets/ATLAS_tm_black.png" height="60" class="d-block mx-auto mt-10">
         </div>
         <div>
           <p>
             The {{ shortName }} Matrix below shows the progression of tactics used in attacks as columns from left to right,
-            with ML techniques belonging to each tactic below. Click on links to learn more about each item, or view
+            with ML techniques belonging to each tactic below.
+            <span class="attack-and">&</span>&nbsp;indicates an adaptation from ATT&CK.
+            Click on links to learn more about each item, or view
             {{ shortName }} tactics and techniques using the links at the top navigation bar.
           </p>
         </div>
       </v-col>
     </v-row>
-
     <v-row>
       <matrix-attack-style :tactics="populatedTactics" />
     </v-row>

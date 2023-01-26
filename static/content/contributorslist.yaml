@@ -35,6 +35,7 @@ data:
       - Danny Nsouli
       - Angela Tong
       - Amanda Vu
+      - Kate Hanson
 
   -
     organization: Microsoft
@@ -187,11 +188,10 @@ data:
       - Will Pearce
       - Nick Landers
 
-  - 
+  -
     organization: Brown University
-    contributors: 
+    contributors:
       - Vanya Cohen
       - Aaron Gokaslan
       - Ellie Pavlick
       - Stefanie Tellex
-      

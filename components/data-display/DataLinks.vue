@@ -1,6 +1,6 @@
 <!-- Collapsable item list for related data objects on individual data pages -->
 <template>
-  <hover-preview :data-objects="hoverDataObjects" :is-list-group="true">
+  <hover-preview v-if="itemType !== 'ATT&CK-reference'" :data-objects="hoverDataObjects" :is-list-group="true">
     <v-list-group :value="true">
       <template #activator>
         <page-section-title class="text-capitalize">

@@ -1,5 +1,15 @@
 # ATLAS Website Changelog
 
+## [3.3.0]() (2023-01-19)
+
+#### Website
+- ATLAS tactics and techniques that are adapted from ATT&CK are denoted with a red &
+- Updated events list
+- Various fixes
+
+#### Data
+- Updated ATLAS data to version 4.2.0
+
 ## [3.2.0]() (2022-10-28)
 
 #### Website
