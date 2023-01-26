@@ -10,7 +10,7 @@ export const state = () => ({
   data: {},
   doShowNavDrawer: false,
   navDrawerItems: [],
-  navDrawerTitle: 'Placeholder Title'
+  navDrawerTitle: 'Placeholder Title',
 })
 
 // Keys that will not be considered as properties or references to other data objects
@@ -239,6 +239,11 @@ export const getters = {
       // Relabel the techniques found
       results[subtechniqueKey] = results['technique']
       delete results['technique']
+    }
+
+    // Adding ATT&CK object to relatedObjects for DataSidebar rendering
+    if ('ATT&CK-reference' in argObj) {
+      results['ATT&CK-reference'] = argObj['ATT&CK-reference']
     }
 
     return results

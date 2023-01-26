@@ -181,7 +181,6 @@ export default {
     title () {
       return this.$store.state.navDrawerTitle
     },
-    ...mapGetters(['getDataObjectById']),
     currentTechniqueRouteID () {
       return this.$route.path
         .split('/')

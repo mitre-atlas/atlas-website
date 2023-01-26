@@ -82,9 +82,16 @@
   width: 1%;
   vertical-align: top;
 }
+.attack-and {
+  color: red;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: super;
+}
 .matrix.side .tactic.name, .matrix.side .tactic.count {
   text-align: center;
   font-size: 16px;
+  /* white-space: nowrap; */
 }
 .matrix.side .tactic.name {
   font-weight: bold;
@@ -249,7 +256,7 @@
 .matrix .technique-cell {
   height: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   font-size: 13px;
   line-height: 14px;
   outline: 1px solid transparent;

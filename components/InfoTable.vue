@@ -42,6 +42,13 @@
       hide-default-footer
       disable-pagination
     >
+      <template #[`header.name`]="{ header }">
+        <span>
+          {{ header.text }}
+          <!-- Display an info tooltip for ATT&CK-adapted objects -->
+          <attack-icon-tooltip :items="tableItems" />
+        </span>
+      </template>
       <template #[`item.id`]="{ item }">
         <nuxt-link :id="item.id" :to="item.route">
           <span v-if="'subtechnique-of' in item">
@@ -57,6 +64,7 @@
         <nuxt-link :to="item.route">
           {{ item.name }}
         </nuxt-link>
+        <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
       </template>
       <template #[`item.description`]="{ item }">
         <div
@@ -73,8 +81,10 @@
 </template>
 
 <script>
+import AttackIconTooltip from './AttackIconTooltip.vue'
 export default {
   name: 'InfoTable',
+  components: { AttackIconTooltip },
   props: ['items', 'isCaseStudy'],
   data () {
     return {

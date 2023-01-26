@@ -12,8 +12,16 @@
             <nuxt-link
               :to="`/tactics/${tactic.id}`"
             >
-              {{ tactic.name }}
+              {{ tactic.name.substr(0, (tactic.name.length - tacticLastWord(tactic.name).length)) }}
             </nuxt-link>
+            <div style="white-space: nowrap;">
+              <nuxt-link
+                :to="`/tactics/${tactic.id}`"
+              >
+                {{ tacticLastWord(tactic.name) }}
+              </nuxt-link>
+              <span v-if="'ATT&CK-reference' in tactic" class="attack-and">&</span>
+            </div>
           </td>
         </tr>
         <tr>
@@ -46,9 +54,17 @@
 </template>
 
 <script>
+import { lastWord } from '~/assets/tools.js'
 export default {
   name: 'MatrixAttackStyle',
-  props: ['tactics']
+  props: ['tactics'],
+  data () {
+    return {
+      tacticLastWord (tactic) {
+        return lastWord(tactic)
+      }
+    }
+  }
 }
 </script>
 

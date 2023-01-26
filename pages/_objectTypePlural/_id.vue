@@ -32,12 +32,12 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
+  layout: 'side-nav',
   data: ({ $config: { name }, $route: { params } }) => ({
     mitreTitle: name.mitre,
     objectTypePlural: params.objectTypePlural,
     id: params.id
   }),
-  layout: 'side-nav',
   head () {
     return {
       title: `${this.title} | ${this.mitreTitle}`
