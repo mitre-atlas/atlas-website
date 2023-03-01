@@ -1,5 +1,13 @@
 # ATLAS Website Changelog
 
+## [3.4.0]() (2023-03-01)
+
+#### Website
+- Minor fixes
+
+#### Data
+- Updated ATLAS data to version 4.3.0
+
 ## [3.3.0]() (2023-01-19)
 
 #### Website

@@ -70,4 +70,9 @@ export default {
     color: inherit !important;
   }
 
+  /* Add bottom margin to bullet points in descriptions */
+  .v-timeline-item__body .v-card__text >>> ul {
+    margin-bottom: 16px;
+  }
+
 </style>
