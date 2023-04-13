@@ -117,9 +117,43 @@ data:
     url: https://www.wicys.org/events/wicys-2023/
     color: light-green
   - name: RSA
-    date: 2023-04-27
+    date: 2023-04-24
     location: San Francisco, CA
-    description: |
-      In the cybersecurity industry, no one goes it alone. Instead, we build on each other's diverse knowledge to create the next breakthrough—exchanging ideas, sharing our success stories, and bravely examining our failures. RSA Conference 2023: April 24 - 27.
-    url: https://www.rsaconference.com/usa
+    description: >
+      Join MITRE ATLAS' Dr. Christina Liaghati at RSA at a panel session on "Hardening AI/ML Systems - The Next Frontier of Cybersecurity" on April 24th.
+
+
+      As industries increasingly depend on AI/ML-enabled systems, they also introduce new attack surfaces and vulnerabilities. Failure to adequately harden AI/ML to adversarial machine learning attacks will inevitably lead to disruptions and destruction to networks and cyber-physical infrastructure. This panel will explore the importance of integrating resilience and assurance into AI/ML capabilities.
+    url: https://www.rsaconference.com/usa/agenda/session/Hardening%20AIML%20Systems%20-%20The%20Next%20Frontier%20of%20Cybersecurity
     color: red
+  - name: Days of Shecurity
+    date: 2023-05-19
+    location: San Francisco, CA & Virtual
+    description: Days of Shecurity is a free-to-attend interactive conference for women in technology interested in cybersecurity. Join two of MITRE's AI researchers for their session "Introduction to AI Red Teaming" on May 19th in San Francisco.
+    url: https://www.dayofshecurity.com/may-2023
+    color: purple
+  - name: Black Hat
+    date: 2023-08-09
+    location: Las Vegas, NV & Virtual
+    description: >
+      Now in its 26th year, Black Hat USA returns to the Mandalay Bay Convention Center in Las Vegas with a 6-day program.
+      The event will open with four days of specialized cybersecurity trainings (August 5-10), with courses for all skill levels.
+      The two-day main conference (August 9-10) will feature more than 100 selected briefings, dozens of open-source tool demos,
+      networking and social events, and much more.
+    url: https://www.blackhat.com/us-23/
+    color: grey
+  - name: AFCEA DC Tech Summit
+    date: 2023-04-11
+    location: Washington, DC
+    description: >
+      Join MITRE ATLAS' Dr. Christina Liaghati at AFCEA DC for their annual event, which is expected
+      to convene 250-300 senior-level government and IT professionals (e.g. SES, Flag Officers, Directors, CIOs, C-level executives, Program and Project Managers). Dr. Liaghati will be speaking on the panel "The AI Advantage" with representatives from the U.S. Army and Department of Defense."
+    url: https://afceadc.swoogo.com/techsummit23
+    color: green
+  - name: GRF AI Summit
+    date: 2023-06-07
+    location: Washington, DC
+    description: >
+      From June 8-10, The Global Resilience Federation (GRF) Summit on AI Security & Trust will address concerns across sectors with content tailored for executives such as CIOs, CISOs and AI/ML experts to engage on effective approaches for managing security and trust in Artificial Intelligence and Machine Learning models.
+    url: https://www.grf.org/ai-security-2023
+    color: indigo
