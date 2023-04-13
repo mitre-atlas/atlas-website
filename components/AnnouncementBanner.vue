@@ -8,7 +8,7 @@
     <v-icon slot="icon" color="info">
       mdi-security
     </v-icon>
-    ATLAS mitigations are
+    Draft of ATLAS mitigations are
     <nuxt-link to="/mitigations">
       now available
     </nuxt-link>

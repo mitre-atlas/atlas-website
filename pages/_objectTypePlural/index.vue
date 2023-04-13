@@ -30,7 +30,7 @@
             mdi-comment-alert-outline
           </v-icon>
 
-          This initial set of mitigations are defined based on current ATLAS case studies.
+          This draft of mitigations are defined based on current ATLAS case studies.
           <br>
           Feedback and contributions are welcome - please join the <a href="https://mitreatlas.slack.com/archives/C050WG4PNES">#mitigations channel on Slack</a>.
         </v-banner>
