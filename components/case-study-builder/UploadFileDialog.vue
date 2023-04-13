@@ -40,14 +40,6 @@
             {{ initialFileName }}
           </template>
         </v-file-input>
-        <v-alert
-          v-if="schemaOutdated"
-          dense
-          text
-          type="warning"
-        >
-          Case study schema version is either not up to date or found in file. As a result, some data may not be transferrable. (Current Version: <strong>{{ $config.study_schema_version }}</strong>)
-        </v-alert>
       </v-card-text>
 
       <v-card-actions>
@@ -73,25 +65,60 @@
 </template>
 <script>
 import { CORE_SCHEMA, load } from 'js-yaml'
-import { generateID, validFormatYAML, isSchemaOutdated } from '~/assets/tools.js'
+import { generateID, validFormatYAML } from '~/assets/tools.js'
 
+/**
+ * Dialog for selecting a case study YAML to upload.
+ * Validates and passes back the uploaded data and filename.
+ */
 export default {
   name: 'UploadFileDialog',
   props: [
+    /**
+     * Whether to open this dialog
+     * @type {Boolean}
+     */
     'doShow'
   ],
   data () {
     return {
+      /**
+       * Whether to open this dialog
+       * @type {Boolean}
+       */
       show: this.doShow,
+      /**
+       * File selected in file input
+       * @type {File}
+       */
       chosenFile: null,
+      /**
+       * Filename of the uploaded file, without the file extension
+       * @type {String}
+       */
       initialFileName: null,
+      /**
+       * Whether there is a file validation error
+       * @type {Boolean}
+       */
       hasError: false,
+      /**
+       * Any file upload error messages
+       * @type {String[]}
+       */
       errorMessages: [],
-      loadedData: {},
-      schemaOutdated: false
+      /**
+       * Case study data as read from the uploaded YAML file
+       * @type {Object}
+       */
+      loadedData: {}
     }
   },
   methods: {
+    /**
+     * Calls `validateFile` asynchronously
+     * @param {File} file
+     */
     async validateFileAsync (file) {
       // Change event can occur on load/click, also clear
       // Only validate on load/click
@@ -99,19 +126,19 @@ export default {
         this.hasError = !await this.validateFile(file)
       }
     },
+    // Clear file input, reset error states
     clear () {
-      // Clear file input, reset error states
       this.hasError = false
       this.errorMessages = []
-      this.schemaOutdated = false
     },
+    // Loads the uploaded file and closes the dialog
     loadDataFromFile () {
       this.loadYaml()
       // Close dialog
       this.show = false
-      this.schemaOutdated = false
       this.chosenFile = null
     },
+    // Loads the uploaded file
     loadYaml () {
       if (this.chosenFile) {
         const reader = new FileReader()
@@ -119,13 +146,19 @@ export default {
         reader.onload = () => { this.loadData(reader.result) }
       }
     },
+    // Resets data
     cancel () {
       this.show = false
       this.chosenFile = null
-      this.hasError = false
-      this.errorMessages = []
-      this.schemaOutdated = false
+      this.clear()
     },
+    /**
+     * Ensures that the uploaded file has expected file properties,
+     * then loads the content, validates the content, and collects
+     * error messages, if any
+     * @todo Reuse the loaded content if possible
+     * @param {File} file
+     */
     async validateFile (file) {
       const expectedTypes = ['.yaml']
 
@@ -180,16 +213,24 @@ export default {
           }
         } catch (yamlErr) {
           addError(yamlErr.reason)
-          // addError('Invalid YAML syntax.')
         }
       }
       this.errorMessages = errors
       return isValid
     },
+    /**
+     * Parses the file contents into a case study data object
+     * @param {String} data
+     */
     loadData (data) {
       this.loadedData = load(data)
-
+      /**
+       * @arg {object} loadedData - Case study data object
+       */
       this.$emit('loaded-data', this.loadedData)
+      /**
+       * @arg {String} initialFileName - Name of the uploaded file
+       */
       this.$emit('loaded-filename', this.initialFileName)
     }
   }

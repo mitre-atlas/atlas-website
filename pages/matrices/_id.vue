@@ -2,12 +2,17 @@
   <div>
     <page-title>{{ title }}</page-title>
 
-    <p>
-      The {{ matrixId }} Matrix ({{ getMatricesName }}) below shows the progression of tactics used in attacks as columns from left to right,
-      with ML techniques belonging to each tactic below.
-      <span v-if="populatedTactics.some((o) => 'ATT&CK-reference' in o)"><span class="attack-and">&</span>&nbsp;indicates an adaptation from ATT&CK.</span>
+    <p class="tw-prose tw-max-w-none">
+      The {{ matrixId }} Matrix ({{ getMatricesName }}) below shows the
+      progression of tactics used in attacks as columns from left to right, with
+      ML techniques belonging to each tactic below.
+      <span
+        v-if="populatedTactics.some(o => 'ATT&CK-reference' in o)"
+      ><span class="attack-and">&</span>&nbsp;indicates an adaptation from
+        ATT&CK.</span>
       Click on links to learn more about each item, or view
-      {{ matrixId }} tactics and techniques using the links at the top navigation bar.
+      {{ matrixId }} tactics and techniques using the links at the top
+      navigation bar.
     </p>
     <v-row class="mt-10">
       <matrix-attack-style :tactics="populatedTactics" />
@@ -17,9 +22,17 @@
 
 <script>
 import { mapMutations } from 'vuex'
-
+/**
+ * @name matrices/_id
+ *
+ * Matrices template
+ */
 export default {
   layout: 'side-nav',
+  validate ({ params, store }) {
+    // Ensure that ID is valid
+    return store.getters.getMatrixIds.includes(params.id)
+  },
   data: ({ $config: { name }, $route: { params } }) => ({
     matrixId: params.id,
     title: `${params.id} Matrix`,
@@ -35,10 +48,14 @@ export default {
       return this.$store.state.data.matrices
     },
     getMatricesName () {
+      // If there's no matrix id, return none
       if (!this.matrixId) {
         return 'None'
       }
-      const matrix = this.$store.state.data.matrices.find(({ id }) => id === this.matrixId)
+      // Match matrices id with matrixId from data() and return matching matrix name
+      const matrix = this.$store.state.data.matrices.find(
+        ({ id }) => id === this.matrixId
+      )
       return matrix.name ?? 'None'
     },
     populatedTactics () {

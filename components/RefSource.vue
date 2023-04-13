@@ -26,16 +26,29 @@
 </template>
 <script>
 import { openNewTab } from '~/assets/tools.js'
-
+/**
+ * Render source with supplied title and url.
+ */
 export default {
   name: 'RefSource',
   props: [
+    /**
+     * Information about a source
+     * @type {Object}
+     */
     'source'
   ],
   data: () => ({
+    /**
+     * Value to decide if a source description is long
+     * @type {int}
+     */
     charactersThreshold: 300
   }),
   methods: {
+    /**
+     * Calls tools.js function to open url in a new tab.
+     */
     openNewTab
   }
 }

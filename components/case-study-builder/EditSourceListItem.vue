@@ -1,4 +1,3 @@
-<!-- Editable source item with edit and delete buttons -->
 <template>
   <v-list-item>
     <v-card-actions>
@@ -8,6 +7,7 @@
       <ref-source :source="source" />
     </v-list-item-content>
     <v-card-actions>
+      <!-- Emits true on edit button click -->
       <v-btn color="blue" icon @click="$emit('edit-source', true)">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
@@ -38,16 +38,38 @@
   </v-list-item>
 </template>
 <script>
+/**
+ * Editable source item with edit and delete buttons
+ */
 export default {
   name: 'EditSourceListItem',
   props: [
+    /**
+     * Case study source object
+     * ```
+     * {
+     *    title: str,
+     *    url: str
+     * }
+     * ```
+     * @type {Object}
+     */
     'source',
+    /**
+     * Index of this source object in the list of sources
+     * @type {Number}
+     */
     'index'
   ],
   data: () => ({
+    // Controls whether the delete confirmation dialog is open
     dialog: false
   }),
   computed: {
+    /**
+     * Number of this source object in the list (1-indexed)
+     * @type {Number}
+     */
     number () {
       return this.index + 1
     }
@@ -56,7 +78,7 @@ export default {
     deleteSource () {
       // Close the dialog
       this.dialog = false
-      // Emit the delete
+      // Emit on delete button click
       this.$emit('delete')
     }
   }

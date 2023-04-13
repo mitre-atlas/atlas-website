@@ -27,14 +27,17 @@
   </v-tooltip>
 </template>
 <script>
+/**
+ * Tooltip with a legend for procedure step card icons
+ */
 export default {
   name: 'ProcedureLegend',
-  props: [
-    'doShow'
-  ],
   data () {
     return {
-      show: this.doShow,
+      /**
+       * Legend items - icon, value (usage instructions), and color
+       * @type {object[]}
+       */
       objects: [
         {
           icon: 'mdi-arrow-up-down',

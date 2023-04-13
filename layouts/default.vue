@@ -4,6 +4,7 @@
       <Header />
 
       <v-main>
+        <announcement-banner />
         <v-container>
           <breadcrumbs />
           <Nuxt />
@@ -16,7 +17,5 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>

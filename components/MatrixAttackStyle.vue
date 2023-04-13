@@ -55,14 +55,21 @@
 
 <script>
 import { lastWord } from '~/assets/tools.js'
+/**
+ * Attack style matrix that contains the ATLAS data. This matrix appears on the home page and the matrices page.
+ */
 export default {
   name: 'MatrixAttackStyle',
-  props: ['tactics'],
-  data () {
-    return {
-      tacticLastWord (tactic) {
-        return lastWord(tactic)
-      }
+  props: [
+    /**
+     * List of tactics to create columns for the matrix
+     * @type {Object}
+     */
+    'tactics'
+  ],
+  methods: {
+    tacticLastWord (tactic) {
+      return lastWord(tactic)
     }
   }
 }

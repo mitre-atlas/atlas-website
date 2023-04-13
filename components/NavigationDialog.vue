@@ -26,12 +26,18 @@
   </v-card>
 </template>
 <script>
+/**
+ * Dialog that opens before navigating away from the case study builder.
+ */
 export default {
   name: 'NavigationDialog',
   props: {
     value: Boolean
   },
   watch: {
+    /**
+     * Watches to see if the dialog is showing or not
+     */
     value (val) {
       if (val) {
         this.$refs.dialog.show()

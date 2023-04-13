@@ -18,10 +18,18 @@ pages:
   script:
     # Configure to set Navigator URL, etc.
     - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
+    # Increase available heap space for npm run generate
+    - export NODE_OPTIONS="--max_old_space_size=8192"
     # Generate static files
     - npm run generate
     # Make static files available to GitLab Pages
     - mv dist public
+    # Install Vuepress
+    - npm run install-docs
+    # Build documentation
+    - npm run docs:build
+    # Make static documentation files available to Gitlab Pages
+    - mv public_docs public/docs
   artifacts:
     paths:
       - public
@@ -30,14 +38,14 @@ pages:
   only:
     - develop
 
-ui-tests:
-  stage: deploy
-  needs: [pages]
-  image: mcr.microsoft.com/playwright:v1.25.0-focal
-  script:
-    # Install browsers
-    - npx playwright install
-    # Test the built site
-    - URL=https://advml.pages.mitre.org/ npx playwright test
-  only:
-    - develop
+# ui-tests:
+#   stage: deploy
+#   needs: [pages]
+#   image: mcr.microsoft.com/playwright:v1.25.0-focal
+#   script:
+#     # Install browsers
+#     - npx playwright install
+#     # Test the built site
+#     - URL=https://advml.pages.mitre.org/ npx playwright test
+#   only:
+#     - develop

@@ -19,6 +19,12 @@
 <script>
 export default {
   name: 'AttackIconTooltip',
-  props: ['items']
+  props: [
+    /**
+     * List of data objects
+     * @type {Object[]}
+     */
+    'items'
+  ]
 }
 </script>

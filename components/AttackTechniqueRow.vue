@@ -47,13 +47,30 @@
 </template>
 
 <script>
+/**
+ * Renders technique and subtechnique information on the ATLAS matrix
+ */
 export default {
   name: 'AttackTechniqueRow',
-  props: ['technique'],
+  props: [
+    /**
+     * A list of techniques and their subtechniques to render on the matrix
+     * @type {Object}
+     */
+    'technique'
+  ],
   data: () => ({
+    /**
+     * Determines whether subtechnique drawer is open
+     * @type {Boolean}
+     */
     doShowSubtechniques: false
   }),
   computed: {
+    /**
+     * Opens and closes subtechnique drawers
+     * @returns {string}
+     */
     toggleShow () {
       if (this.doShowSubtechniques) {
         return 'expanded'

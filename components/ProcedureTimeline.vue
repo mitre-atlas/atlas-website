@@ -14,6 +14,9 @@
 </template>
 
 <script>
+/**
+ * A timeline of procedure steps that describe a case study.
+ */
 export default {
   name: 'ProcedureTimeline',
   props: ['study']

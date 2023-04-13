@@ -19,7 +19,7 @@
               outlined
               clearable
               auto-grow
-              @input="updateFileName(setFileName)"
+              @input="$emit('updateFileName', setFileName)"
             />
           </div>
         </v-col>
@@ -27,7 +27,7 @@
           <download-powerpoint
             ref="formatPpt"
             :study="caseStudyData.study"
-            :builder="builder"
+            :builder="true"
             @updateCheckbox="updateCheckbox"
           />
         </v-col>
@@ -44,7 +44,7 @@
             class="mb-2"
             block
             v-on="on"
-            @click="submitForm"
+            @click="$emit('submitForm')"
           >
             <v-icon left>
               mdi-download
@@ -74,24 +74,78 @@
 </template>
 
 <script>
+/**
+ * Download section of case study builder with button, filename input,
+ * status and post-download options
+ */
 export default {
   name: 'DownloadCaseStudy',
   props: [
+    /**
+     * Error status object
+     * ```
+     * {
+     *    type: str,
+     *    color: str,
+     *    message: str
+     * }
+     * ```
+     * @type {Object}
+     */
     'status',
+    /**
+     * Inputted filename for the downloaded YAML file
+     * @type {String}
+     */
     'fileName',
+    /**
+     * Validation rules for the filename text input
+     * @type {function[]}
+     */
     'initialRules',
+    /**
+     * Case study data object from the builder
+     * @type {Object}
+     */
     'studyData',
-    'isFormValid',
-    'builder'
+    /**
+     * Whether the main builder form is valid
+     * @type {Boolean}
+     */
+    'isFormValid'
   ],
   data () {
     return {
+      /**
+       * Error status object
+       * ```
+       * {
+       *    type: str,
+       *    color: str,
+       *    message: str
+       * }
+       * ```
+       * @type {Object}
+       */
       errorStatus: this.status,
+      /**
+       * Inputted filename for the downloaded YAML file
+       * @type {String}
+       */
       setFileName: this.fileName,
+      /**
+       * Validation rules for the filename text input
+       * @type {function[]}
+       */
       rules: this.initialRules,
+      /**
+       * Case study data object from the builder
+       * @type {Object}
+       */
       caseStudyData: this.studyData,
-      isStudyFormValid: this.isFormValid,
-      isBuilder: this.builder,
+      /**
+       * Whether to additionally download a PowerPoint
+       */
       makePpt: false
     }
   },
@@ -109,23 +163,15 @@ export default {
       handler (newVal, oldVal) {
         this.rules = newVal
       }
-    },
-    studyData: {
-      immediate: true,
-      handler (newYaml, oldYaml) {
-        this.caseStudyData = newYaml
-      }
     }
   },
   methods: {
-    updateFileName (name) {
-      this.$emit('updateFileName', name)
-    },
-    submitForm () {
-      this.$emit('submitForm')
-    },
+    // Sets and emits makePpt
     updateCheckbox (newVal) {
       this.makePpt = newVal
+      /**
+       * Bubbles up the makePpt event from the DownloadPowerpoint component
+       */
       this.$emit('makePpt', this.makePpt)
     }
   }

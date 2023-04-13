@@ -34,18 +34,47 @@
 import Pptxgen from 'pptxgenjs'
 import { MITRE_ATLAS_TM_LOGO } from '../assets/base64_atlas_logo'
 import { formatCaseStudyIncidentDate } from '~/assets/tools.js'
-
+/**
+ * Download a case study as a powerpoint.
+ */
 export default {
   name: 'DownloadPowerpoint',
-  props: ['study', 'builder'],
+  props: [
+    /**
+     * Case study to be downloaded.
+     * @type {Object}
+     */
+    'study',
+    /**
+     * Tells us if we are on a study page or in the case study builder.
+     * @type {Boolean}
+     */
+    'builder'
+  ],
   data () {
     return {
+      /**
+       * Case study to be downloaded from prop study.
+       * @type {Object}
+       */
       studyYaml: this.study,
+      /**
+     * Tells us if we are on a study page or in the case study builder,
+     * from builder prop.
+     * @type {Boolean}
+     */
       isBuilder: this.builder,
+      /**
+       * Is the checkbox for downloading checked?
+       * @type {String}
+       */
       pptCheckbox: ''
     }
   },
   watch: { // TODO: Ensure that this component watches the state of the yaml file to update itself if the yaml changes
+    /**
+     * Watch to see if the study to download has been changed.
+     */
     study: {
       immediate: true,
       handler (newYaml, oldYaml) {
@@ -54,9 +83,17 @@ export default {
     }
   },
   methods: {
+    /**
+     * Updates whether the checkbox to download the study is checked.
+     * Emits to the case study builder.
+     */
     changeCheckbox () {
       this.$emit('updateCheckbox', this.pptCheckbox)
     },
+    /**
+     * Makes powerpoint using the study information.
+     * @param {String} filename
+     */
     makePPT (filename) {
       const ppt = new Pptxgen()
       ppt.layout = 'LAYOUT_16x9'
@@ -123,6 +160,11 @@ export default {
 
       ppt.writeFile({ fileName: `${filename}.pptx` })
     },
+    /**
+     * Builds the title slide using the yaml
+     * @param {Pptxgen} ppt
+     * @param {Object} yaml
+     */
     titleSlide (ppt, yaml) {
       let textLabel = 'ATLAS Case Study'
       if (yaml['case-study-type']) {
@@ -259,6 +301,11 @@ export default {
         )
         .addText(formattedDate, { placeholder: 'incidentDate' })
     },
+    /**
+     * Adds a summary slide using the yaml
+     * @param {Pptxgen} ppt
+     * @param {Object} yaml
+     */
     detailSlide (ppt, yaml) {
       ppt.defineSlideMaster({
         title: 'Summary',
@@ -332,13 +379,29 @@ export default {
         .addText('Summary', { placeholder: 'title' })
         .addText(yaml.summary, { placeholder: 'content' })
     },
+    /**
+     * Gets the url from from some object type
+     * @param {Object} infoObject
+     * @returns {String}
+     */
     getUrlFromInfoObject (infoObject) {
       const baseUrl = window.location.origin
       return `${baseUrl}/${infoObject['object-type']}s/${infoObject.id}`
     },
+    /**
+     * Links text to a given url
+     * @param {String} text
+     * @param {String} url
+     * @returns {Object}
+     */
     linkText (text, url) {
       return { text, options: { hyperlink: { url }, fontFace: 'Arial', fontSize: 10 } }
     },
+    /**
+     * Builds procedure slides using the yaml
+     * @param {Pptxgen} ppt
+     * @param {Object} yaml
+     */
     procedureSlide (ppt, yaml) {
       const rows = [
         [
@@ -453,6 +516,11 @@ export default {
         margin: 10
       })
     },
+    /**
+     * Builds the reference slides using the yaml
+     * @param {Pptxgen} ppt
+     * @param {Object} yaml
+     */
     referenceSlide (ppt, yaml) {
       const slide = ppt.addSlide({ masterName: 'Content' })
         .addText('References', { placeholder: 'title' })

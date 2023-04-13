@@ -18,7 +18,7 @@
           v-model="studyType"
           :prepend-icon="studyFields.case_study_type.icon"
           :rules="studyRules"
-          @change="studyTypeChange(studyType)"
+          @change="$emit('studyTypeUpdate', studyType)"
         >
           <template #label>
             Select case study type
@@ -30,7 +30,7 @@
               Required
             </span>
             <div
-              v-for="t in caseStudyTypes"
+              v-for="t in studyFields['case_study_type'].options"
               :id="t.name"
               :key="t"
               class="button-tooltip-container"
@@ -70,26 +70,66 @@
 </template>
 
 <script>
+/**
+ * Input card for case study type in the case study builder
+ */
 export default {
   name: 'CaseStudyType',
   props: [
+    /**
+     * Case study type, currently "exercise" or "incident"
+     * @type {String}
+     */
     'caseStudyType',
+    /**
+     * Validation rules for case study type
+     * @type {function[]}
+     */
     'rules',
+    /**
+     * Whether a download has been attempted on the case study builder page
+     * @type {Boolean}
+     */
     'hasSubmissionBeenAttempted',
-    'studyTypes',
+    /**
+     * Case study builder field names, descriptions, and icons
+     * as defined in `case-study-legend.yaml`
+     * @type {object}
+     */
     'fields'
   ],
   data () {
     return {
+      /**
+       * Validation rules for case study type
+       * @type {function[]}
+       */
       studyRules: this.rules,
-      caseStudyTypes: this.studyTypes,
+      /**
+       * Case study builder field names, descriptions, and icons
+       * as defined in `case-study-legend.yaml`
+       * @type {object}
+       */
       studyFields: this.fields,
+      /**
+       * Case study type, currently "exercise" or "incident"
+       * @type {String}
+       */
       studyType: this.caseStudyType,
-      submissionBool: this.hasSubmissionBeenAttempted,
+      /**
+       * Validation rule for "required", or non-empty input
+       * @todo Remove this in favor of better validation logic in computed property
+       * @type {function}
+       */
       caseStudyTypeRule: v => !!v
     }
   },
   computed: {
+    /**
+     * Ensures that the provided case study type value is not empty,
+     * alternatively that a submission has not yet been attempted
+     * @todo Update logic and determine need for second clause
+     */
     isStudyTypeValid () {
       return (
         this.caseStudyTypeRule(this.studyType) ||
@@ -103,11 +143,6 @@ export default {
       handler (newVal, oldVal) {
         this.studyType = newVal
       }
-    }
-  },
-  methods: {
-    studyTypeChange (selectStudyType) {
-      this.$emit('studyTypeUpdate', selectStudyType)
     }
   }
 }

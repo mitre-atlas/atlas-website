@@ -6,29 +6,29 @@ import {
   dataObjectToRoute
 } from '@/assets/dataHelpers.js'
 
-export const state = () => ({
-  data: {},
-  doShowNavDrawer: false,
-  navDrawerItems: [],
-  navDrawerTitle: 'Placeholder Title',
-})
+/**
+ * Keys that will not be considered as properties or references to other data objects
+ * @type {string[]}
+ */
+const DEFAULT_DATA_OBJECT_KEYS = ['id', 'object-type', 'name', 'description']
 
-// Keys that will not be considered as properties or references to other data objects
-const DEFAULT_DATA_OBJECT_KEYS = [
-  'id',
-  'object-type',
-  'name',
-  'description'
-]
+/**
+ * Keys added as part of the nuxtServerInit ingest for website use.
+ * To be stripped from objects before export.
+ * @type {string[]}
+ */
+export const EXTRA_ADDED_WEBSITE_KEYS = ['route', 'label', 'columnNames']
 
-export const EXTRA_ADDED_WEBSITE_KEYS = [
-  'route',
-  'label'
-]
-
+/**
+ * Creates a deep copy of the provided data object, limited to defined keys.
+ * Used to provide a reference object for linking
+ *
+ * @param {Object} obj
+ * @param {string[]} extraKeys
+ * @returns {Object} Copied data object
+ * @private
+ */
 const deepCopyDefault = (obj, extraKeys) => {
-  // Creates a deep copy of the provided data object, limited to defined keys
-  // Used to provide a reference object for linking
   let keysToKeep = DEFAULT_DATA_OBJECT_KEYS + EXTRA_ADDED_WEBSITE_KEYS
   if (typeof extraKeys !== 'undefined') {
     // Add specified keys if present
@@ -37,12 +37,71 @@ const deepCopyDefault = (obj, extraKeys) => {
   return JSON.parse(JSON.stringify(obj, keysToKeep))
 }
 
+/**
+ * Root store's state
+ */
+export const state = () => ({
+  /**
+   * ATLAS Data as read from ATLAS.yaml
+   * @type {Object}
+   * @alias state: data
+   */
+  data: {},
+  /**
+   * Whether to show the navigation drawer on pages
+   * @type {boolean}
+   * @alias state: doShowNavDrawer
+   */
+  doShowNavDrawer: false,
+  /**
+   * Items that populate the navigation drawer
+   * @type {object|object[]} items - An object { title: string, data: data objects } specifying the navigation drawer title, or an array of data objects whose title is inferred from the type
+   * @alias state: navDrawerItems
+   */
+  navDrawerItems: [],
+  /**
+   * Title for the navigation drawer
+   * @type {String}
+   * @alias state: navDrawerTitle
+   */
+  navDrawerTitle: 'Placeholder Title',
+  /**
+   * Whether to show the annoucement banner on pages
+   */
+  doShowAnnoucementBanner: true,
+  /**
+   * Accepted values for the _objectTypePlural route
+   */
+  objectTypePluralValues: []
+})
+
+/**
+ * Root store's getters
+ */
 export const getters = {
+  /**
+   * Retrieves the ATLAS Data value for the specified key
+   * @alias mapGetters: getDataAttribute
+   */
   getDataAttribute: state => key => state.data[key],
 
-  // Get a single array of all objects
+  /**
+   * Get a single array of all objects
+   * @returns {object[]}
+   */
   getDataObjects: state => state.data.allDataObjects,
 
+  /**
+   * Returns data objects under the provided object type, either as an object of { matrixId: [objs] }
+   * for ex. tactic or technique index page use in filtering, or an array of data objects for ex.
+   * case study index page use.
+   *
+   * @param {String} objType - Value of the data object's `object-type` field
+   * @param {string} [matrixId] - Key for the matrix under the `matrices` ATLAS Data object
+   * @param {boolean} [returnObject] - Whether to return an object instead of an array
+   * @returns {object|object[]} Data objects matching the type
+   * @alias mapGetters: getDataObjectsByType
+   */
   getDataObjectsByType: state => (objType, matrixId, returnObject) => {
     // Returns a list of data objects under the provided object type
     // or an empty Array if not found
@@ -68,6 +127,16 @@ export const getters = {
     return content[matrixId] ?? []
   },
 
+  /**
+   * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
+   * that contain a specified key and value.
+   *
+   * @param {string} objType - Value of the data object's `object-type` field
+   * @param {string} key - Data object key field with which to match
+   * @param {string} value - Value of the data object key field with which to match
+   * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
+   * @returns {object[]} Array of data objects matching the parameters
+   */
   getDataObjectsByTypeKeyValue:
     (_, getters) => (objType, key, value, matrixId) => {
       // Retrieves a list of data objects
@@ -76,6 +145,17 @@ export const getters = {
       return objs.filter(obj => obj[key] === value)
     },
 
+  /**
+   * Retrieves an array of deep-copied data objects of a specific type, optionally that belong to a specific matrix,
+   * that contain a specified key and value.
+   * Used when the objects are to be further modified without changing the store data
+   *
+   * @param {string} objType - Value of the data object's `object-type` field
+   * @param {string} key - Data object key field with which to match
+   * @param {string} value - Value of the data object key field with which to match
+   * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
+   * @returns {object[]} Array of data objects matching the parameters
+   */
   getDataObjectsByTypeKeyValueDeepCopyDefault:
     (_, getters) => (objType, key, value, matrixId) => {
       // Retrieves a deep copy of a list of data objects, keeping only default data keys
@@ -90,6 +170,17 @@ export const getters = {
       return objs
     },
 
+  /**
+   * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
+   * that contain the specified value in the array under the given key.
+   *
+   * @param {string} objType - Value of the data object's `object-type` field
+   * @param {string} key - Data object key field with which to match
+   * @param {string} value - Value of the data object key field with which to match
+   * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
+   * @returns {object[]} Array of data objects matching the parameters
+   * @alias mapGetters: getDataObjectsByTypeKeyContainingValue
+   */
   getDataObjectsByTypeKeyContainingValue:
     (_, getters) => (objType, key, value, matrixId) => {
       // Retrieves a list of data objects
@@ -98,6 +189,13 @@ export const getters = {
       return objs.filter(obj => key in obj && obj[key].includes(value))
     },
 
+  /**
+   * Returns an object with key/object-type to array of objects referenced by this object.
+   * Re-keys specific items including "subtechnique-of" for title display purposes.
+   *
+   * @param {object} argObj - Data object
+   * @returns {object} Object of associated data objects
+   */
   getReferencedDataObjects: (_, getters) => argObj => {
     // Returns an object with key/object-type to array of objects referenced by this object
 
@@ -107,30 +205,63 @@ export const getters = {
       // from the matrix hierarchy building in nuxtServerInit, as the link already exists in the opposite direction
       if (
         (argObj['object-type'] === 'tactic' && value === 'techniques') ||
-        (argObj['object-type'] === 'technique' && value === 'subtechniques')
+        (argObj['object-type'] === 'technique' && value === 'subtechniques') ||
+        // A technique's tactics will be found by the referencing side
+        // Also to avoid rendering array of tactics as tags
+        (argObj['object-type'] === 'technique' && value === 'tactics')
       ) {
         return false
       }
       // Returns true if this key value should be considered a possible ID reference or property
-      return !(DEFAULT_DATA_OBJECT_KEYS + EXTRA_ADDED_WEBSITE_KEYS).includes(value)
+      return !(DEFAULT_DATA_OBJECT_KEYS + EXTRA_ADDED_WEBSITE_KEYS).includes(
+        value
+      )
     })
 
     // IDs of objects directly referenced by this page's object
     const referencedObjects = {}
     dataKeys.forEach(key => {
       const value = argObj[key]
-      if (Array.isArray(value)) {
-        referencedObjects[key] = value
-          .map(id => getters.getDataObjectByIdDeepCopyDefault(id))
+      // Note that array of data object IDs are handled by getDataObjectsReferencing
+      if (
+        Array.isArray(value) &&
+        typeof value[0] === 'object' &&
+        'id' in value[0]
+      ) {
+        // List of data objects for tabular format
+
+        // Pull out the list of field names other than 'id' to be column names
+        let columnNames = Object.keys(value[0])
+        columnNames = columnNames.filter(name => name !== 'id')
+
+        // Flatten into an array of data objects augmented with tabular data and column names
+        const objs = value
+          .map(v => {
+            // Get data object by ID
+            const obj = getters.getDataObjectByIdDeepCopyDefault(v['id'])
+            // Combine it with the tabular data
+            const augmentedObj = Object.assign(obj, v)
+            // Add the tabular data key names as column names
+            augmentedObj['columnNames'] = columnNames
+            return augmentedObj
+          })
           .flat()
+
+        // Assign to related objects
+        referencedObjects[key] = objs
       } else {
         // Single object referenced by ID
         const refObj = getters.getDataObjectByIdDeepCopyDefault(value)
         if (refObj) {
           // Create a single-element Array
           referencedObjects[key] = [refObj]
-        } else if (typeof value === 'string' && /[^\s]/.test(value)) {
-          // Add the key and value as-is, representing a declared property, if the value is a non-empty string and not just for website use
+        } else if (
+          // The value is a non-empty string, i.e. a declared property
+          (typeof value === 'string' && /[^\s]/.test(value)) ||
+          // The value is a string array, i.e. tags
+          (Array.isArray(value) && value.every(v => typeof v === 'string'))
+        ) {
+          // Add the key and value as-is
           referencedObjects[key] = value
         }
       }
@@ -154,10 +285,17 @@ export const getters = {
       // Remove the re-labeled key-value pair
       delete referencedObjects['subtechnique-of']
     }
-
     return referencedObjects
   },
 
+  /**
+   * Returns an object with key/object-type to array of deep-copied objects that reference this object.
+   * Re-keys specific items including "subtechniques" for title display purposes.
+   * Handles case studies separately.
+   *
+   * @param {object} argObj - Data object
+   * @returns {object} Object of associated data objects
+   */
   getDataObjectsReferencing: (state, getters) => argObj => {
     // Return an object with key/object-type to array of deep-copied objects that reference this object
 
@@ -165,7 +303,29 @@ export const getters = {
 
     // Find objects that reference this object's ID
     let objects = getters.getDataObjects.filter(obj => {
-      return obj.id !== id && Object.values(obj).flat().includes(id)
+      // Disregard the argObj itself
+      if (obj.id === id) {
+        return false
+      }
+      // Otherwise examine the object's values
+      // Can be primitives or arrays of objects
+      const objValues = Object.values(obj).flat()
+      // Take
+      const isRef = objValues.some(val => {
+        if (typeof val === 'string') {
+          // argObj ID is referenced directly or in a nested array
+          // ex. tactic ID in a technique's tactics array
+          return val === id
+        } else if (typeof val === 'object') {
+          // argObj ID is referenced in a nested object
+          // ex. procedure step technique, or a mitigation technique use id
+          return Object.values(val).includes(id)
+        } else {
+          // This is not a reference to an object ID
+          return false
+        }
+      })
+      return isRef
     })
     // Make a deep copy of each object, with only default keys, i.e. id, name, route for linking
     objects = objects.map(obj => deepCopyDefault(obj))
@@ -200,23 +360,6 @@ export const getters = {
       objects = objects.concat(subtechniques)
     }
 
-    // Look for case studies, if any, with the singular key in its procedure, i.e. technique or tactic
-    if (
-      'case-studies' in state.data.objects &&
-      (argObj['object-type'] === 'tactic' ||
-        argObj['object-type'] === 'technique')
-    ) {
-      let studies = getters.getDataObjectsByType('case-studies').filter(study =>
-        study.procedure
-          // singular key, i.e. technique vs. techniques
-          .some(step => step[argObj['object-type']] === id)
-      )
-      // Make a deep copy of the array
-      studies = JSON.parse(JSON.stringify(studies))
-
-      objects = objects.concat(studies)
-    }
-
     // Group by object type
     const results = objects.reduce((acc, obj) => {
       var objectType = obj['object-type']
@@ -236,8 +379,11 @@ export const getters = {
       ) {
         subtechniqueKey = 'other subtechniques'
       }
-      // Relabel the techniques found
-      results[subtechniqueKey] = results['technique']
+      // Relabel the techniques found, that aren't a parent technique
+      const subts = results['technique'].filter(t => 'subtechnique-of' in t)
+      if (subts.length) {
+        results[subtechniqueKey] = subts
+      }
       delete results['technique']
     }
 
@@ -249,19 +395,41 @@ export const getters = {
     return results
   },
 
+  /**
+   * Returns an object of key/object-type to array of data objects related to this object
+   * @returns {Object} Related data objects, keyed by display title or data object type
+   */
   getRelatedDataObjects: (_, getters) => argObj => {
     // Returns an object of key/object-type to array of data objects related to this object
-    return {
+    const relatedObjs = {
       ...getters.getReferencedDataObjects(argObj),
       ...getters.getDataObjectsReferencing(argObj)
     }
+    // Sort object keys in alphabetical order for display
+    return Object.keys(relatedObjs)
+      .sort()
+      .reduce((acc, key) => {
+        acc[key] = relatedObjs[key]
+        return acc
+      }, {})
   },
 
+  /**
+   * Retrieve a data object by ID
+   * @param {string} value - Data object ID
+   * @returns {object} Matching data object
+   * @alias mapGetters: getDataObjectById
+   */
   getDataObjectById: (_, getters) => value => {
     // Returns the data object with the corresponding ID
     return getters.getDataObjects.find(obj => obj['id'] === value)
   },
 
+  /**
+   * Retrieve a data object by ID, deep-copying the object with only default keys present
+   * @param {string} value - Data object ID
+   * @returns {object} Matching data object
+   */
   getDataObjectByIdDeepCopyDefault: (_, getters) => value => {
     // Returns a deep copy of the the data object with the corresponding ID, with only default data keys present
     let obj = getters.getDataObjectById(value)
@@ -272,23 +440,59 @@ export const getters = {
     return obj
   },
 
+  /**
+   * Retrieves the ID of the first matrix
+   * @returns {string} matrix ID
+   * @alias mapGetters: getFirstMatrixId
+   */
   getFirstMatrixId: state => {
     return state.data.matrices[0].id
   },
 
+  /**
+   * Retrieves an array of matrix IDs
+   * @returns {string[]} matrix IDs
+   */
   getMatrixIds: state => {
     return state.data.matrices.map(obj => obj.id)
   },
 
+  /**
+   * Retrieve a matrix object by ID
+   * @param {string} value - Matrix ID
+   * @returns {object} Matching matrix object containing keys to data object arrays
+   * @alias mapGetters: getMatrixByID
+   */
   getMatrixByID: state => value => {
     return state.data.matrices.find(obj => obj['id'] === value)
-  }
+  },
+  /**
+   * Retrieves whether the annoucement banner should be displayed
+   * @alias mapGetters: doShowAnnoucementBanner
+   */
+  doShowAnnoucementBanner: state => state.doShowAnnoucementBanner,
+  /**
+   * Retrieves the array of accepted _objectTypePlural values
+   */
+  getObjectTypePluralValues: state => state.objectTypePluralValues
 }
 
+/**
+ * Root store's mutations
+ */
 export const mutations = {
+  /**
+   * Sets the data as loaded in from file
+   * @param {object} payload - ATLAS.yaml data
+   */
   SET_ATLAS_DATA(state, payload) {
     state.data = { ...state.data, ...payload }
   },
+  /**
+   * Sets or toggles the visiblity of the navigation drawer
+   * @param {boolean} [status] - Whether the navigation drawer should be open. If omitted, toggles the state.
+   * @alias mapMutations: TOGGLE_NAV_DRAWER
+   */
   TOGGLE_NAV_DRAWER(state, status) {
     if (typeof status === 'undefined') {
       // Toggle state
@@ -298,6 +502,11 @@ export const mutations = {
       state.doShowNavDrawer = status
     }
   },
+  /**
+   * Sets the navigation drawer items
+   * @param {object|object[]} items - An object { title: string, data: data objects } specifying the navigation drawer title, or an array of data objects whose title is inferred from the type
+   * @alias mapMutations: SET_NAV_DRAWER_ITEMS
+   */
   SET_NAV_DRAWER_ITEMS(state, items) {
     if (Array.isArray(items) && items.length > 0 && 'object-type' in items[0]) {
       // Payload is an array of data objects
@@ -316,12 +525,33 @@ export const mutations = {
     } else {
       console.error('Unexpected payload for SET_NAV_DRAWER_ITEMS', items)
     }
+  },
+  /**
+   * Disables the visiblity of the annoucement banner
+   * @alias mapMutations: DISMISS_ANNOUCEMENT_BANNER
+   */
+  DISMISS_ANNOUCEMENT_BANNER(state) {
+    // Set visibility to false
+    state.doShowAnnoucementBanner = false
+  },
+  /**
+   * Sets the accepted _objectTypePlural values as parsed from the ATLAS.yaml file
+   * @param {string[]} payload
+   */
+  SET_OBJECT_TYPE_PLURAL_VALUES(state, payload) {
+    state.objectTypePluralValues = [...payload]
   }
 }
 
+/**
+ * Root store's actions
+ */
 export const actions = {
   // Note that this function is called for every dynamic route generated via nuxt generate
   // TODO Caching, also needs return or await
+  /**
+   * Loads in ATLAS.yaml data. Automatically called upon server start.
+   */
   async nuxtServerInit({ commit }, { store }) {
     // Retrieve the threat matrix YAML data and populate store upon start
     const getAtlasData = await fs.readFile(
@@ -346,7 +576,16 @@ export const actions = {
       allDataObjects.forEach(dataObj => {
         // Add a property for each data object's internal route
         dataObj.route = dataObjectToRoute(dataObj)
+        if (
+          'object-type' in dataObj &&
+          dataObj['object-type'] == 'case-study'
+        ) {
+          dataObj.columnNames = ['summary']
+        }
       })
+
+      // Pluralized last word of object-type values, which serve as route names
+      const objectTypePluralValues = new Set()
 
       // Build matrix-like structure under each data object type
       matrices.forEach((matrix, i) => {
@@ -418,6 +657,10 @@ export const actions = {
             objects[key] = {
               [id]: dataObjs
             }
+
+            // Add to the list of accepted _objectTypeValues
+            const objectTypePlural = dataObjectToPluralTitle(key, true)
+            objectTypePluralValues.add(objectTypePlural)
           }
 
           // Collect each matrix's objects for later operations
@@ -429,6 +672,12 @@ export const actions = {
           result.matrices[i]['route'] = `/matrices/${id}`
         }
       })
+
+      // Commit the array of accepted _objectTypePlural values
+      commit(
+        'SET_OBJECT_TYPE_PLURAL_VALUES',
+        Array.from(objectTypePluralValues)
+      )
 
       // Add all data objects to the store to facilitate finding by ID
       result.allDataObjects = allDataObjects

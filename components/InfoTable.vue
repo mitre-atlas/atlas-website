@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" class="pt-3 pb-3">
-      <v-col v-if="matrices.length !== 1 && !isCaseStudy" :cols="4">
+      <v-col v-if="matrices.length !== 1" :cols="4">
         <v-select
           v-model="filterMatrices"
           label="Filter by matrix"
@@ -28,10 +28,32 @@
       </v-col>
       <v-col>
         <v-text-field
+          v-if="includeSearch"
           v-model="search"
           append-icon="mdi-magnify"
           label="Search for keywords"
         />
+        <v-row v-else no-gutters>
+          <v-spacer />
+          <v-col sm="6">
+            <v-text-field
+              v-if="extendSearch"
+              v-model="search"
+              dense
+              label="Search for keywords"
+            />
+          </v-col>
+          <v-col sm="1">
+            <v-btn
+              text
+              :outlined="extendSearch === false ? true : false"
+              @click="toggleSearch"
+            >
+              <v-icon>mdi-magnify</v-icon>
+              Search
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
 
@@ -41,6 +63,7 @@
       :search="search"
       hide-default-footer
       disable-pagination
+      class="row-height"
     >
       <template #[`header.name`]="{ header }">
         <span>
@@ -52,8 +75,8 @@
       <template #[`item.id`]="{ item }">
         <nuxt-link :id="item.id" :to="item.route">
           <span v-if="'subtechnique-of' in item">
-            <!-- Display only last numeric portion of ID for subtechniques -->
-            {{ item.id.substring(item.id.lastIndexOf('.')) }}
+            <!-- Display full ID for subtechniques -->
+            {{ item.id }}
           </span>
           <span v-else>
             {{ item.id }}
@@ -62,17 +85,24 @@
       </template>
       <template #[`item.name`]="{ item }">
         <nuxt-link :to="item.route">
-          {{ item.name }}
+          <span v-if="'label' in item">{{ item.label }}</span>
+          <span v-else>
+            {{ item.name }}
+          </span>
         </nuxt-link>
         <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
       </template>
-      <template #[`item.description`]="{ item }">
+      <!-- Dynamically render all custom columns with Markdown -->
+      <template
+        v-for="colName in customTableCol"
+        #[`item.${colName}`]="{ item }"
+      >
         <div
-          v-if="isCaseStudy"
-          class="my-3"
-          v-html="$md.render(item.summary)"
+          :key="colName"
+          class="tw-prose max-w-none"
+          style="font-size: 0.875rem"
+          v-html="$md.render(item[colName])"
         />
-        <div v-else class="my-3" v-html="$md.render(item.description)" />
       </template>
     </v-data-table>
 
@@ -81,24 +111,54 @@
 </template>
 
 <script>
-import AttackIconTooltip from './AttackIconTooltip.vue'
+import { capitalize } from '~/assets/tools.js'
+
+/**
+ * Table containing an organized list of items of one object type.
+ * @see {pages/_objectTypePlural/index.vue} where InfoTable is used.
+ * @see {pages/studies/index.vue} where InfoTable is used.
+ */
 export default {
   name: 'InfoTable',
-  components: { AttackIconTooltip },
-  props: ['items', 'isCaseStudy'],
+  props: [
+    /**
+     * Object of items to be rendered in the info table
+     * @type {Object}
+     */
+    'items'
+  ],
   data () {
     return {
+      /**
+       * Text to filter on the info table.
+       * @type {String}
+       */
       search: '',
+      /**
+       * Array of matrices the user has selected to view and filter on.
+       * @type {Array}
+       */
       filterMatrices: [],
-      tableItems: this.initializeTableItems(this.items)
+      /**
+       * Items to be passed into the info table.
+       * @type {Object}
+       */
+      tableItems: this.initializeTableItems(this.items),
+      /**
+       * Whether to expand the search toolbar
+       * @type {Boolean}
+       */
+      extendSearch: false
     }
   },
   computed: {
+    /**
+     * Change the data table items based on matrix filters
+     * @returns {Object}
+     */
     filteredTableItems () {
-      // Change the data table items based on matrix filters
-
       // Pass through for non-matrix items, ex. case studies
-      if (this.isCaseStudy) {
+      if (Array.isArray(this.items)) {
         return this.tableItems
       }
       // Only include data objects with selected matrix IDs
@@ -107,24 +167,64 @@ export default {
       )
       return filteredItems
     },
+    /**
+     * Shows the search toolbar when the content is not mitigation's technique use
+     * @type {Boolean}
+     */
+    includeSearch () {
+      if (this.tableItems[0].columnNames) {
+        return this.tableItems[0].columnNames[0] !== 'use'
+      }
+      return true
+    },
+    /**
+     * Returns the array of column/field names to use in the table, which always has 'id' and 'name'.
+     * Defaults to 'description'.
+     * @type {String[]}
+     */
+    customTableCol () {
+      return 'columnNames' in this.tableItems[0]
+        ? this.tableItems[0].columnNames
+        : ['description']
+    },
+    /**
+     * Get all matrices in the data for the user to filter on
+     * @returns {Array}
+     */
     matrices () {
       return this.$store.getters.getMatrixIds
     },
+    /**
+     * The headers for the info table
+     * @returns {Object}
+     */
     headers () {
-      return [
-        {
-          value: 'id',
-          text: 'ID',
-          align: 'right',
-          width: '15%'
-        },
-        { value: 'name', text: 'Name', width: '25%' },
-        { value: 'description', text: 'Description', sortable: false }
+      const constantColumns = [
+        { value: 'id', text: 'ID', align: 'right', width: '15%' },
+        { value: 'name', text: 'Name', width: '25%' }
       ]
+      const col3 = this.customTableCol.map((columnName) => {
+        return {
+          value: columnName,
+          text: capitalize(columnName),
+          sortable: false
+        }
+      })
+
+      const combinedConstColumns = constantColumns.concat(col3)
+      return combinedConstColumns
     },
+    /**
+     * Determines whether or not every matrix has been selected in the dropdown
+     * @returns {Boolean}
+     */
     selectAll () {
       return this.filterMatrices.length === this.matrices.length
     },
+    /**
+     * Changes select all box icon based on whether every matrix has been selected
+     * @returns {String}
+     */
     icon () {
       if (this.selectAll) {
         return 'mdi-close-box'
@@ -133,9 +233,14 @@ export default {
     }
   },
   mounted () {
+    // On load, every matrix will automatically be selected
     this.toggle()
   },
   methods: {
+    /**
+     * Toggles between whether the matrices are all selected or not and sets
+     * what filterMatrices contains based on that
+     */
     toggle () {
       this.$nextTick(() => {
         if (this.selectAll) {
@@ -145,9 +250,20 @@ export default {
         }
       })
     },
+    /**
+     * Called when the search toolbar is expanded or hidden.
+     * Clears any search parameters as needed.
+     */
+    toggleSearch () {
+      this.extendSearch = !this.extendSearch
+      this.search = ''
+    },
+    /**
+     * Set the initial set of data table items from the items prop
+     * @param {Object} items
+     * @returns {Object}
+     */
     initializeTableItems (items) {
-      // Set the initial set of data table items from the items prop
-
       // Pass through any arrays of data objects, i.e. non-matrix objects like case studies
       if (Array.isArray(items)) {
         return items
@@ -172,5 +288,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 5px;
+}
+::v-deep .v-data-table.row-height td {
+  padding: 2%;
 }
 </style>

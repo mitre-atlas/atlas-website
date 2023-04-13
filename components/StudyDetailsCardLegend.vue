@@ -1,8 +1,8 @@
 <template>
   <v-dialog
     v-if="isCaseStudyPage"
-    max-width="500px"
     v-model="show"
+    max-width="500px"
     style="z-index:3010"
     @input="scrollToTop"
   >
@@ -47,21 +47,36 @@
   </v-dialog>
 </template>
 <script>
+/**
+ * Legend containing information about each field in a case study.
+ */
 export default {
   name: 'StudyDetailsCardLegend',
-  props: [
-    'doShow'
-  ],
   data () {
     return {
-      show: this.doShow,
+      /**
+       * Determines if the dialog is showing
+       * @type {Boolean}
+       */
+      show: false,
+      /**
+       * Will hold the legend data to render
+       * @type {Array}
+       */
       legendData: []
     }
   },
+  /**
+   * Get the legend data and store in the data
+   */
   async fetch () {
     this.legendData = await this.$content('case-study-legend').fetch()
   },
   computed: {
+    /**
+     * Only include the legend on case study pages
+     * @returns {Boolean}
+     */
     isCaseStudyPage () {
       if (this.$route.path.toString().includes('/studies/AML')) {
         return true
@@ -70,6 +85,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * Each time you close and reopen the dialog, it will always open to the top of the legend.
+     * @param {Boolean} show
+     */
     scrollToTop (show) {
       if (!show) {
         document.getElementById('top').scrollIntoView()

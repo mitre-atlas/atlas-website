@@ -33,8 +33,17 @@
 </template>
 
 <script>
+/**
+ * Cards of contact buttons on the Contact Us page.
+ */
 export default {
   name: 'ContactButton',
-  props: ['item']
+  props: [
+    /**
+     * List of information to be rendered on the card
+     * @type {Object}
+     */
+    'item'
+  ]
 }
 </script>

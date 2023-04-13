@@ -1,8 +1,6 @@
 <template>
   <div>
-    <page-section-title>
-      Upcoming Events
-    </page-section-title>
+    <page-section-title> Upcoming Events </page-section-title>
 
     <v-timeline
       id="event-timeline"
@@ -17,7 +15,7 @@
         :color="`${event.color} ${colorModifier}`"
         small
         right
-        :class="!$vuetify.breakpoint.mobile && event-timeline-item"
+        :class="!$vuetify.breakpoint.mobile && event - timeline - item"
       >
         <!-- Left of timeline -->
         <template #opposite>
@@ -25,7 +23,9 @@
             :class="`text-h6 ${event.color}--text text--${colorModifier}`"
             v-text="event.date"
           />
-          <div :class="`font-weight-light mb-4 ${event.color}--text text--${colorModifier}`">
+          <div
+            :class="`font-weight-light mb-4 ${event.color}--text text--${colorModifier}`"
+          >
             {{ event.location }}
           </div>
         </template>
@@ -37,10 +37,7 @@
             target="_blank"
           >
             {{ event.name }}
-            <v-icon
-              :color="`${event.color} ${colorModifier}`"
-              x-small
-            >
+            <v-icon :color="`${event.color} ${colorModifier}`" x-small>
               mdi-open-in-new
             </v-icon>
           </a>
@@ -53,7 +50,7 @@
             {{ event.date }} - {{ event.location }}
           </div>
           <div
-            class="mt-3"
+            class="mt-3 tw-prose tw-max-w-none"
             v-html="$md.render(event.description)"
           />
         </div>
@@ -62,21 +59,35 @@
   </div>
 </template>
 <script>
+/**
+ * A rendered timeline of upcoming events, displayed on the contact page.
+ */
 export default {
   name: 'UpcomingEvents',
-  props: ['events'],
+  props: [
+    /**
+     * A list of events to diplay in a timeline.
+     * @type {Object}
+     */
+    'events'
+  ],
   data: () => ({
     // https://vuetifyjs.com/en/styles/colors/#material-colors
     colorModifier: 'darken-3'
   }),
   computed: {
+    /**
+     * Maps over all of the events and converts date field to readable format.
+     * @returns {Object}
+     */
     formattedEvents () {
-      // Convert date field to readable format
       return this.events.map((event) => {
-        event.date = event.date.toLocaleDateString(
-          'default',
-          { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
-        )
+        event.date = event.date.toLocaleDateString('default', {
+          timeZone: 'UTC',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
         return event
       })
     }

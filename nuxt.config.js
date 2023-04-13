@@ -21,20 +21,14 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    'plugins/vue-gtag.client.js',
-    'plugins/vue-linkify.client.js'
-  ],
+  plugins: ['plugins/vue-gtag.client.js', 'plugins/vue-linkify.client.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: {
@@ -59,7 +53,8 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     'vue-scrollto/nuxt',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/tailwindcss'
   ],
 
   // https://github.com/markdown-it/markdown-it
@@ -112,44 +107,49 @@ export default {
 
   generate: {
     fallback: true,
+    concurrency: 30, // Limit number of routes generated in a single thread to manage memory usage
     routes () {
-      const getAtlasData = fs.readFile('static/atlas-data/dist/ATLAS.yaml', 'utf-8')
+      const getAtlasData = fs.readFile(
+        'static/atlas-data/dist/ATLAS.yaml',
+        'utf-8'
+      )
 
-      return Promise.resolve(getAtlasData)
-        .then((contents) => {
+      return Promise.resolve(getAtlasData).then((contents) => {
         // Parse YAML files
-          const data = yaml.load(contents)
+        const data = yaml.load(contents)
 
-          // Empty list
-          let allDataObjects = []
-          let matrixRoutes = []
+        // Empty list
+        let allDataObjects = []
+        let matrixRoutes = []
 
-          // To grab the techniques and tactic objects under matrices and populate allDataObjects
-          data.matrices.forEach((matrix) => {
-            const { id, name, ...objects } = matrix
-            allDataObjects = allDataObjects.concat(Object.values(objects))
-            matrixRoutes.push(`/matrices/${id}`)
-            const dynamicDataKeys = Object.keys(objects).filter(k => k !== 'case-study')
-            matrixRoutes = matrixRoutes.concat(dynamicDataKeys.map(k => `/${k}`))
-          })
-
-          // Collect data objects keyed via object-type under the key 'objects'
-          const { id, name, version, matrices, ...otherObjects } = data
-
-          // Concat the other objects (i.e casestudies objects) into dallDataObject list
-          allDataObjects = allDataObjects.concat(Object.values(otherObjects))
-
-          // Flatten the objects into a single array
-          allDataObjects = allDataObjects.flat()
-
-          // Construct each route as a pluralization of the object type (last word) and the object ID
-          const dynamicRoutes = allDataObjects.map((obj) => {
-            // i.e. studies for case-study, techniques for technique
-            return dataObjectToRoute(obj)
-          })
-
-          return dynamicRoutes.concat(matrixRoutes)
+        // To grab the techniques and tactic objects under matrices and populate allDataObjects
+        data.matrices.forEach((matrix) => {
+          const { id, name, ...objects } = matrix
+          allDataObjects = allDataObjects.concat(Object.values(objects))
+          matrixRoutes.push(`/matrices/${id}`)
+          const dynamicDataKeys = Object.keys(objects).filter(
+            k => k !== 'case-study'
+          )
+          matrixRoutes = matrixRoutes.concat(dynamicDataKeys.map(k => `/${k}`))
         })
+
+        // Collect data objects keyed via object-type under the key 'objects'
+        const { id, name, version, matrices, ...otherObjects } = data
+
+        // Concat the other objects (i.e casestudies objects) into dallDataObject list
+        allDataObjects = allDataObjects.concat(Object.values(otherObjects))
+
+        // Flatten the objects into a single array
+        allDataObjects = allDataObjects.flat()
+
+        // Construct each route as a pluralization of the object type (last word) and the object ID
+        const dynamicRoutes = allDataObjects.map((obj) => {
+          // i.e. studies for case-study, techniques for technique
+          return dataObjectToRoute(obj)
+        })
+
+        return dynamicRoutes.concat(matrixRoutes)
+      })
     }
   },
 
@@ -157,7 +157,9 @@ export default {
     router_base: process.env.ROUTER_BASE || '/',
     name: {
       short: process.env.NAME_SHORT || 'ATLAS',
-      long: process.env.NAME_LONG || 'Adversarial Threat Landscape for Artificial-Intelligence Systems',
+      long:
+        process.env.NAME_LONG ||
+        'Adversarial Threat Landscape for Artificial-Intelligence Systems',
       mitre: 'MITRE ATLAS™' // process.env?
     },
     navigator_url: process.env.NAVIGATOR_URL || '',
@@ -168,8 +170,12 @@ export default {
     footer_logo_image: process.env.FOOTER_LOGO_IMAGE || 'mitre-logo-white.svg',
     analytics_id: process.env.ANALYTICS_ID || '',
     individual_case_study: {
-      navigator_link: process.env.CASE_STUDY_DATA_URL || 'https://mitre-atlas.github.io/atlas-navigator/#layerURL=',
-      raw_link: process.env.RAW_CASE_STUDY_DATA_URL || 'https://raw.githubusercontent.com/mitre-atlas/atlas-navigator-data/main/dist/case-study-navigator-layers/',
+      navigator_link:
+        process.env.CASE_STUDY_DATA_URL ||
+        'https://mitre-atlas.github.io/atlas-navigator/#layerURL=',
+      raw_link:
+        process.env.RAW_CASE_STUDY_DATA_URL ||
+        'https://raw.githubusercontent.com/mitre-atlas/atlas-navigator-data/main/dist/case-study-navigator-layers/',
       suffix: process.env.CASE_STUDY_DATA_SUFFIX || '.json'
     }
   },

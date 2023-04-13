@@ -21,13 +21,28 @@
 
 <script>
 import { lastWord } from '~/assets/tools.js'
+/**
+ * Adds linking to the technique boxes
+ */
 export default {
   name: 'AttackTechniqueCell',
   props: [
+    /**
+     * Object containing information about the technique to render
+     * @type {Object}
+     */
     'technique',
+    /**
+     * Determines if the technique has subtechniques
+     * @type {Boolean}
+     */
     'isSupertechnique'
   ],
   computed: {
+    /**
+     * Determines class name(s) which edit the css based on if the object has subtechniques
+     * @returns {string}
+     */
     computedClass () {
       let className = 'technique-cell'
       if (this.isSupertechnique) {

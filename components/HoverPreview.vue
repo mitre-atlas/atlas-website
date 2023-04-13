@@ -26,12 +26,19 @@
             @touchstart.native="wasTouchHeld = false"
             @contextmenu="event => event.preventDefault()"
           >
-            <v-card-title>{{ getLabelById(targetDataObject.id) || targetDataObject.name }}</v-card-title>
+            <v-card-title>
+              {{
+                getLabelById(targetDataObject.id) || targetDataObject.name
+              }}
+            </v-card-title>
             <v-card-subtitle class="text-capitalize">
               {{ targetDataObject['object-type'] }} |
               {{ targetDataObject.id }}
             </v-card-subtitle>
-            <v-card-text v-html="$md.render(targetDataObject.description)" />
+            <v-card-text
+              class="tw-prose tw-max-w-none"
+              v-html="$md.render(targetDataObject.description)"
+            />
             <v-card-actions>
               <v-icon ref="arrow-icon" class="arrow-icon">
                 mdi-arrow-right
@@ -49,29 +56,97 @@
 
 <script>
 import { Portal, setSelector } from '@linusborg/vue-simple-portal' // Used for portaling the preview to a high parent for absolute positioning
+/**
+ * A card containing more information and an open in new tab link when you hover over a link.
+ */
 
-setSelector('app') // Portals the preview inside the Vue App component; otherwise we wouldn't have styling
+// Portals the preview inside the Vue App component; otherwise we wouldn't have styling
+setSelector('app')
 
 export default {
   name: 'HoverPreview',
   components: {
     Portal
   },
-  // if isAutocomplete is true, the component will attach event listeners to the children of its slot,
-  props: ['isAutocomplete', 'isListGroup', 'dataObjects'],
+  props: [
+    /**
+     * if isAutocomplete is true, the component will attach event listeners to the children of its slot.
+     * @type {Boolean}
+     */
+    'isAutocomplete',
+    /**
+     * If data objects are a list, hover attached vertically
+     * @type {Boolean}
+     */
+    'isListGroup',
+    /**
+     * Given data to create hover previews for.
+     * @type {Object}
+     */
+    'dataObjects'
+  ],
   data: () => ({
+    /**
+     * Is the website in mobile mode?
+     * @type {Boolean}
+     */
     isMobile: false,
-    // 'reload' only necessary for group mode
-    reload: null, // This keeps track of the function that reloads items and reattached listeners. Need this because for some reason, upon selecting a menu option, the listeners detach
-    overrideDisable: false, // Turn off the preview completely, eg. the user clicked an option
-    isMouseHovering: false, // Is the mouse currently hovering over the target element?
-    wasTouchHeld: false, // Is the target element currently under touch hold?
-    isPreviewLingering: false, // Is the preview currently staying visible for a short time after the mouse is no longer hovering?
-    targetElementRect: null, // Bounding box of the target element, used for positioning
-    hoverThread: null, // Keeps track of the thread used for enabling mouse hover after a duration
-    lingerThread: null, // Keeps track of the thread used for disabling the preview linger after a duration
-    touchHoldThread: null, // Keeps track of duration of touch hold, upon completion will activate preview
-    targetDataObject: {}, // The data object who's information will be displayed
+    /**
+     * This keeps track of the function that reloads items and reattached listeners.
+     * Need this because for some reason, upon selecting a menu option, the listeners detach.
+     * 'reload' only necessary for group mode
+     * @type {Object}
+     */
+    reload: null,
+    /**
+     * Turn off the preview completely, eg. the user clicked an option
+     * @type {Boolean}
+     */
+    overrideDisable: false,
+    /**
+     * Is the mouse currently hovering over the target element?
+     * @type {Boolean}
+     */
+    isMouseHovering: false,
+    /**
+     * Is the target element currently under touch hold?
+     * @type {Boolean}
+     */
+    wasTouchHeld: false,
+    /**
+     * Is the preview currently staying visible for a short time after the mouse is no longer hovering?
+     * @type {Boolean}
+     */
+    isPreviewLingering: false,
+    /**
+     * Bounding box of the target element, used for positioning
+     * @type {Object}
+     */
+    targetElementRect: null,
+    /**
+     * Keeps track of the thread used for enabling mouse hover after a duration
+     * @type {any}
+     */
+    hoverThread: null,
+    /**
+     * Keeps track of the thread used for disabling the preview linger after a duration
+     * @type {any}
+     */
+    lingerThread: null,
+    /**
+     * Keeps track of duration of touch hold, upon completion will activate preview
+     * @type {any}
+     */
+    touchHoldThread: null,
+    /**
+     * The data object who's information will be displayed
+     * @type {Object}
+     */
+    targetDataObject: {},
+    /**
+     * Positioning CSS for the hover preview
+     * @type {Object}
+     */
     positioningCSS: {
       position: 'absolute',
       transition: 'top 0.5s, left 0.5s',
@@ -79,7 +154,10 @@ export default {
       top: 0,
       'z-index': 3000
     },
-    // Changes attributes for display
+    /**
+     * Changes attributes for display
+     * @type {Object}
+     */
     displayOptions: {
       preferRight: true, // Prefer the top of the preview to be attached to the item
       preferTop: true, // Prefer the right of the preview to be attached to the item
@@ -93,15 +171,23 @@ export default {
     }
   }),
   computed: {
-    // Uses breakpoints to check if we are on mobile
-    // Sets the card style programatically, to handle mobile screens and different
-    // display options
+    /**
+     * Determines if preview is enabled based on boolean checks
+     * @returns {Boolean}
+     */
     isPreviewEnabled () {
       return (
-        (this.isMouseHovering || this.isPreviewLingering || this.wasTouchHeld) &&
+        (this.isMouseHovering ||
+          this.isPreviewLingering ||
+          this.wasTouchHeld) &&
         !this.overrideDisable
       )
     },
+    /**
+     * Uses breakpoints to check if we are on mobile
+     * Sets the card style programatically, to handle mobile screens and different display options
+     * @returns {Object}
+     */
     cardStyle () {
       const styleOptions = {
         width: this.displayOptions.cardWidth,
@@ -136,11 +222,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * Attach an event listener for a hover to each item in the list of data objects.
+     */
     attachEventListenersToListGroup () {
-      const listGroupNode = this.$slots.default[0]
-      const listItemElements = Array.from(
-        listGroupNode.elm.children[1].children
-      )
+      // Array of div elements
+      const listItemElements = this.$slots.default.map(sl => sl.elm)
       const listItems = listItemElements.map(
         // Link the data objects to the child elements
         (listItemElement, index) => {
@@ -152,6 +239,10 @@ export default {
       )
       this.connectEventListenersToTargetItems(listItems)
     },
+    /**
+     * Attach an event listener fir a hover for the autocomplete list items,
+     * where data objects are not given.
+     */
     attachEventListenersToAutocomplete () {
       // Below obtains references to the embeded list items of the v-autocomplete
       const autocompleteNode = this.$slots.default[0]
@@ -180,7 +271,10 @@ export default {
         this.connectEventListenersToTargetItems(listItems)
       })
     },
-    // Processes the mouse events over target items
+    /**
+     * Processes the mouse events over target items
+     * @param {Object} dataObject
+     */
     catchMouseEvent (event, dataObject) {
       switch (event.type) {
         case 'mouseenter':
@@ -258,12 +352,19 @@ export default {
           break
       }
     },
+    /**
+     * Gets a data object's label parent:subtechnique
+     * @param {String} id
+     * @returns {String}
+     */
     getLabelById (id) {
       return this.$store.getters.getDataObjectById(id).label
     },
-    // Controls the appearance of the preview card. Calculates the correct offsets based on
-    // viewport, window, and target item information as well as initiates a new thread for
-    // linger control
+    /**
+     * Controls the appearance of the preview card. Calculates the correct offsets based on
+     * viewport, window, and target item information as well as initiates a new thread for
+     * linger control.
+     */
     positionPreview () {
       // The purpose of setTimeout is to let me reference the component being rendered while it is rendering
       // otherwise, the component may not exist yet
@@ -358,7 +459,10 @@ export default {
         0 // Zero delay, since we just want parallel execution
       )
     },
-    // Handles what happens when the mouse goes to hover over the preview itself
+    /**
+     * Handles what happens when the mouse goes to hover over the preview itself
+     * @param {Boolean} newState
+     */
     setMouseHoverStateOverSelf (newState) {
       if (newState) {
         this.isMouseHovering = true
@@ -368,7 +472,9 @@ export default {
 
       this.transitionIcons()
     },
-    // Allows the preview to maintain display for a short duration after the user has stopped hovering
+    /**
+     * Allows the preview to maintain display for a short duration after the user has stopped hovering
+     */
     startLingering () {
       if (this.isMouseHovering) {
         this.isPreviewLingering = true
@@ -382,8 +488,11 @@ export default {
         this.isPreviewLingering = false
       }, this.displayOptions.lingerDuration)
     },
+    /**
+     * For each of the target items, attach the necessary event listeners
+     * @param {Object} targetItems
+     */
     connectEventListenersToTargetItems (targetItems) {
-      // For each of the target items, attach the necessary event listeners
       const connectedEvents = [
         'mouseenter',
         'mouseleave',
@@ -401,7 +510,9 @@ export default {
         })
       })
     },
-    // Just styling and fanciness
+    /**
+     * Just styling and fanciness
+     */
     transitionIcons () {
       // Arrow icon, eg the -->
       const arrowIcon = this.$refs['arrow-icon'] && this.$refs['arrow-icon'].$el
@@ -490,7 +601,7 @@ export default {
   overflow: hidden;
 }
 .v-card__title {
-  max-height: 20%
+  max-height: 20%;
 }
 .v-card__text::before {
   content: '';

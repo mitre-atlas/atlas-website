@@ -4,10 +4,13 @@
       <Header />
 
       <v-main>
+        <announcement-banner />
         <v-container>
           <data-side-nav />
-          <breadcrumbs-bar />
-          <Nuxt />
+          <v-container>
+            <breadcrumbs-bar />
+            <Nuxt />
+          </v-container>
         </v-container>
       </v-main>
 

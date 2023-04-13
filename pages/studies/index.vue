@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mx-8">
+    <div>
       <page-title>{{ title }}</page-title>
-      <div class="mb-5">
+      <div class="mb-5 tw-prose tw-max-w-none">
         <p>
           Attacks on machine learning (ML) systems are being developed and
           released with increased regularity. Attacks have historically been
@@ -18,19 +18,19 @@
           following characteristics:
         </p>
         <ol>
-          <li class="mb-2">
+          <li>
             Range of Attacks: Evasion, poisoning, model replication and
             exploiting traditional software flaws.
           </li>
-          <li class="mb-2">
+          <li>
             Range of Personas: Average user, security researchers, ML
             researchers and fully-equipped Red team.
           </li>
-          <li class="mb-2">
+          <li>
             Range of ML Paradigms: Attacks on MLaaS, ML models hosted on cloud,
             hosted on-premise, ML models on edge.
           </li>
-          <li class="mb-2">
+          <li>
             Range of Use Case: Attacks on ML systems used in both
             "security-sensitive" applications like cybersecurity and
             non-security-sensitive applications like chatbots.
@@ -49,6 +49,11 @@
 
 <script>
 import { mapMutations } from 'vuex'
+/**
+ * @name studies/index
+ *
+ * Explore case studies page search table
+ */
 export default {
   layout: 'side-nav',
   data: ({ $config: { name } }) => ({
@@ -66,6 +71,7 @@ export default {
     }
   },
   computed: {
+    // Get studies from store to populate info table
     getStudies () {
       return this.$store.getters.getDataObjectsByType('case-studies')
     }

@@ -4,14 +4,8 @@
       {{ title }}
     </page-section-title>
 
-    <v-list
-      two-line
-      subheader
-    >
-      <div
-        v-for="(repos, repoCategory) in repositories"
-        :key="repoCategory"
-      >
+    <v-list two-line subheader>
+      <div v-for="(repos, repoCategory) in repositories" :key="repoCategory">
         <v-subheader class="text-capitalize">
           {{ repoCategory }}
         </v-subheader>
@@ -31,10 +25,23 @@
   </div>
 </template>
 <script>
+/**
+ * Enumerates the github repos involved in ATLAS and displays them on the
+ * General Information page.
+ * @see {info.vue}
+ */
 export default {
   name: 'GitHubRepos',
   data: () => ({
+    /**
+     * Title of the page section
+     * @type {String}
+     */
     title: 'ATLAS GitHub Repositories',
+    /**
+     * Name, link, and description of each github repo involved in ATLAS
+     * @type {Object}
+     */
     repositories: {
       websites: [
         {
@@ -44,27 +51,37 @@ export default {
         },
         {
           name: 'ATLAS Navigator',
-          description: 'ATLAS Navigator web app - a fork of the MITRE ATT&CK&reg; Navigator.',
+          description:
+            'ATLAS Navigator web app - a fork of the MITRE ATT&CK&reg; Navigator.',
           url: 'https://github.com/mitre-atlas/atlas-navigator/tree/atlas'
         }
       ],
       data: [
         {
           name: 'ATLAS Data',
-          description: 'Source data for ATLAS tactics, techniques, and case studies, along with scripts and documentation.',
+          description:
+            'Source data for ATLAS tactics, techniques, and case studies, along with scripts and documentation.',
           url: 'https://github.com/mitre-atlas/atlas-data'
         },
         {
           name: 'ATLAS Navigator Data',
-          description: 'Scripts and outputs for ATLAS data in STIX JSON and ATT&CK Navigator layer formats.',
+          description:
+            'Scripts and outputs for ATLAS data in STIX JSON and ATT&CK Navigator layer formats.',
           url: 'https://github.com/mitre-atlas/atlas-navigator-data'
         }
       ],
       tools: [
         {
           name: 'Almanac',
-          description: '[CALDERA](https://caldera.mitre.org/) adversary emulation platform plugin for exploring ATLAS using the ATLAS Navigator - a fork of the ATT&CK [Compass](https://caldera.readthedocs.io/en/latest/Plugin-library.html#compass) plugin.',
+          description:
+            '[CALDERA](https://caldera.mitre.org/) adversary emulation platform plugin for exploring ATLAS using the ATLAS Navigator - a fork of the ATT&CK [Compass](https://caldera.readthedocs.io/en/latest/Plugin-library.html#compass) plugin.',
           url: 'https://github.com/mitre-atlas/almanac'
+        },
+        {
+          name: 'Arsenal',
+          description:
+            'The Arsenal plugin will help store and create adversarial TTPs defined in ATLAS to interface with [CALDERA](https://caldera.mitre.org/). ',
+          url: 'https://github.com/mitre-atlas/arsenal'
         }
       ]
     }

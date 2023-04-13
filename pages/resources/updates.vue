@@ -8,7 +8,7 @@
       <v-tab-item v-for="updateFile in updateFilesList" :key="updateFile.slug">
         <v-card flat>
           <v-card-text>
-            <nuxt-content :document="updateFile" />
+            <nuxt-content :document="updateFile" class="tw-prose" />
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -20,16 +20,18 @@
 import packageData from '../../package.json'
 export default {
   async asyncData ({ $content }) {
-    const updateFilesList = await $content('update-files').sortBy('slug', 'desc').fetch()
+    const updateFilesList = await $content('update-files')
+      .sortBy('slug', 'desc')
+      .fetch()
 
     // Add field for the date in string form, i.e. Mar 2022
     updateFilesList.map((f) => {
       // Turn the filename, i.e. 2022-03 into a Date
-      f.dateString = new Date(f.slug)
-        .toLocaleDateString(
-          'default',
-          { timeZone: 'UTC', year: 'numeric', month: 'short' }
-        )
+      f.dateString = new Date(f.slug).toLocaleDateString('default', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: 'short'
+      })
       return f
     })
 
@@ -48,6 +50,5 @@ export default {
       title: `${this.title} | ${this.mitreTitle}`
     }
   }
-
 }
 </script>

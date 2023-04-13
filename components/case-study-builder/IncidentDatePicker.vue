@@ -42,7 +42,6 @@
           @click:month="monthSelected"
           @click:date="dateSelected"
         >
-          <!-- <v-card-actions> -->
           <v-card-subtitle v-if="hasStatus" class="py-2" :style="headerStyle">
             {{ submissionStatus.message }}
           </v-card-subtitle>
@@ -53,62 +52,114 @@
           <v-btn text color="primary" @click="ok">
             Save
           </v-btn>
-          <!-- </v-card-actions> -->
         </v-date-picker>
       </v-card>
     </v-menu>
   </div>
 </template>
+
 <script>
+import { statusStyleHeader, statusStyleCard } from '~/assets/validation.js'
+/**
+ * Clickable popup incident date input - starts with year, then optionally month,
+ * then optionally day
+ */
 export default {
   name: 'IncidentDatePicker',
   props: [
+    'value',
+    /**
+     * Starting incident date
+     * @type {Date}
+     */
     'startDate',
+    /**
+     * Granularity of the starting incident date,
+     * one of `YEAR`, `MONTH`, or `DATE`
+     * @type {String}
+     */
     'startDateGranularity',
+    /**
+     * Validation rules for incident date
+     * @type {function[]}
+     */
     'initialRules',
+    /**
+     * Custom error messages for incident date
+     * @type {String[]}
+     */
     'initialErrors',
+    /**
+     * Submission status object with
+     * ```
+     * {
+     *    type: str,
+     *    color: str,
+     *    message: str
+     * }
+     * ```
+     * @type {Object}
+     */
     'submissionStatus'
   ],
   data () {
     return {
+      /**
+       * Date granularity for Vuetify date picker use
+       * @type {String}
+       */
       activePicker: null,
+      /**
+       * Controls whether the picker popup is open
+       */
       menu: false,
+      /**
+       * Selected incident date
+       * @type {Date}
+       */
       date: this.startDate,
+      /**
+       * Granularity of the incident date,
+       * one of `YEAR`, `MONTH`, or `DATE`
+       * @type {String}
+       */
       dateGranularity: this.startDateGranularity,
+      /**
+       * Validation rules for incident date
+       * @type {function[]}
+       */
       rules: this.initialRules,
+      /**
+       * Custom error messages for incident date
+       * @type {String[]}
+       */
       errors: this.initialErrors
     }
   },
   computed: {
+    /**
+     * Returns true if the submission status has a type
+     * @returns {Boolean}
+     */
     hasStatus () {
       return !!(this.submissionStatus ?? {}).type
     },
-    isInErrorState () {
-      return (this.submissionStatus ?? {}).type === 'error'
-    },
-    isInWarningState () {
-      return (this.submissionStatus ?? []).type === 'warning'
-    },
+    /**
+     * Sets card title font color according to submission state
+     */
     headerStyle () {
-      if (this.isInErrorState) {
-        return 'color: #FF5252'
-      } else if (this.isInWarningState) {
-        return 'color: #DAA520'
-      } else {
-        return ''
-      }
+      return statusStyleHeader(this.submissionStatus)
     },
+    /**
+     * Sets card outline border color according to submission state
+     */
     cardStyle () {
-      const style = {}
-      if (this.isInErrorState) {
-        style['border-color'] = '#FF5252'
-        style['border-width'] = '2px'
-      } else if (this.isInWarningState) {
-        style['border-color'] = '#DAA520'
-        style['border-width'] = '2px'
-      }
-      return style
+      return statusStyleCard(this.submissionStatus)
     },
+    /**
+     * The currently selected date in YYYY-MM-DD format
+     * @type {String}
+     */
     dateISOString () {
       // Set the date-picker date
       if (this.date != null) {
@@ -116,6 +167,11 @@ export default {
       }
       return null
     },
+    /**
+     * Long-form representation of the selected date in the specified granularity,
+     * i.e. January 1, 2020, or January 2020, or 2020
+     * @type {String}
+     */
     displayedIncidentDate () {
       if (this.date != null) {
         if (this.dateGranularity === 'YEAR') {
@@ -148,7 +204,11 @@ export default {
   watch: {
     menu (val) {
       val && setTimeout(() => (this.activePicker = 'YEAR'))
-      this.$emit('isDatePickerOpen', val)
+      /**
+       * Whether the date picker popup is open
+       * @arg {Boolean} val
+       */
+      this.$emit('input', val)
     },
     startDate: {
       // Ensures that the component data is up to date with prop change
@@ -185,6 +245,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * Sets the date and granularity when a year is selected
+     * @param {String} year - `YYYY`
+     */
     yearSelected (year) {
       // Parameter is YYYY int
       this.dateGranularity = 'YEAR'
@@ -193,6 +257,10 @@ export default {
       // Construct display date
       this.displayedIncidentDate = this.date.getUTCFullYear()
     },
+    /**
+     * Sets the date and granularity when a month is selected
+     * @param {String} yearMonth - `YYYY-MM`
+     */
     monthSelected (yearMonth) {
       // Parameter is YYYY-MM string
       this.dateGranularity = 'MONTH'
@@ -204,6 +272,10 @@ export default {
       // Create Date in UTC
       this.date = new Date(Date.UTC(year, monthIndex))
     },
+    /**
+     * Sets the date and granularity when a day is selected
+     * @param {String} yearMonthDate - `YYYY-MM-DD`
+     */
     dateSelected (yearMonthDate) {
       // Parameter is YYYY-MM-DD string
       this.dateGranularity = 'DATE'
@@ -216,6 +288,7 @@ export default {
       // Create Date in UTC
       this.date = new Date(Date.UTC(year, monthIndex, day))
     },
+    // Emits the selected date, closes the dialog and resets any error messages
     ok () {
       // Close menu
       this.menu = false
@@ -223,9 +296,14 @@ export default {
       // Reset any error messages
       this.errors = []
 
-      // Emit date pieces (1-indexed month) and date granularity
+      /**
+       * Emit date pieces (1-indexed month) and date granularity
+       * @arg {Date} date
+       * @arg {String} dateGranularity
+       */
       this.$emit('selectedDate', this.date, this.dateGranularity)
     },
+    // Emits the original date, closes the dialog and resets any error messages
     cancel () {
       // Close menu
       this.menu = false

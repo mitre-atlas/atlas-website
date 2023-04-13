@@ -14,8 +14,17 @@
 </template>
 
 <script>
+/**
+ * Renders a list of contributors with expandable content on the Contribute page.
+ */
 export default {
   name: 'ContributorsList',
-  props: ['contributors']
+  props: [
+    /**
+     * List of organizations and their contributors to render.
+     * @type {Object}
+     */
+    'contributors'
+  ]
 }
 </script>

@@ -5,13 +5,17 @@
     clipped-left
     elevate-on-scroll
     color="grey darken-3"
-    style="z-index:100;"
+    style="z-index: 100"
   >
     <v-app-bar-nav-icon v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
     <v-toolbar-title>
       <nuxt-link to="/">
-        <img src="~/assets/MITRE-brand_ATLAS_MITRE_tm_white.svg" width="200">
+        <v-img
+          :src="require('~/assets/MITRE-brand_ATLAS_MITRE_tm_white.svg')"
+          width="200"
+          contain
+        />
       </nuxt-link>
     </v-toolbar-title>
 
@@ -30,7 +34,7 @@
         rounded="b-lg t-0"
         transition="slide-y-transition"
         content-class="elevation-2"
-        style="z-index:-100;"
+        style="z-index: -100"
       >
         <template #activator="{ on, attrs }">
           <v-btn
@@ -56,7 +60,7 @@
               nuxt
               :to="childLink.href"
               exact
-              style="text-transform: capitalize !important;"
+              style="text-transform: capitalize !important"
               class="px-6 text-button"
             >
               {{ childLink.name }}
@@ -84,22 +88,15 @@
         rounded="b-lg t-0"
         transition="slide-y-transition"
         content-class="elevation-2"
-        style="z-index:4000;"
+        style="z-index: 4000"
       >
         <template #activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list class="hidden-md-and-up">
-          <div
-            v-for="(link, i) in linksModded"
-            :key="i"
-          >
+          <div v-for="(link, i) in linksModded" :key="i">
             <div v-if="link.isDropdown">
               <v-list-item
                 v-for="(childLink, j) in link.links"
@@ -108,7 +105,7 @@
                 text
                 exact
                 class="px-6 text-button"
-                style="text-transform: capitalize !important;"
+                style="text-transform: capitalize !important"
                 nuxt
                 v-text="childLink.name"
               />
@@ -120,7 +117,7 @@
               exact
               class="px-6 text-button"
               nuxt
-              style="text-transform: capitalize !important;"
+              style="text-transform: capitalize !important"
               v-text="link.name"
             />
           </div>
@@ -133,10 +130,16 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
-
+/**
+ * Header navigation bar, present on every page.
+ * Included in the layout files.
+ */
 export default {
   data: ({ $config: { name } }) => ({
-    title: `MITRE | ${name.short}`,
+    /**
+     * Array of objects of the dropdown menus in the navigation bar
+     * @type {Array}
+     */
     linksEnding: [
       {
         name: 'Case Studies',
@@ -186,14 +189,23 @@ export default {
   }),
   computed: {
     ...mapGetters(['getFirstMatrixId']),
+    /**
+     * Matrices link in navbar
+     * @returns {Array}
+     */
     linksBeginning () {
-      return [{
-        name: 'Matrices',
-        href: `/matrices/${this.getFirstMatrixId}`
-      }]
+      return [
+        {
+          name: 'Matrices',
+          href: `/matrices/${this.getFirstMatrixId}`
+        }
+      ]
     },
+    /**
+     * Add the Navigator Header item if specified
+     * @returns {Object}
+     */
     linksModded () {
-      // Add the Navigator Header item if specified
       let navLinks = []
       if (this.$config.navigator_url) {
         navLinks = [
@@ -223,12 +235,21 @@ export default {
       // }
       return this.linksBeginning.concat(navLinks, dataLinks, this.linksEnding)
     },
+    /**
+     * Determines if the page has a sidenav
+     * @returns {Boolean}
+     */
     doesPageHaveSideNav () {
       // Only matrices, objectTypePlural, and studies routes have side navs
-      return this.$route.name === 'matrices-id' || this.$route.name.includes('objectTypePlural') || this.$route.name.includes('studies')
+      return (
+        this.$route.name === 'matrices-id' ||
+        this.$route.name.includes('objectTypePlural') ||
+        this.$route.name.includes('studies')
+      )
     }
   },
   methods: {
+    // Opens and closes nav drawer
     ...mapMutations({ toggle: 'TOGGLE_NAV_DRAWER' })
   }
 }

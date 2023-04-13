@@ -6,7 +6,7 @@
           <hover-preview :is-autocomplete="true">
             <v-autocomplete
               id="tactic_selection"
-              v-model="selectTacticData2"
+              v-model="procedureStep.tactic"
               eager
               :items="getDataObjectsByType('tactics')"
               label="Tactic"
@@ -14,7 +14,9 @@
               prepend-inner-icon="mdi-magnify"
               item-text="name"
               item-value="id"
-              @input="tacticUpdate(selectTacticData2)"
+              @input="
+                procedureStep.technique = ''
+                $emit('input', procedureStep)"
             >
               <template #item="{ item }" class="menu-item-wrapper">
                 <div class="menu-item">
@@ -26,9 +28,13 @@
         </v-col>
         <v-col cols="12" lg="6">
           <hover-preview :is-autocomplete="true">
+            <!--
+              Fires upon selecting a technique in the dropdown
+              @arg {String} selectTechniqueData2 - the selected technique ID
+             -->
             <v-autocomplete
               id="technique_selection"
-              v-model="selectTechniqueData2"
+              v-model="procedureStep.technique"
               :items="mapTechAndSub"
               label="Technique"
               outlined
@@ -37,8 +43,8 @@
               :filter="alsoMatchSubtechniquesOfMatchingTechniques"
               item-text="name"
               item-value="id"
-              :disabled="selectTacticData2 === null"
-              @input="$emit('techniqueUpdate', selectTechniqueData2)"
+              :disabled="procedureStep.tactic === null"
+              @input="$emit('input', procedureStep)"
             >
               <template #item="data" class="menu-item-wrapper">
                 <div class="menu-item">
@@ -61,15 +67,15 @@
 
       <v-textarea
         id="procedure_description"
-        v-model="descriptionData2"
-        :disabled="selectTacticData2 === null"
+        v-model="procedureStep.description"
+        :disabled="procedureStep.tactic === null"
         label="Description"
         hint="Describe how this technique was used in the case study"
         required
         outlined
         prepend-inner-icon="mdi-text"
         auto-grow
-        @input="descriptionUpdate(descriptionData2)"
+        @input="$emit('input', procedureStep)"
       />
     </v-card-text>
   </div>
@@ -78,20 +84,22 @@
 <script>
 import { mapGetters } from 'vuex'
 
+/**
+ * Form for inputting a case study procedure step
+ * @see {AddProcedureStep.vue} for the wrapper card around this component
+ */
 export default {
   name: 'ProcedureForm',
-  props: ['selectTacticData', 'selectTechniqueData', 'descriptionData'],
+  props: [
+    /**
+     * V-model from parent component that allows the user to edit
+     * and replace procedure steps.
+     */
+    'value'
+  ],
   data () {
     return {
-      selectTacticData2: this.selectTacticData,
-      selectTechniqueData2: this.selectTechniqueData,
-      descriptionData2: this.descriptionData,
-
-      mouseEvent: null,
-      hoverTargetID: '',
-      hoverOffset: 0,
-      appearRight: false,
-      fromRight: false
+      procedureStep: this.value
     }
   },
   computed: {
@@ -100,12 +108,18 @@ export default {
       'getDataObjectsByTypeKeyContainingValue',
       'subtechnique/getParent'
     ]),
+    /**
+     * Constructs the item list for the technique dropdown,
+     * which is filtered by tactic and contains subtechniques
+     * after their parent techniques
+     * @type {object[]}
+     */
     mapTechAndSub () {
       // Parent techniques that have the selected tactic as a parent
       const techs = this.getDataObjectsByTypeKeyContainingValue(
         'techniques',
         'tactics',
-        this.selectTacticData2
+        this.procedureStep.tactic
       )
 
       for (let i = 0; i < techs.length; i++) {
@@ -123,16 +137,14 @@ export default {
     }
   },
   methods: {
-    tacticUpdate (selectTacticData2) {
-      this.$emit('tacticUpdate', selectTacticData2)
-      this.$emit('techniqueUpdate', '')
-    },
-    // techniqueUpdate (selectTechniqueData2) {
-    //   this.$emit('techniqueUpdate', selectTechniqueData2)
-    // },
-    descriptionUpdate (selectDescriptionData2) {
-      this.$emit('descriptionUpdate', selectDescriptionData2)
-    },
+    /**
+     * Filter for technique selection dropdown to include any subtechniques
+     * in matches for parent technique names
+     * @param {Object} item - (sub)technique data object
+     * @param {String} queryText - search text
+     * @param {String} itemText - (sub)technique name
+     * @return {Boolean} Whether there is a match between query and (sub)technique name
+     */
     alsoMatchSubtechniquesOfMatchingTechniques (item, queryText, itemText) {
       // Match current item text
       let isMatch = itemText

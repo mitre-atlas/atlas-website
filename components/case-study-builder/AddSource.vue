@@ -51,25 +51,29 @@
 </template>
 
 <script>
+import { statusStyleHeader, statusStyleCard } from '~/assets/validation.js'
+/**
+ * Card for adding and editing a case study source item
+ */
 export default {
   name: 'AddSource',
   props: {
+    // Title of the source
     title: {
       type: String,
       default: ''
     },
+    // URL for the source
     url: {
       type: String,
       default: ''
     },
-    addingSource: {
-      type: Boolean,
-      default: false
-    },
+    // Index of this source item in the larger list
     index: {
       type: Number,
       default: null
     },
+    // Submission status for this item
     submissionStatus: {
       type: Object,
       default: null
@@ -77,47 +81,43 @@ export default {
   },
   data () {
     return {
+      /**
+       * Title of the source
+       * @type {String}
+       */
       titleData: this.title,
+      /**
+       * URL for the source
+       * @type {String}
+       */
       urlData: this.url,
-      addSourceErr: '',
-      addingBool: this.addingSource
+      // Error text for this source box
+      addSourceErr: ''
     }
   },
   computed: {
+    /**
+     * Returns true if the submission status has a type
+     * @returns {Boolean}
+     */
     hasStatus () {
       return !!(this.submissionStatus ?? {}).type
     },
-    isInErrorState () {
-      return (this.submissionStatus ?? {}).type === 'error'
-    },
-    isInWarningState () {
-      return (this.submissionStatus ?? []).type === 'warning'
-    },
+    /**
+     * Sets card title font color according to submission state
+     */
     headerStyle () {
-      if (this.isInErrorState) {
-        return 'color: #FF5252'
-      } else if (this.isInWarningState) {
-        return 'color: #DAA520'
-      } else {
-        return ''
-      }
+      return statusStyleHeader(this.submissionStatus)
     },
+    /**
+     * Sets card outline border color according to submission state
+     */
     cardStyle () {
-      const style = {}
-      if (this.isInErrorState) {
-        style['border-color'] = '#FF5252'
-        style['border-width'] = '2px'
-      } else if (this.isInWarningState) {
-        style['border-color'] = '#DAA520'
-        style['border-width'] = '2px'
-      }
-      return style
+      return statusStyleCard(this.submissionStatus)
     }
   },
   methods: {
-    updateValue (inputVal) {
-      this.inputVal = inputVal
-    },
+    // Validates source fields, onstructs the new source object and emits it, or sets an error message
     addSource () {
       let url
       // If url is empty, valid check remains true by default since field is optional
@@ -152,6 +152,7 @@ export default {
         this.addSourceErr = 'Please complete at least one field'
       }
     },
+    // Resets data fields
     clearSource () {
       this.titleData = ''
       this.urlData = ''

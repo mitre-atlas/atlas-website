@@ -6,14 +6,8 @@
         <v-spacer />
       </v-card-title>
       <procedure-form
-        :key="selectTacticData"
-        :select-tactic-data="selectTacticData"
-        :select-technique-data="selectTechniqueData"
-        :description-data="descriptionData"
-        :submission-status="submissionStatus"
-        @tacticUpdate="selectTacticData = $event"
-        @techniqueUpdate="selectTechniqueData = $event"
-        @descriptionUpdate="descriptionData = $event"
+        :key="procedureStep.tactic"
+        v-model="procedureStep"
       />
       <v-card-actions>
         <v-spacer />
@@ -38,84 +32,73 @@
 </template>
 
 <script>
+import { statusStyleHeader, statusStyleCard } from '~/assets/validation.js'
+/**
+ * Wrapper card for adding and editing a case study procedure step
+ */
 export default {
   name: 'AddProcedureStep',
   props: [
-    'selectTactic',
-    'selectTechnique',
-    'description',
-    'addingStep',
+    'value',
+    /**
+     * Represents the submission status
+     * @type {Object}
+     */
     'submissionStatus'
   ],
   data () {
     return {
-      selectTacticData: this.selectTactic,
-      selectTechniqueData: this.selectTechnique,
-      descriptionData: this.description,
-      addStepErr: '',
-      addingBool: this.addingStep
+      procedureStep: this.value,
+      // Error text for this procedure step box
+      addStepErr: ''
     }
   },
   computed: {
+    /**
+     * Returns true if the submission status has a type
+     * @returns {Boolean}
+     */
     hasStatus () {
       return !!(this.submissionStatus ?? {}).type
     },
-    isInErrorState () {
-      return (this.submissionStatus ?? {}).type === 'error'
-    },
-    isInWarningState () {
-      return (this.submissionStatus ?? []).type === 'warning'
-    },
+    /**
+     * Sets card title font color according to submission state
+     */
     headerStyle () {
-      if (this.isInErrorState) {
-        return 'color: #FF5252'
-      } else if (this.isInWarningState) {
-        return 'color: #DAA520'
-      } else {
-        return ''
-      }
+      return statusStyleHeader(this.submissionStatus)
     },
+    /**
+     * Sets card outline border color according to submission state
+     */
     cardStyle () {
-      const style = {}
-      if (this.isInErrorState) {
-        style['border-color'] = '#FF5252'
-        style['border-width'] = '2px'
-      } else if (this.isInWarningState) {
-        style['border-color'] = '#DAA520'
-        style['border-width'] = '2px'
-      }
-      return style
+      return statusStyleCard(this.submissionStatus)
     }
   },
   methods: {
+    // Constructs the new procedure step object and emits it, or sets an error message
     addProcedureStep () {
-      if (this.selectTacticData && this.selectTechniqueData && this.descriptionData) {
+      if (this.procedureStep.tactic && this.procedureStep.technique && this.procedureStep.description) {
         // .trim() doesn't modify original string
-        this.descriptionData = this.descriptionData.trim()
-        const newStep = {
-          tactic: this.selectTacticData,
-          technique: this.selectTechniqueData,
-          description: this.descriptionData
-        }
-        this.$emit('clicked', newStep)
+        this.procedureStep.description = this.procedureStep.description.trim()
+
+        this.$emit('clicked', this.procedureStep)
         this.clearStepInput()
-      } else if (this.selectTacticData && this.selectTechniqueData) {
-        this.descriptionData = ''
-        const newStep = {
-          tactic: this.selectTacticData,
-          technique: this.selectTechniqueData,
-          description: this.descriptionData
-        }
-        this.$emit('clicked', newStep)
+      } else if (this.procedureStep.tactic && this.procedureStep.technique) {
+        this.procedureStep.description = ''
+
+        this.$emit('clicked', this.procedureStep)
         this.clearStepInput()
       } else {
         this.addStepErr = 'Please complete all fields'
       }
     },
+    // Resets data fields
     clearStepInput () {
-      this.selectTacticData = null
-      this.selectTechniqueData = null
-      this.descriptionData = ''
+      this.procedureStep = {
+        selectTacticData: null,
+        selectTechniqueData: null,
+        descriptionData: ''
+      }
       this.addStepErr = ''
     }
   }

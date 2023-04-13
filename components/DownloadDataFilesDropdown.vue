@@ -37,16 +37,33 @@
 
 <script>
 import { downloadStudyFile } from '~/assets/tools.js'
-
+/**
+ * Dropdown menu to download a study as yaml or a powerpoint.
+ * @see {StudyDetailsCard.vue}
+ * @see {pages/studies/_id.vue}
+ */
 export default {
   name: 'DownloadDataFilesDropdown',
-  props: ['study'],
+  props: [
+    /**
+     * Study to be downloaded
+     * @type {Object}
+     */
+    'study'
+  ],
   data () {
     return {
+      /**
+       * Study to be downloaded, set from the prop.
+       * @type {Object}
+       */
       studyYaml: this.study
     }
   },
   methods: {
+    /**
+     * On button click, download yaml of the study.
+     */
     downloadYaml () {
       // Construct full URL to case study data file on GitHub
       const id = this.study.id

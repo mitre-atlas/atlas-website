@@ -1,4 +1,3 @@
-<!-- Sidebar on individual data pages displaying ID and other summaries -->
 <template>
   <v-card
     flat
@@ -12,18 +11,33 @@
         v-for="(relatedObjs, objectType) in dataObject.relatedObjects"
         :key="objectType"
       >
-        <data-sidebar-entry :objectType="objectType" :relatedObjs="relatedObjs" />
+        <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
       </p>
     </v-card-text>
   </v-card>
 </template>
+
 <script>
 import { dataObjectToPluralTitle } from '~/assets/dataHelpers.js'
 
+/**
+ * Sidebar on the right side of individual data pages displaying ID and other summaries
+ */
 export default {
   name: 'DataSidebar',
-  props: ['dataObject'],
+  props: [
+    /**
+     * Displays info of this data object
+     * @type {Object}
+     */
+    'dataObject'
+  ],
   methods: {
+    /**
+     * Returns the pluralized version of this data object type
+     * @param {String} objectType
+     * @return {String}
+     */
     pluralize (objectType) {
       return dataObjectToPluralTitle(objectType)
     }
