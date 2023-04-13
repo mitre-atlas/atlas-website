@@ -4,14 +4,14 @@ tags:
 - name: Data Focused
   description: Relating to ML model data. Examples include training and validation datasets, as well as model inputs and outputs.
 - name: Model Development
-  description: Mitigations that can be implemented during the ML model development stage
+  description: Mitigations that can be implemented during the ML model development stage.
 - name: Model Agnostic
-  description: Does not modify the ML model
+  description: Does not modify the ML model.
 - name: Model Enhancement
   description: Modifies the ML model. Examples include changing parameters, optimizers, and loss functions.
 - name: Model Focused
-  description: Relating to the ML model itself
+  description: Relating to the ML model itself.
 - name: Model Operations
-  description: Mitigations that can be implemented and used while a model is in production and operational
+  description: Mitigations that can be implemented and used while a model is in production and operational.
 - name: Passive
   description: Once implemented, does not require further human intervention. Can be a one-time implemention.
