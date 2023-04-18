@@ -61,6 +61,7 @@
       :headers="headers"
       :items="filteredTableItems"
       :search="search"
+      :options="options"
       hide-default-footer
       disable-pagination
       class="row-height"
@@ -120,13 +121,28 @@ import { capitalize } from '~/assets/tools.js'
  */
 export default {
   name: 'InfoTable',
-  props: [
+  props: {
     /**
-     * Object of items to be rendered in the info table
-     * @type {Object}
+     * Object or array of items to be rendered in the info table
+     * @type {Array|Object}
      */
-    'items'
-  ],
+    items: {
+      type: [Array, Object],
+      default: () => {
+        return []
+      }
+    },
+    /**
+     * Vuetify data table options for sorts, etc.
+     * @link https://v2.vuetifyjs.com/en/api/v-data-table/#props-options
+     */
+    options: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   data () {
     return {
       /**

@@ -42,7 +42,7 @@
         {{ description }}
       </div>
 
-      <info-table :items="getStudies" :matrices="[]" :is-case-study="true" />
+      <info-table :items="getStudies" :options="options" />
     </div>
   </div>
 </template>
@@ -59,11 +59,10 @@ export default {
   data: ({ $config: { name } }) => ({
     title: 'Case Studies',
     description: 'Browse the list of case studies below.',
-    itemsPerPage: '20',
-    page: 1,
-    search: '',
-    sortDesc: false,
-    sortBy: 'name'
+    options: {
+      sortBy: ['id'],
+      sortDesc: [true]
+    }
   }),
   head () {
     return {
