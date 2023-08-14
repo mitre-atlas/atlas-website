@@ -132,16 +132,6 @@ data:
     description: Days of Shecurity is a free-to-attend interactive conference for women in technology interested in cybersecurity. Join two of MITRE's AI researchers for their session "Introduction to AI Red Teaming" on May 19th in San Francisco.
     url: https://www.dayofshecurity.com/may-2023
     color: purple
-  - name: Black Hat
-    date: 2023-08-09
-    location: Las Vegas, NV & Virtual
-    description: >
-      Now in its 26th year, Black Hat USA returns to the Mandalay Bay Convention Center in Las Vegas with a 6-day program.
-      The event will open with four days of specialized cybersecurity trainings (August 5-10), with courses for all skill levels.
-      The two-day main conference (August 9-10) will feature more than 100 selected briefings, dozens of open-source tool demos,
-      networking and social events, and much more.
-    url: https://www.blackhat.com/us-23/
-    color: grey
   - name: AFCEA DC Tech Summit
     date: 2023-04-11
     location: Washington, DC
@@ -150,10 +140,18 @@ data:
       to convene 250-300 senior-level government and IT professionals (e.g. SES, Flag Officers, Directors, CIOs, C-level executives, Program and Project Managers). Dr. Liaghati will be speaking on the panel "The AI Advantage" with representatives from the U.S. Army and Department of Defense."
     url: https://afceadc.swoogo.com/techsummit23
     color: green
-  - name: GRF AI Summit
-    date: 2023-06-07
-    location: Washington, DC
+  - name: '"AI Risky Business: Hands-on AI Payload Analysis" @ Black Hat 2023'
+    date: 2023-08-09
+    location: Las Vegas, NV & Virtual
     description: >
-      From June 8-10, The Global Resilience Federation (GRF) Summit on AI Security & Trust will address concerns across sectors with content tailored for executives such as CIOs, CISOs and AI/ML experts to engage on effective approaches for managing security and trust in Artificial Intelligence and Machine Learning models.
-    url: https://www.grf.org/ai-security-2023
-    color: indigo
+      Join MITRE ATLAS' Dr. Christina Liaghati at BlackHat 2023 on August 9th and 10th for a talk on "AI Risky Business: Hands-on AI Payload Analysis."  During the sessions, they'll create vulnerable AI payloads and demonstrate their risk through the automated vulnerability scanning that powers the <a href='https://airisk.io'>AI Risk Database</a>.
+    url: https://www.blackhat.com/us-23/arsenal/schedule/#ai-risky-business-hands-on-ai-payload-analysis-33579
+    color: light-blue
+  - name: Generative AI Red Team Challenge @ DEF CON 2023
+    date: 2023-08-10
+    location: Las Vegas, NV
+    description: >
+      Join the MITRE AI Red Team at the AI Village from August 10-13 where we will be supporting the Generative AI Red Team Challenge (GRT).
+      GRT aims be the largest red teaming exercise ever for any group of AI models. Laptops will be provided for timed access to multiple large language models, with a capture the flag style point system to promote testing a wide range of harms.
+    url: https://www.airedteam.org/news/redefining-red-teaming
+    color: black
