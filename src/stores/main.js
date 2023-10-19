@@ -432,7 +432,6 @@ export const useMain = defineStore('main', {
       getDataObjectById: function (state) {
         return function (value) { // Returns the data object with the corresponding ID
           if (this.getDataObjects)
-            // console.log(this.getDataObjects.find(obj => obj['id'] === "AML.CS0001"))
             return this.getDataObjects.find(obj => obj['id'] === value)
         }
       },
