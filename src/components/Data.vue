@@ -1,40 +1,31 @@
 <template>
   <div>
-    <!-- <h3>{{ yamlData }}</h3> -->
     <h3>Welcome!</h3>
     <h3>{{ tactic }}</h3>
   </div>
 </template>
 
 <script>
-import { useYamlStore } from '../stores/data.js'
 import { computed, onMounted } from 'vue' // Import onMounted
 import { useMain } from '@/stores/main'
 
 
-// const tactic = computed(() => {
-//         console.log(main.getDataObjectById('AML.TA0001'))
-//         return main.getDataObjectById('AML.TA0001');
-//       });
-
-
 export default {
   setup() {
-    const yamlStore = useYamlStore()
     const main = useMain()
 
+
     // Load the YAML file when the component is mounted
-    // onMounted(async () => {
-    //   await main.init()
-    //   // await yamlStore.loadYamlFile('/atlas-data/dist/ATLAS.yaml')
+    onMounted(async () => {
+      await main.init()
     
-    // })
-    console.log(main.getDataObjectById('AML.TA0001'))
-    // Use a computed property to access the parsed YAML data
-    const yamlData = computed(() => yamlStore.yamlData)
+    })
+    const tactic = computed(() => {
+            return main.getDataObjectById('AML.TA0001');
+          });
 
     return {
-      yamlData
+      tactic
     }
   }
 }
