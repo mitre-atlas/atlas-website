@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h3>Welcome!</h3>
-    <h3>{{ tactic }}</h3>
+    <h3>This is a placeholder to show that we can access data from atlas-data:</h3>
+    <p>{{ tactic }}</p>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     
     })
     const tactic = computed(() => {
-            return main.getDataObjectById('AML.TA0001');
+            return main.getDataObjectById('AML.TA0001').description;
           });
 
     return {

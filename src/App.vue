@@ -1,13 +1,6 @@
 <template>
   <Layout>
-    <Data msg="Welcome to Your Vue.js App" />
-    <v-btn
-                class="mx-auto"
-                color="indigo darken-1"
-                depressed
-                nuxt
-
-              >wee</v-btn>
+    <Data /> <!-- Replace with page contents-->
   </Layout>
 </template>
 
