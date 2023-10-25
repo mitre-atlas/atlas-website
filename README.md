@@ -12,16 +12,16 @@ Once you have done this and have a terminal connection to the remote server, you
 
 ## Initial Git Setup
 
-This project uses the `atlas-data` project in this group as a Git submodule in `static/atlas-data`.
+This project uses the `atlas-data` project in this group as a Git submodule in `public/atlas-data`.
 
 Clone the repository using `git clone --recurse-submodules`, or if the repository is already cloned, run `git submodule init` then `git submodule update`.
 
 Once the submodule is available, run the following **once** to sparse checkout only the necessary files in the `dist` directory.
 
 ```bash
-git -C static/atlas-data/ config core.sparseCheckout true
-echo 'dist/*' >> .git/modules/static/atlas-data/info/sparse-checkout
-git submodule update --force --checkout static/atlas-data/
+git -C public/atlas-data/ config core.sparseCheckout true
+echo 'dist/*' >> .git/modules/public/atlas-data/info/sparse-checkout
+git submodule update --force --checkout public/atlas-data/
 
 ```
 
