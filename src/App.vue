@@ -1,14 +1,18 @@
 <template>
-  <Data msg="Welcome to Your Vue.js App" />
+  <Layout>
+    <Data /> <!-- Replace with page contents-->
+  </Layout>
 </template>
 
 <script>
 import Data from './components/Data.vue'
+import Layout from './layouts/default.vue'
+import { computed } from 'vue' 
 
 export default {
   name: 'App',
   components: {
-    Data
+    Data, Layout
   }
 }
 </script>

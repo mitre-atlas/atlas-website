@@ -1,0 +1,18 @@
+body {
+    background-color: #424242;
+}
+
+a {
+    text-decoration: none;
+    color: #1976d2;
+}
+
+p {
+    margin-bottom: 16px;
+}
+
+ol, ul {
+    padding-left: 24px;
+    padding-right: 0px;
+}
+
