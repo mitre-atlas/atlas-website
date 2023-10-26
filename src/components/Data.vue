@@ -21,7 +21,7 @@ export default {
     
     })
     const tactic = computed(() => {
-            return main.getDataObjectById('AML.TA0001').description;
+            return main.getDataObjectById('AML.TA0001');
           });
 
     return {
