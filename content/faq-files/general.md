@@ -21,4 +21,5 @@ There can be multiple techniques in each tactic category as there are many ways 
 
 The MITRE ATLAS™ version of the ATT&CK Navigator displays ATLAS techniques and allows users to create and view complex visualizations. In addition to the matrix, the Navigator also shows a frequency heat map of techniques used in ATLAS case studies.
 
+
  [1]: https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf "MITRE ATT&CK: Design and Philosophy"
