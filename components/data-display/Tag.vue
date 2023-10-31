@@ -35,9 +35,13 @@ export default {
     }
   },
   async fetch () {
-    // Retrieve events list
-    const termsContent = await this.$content('tags/mitigations').fetch()
-    this.terms = termsContent.tags
+    // Retrieve description list
+    const categoryDescriptions = await this.$content('descriptions/categories').fetch()
+    this.terms = categoryDescriptions.categories
+
+    const lifecycleDescriptions = await this.$content('descriptions/ML-lifecycle').fetch()
+    this.terms = this.terms.concat(lifecycleDescriptions['ML-lifecycle'])
+    console.log(this.terms)
   },
   computed: {
     /**

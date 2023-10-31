@@ -7,11 +7,15 @@ a {
 .case-study-type {
     border-color: #9e9e9e;
   }
-  
+
   .case-study-type:hover {
     border-color: #757575;
   }
-  
+
   .button-tooltip-container {
     display: flex;
   }
+
+ul {
+  list-style: unset;
+}

@@ -12,6 +12,17 @@
             <!-- eslint-disable vue/no-v-html -->
             <div class="tw-prose" v-html="$md.render(dataObject.description)" />
           </v-list-item>
+          <v-row v-if="('references' in dataObject) && dataObject.references.length > 0">
+            <v-col>
+              <page-section-title>Sources</page-section-title>
+
+              <ol class="mt-2 mb-3">
+                <li v-for="(source, i) in dataObject.references" :key="i" class="mb-2">
+                  <ref-source :source="source" />
+                </li>
+              </ol>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col cols="4">

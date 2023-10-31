@@ -39,6 +39,13 @@ $ npm run dev
 # build for production and launch server
 $ npm run build
 $ npm run start
+
+# Install documentation dependencies
+$ npm run install-docs
+# Generate documentation
+$ npm run docs:generate-md
+# Run documentation dev server
+$ npm run docs:dev
 ```
 
 ## Docker Setup

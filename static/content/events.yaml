@@ -144,14 +144,20 @@ data:
     date: 2023-08-09
     location: Las Vegas, NV & Virtual
     description: >
-      Join MITRE ATLAS' Dr. Christina Liaghati at BlackHat 2023 on August 9th and 10th for a talk on "AI Risky Business: Hands-on AI Payload Analysis."  During the sessions, they'll create vulnerable AI payloads and demonstrate their risk through the automated vulnerability scanning that powers the <a href='https://airisk.io'>AI Risk Database</a>.
-    url: https://www.blackhat.com/us-23/arsenal/schedule/#ai-risky-business-hands-on-ai-payload-analysis-33579
-    color: light-blue
-  - name: Generative AI Red Team Challenge @ DEF CON 2023
-    date: 2023-08-10
-    location: Las Vegas, NV
+      From June 8-10, The Global Resilience Federation (GRF) Summit on AI Security & Trust will address concerns across sectors with content tailored for executives such as CIOs, CISOs and AI/ML experts to engage on effective approaches for managing security and trust in Artificial Intelligence and Machine Learning models.
+    url: https://www.grf.org/ai-security-2023
+    color: indigo
+  - name: "FutureIT: AI, Data and Tech Leadership"
+    date: 2023-11-08
+    location: New York, NY
+    description: Join the ATLAS team at FutureIT New York to talk about ATLAS and AI threat awareness.
+    url: https://events.ciofutureit.com/event/new-york/
+    color: light-green
+  - name: HITCON 2023
+    date: 2023-11-15
+    location: Taipei, Taiwan
     description: >
-      Join the MITRE AI Red Team at the AI Village from August 10-13 where we will be supporting the Generative AI Red Team Challenge (GRT).
-      GRT aims be the largest red teaming exercise ever for any group of AI models. Laptops will be provided for timed access to multiple large language models, with a capture the flag style point system to promote testing a wide range of harms.
-    url: https://www.airedteam.org/news/redefining-red-teaming
-    color: black
+      Hacks in Taiwan Conference (HITCON) is technology-orientated cybersecurity conference.
+      ATLAS will present on AI threat awareness.
+    url: https://cfp2023.hitcon.org/en/
+    color: grey

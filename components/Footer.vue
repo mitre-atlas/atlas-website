@@ -21,7 +21,6 @@
             />
           </a>
         </v-col>
-
         <v-col cols="12" sm="8">
           <v-row justify="space-between" align="center">
             <v-card-text
@@ -32,7 +31,6 @@
               trademark and registered trademark of The MITRE Corporation.
             </v-card-text>
           </v-row>
-
           <v-row
             :class="`mt-n7 mb-2 text-center ${mobile ? 'flex-row' : ''}`"
             justify="center"

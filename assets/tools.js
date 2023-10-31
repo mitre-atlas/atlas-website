@@ -270,4 +270,5 @@ export function setMetaData (studyData, studySchemaVersion) {
   if (studyData.study['case-study-type'] === 'exercise') {
     studyData.study.reporter = ''
   }
+  return studyData.meta
 }

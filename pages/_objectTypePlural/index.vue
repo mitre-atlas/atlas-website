@@ -23,19 +23,6 @@
         </pre>
       </p>
 
-      <!-- Temporary banner for mitigations status -->
-      <p v-if="objectTypePlural == 'mitigations'">
-        <v-banner outlined rounded>
-          <v-icon slot="icon" color="info">
-            mdi-comment-alert-outline
-          </v-icon>
-
-          This draft of mitigations are defined based on current ATLAS case studies.
-          <br>
-          Feedback and contributions are welcome - please join the <a href="https://mitreatlas.slack.com/archives/C050WG4PNES">#mitigations channel on Slack</a>.
-        </v-banner>
-      </p>
-
       <p>
         The table below lists {{ objectTypePlural }} from {{ mitreTitle }}.
         Scroll through the table or use the filter to narrow down the information.

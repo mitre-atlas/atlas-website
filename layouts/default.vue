@@ -4,7 +4,7 @@
       <Header />
 
       <v-main>
-        <announcement-banner />
+        <!-- <announcement-banner /> -->
         <v-container>
           <breadcrumbs />
           <Nuxt />
@@ -15,7 +15,3 @@
     </client-only>
   </v-app>
 </template>
-
-<script>
-export default {}
-</script>

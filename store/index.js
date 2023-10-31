@@ -1,5 +1,6 @@
 /* eslint-disable */
 const fs = require('fs').promises
+const path = require('path')
 const yaml = require('js-yaml')
 import {
   dataObjectToPluralTitle,
@@ -72,7 +73,11 @@ export const state = () => ({
   /**
    * Accepted values for the _objectTypePlural route
    */
-  objectTypePluralValues: []
+  objectTypePluralValues: [],
+  /**
+   * Filepaths to Excel versions of ATLAS data, within the static/excel-files directory
+   */
+  excelFilepaths: []
 })
 
 /**
@@ -474,7 +479,11 @@ export const getters = {
   /**
    * Retrieves the array of accepted _objectTypePlural values
    */
-  getObjectTypePluralValues: state => state.objectTypePluralValues
+  getObjectTypePluralValues: state => state.objectTypePluralValues,
+  /**
+   * Retrieves the array of Excel filepaths (from /static/ as /)
+   */
+  getExcelFilepaths: state => state.excelFilepaths
 }
 
 /**
@@ -540,7 +549,14 @@ export const mutations = {
    */
   SET_OBJECT_TYPE_PLURAL_VALUES(state, payload) {
     state.objectTypePluralValues = [...payload]
-  }
+  },
+  /**
+   * Sets the Excel filepaths as read from the static/excel-files directory
+   * @param {object} payload - filepaths
+   */
+  SET_EXCEL_FILEPATHS(state, payload) {
+    state.excelFilepaths = [...payload]
+  },
 }
 
 /**
@@ -559,10 +575,14 @@ export const actions = {
       'utf-8'
     )
 
+    // Directory name from /static
+    const excelDir = 'excel-files'
+    const getExcelFilepaths = await fs.readdir(`static/${excelDir}`)
+
     // Get all contents, then parse and commit payload
-    const promise = Promise.resolve(getAtlasData).then(contents => {
+    const promise = Promise.all([getAtlasData, getExcelFilepaths]).then(contents => {
       // Parse YAML
-      const data = yaml.load(contents)
+      const data = yaml.load(contents[0])
 
       // Collect top-level data objects under the key 'objects'
       const { id, name, version, matrices, ...objects } = data
@@ -699,6 +719,16 @@ export const actions = {
 
       // Commit the fully populated data
       commit('SET_ATLAS_DATA', result)
+
+      // Capture paths to the Excel versions of ATLAS data
+      const excelFiles = contents[1].filter(el => path.extname(el) === '.xlsx')
+      // // Construct relative paths for use from pages/resources/info
+      const relativeToResourcesInfoExcelFiles = excelFiles.map((f) => {
+        // Construct path to file as served via the project root
+        // https://v2.nuxt.com/docs/directory-structure/static/
+        return path.join(excelDir, f)
+      })
+      commit('SET_EXCEL_FILEPATHS', relativeToResourcesInfoExcelFiles)
     })
 
     return promise

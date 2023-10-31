@@ -4,7 +4,7 @@
       <Header />
 
       <v-main>
-        <announcement-banner />
+        <!-- <announcement-banner /> -->
         <v-container>
           <data-side-nav />
           <v-container>
