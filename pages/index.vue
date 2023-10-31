@@ -3,28 +3,14 @@
     <v-row class="tw-prose tw-max-w-none">
       <v-col cols="12">
         <div class="my-10">
-          <p>
-            {{ mitreTitle }} ({{ longName }}), is a knowledge base of adversary
-            tactics, techniques, and case studies for machine learning (ML)
-            systems based on real-world observations, demonstrations from ML red
-            teams and security groups, and the state of the possible from
-            academic research. {{ shortName }} is modeled after the
-            <a
+          <p class="pb-5">
+
+              {{ mitreTitle }} ({{ longName }}) is a globally accessible, living knowledge base of adversary tactics and techniques based on real-world attack observations and realistic demonstrations from AI red teams and security groups. There are a growing number of vulnerabilities in AI-enabled systems, as <NuxtLink to="resources/adversarial-ml-101">the incorporation of AI increases the attack surface of existing systems</NuxtLink> beyond those of traditional cyber-attacks. We developed ATLAS to raise awareness of these unique and evolving vulnerabilities, as the global community starts to incorporate AI into more systems. ATLAS is modeled after <a
               href="https://attack.mitre.org"
-            >MITRE ATT&CK<sup>&reg;</sup> framework</a>
-            and its tactics and techniques are complementary to those in ATT&CK.
+            >the MITRE ATT&CK<sup>&reg;</sup> framework</a> and its tactics, techniques, and procedures (TTPs) are complementary to those in ATT&CK.
+
           </p>
 
-          <p>
-            {{ shortName }} enables researchers to navigate the landscape of
-            <NuxtLink to="resources/adversarial-ml-101">
-              threats to machine learning systems
-            </NuxtLink>. ML is increasingly used across a variety of industries. There are
-            a growing number of vulnerabilities in ML, and its use increases the
-            attack surface of existing systems. We developed {{ shortName }} to
-            raise awareness of these threats and present them in a way familiar
-            to security researchers.
-          </p>
           <v-img
             :src="require('~/assets/ATLAS_tm_black.png')"
             height="60"
@@ -34,13 +20,9 @@
         </div>
         <div>
           <p>
-            The {{ shortName }} Matrix below shows the progression of tactics
-            used in attacks as columns from left to right, with ML techniques
-            belonging to each tactic below.
-            <span class="attack-and">&</span>&nbsp;indicates an adaptation from
-            ATT&CK. Click on links to learn more about each item, or view
-            {{ shortName }} tactics and techniques using the links at the top
-            navigation bar.
+
+              The {{ shortName }} Matrix below shows the general progression of attack tactics as column headers from left to right, with attack techniques organized below each tactic. <span class="attack-and">&</span>&nbsp;indicates a tactic or technique directly adapted from from ATT&CK. Click on the blue links to learn more about each item, or search and view more details about {{ shortName }}  tactics and techniques using the links in the top navigation bar.
+
           </p>
         </div>
       </v-col>
