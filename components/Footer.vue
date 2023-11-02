@@ -46,6 +46,7 @@
                 text
                 nuxt
                 :to="button.to"
+                :onclick="button.action"
                 v-text="button.text"
               />
             </v-col>
@@ -95,7 +96,8 @@ export default {
     buttons: [
       { text: 'Contact', to: '/resources/contact', important: true },
       { text: 'Privacy Policy', to: '/resources/privacy-policy' },
-      { text: 'Terms of Use', to: '/resources/terms' }
+      { text: 'Terms of Use', to: '/resources/terms' },
+      { text: 'Manage Cookies', action: "Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')" }
     ]
   }),
   computed: {
@@ -155,3 +157,6 @@ export default {
   }
 }
 </script>
+<style>
+.osano-cm-widget { display: none; }
+</style>

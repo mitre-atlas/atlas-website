@@ -3,16 +3,7 @@
     <page-title>{{ title }}</page-title>
 
     <p class="tw-prose tw-max-w-none">
-      The {{ matrixId }} Matrix ({{ getMatricesName }}) below shows the
-      progression of tactics used in attacks as columns from left to right, with
-      ML techniques belonging to each tactic below.
-      <span
-        v-if="populatedTactics.some(o => 'ATT&CK-reference' in o)"
-      ><span class="attack-and">&</span>&nbsp;indicates an adaptation from
-        ATT&CK.</span>
-      Click on links to learn more about each item, or view
-      {{ matrixId }} tactics and techniques using the links at the top
-      navigation bar.
+      The {{ matrixId }} Matrix below shows the general progression of attack tactics as column headers from left to right, with attack techniques organized below each tactic. <span class="attack-and">&</span>&nbsp;indicates a tactic or technique directly adapted from from ATT&CK. Click on the blue links to learn more about each item, or search and view more details about {{ shortName }}  tactics and techniques using the links in the top navigation bar.
     </p>
     <v-row class="mt-10">
       <matrix-attack-style :tactics="populatedTactics" />
