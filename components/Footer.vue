@@ -36,19 +36,42 @@
             justify="center"
           >
             <v-col
-              v-for="button in mainButtons"
-              :key="button.text"
               :class="buttonClass"
               cols="auto"
             >
+              <!-- External link -->
               <v-btn
-                :outlined="button.outline"
+                text
+                href="https://www.mitre.org/privacy-policy"
+                target="_blank"
+              >
+                Privacy Policy
+              </v-btn>
+            </v-col>
+            <v-col
+              :class="buttonClass"
+              cols="auto"
+            >
+              <!-- Internal link -->
+              <v-btn
                 text
                 nuxt
-                :to="button.to"
-                :onclick="button.action"
-                v-text="button.text"
-              />
+                to="/resources/terms"
+              >
+                Terms of Use
+              </v-btn>
+            </v-col>
+            <v-col
+              class="buttonClass"
+              cols="auto"
+            >
+              <!-- Osano cookie management popup -->
+              <v-btn
+                text
+                @click="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
+              >
+                Manage Cookies
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -60,8 +83,6 @@
             align="center"
           >
             <v-col
-              v-for="button in importantButtons"
-              :key="button.text"
               class="text-center"
               :class="buttonClass"
               cols="auto"
@@ -71,9 +92,10 @@
                 color="indigo darken-1"
                 depressed
                 nuxt
-                :to="button.to"
-                v-text="button.text"
-              />
+                to="resources/contact"
+              >
+                Contact
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -89,16 +111,6 @@
 export default {
   name: 'Footer',
   data: () => ({
-    /**
-     * Array of objects of the buttons present in the footer
-     * @type {Array}
-     */
-    buttons: [
-      { text: 'Contact', to: '/resources/contact', important: true },
-      { text: 'Privacy Policy', to: '/resources/privacy-policy' },
-      { text: 'Terms of Use', to: '/resources/terms' },
-      { text: 'Manage Cookies', action: "Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')" }
-    ]
   }),
   computed: {
     /**
@@ -114,24 +126,6 @@ export default {
      */
     buttonClass () {
       return this.mobile ? 'px-1 py-1' : 'px-1'
-    },
-    /**
-     * Filters the buttons not listed as important
-     * @returns {Array}
-     */
-    mainButtons () {
-      return this.buttons.filter(function (button) {
-        return !button.important
-      })
-    },
-    /**
-     * Filters the buttons listed as important
-     * @returns {Array}
-     */
-    importantButtons () {
-      return this.buttons.filter(function (button) {
-        return button.important
-      })
     },
     /**
      * Gets the logo to put in the footer
@@ -158,5 +152,7 @@ export default {
 }
 </script>
 <style>
-.osano-cm-widget { display: none; }
+.osano-cm-widget {
+  display: none;
+}
 </style>
