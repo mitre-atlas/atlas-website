@@ -1,6 +1,8 @@
 <template>
   <Layout>
-    <Data /> <!-- Replace with page contents-->
+    <div class="row flex-center">
+      <router-view />
+    </div>
   </Layout>
 </template>
 
