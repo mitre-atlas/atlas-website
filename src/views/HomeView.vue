@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <hello-world />
 </template>
 
@@ -15,4 +15,4 @@ export default defineComponent({
     HelloWorld,
   },
 });
-</script> -->
+</script>

@@ -2,7 +2,7 @@ Setup similar to Vue 2 repo--see below
 
 ## Prerequisites
 
-We recommend using Visual Studio Code (or VScode, as the cool kids call it) with a remote connection into a Ubuntu-based container. You can set up a container by following [these instructions](https://ai-platform.pages.mitre.org/compute-resources/gpu-server-setup/).
+We recommend using Visual Studio Code (or VScode, as the cool kids call it) with a remote connection into a Ubuntu-based container. You can set up a container by following [these instructions](https://ai-platform.pages.mitre.org/compute-resources/other/gpu-server-setup/).
 
 Once you have done this and have a terminal connection to the remote server, you can execute the following instructions:
 
