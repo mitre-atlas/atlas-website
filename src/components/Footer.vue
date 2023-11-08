@@ -1,11 +1,9 @@
 <template>
-  <v-footer class="pa-0" id="footer" app :absolute="!display.mobile">
-    <v-card class="rounded-0" border="0" width="100%" color="header">
-      <!-- MTIRE Navy #0D2F4F -->
-
+  <v-footer class="pa-0" app :absolute="!display.mobile">
+    <v-card class="pa-3 rounded-0" width="100%" color="navy">
       <v-row justify="center" align="center" no-gutters>
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
-          <a href="mitre.org" target="_blank">
+          <a href="https://www.mitre.org" target="_blank">
             <img
               src="../assets/mitre-logo-white.svg"
               :height="!mobile ? 45 : 25"
@@ -15,10 +13,9 @@
         </v-col>
 
         <v-col cols="12" sm="8">
-          <v-row justify="space-between" align-self="center" no-gutters>
+          <v-row justify="space-between" align="center">
             <v-card-text
-              style="color: #bababa"
-              :class="`text-center text-white-50 ${mobile ? 'pb-6' : 'pt-5'}`"
+              :class="`text-center white--text ${mobile ? 'pb-6' : 'pt-5'}`"
             >
               MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a
               trademark and registered trademark of The MITRE Corporation.
@@ -26,42 +23,62 @@
           </v-row>
 
           <v-row
-            :class="`mt-n3 text-center ${mobile ? 'flex-column' : ''}`"
+            :class="`mt-n5 text-center ${mobile ? 'flex-row' : ''}`"
             justify="center"
-            no-gutters
           >
             <v-col
-              v-for="button in mainButtons"
-              :key="button.text"
               :class="buttonClass"
               cols="auto"
             >
+              <!-- External link -->
               <v-btn
-                :outlined="button.outline"
-                variant="text"
-                :to="button.to"
-
-              >{{ button.text }}</v-btn>
+                text
+                elevation="0"
+                color="navy"
+                href="https://www.mitre.org/privacy-policy"
+                target="_blank"
+              >
+                Privacy Policy
+              </v-btn>
+            </v-col>
+            <v-col
+              :class="buttonClass"
+              cols="auto"
+            >
+              <!-- Internal link -->
+              <v-btn
+                text
+                depressed
+                elevation="0"
+                color="navy"
+                to="/terms"
+              >
+                Terms of Use
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
 
         <v-col cols="12" sm="2">
-          <v-row :class="`text-center ${mobile ? 'mb-5' : ''}`" justify="center" align="center">
-              <v-col
-              v-for="button in importantButtons"
-              :key="button.text"
+          <v-row
+            :class="`text-center ${mobile ? 'mb-5' : ''}`"
+            justify="center"
+            align="center"
+          >
+            <v-col
+              class="text-center"
               :class="buttonClass"
               cols="auto"
             >
               <v-btn
                 class="mx-auto"
-                color="indigo darken-1"
+                elevation="0"
+                color="blue"
                 depressed
-                nuxt
-                :to="button.to"
-
-              >{{ button.text }} </v-btn>
+                to="resources/contact"
+              >
+                Contact
+              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -75,12 +92,6 @@ import { useDisplay } from "vuetify";
 import { computed } from 'vue' 
 
 const display = useDisplay();
-
-const buttons = [
-  { text: "Contact", to: "/resources/contact", important: true },
-  { text: "Privacy Policy", to: "/resources/privacy-policy" },
-  { text: "Terms of Use", to: "/resources/terms" },
-];
 
 const mobile = computed(() => {
   return display.mobile.value;
