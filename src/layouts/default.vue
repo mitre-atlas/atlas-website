@@ -1,11 +1,9 @@
 <template>
     <v-app>
         <v-main>
-            <v-container class="my-4">
                 <slot />
-            </v-container>
         </v-main>
-        <!-- <Footer /> -->
+        <Footer />
     </v-app>
 </template>
 
@@ -16,6 +14,7 @@
 
   
   import Footer from '@/components/Footer.vue'
+  import Header from '@/components/Header.vue'
   import { useMain } from "@/stores/main"
   import { computed } from 'vue' 
   const mainStore = useMain();
