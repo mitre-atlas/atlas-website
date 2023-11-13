@@ -73,7 +73,7 @@
               <v-btn
                 class="mx-auto"
                 elevation="0"
-                color="blue"
+                variant="outlined"
                 depressed
                 to="resources/contact"
               >
