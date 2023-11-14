@@ -106,7 +106,7 @@
     </v-toolbar-items>
   </v-app-bar>
 </template>
-<script setup>
+<script setup lang="ts">
 
   /**
    * Header navigation bar, present on every page.
@@ -213,7 +213,7 @@
     });
 
     // Sandwich data links between beginning and end links
-    return linksBeginning.value.concat(navLinks, dataLinks, linksEnding);
+    return linksBeginning.value.concat(navLinks, dataLinks).concat(linksEnding);
   });
 
   // /**
