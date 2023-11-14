@@ -1,11 +1,9 @@
 <template>
     <v-app>
+        <Header />
         <v-main>
-            <v-container class="my-4">
-                <slot />
-            </v-container>
+            <slot />
         </v-main>
-        <!-- <Footer /> -->
     </v-app>
 </template>
 
@@ -13,9 +11,9 @@
   
 <script setup>
   const name = "Default";
-
   
   import Footer from '@/components/Footer.vue'
+  import Header from '@/components/Header.vue'
   import { useMain } from "@/stores/main"
   import { computed } from 'vue' 
   const mainStore = useMain();
