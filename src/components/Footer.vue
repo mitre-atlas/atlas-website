@@ -32,14 +32,12 @@
             >
               <!-- External link -->
               <v-btn
-                text
+                text="Privacy Policy"
                 elevation="0"
                 color="navy"
                 href="https://www.mitre.org/privacy-policy"
                 target="_blank"
-              >
-                Privacy Policy
-              </v-btn>
+              />
             </v-col>
             <v-col
               :class="buttonClass"
@@ -47,14 +45,12 @@
             >
               <!-- Internal link -->
               <v-btn
-                text
+                text="Terms of Use"
                 depressed
                 elevation="0"
                 color="navy"
                 to="/terms"
-              >
-                Terms of Use
-              </v-btn>
+              />
             </v-col>
           </v-row>
         </v-col>
@@ -71,14 +67,13 @@
               cols="auto"
             >
               <v-btn
+                text="Contact"
                 class="mx-auto"
                 elevation="0"
                 variant="outlined"
                 depressed
                 to="resources/contact"
-              >
-                Contact
-              </v-btn>
+              />
             </v-col>
           </v-row>
         </v-col>
@@ -87,7 +82,7 @@
   </v-footer>
 </template>
 
-<script setup>
+<script setup lang="ts" >
 import { useDisplay } from "vuetify";
 import { computed } from 'vue' 
 
