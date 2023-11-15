@@ -92,16 +92,7 @@ const mobile = computed(() => {
   return display.mobile.value;
 });
 const buttonClass = computed(() => {
-  return mobile.value ? "px-1 py-1" : "px-1";
+  return mobile.value ? "px-1 py-5" : "px-1";
 });
-const mainButtons = computed(() => {
-  return buttons.filter(function (button) {
-    return !button.important;
-  });
-});
-const importantButtons = computed(() => {
-  return buttons.filter(function (button) {
-    return button.important;
-  });
-});
+
 </script>
