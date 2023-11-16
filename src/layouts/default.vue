@@ -4,6 +4,7 @@
         <v-main>
             <slot />
         </v-main>
+        <Footer />
     </v-app>
 </template>
 
@@ -17,10 +18,6 @@
   import { useMain } from "@/stores/main"
   import { computed } from 'vue' 
   const mainStore = useMain();
-  
-
-  
-  // const populatedTactics = computed(() => Object.values(mainStore.getDataObjectsByType('tactics', 'ATLAS')))
   
   </script>
   
