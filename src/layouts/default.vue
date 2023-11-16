@@ -19,10 +19,6 @@
   import { computed } from 'vue' 
   const mainStore = useMain();
   
-
-  
-  // const populatedTactics = computed(() => Object.values(mainStore.getDataObjectsByType('tactics', 'ATLAS')))
-  
   </script>
   
   <style>
