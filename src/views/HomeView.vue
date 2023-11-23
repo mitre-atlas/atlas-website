@@ -13,12 +13,11 @@
         style="margin-bottom: 5%; text-align: left"
       >
         <v-col :cols="`${mobile ? 12 : 9}`">
-          <h3
-            style="font-weight: bold;"
-            class="black--text pt-8 p-10 mt-8"
+          <div
+            class="black--text pt-8 p-10 mt-8 text-subtitle-1" 
           >
-            MITRE ATLAS™ (Adversarial Threat Landscape for Artificial-Intelligence Systems)  is a globally accessible, living knowledge base of adversary tactics and techniques against Al-enabled svstems based on real-world attack observations and realistic demonstrations from Al red teams and security groups. ATLAS is modeled after and complementary to MITRE ATT&CK®, raising awareness of the rapidly evolving vulnerabilities of Al-enabled systems as they extend beyond cyber.
-          </h3>
+            MITRE ATLAS™ (Adversarial Threat Landscape for Artificial-Intelligence Systems) is a globally accessible, living knowledge base of adversary tactics and techniques against Al-enabled svstems based on real-world attack observations and realistic demonstrations from Al red teams and security groups. ATLAS is modeled after and complementary to MITRE ATT&CK®, raising awareness of the rapidly evolving vulnerabilities of Al-enabled systems as they extend beyond cyber.
+        </div>
         </v-col>
         <v-col class="pt-10 pr-12 pl-12 pb-10" :cols="`${mobile ? 12 : 3}`">
           <img
