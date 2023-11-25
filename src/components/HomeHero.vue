@@ -11,7 +11,7 @@
           style="font-weight: bold; ; text-align: left"
           class="white--text text-h1"
         >
-          MITRE ATLAS
+          MITRE ATLAS™
         </h1>
         <h2
           class="lightBlue--text text-h4"
