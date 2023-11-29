@@ -106,7 +106,7 @@
     </v-toolbar-items>
   </v-app-bar>
 </template>
-<script setup lang="ts">
+<script setup>
 
   /**
    * Header navigation bar, present on every page.
