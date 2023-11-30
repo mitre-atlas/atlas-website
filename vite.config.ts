@@ -6,7 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: 'https://advml.pages.mitre.org/atlas-website-vue3/',
+  base: '/atlas-website-vue3/',
   optimizeDeps: {
     esbuildOptions: {
       target: "esnext",
