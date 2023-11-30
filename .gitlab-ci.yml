@@ -15,7 +15,7 @@ pages:
     - npm install
     - npm run build
     # Make relevant atlas-data files available to GitLab Pages
-    - mv atlas-data public
+    - mv dist/atlas-data dist/public
     - cp -a dist/. public/
   artifacts:
     paths:
