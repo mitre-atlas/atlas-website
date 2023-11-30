@@ -1,13 +1,5 @@
 image: node:latest
 
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
-cache:
-  key: $CI_COMMIT_REF_SLUG
-  paths:
-    - .npm/
-
 default:
   before_script:
     # Install and cache dependencies
@@ -18,10 +10,6 @@ pages:
   script:
     # Set the base url
     - yarn run build --base=$CI_PAGES_URL
-    # Configure to set Navigator URL, etc.
-    - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
-    # Increase available heap space for npm run generate
-    - export NODE_OPTIONS="--max_old_space_size=8192"
     # Generate static files
     - npm run build
     # Make static files available to GitLab Pages
