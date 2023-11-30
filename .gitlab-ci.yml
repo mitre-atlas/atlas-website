@@ -16,6 +16,8 @@ default:
 pages:
   stage: test
   script:
+    # Set the base url
+    - yarn run build --base=$CI_PAGES_URL
     # Configure to set Navigator URL, etc.
     - echo "NAVIGATOR_URL=https://mitre-atlas.github.io/atlas-navigator" > .env
     # Increase available heap space for npm run generate
