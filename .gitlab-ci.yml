@@ -1,8 +1,5 @@
 image: node:latest
 
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
 pages:
   stage: deploy
   cache:
@@ -17,7 +14,7 @@ pages:
     - yarn run build --base=$CI_PAGES_URL
     - npm install
     - npm run build
-
+    - cp -a dist/. public/
   artifacts:
     paths:
       - public
@@ -25,7 +22,6 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
     - pages
-
 
 default:
   before_script:
