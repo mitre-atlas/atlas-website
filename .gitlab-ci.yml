@@ -26,10 +26,6 @@ pages:
   tags:
     - pages
 
-notifications:
-  email:
-    on_success: never
-    on_failure: never
 
 default:
   before_script:
