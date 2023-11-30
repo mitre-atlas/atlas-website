@@ -1,27 +1,48 @@
 image: node:latest
 
+pages:
+  stage: deploy
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - node_modules/
+  script:
+    # Set the base url
+    - yarn run build --base=$CI_PAGES_URL
+    - npm install
+    - npm run build
+    - cp -a dist/. public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 default:
   before_script:
     # Install and cache dependencies
     - npm install --cache .npm --prefer-offline
 
-pages:
-  stage: test
-  script:
-    # Set the base url
-    - yarn run build --base=$CI_PAGES_URL
-    # Generate static files
-    - npm run build
-    # Make static files available to GitLab Pages
-    - mv dist public
+# pages:
+#   stage: test
+#   script:
+#     # Set the base url
+#     - yarn run build --base=$CI_PAGES_URL
+#     # Generate static files
+#     - npm run build
+#     # Make static files available to GitLab Pages
+#     - mv dist public
     
-  artifacts:
-    paths:
-      - public
-  tags:
-    - pages
-  only:
-    - develop
+#   artifacts:
+#     paths:
+#       - public
+#   tags:
+#     - pages
+#   only:
+#     - develop
 
 # # Functions that should be executed before the build script is run
 # before_script:
