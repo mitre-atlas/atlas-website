@@ -14,6 +14,8 @@ pages:
     - yarn run build --base=$CI_PAGES_URL
     - npm install
     - npm run build
+    # Make relevant atlas-data files available to GitLab Pages
+    - mv atlas-data public
     - cp -a dist/. public/
   artifacts:
     paths:
@@ -27,44 +29,3 @@ default:
   before_script:
     # Install and cache dependencies
     - npm install --cache .npm --prefer-offline
-
-# pages:
-#   stage: test
-#   script:
-#     # Set the base url
-#     - yarn run build --base=$CI_PAGES_URL
-#     # Generate static files
-#     - npm run build
-#     # Make static files available to GitLab Pages
-#     - mv dist public
-    
-#   artifacts:
-#     paths:
-#       - public
-#   tags:
-#     - pages
-#   only:
-#     - develop
-
-# # Functions that should be executed before the build script is run
-# before_script:
-#   # Install Dependencies
-#   - npm install
-# pages:
-#   script:
-#     # Build site files
-#     - npm run build
-#     # Make files available to GitLab Pages
-#     - mv dist public
-#   stage: test
-#   artifacts:
-#     paths:
-#       # The folder that contains the files to be exposed at the Page URL
-#       - public
-#   rules:
-#     # This ensures that only pushes to the default branch will trigger
-#     # a pages deploy
-#     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-#   tags:
-#   - pages
-
