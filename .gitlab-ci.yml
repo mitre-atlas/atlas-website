@@ -1,5 +1,8 @@
 image: node:latest
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 pages:
   stage: deploy
   cache:
@@ -14,9 +17,7 @@ pages:
     - yarn run build --base=$CI_PAGES_URL
     - npm install
     - npm run build
-    # Make relevant atlas-data files available to GitLab Pages
-    - mv dist/atlas-data dist/public
-    - cp -a dist/. public/
+
   artifacts:
     paths:
       - public
@@ -24,6 +25,11 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
     - pages
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
 
 default:
   before_script:
