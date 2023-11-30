@@ -10,8 +10,6 @@ pages:
     paths:
       - node_modules/
   script:
-    # Set the base url
-    - yarn run build --base=$CI_PAGES_URL
     - npm install
     - npm run build
     - cp -a dist/. public/
