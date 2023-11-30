@@ -563,8 +563,8 @@ export const useMain = defineStore('main', {
        */
       async init() {
         // Retrieve the threat matrix YAML data and populate store upon start
-        const response = await fetch('public/atlas-data/dist/ATLAS.yaml')
-        const yamlString = await response.text()
+        const atlasData = await fetch('/public/atlas-data/dist/ATLAS.yaml')
+        const yamlString = await atlasData.text()
 
         // Get all contents, then parse and commit payload
         const promise = Promise.resolve(yamlString).then(contents => {
