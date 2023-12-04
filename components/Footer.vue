@@ -68,7 +68,7 @@
               <!-- Osano cookie management popup -->
               <v-btn
                 text
-                @click="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
+                onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
               >
                 Manage Cookies
               </v-btn>
