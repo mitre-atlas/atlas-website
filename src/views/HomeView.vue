@@ -12,9 +12,10 @@
         width="100%"
         style="margin-bottom: 5%; text-align: left"
       >
-        <v-col :cols="`${mobile ? 12 : 9}`">
+        <v-col :cols="mobile ? 12 : 9">
+
           <div
-            class="black--text pt-8 p-10 mt-8 text-subtitle-1" 
+            class="text-black pt-8 p-10 mt-8 text-subtitle-1" 
           >
             MITRE ATLAS™ (Adversarial Threat Landscape for Artificial-Intelligence Systems) is a globally accessible, living knowledge base of adversary tactics and techniques against Al-enabled svstems based on real-world attack observations and realistic demonstrations from Al red teams and security groups. ATLAS is modeled after and complementary to MITRE ATT&CK®, raising awareness of the rapidly evolving vulnerabilities of Al-enabled systems as they extend beyond cyber.
         </div>
@@ -32,17 +33,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 
-// Components
 import HomeHero from '../components/HomeHero.vue';
+import { useDisplay } from 'vuetify'
 
-export default defineComponent({
-  name: 'HomeView',
+// mobile boolean for contitional rendering
+const { mobile } = useDisplay()
 
-  components: {
-    HomeHero,
-  },
-});
 </script>

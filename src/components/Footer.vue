@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="pa-0" app :absolute="!display.mobile">
+  <v-footer class="pa-0" app :absolute="!mobile">
     <v-card class="pa-3 rounded-0" width="100%" color="navy">
       <v-row justify="center" align="center" no-gutters>
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
@@ -15,7 +15,7 @@
         <v-col cols="12" sm="8">
           <v-row justify="space-between" align="center">
             <v-card-text
-              :class="`text-center white--text ${mobile ? 'pb-6' : 'pt-5'}`"
+              :class="`text-center text-white ${mobile ? 'pb-6' : 'pt-5'}`"
             >
               MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a
               trademark and registered trademark of The MITRE Corporation.
@@ -27,7 +27,7 @@
             justify="center"
           >
             <v-col
-              :class="buttonClass"
+              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <!-- External link -->
@@ -40,7 +40,7 @@
               />
             </v-col>
             <v-col
-              :class="buttonClass"
+              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <!-- Internal link -->
@@ -63,7 +63,7 @@
           >
             <v-col
               class="text-center"
-              :class="buttonClass"
+              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <v-btn
@@ -83,16 +83,8 @@
 </template>
 
 <script setup lang="ts" >
-import { useDisplay } from "vuetify";
-import { computed } from 'vue' 
+import { useDisplay } from 'vuetify'
 
-const display = useDisplay();
-
-const mobile = computed(() => {
-  return display.mobile.value;
-});
-const buttonClass = computed(() => {
-  return mobile.value ? "px-1 py-5" : "px-1";
-});
-
+// mobile boolean for contitional rendering
+const { mobile } = useDisplay()
 </script>

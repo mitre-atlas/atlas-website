@@ -1,20 +1,19 @@
 <template>
   <div>
     <v-card
-      class="pa-12"
+      class="pa-12 rounded-0"
       color="navy"
-      tile
       width="100%"
     >
       <div class="ml-12 mr-12 mt-8 mb-6">
         <h1
           style="font-weight: bold; ; text-align: left"
-          class="white--text text-h1"
+          :class="`text-white ${mobile ? 'text-h2' : 'text-h1'}`"
         >
           MITRE ATLAS™
         </h1>
         <h2
-          class="lightBlue--text text-h4"
+        :class="`text-lightBlue ${mobile ? 'text-h6' : ' text-h4'}`"
           style="font-weight: bold; text-align: left"
         >
           NAVIGATING THE LANDSCAPE OF THREATS <br>
@@ -26,13 +25,8 @@
 </template>
 
 <script setup lang='ts'>
-import { useDisplay } from "vuetify";
-import { computed } from 'vue' 
+import { useDisplay } from 'vuetify'
 
-const display = useDisplay();
-
-const mobile = computed(() => {
-  return display.mobile.value;
-});
-
+// mobile boolean for contitional rendering
+const { mobile } = useDisplay()
 </script>

@@ -7,7 +7,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-// Define main theme
+// Default colors + mitre brand colors
 const mainTheme = {
   dark: false,
   colors: {
