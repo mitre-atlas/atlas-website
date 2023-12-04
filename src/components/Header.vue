@@ -96,7 +96,6 @@
               text
               exact
               class="px-6 text-button"
-              nuxt
               style="text-transform: capitalize !important"
               v-text="link.name"
             />
