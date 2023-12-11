@@ -9,7 +9,6 @@ const dotPathFixPlugin = () => ({
     system.middlewares.use((req,_,next) => {
       const reqPath = req.url.split('?', 2)[0];
       if (req.url.includes('AML.')) {
-        console.log(req.url)
         // Construct new route path without dot
         const reqPath = req.url.split('.').join("");
         req.url = reqPath;
