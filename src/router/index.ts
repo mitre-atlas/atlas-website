@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
+import IDView from '../views/IDView.vue'
 
 const routes = [
   {
@@ -14,7 +15,11 @@ const routes = [
     component: TermsView,
   },
   {
-      path: '/:catchAll(.*)*',
+    path: '/:objectTypePlural/:id',
+    component: IDView,
+  },
+  {
+      path: '/:catchAll(.*)*', 
       component: ErrorNotFoundView,
   },
 ]
