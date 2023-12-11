@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "jsonschema": "^1.4.1",
     "markdown-it": "^14.0.0",
     "pinia": "^2.1.6",
     "pluralize": "^8.0.0",
