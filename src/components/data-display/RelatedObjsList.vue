@@ -15,14 +15,7 @@
     </div>
   </template>
   
-  <script setup lang="ts">
-  // <script setup lang="ts">
-  /**
-   * Collapsable item list for related data objects on individual data pages
-   */
-  
-  import { dataObjectToPluralTitle } from "@/assets/dataHelpers.js";
-  import { computed } from 'vue';
+  <script setup>
   
   import { useMain } from "@/stores/main"
   const mainStore = useMain()
@@ -53,21 +46,6 @@
    */
    const itemsList = [items][0].sort((a, b) => (a.id > b.id) ? 1 : -1)
   
-  // /**
-  //  * Items sorted by ID in alphabetical order
-  //  * @type {Object[]}
-  //  */
-  // const itemsList = computed(() => {
-  //   return [items].sort((a, b) => (a.id > b.id) ? 1 : -1)
-  // });
-  
-  const title = computed(() => {
-    if (Array.isArray(itemsList) && itemsList.length === 1) {
-          // Return what may be a singular version of this title
-          return itemType.replace('-', ' ')
-        }
-        return dataObjectToPluralTitle(itemType)
-  });
   
   /**
    * Returns the `label` of the specified object ID

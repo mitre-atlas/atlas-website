@@ -19,7 +19,7 @@
     </span>
   </template>
   
-  <script setup lang="ts">
+  <script>
     import { computed } from 'vue';
     
     const { tags } = defineProps([

@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 // Plugin to allow dots in URLs (e.g 'tactics/AML.TA0000')
 // https://github.com/vitejs/vite/issues/2415
 

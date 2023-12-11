@@ -4,13 +4,11 @@
       v-if="items.length && typeof items[0] === 'object'"
       :value="true"
     >
-      <!-- <template #activator> -->
-        <v-list-item>
-          <div class="text-capitalize text-h5" style="text-align: left">
-            {{ title }}
-          </div>
-        </v-list-item>
-      <!-- </template> -->
+      <v-list-item>
+        <div class="text-capitalize text-h5" style="text-align: left">
+          {{ title }}
+        </div>
+      </v-list-item>
   
       <!-- TODO for when case studies are implemented: Use InfoTable (not div) if there's columnNames -->
       <!-- <div
@@ -61,10 +59,6 @@
       return itemType.replace('-', ' ')
     }
     return dataObjectToPluralTitle(itemType)
-  });
-  const itemsContainsDataObjects = computed(() => {
-     // The first item in the provided list is a data object, assumes same for entire list
-    return 'object-type' in items[0]
   });
   
   </script>
