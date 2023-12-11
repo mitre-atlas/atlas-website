@@ -4,10 +4,13 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import dotPathFixPlugin from './src/plugins/dotPathFixPlugin';
+console.log(process.env.NODE_ENV)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/atlas-website-vue3/',
+  base: process.env.NODE_ENV === 'production'
+    ? '/' + process.env.CI_PROJECT_NAME + '/'
+    : '/',
   optimizeDeps: {
     esbuildOptions: {
       target: "esnext",
