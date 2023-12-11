@@ -12,7 +12,7 @@
   <!-- <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />  -->
 
   <h1 class="pa-3">
-    <a href="/">
+    <a href="/atlas-website-vue3/techniques/AML.T0041">
       <img
         src="../assets/MITRE-brand_ATLAS_MITRE_tm_white.svg"
         width="200"
