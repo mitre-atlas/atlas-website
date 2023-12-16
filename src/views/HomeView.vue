@@ -36,6 +36,7 @@
 <script setup lang="ts">
 
 import HomeHero from '../components/HomeHero.vue';
+
 import { useDisplay } from 'vuetify'
 
 // mobile boolean for contitional rendering

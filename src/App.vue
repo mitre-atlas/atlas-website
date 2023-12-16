@@ -7,14 +7,13 @@
 </template>
 
 <script>
-import Data from './components/Data.vue'
 import Layout from './layouts/default.vue'
 import { computed } from 'vue' 
 
 export default {
   name: 'App',
   components: {
-    Data, Layout
+    Layout
   }
 }
 </script>
