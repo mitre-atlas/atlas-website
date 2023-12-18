@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
+import NavigatorView from '../views/NavigatorView.vue'
 
 const routes = [
   {
@@ -21,6 +22,10 @@ const routes = [
   {
       path: '/:catchAll(.*)*', 
       component: ErrorNotFoundView,
+  },
+  {
+    path: '/navigator',
+    component: NavigatorView,
   },
 ]
 
