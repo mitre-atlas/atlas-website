@@ -3,11 +3,12 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import dotPathFixPlugin from './src/plugins/dotPathFixPlugin';
-console.log(process.env.NODE_ENV)
+
+import Markdown from 'vite-plugin-md'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  assetsInclude: ['**/*.png'],
   base: process.env.NODE_ENV === 'production'
     ? '/' + process.env.CI_PROJECT_NAME + '/'
     : '/',
@@ -20,13 +21,16 @@ export default defineConfig({
     target: "esnext",
   },
   plugins: [
-    vue(),
     vueJsx(),
-    dotPathFixPlugin(),
+    vue({
+      include: [/\.vue$/, /\.md$/], // <--
+    }),
+    Markdown(),
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  
 })

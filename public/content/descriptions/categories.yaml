@@ -1,0 +1,7 @@
+categories:
+- name: Technical - ML
+  description: Relating to ML-specific hardware, software, and technological systems implented to mitigate adversarial threats.
+- name: Technical - Cyber
+  description: Relating to cyber-specific hardware, software, and technological systems implemented to mitigate adversarial threats.
+- name: Policy
+  description: Relating to procedures and processes that govern how tools are used, maintained, and deployed

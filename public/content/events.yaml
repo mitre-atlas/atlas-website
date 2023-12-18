@@ -157,3 +157,17 @@ data:
       From June 8-10, The Global Resilience Federation (GRF) Summit on AI Security & Trust will address concerns across sectors with content tailored for executives such as CIOs, CISOs and AI/ML experts to engage on effective approaches for managing security and trust in Artificial Intelligence and Machine Learning models.
     url: https://www.grf.org/ai-security-2023
     color: indigo
+  - name: "FutureIT: AI, Data and Tech Leadership"
+    date: 2023-11-08
+    location: New York, NY
+    description: Join the ATLAS team at FutureIT New York to talk about ATLAS and AI threat awareness.
+    url: https://events.ciofutureit.com/event/new-york/
+    color: light-green
+  - name: HITCON 2023
+    date: 2023-11-15
+    location: Taipei, Taiwan
+    description: >
+      Hacks in Taiwan Conference (HITCON) is technology-orientated cybersecurity conference.
+      ATLAS will present on AI threat awareness.
+    url: https://cfp2023.hitcon.org/en/
+    color: grey

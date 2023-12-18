@@ -1,0 +1,15 @@
+ML-lifecycle:
+- name: Business and Data Understanding
+  description: |
+    Defining the scope and requirements of the project and collecting data
+- name: Data Preparation
+  description: |
+    Data cleaning, data augmentation, and developing a robust data pipeline
+- name: ML Model Engineering
+  description: Defining quality measures, selecting a model architecture, and training a model
+- name: ML Model Evaluation
+  description: Increasing model explainability and ensuring that the developed model complies with project needs and satisfies risk and safety constraints
+- name: Deployment
+  description: Setting up production environment and productionizing the validated ML model
+- name: Monitoring and Maintenance
+  description: Continually evaluating the deployed model to ensure it continues to fulfill quality assurance measures
