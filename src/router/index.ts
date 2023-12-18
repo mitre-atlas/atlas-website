@@ -6,6 +6,7 @@ import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
 import FAQ from '../views/resources/faq.vue'
 import adversarial from '../views/resources/adversarial-ml-101.vue'
+import NavigatorView from '../views/NavigatorView.vue'
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
       path: '/:catchAll(.*)*', 
       component: ErrorNotFoundView,
+  },
+  {
+    path: '/navigator',
+    component: NavigatorView,
   },
 ]
 
