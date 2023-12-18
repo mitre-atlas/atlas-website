@@ -12,6 +12,11 @@ pages:
   script:
     - npm install
     - npm run build
+    # navigate into the build output directory
+    - cd dist
+    # fix for 404 on refresh issue
+    - cp index.html 404.html
+    - cd ..
     - cp -a dist/. public/
   artifacts:
     paths:
