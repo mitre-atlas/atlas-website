@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+import { useMain } from "@/stores/main"
 
 import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
@@ -28,9 +30,21 @@ const routes = [
   {
     path: '/:objectTypePlural/:id',
     component: IDView,
+    beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+      const mainStore = useMain();
+
+      // Display 404 for pages caught by this route that are not valid ID pages
+      // @ts-ignore
+      if (mainStore.getDataObjectById(to.params.id) === undefined) {
+        next({ name: 'ErrorNotFound' }); // Redirect to ErrorNotFoundView
+      } else {
+        next(); // Continue with the route
+      }
+    },
   },
   {
       path: '/:catchAll(.*)*', 
+      name: 'ErrorNotFound',
       component: ErrorNotFoundView,
   },
   {
