@@ -10,7 +10,7 @@
       :href="d.route"
       class="pb-1 pt-1 mb-2 text-left text-body-1"
     >
-        <v-card-tile-title v-html="getLabelById(d.id) || d.name"></v-card-tile-title>
+        <div v-html="getLabelById(d.id) || d.name"></div>
     </v-list-item>
     </div>
   </template>
