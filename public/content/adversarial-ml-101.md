@@ -28,7 +28,7 @@ inference endpoint to perform a "train-time" attack. In any case, the
 delineation is useful to describe how an attacker could be interacting
 with a target model.
 
-![Adversarial ML 101](../../src/assets/advML101/AdvML101.PNG)
+![Adversarial ML 101](../../src/assets/advML101/AdvML101.jpg)
 
 With this in mind, we can jump into the attacks on ML systems.
 
@@ -53,7 +53,7 @@ an API endpoint. In this blackbox setting an attacker can only query the
 model and observe the response. The attacker controls the input to the
 model, but the attacker does not know how it is processed.
 
-![Adversarial ML 101](../../src/assets/advML101/AdvML101_Inference.PNG)
+![Adversarial ML 101](../../src/assets/advML101/AdvML101_Inference.jpg)
 
 ----
 ### Attack Scenario #2: Training Time Attack
@@ -62,7 +62,7 @@ attack is shown in [Tay Poisoning case study](/studies/AML.CS0009) where the att
 compromise the training data via the feedback mechanism.
 
 
-![Adversarial ML 101](../../src/assets/advML101/AdvML101_Traintime.PNG)
+![Adversarial ML 101](../../src/assets/advML101/AdvML101_Traintime.jpg)
 
 
 ### Attack Scenario #3: Attack on Edge/Client
@@ -71,7 +71,7 @@ Consider that a model exists on a client (like a phone) or on the edge
 reversing the service on the client. This flavor of attack is shown in
 Bosch Case Study with EdgeAI.
 
-![Adversarial ML 101](../../src/assets/advML101/AdvML101_Client.PNG)
+![Adversarial ML 101](../../src/assets/advML101/AdvML101_Client.jpg)
 
 
 ## Important Notes
