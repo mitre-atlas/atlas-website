@@ -1,8 +1,8 @@
 <template>
 
     <div>
-      <div>
-        <div class="text-h3">
+      <div class="pa-3">
+        <div class="text-h3 pa-10">
           {{ title }}
         </div>
         <v-row>
@@ -48,10 +48,6 @@
     const route = useRoute()
     let { id, objectTypePlural } = route.params
 
-    if (id.includes('AML') && !id.includes('AML.')){
-        id = id.split('AML').join('AML.')
-    }
-  
     // TODO: add side nav logic
     // definePageMeta({
     // //   layout: 'side-nav'
@@ -63,6 +59,7 @@
     let dataObject = computed(() => {
       return mainStore.getDataObjectById(id)
     })
+    
     let title = computed(() => {
       // Prepend parent technique name for a subtechnique
       if ("subtechnique-of" in dataObject.value) {

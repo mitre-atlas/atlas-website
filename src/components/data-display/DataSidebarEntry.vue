@@ -86,10 +86,8 @@
    */
   let doShowDataObjLinks = computed(() => {
     // Display items if the number of data objects fall below the defined threshold
-    console.log(relatedObjs)
     if (!(isDataObjectArray(relatedObjs) && relatedObjs.length))
       return true
-    console.log(isDataObjectArray(relatedObjs) && relatedObjs.length <= maxNumDisplay)
     return (
       isDataObjectArray(relatedObjs) && relatedObjs.length <= maxNumDisplay
     )
