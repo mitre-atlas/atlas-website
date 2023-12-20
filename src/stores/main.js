@@ -492,7 +492,23 @@ export const useMain = defineStore('main', {
       /**
        * Retrieves the array of accepted _objectTypePlural values
        */
-      getObjectTypePluralValues: state => state.objectTypePluralValues
+      getObjectTypePluralValues: state => state.objectTypePluralValues,
+      /**
+       * Retrieve the parent object of this subtechnique, if any.
+       *
+       * @param {object} subtechnique - A subtechnique data object
+       * @returns {object|null} The subtechnique's parent object, or null
+       * @alias mapGetters: subtechnique/getParent
+       */
+      getParent: function (state) {
+        return function (subtechnique) {
+            if ('subtechnique-of' in subtechnique) {
+                const parentTechniqueId = subtechnique['subtechnique-of']
+                return this.getDataObjectById(parentTechniqueId)
+            }
+            return null
+        }
+    },
     },
     actions: {
 
