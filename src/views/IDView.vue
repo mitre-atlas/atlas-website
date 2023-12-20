@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div v-if="dataObject != undefined">
       <div class="pa-3">
         <div class="text-h3 pa-10">
           {{ title }}
@@ -13,8 +13,10 @@
               Summary
               </v-list-item>
               <v-list-item>
-  
-              <div class="text-body-1 text-left pa-3" v-html="markdown.render(dataObject.description)" />
+
+              <!-- Render description as markdown (or "summary") if it's a case study -->
+              <!-- TODO: seperate component for case studies -->
+              <div class="text-body-1 text-left pa-3" v-html="dataObject.description != undefined ? markdown.render(dataObject.description) : markdown.render(dataObject.summary)" />
             </v-list-item>
           </v-col>
   
@@ -23,12 +25,15 @@
           </v-col>
   
         </v-row>
-        <!-- TODO: complete data link child components -->
         <v-list>
           <DataSection v-for="(relatedObjs, objectType) in dataObject.relatedObjects" :key="objectType"
             :item-type="objectType" :items="relatedObjs" :parent-object="dataObject" />
         </v-list>
       </div>
+    </div>
+    <div v-else>
+      <!-- Display ErrorNotFound if ID is not found -->
+      <ErrorNotFoundView />
     </div>
   </template>
     
@@ -38,6 +43,7 @@
     import { computed, onMounted } from 'vue' 
     import DataSection from '@/components/data-display/DataSection.vue'
     import DataSidebar from '@/components/data-display/DataSidebar.vue'
+    import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   
     import MarkdownIt from "markdown-it";
     const markdown = new MarkdownIt();
@@ -59,6 +65,7 @@
     let dataObject = computed(() => {
       return mainStore.getDataObjectById(id)
     })
+    console.log(dataObject)
     
     let title = computed(() => {
       // Prepend parent technique name for a subtechnique
