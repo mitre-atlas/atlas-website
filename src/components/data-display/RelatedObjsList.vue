@@ -7,7 +7,7 @@
     <v-list-item
       v-if="'route' in d"
       :key="getLabelById(d.id) || d.name"
-      :href="([baseUrlL, d.route]).join('')"
+      :href="([baseUrl, d.route]).join('')"
       class="pb-1 pt-1 mb-2 text-left text-body-1"
     >
         <div v-html="getLabelById(d.id) || d.name"></div>
