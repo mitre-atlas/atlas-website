@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="row flex-center">
-      <router-view />
+      <router-view :key="$route.path"/>
     </div>
   </Layout>
 </template>
