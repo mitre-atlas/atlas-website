@@ -1,8 +1,25 @@
 <template>
-  <div>
-    <div v-for="item in tableItems">
-      {{ item.id }}
-    </div>
+  <div class="text-left px-16 mx-16">
+    <v-card>
+      <template v-slot:text>
+        <v-text-field
+          v-model="search"
+          label="Search for Keywords"
+          append-inner-icon="mdi-magnify"
+
+          hide-details
+        />
+      </template>
+      <v-data-table 
+        :items="tableItems"
+        :headers="headers"
+        :search="search"
+        items-per-page="-1"
+      >
+      <template v-slot:bottom> </template>
+      </v-data-table>
+    </v-card>
+
   </div>
 </template>
 
@@ -11,7 +28,7 @@
 /**
  * Table containing an organized list of items of one object type.
  */
-import { computed } from 'vue' 
+import { computed, ref } from 'vue' 
 import { useMain } from "@/stores/main"
 const mainStore = useMain()
 
@@ -24,14 +41,19 @@ const mainStore = useMain()
     'objectTypePlural',
   ]);
 
-  // TODO: figure out how to make this prop/this component update when the page is chaged (ex. from /tactics to /techniques)
-  console.log(objectTypePlural)
-
 
   const tableItems = computed(() => {
-      const obj = mainStore.getDataObjectsByType(objectTypePlural)
-      return obj
+    const obj = mainStore.getDataObjectsByType(objectTypePlural)
+    return obj
   })
+
+  const headers =  [
+    { title: 'ID', key: 'id', align: 'end' },
+    { title: 'Name', key: 'name', align: 'start' },
+    { title: 'Summary', key: 'description', align: 'start' },
+  ]
+  const search = ref('')
+  console.log('tableItems = ', tableItems)
 
 </script>
 
