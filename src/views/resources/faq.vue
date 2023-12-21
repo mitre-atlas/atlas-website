@@ -1,4 +1,3 @@
-
 <template>
   <div class="pa-7 text-left"> 
     <div class="text-h3">{{ title }}</div>
@@ -17,24 +16,17 @@ import { ref } from 'vue';
 const faqSections = ref([]);
 const title = 'FAQ'
 
-async function importFiles() {
-  // Get all names of files in the FAQ md folder
-  const fileNames = Object.keys(
-    import.meta.glob('@/../public/content/faq-files/*.md')
-  );
+importFiles();
 
-  // Collect markdown content from each file
-  for (const fileName of fileNames) {
-    try {
-      const markdownContent = await import( /* @vite-ignore */ fileName);
-      faqSections.value.push(markdownContent);
-    } catch (error) {
-      console.error(`Error importing ${fileName}:`, error);
-    }
+async function importFiles() {
+  const modules = import.meta.glob('@/../public/content/faq-files/*.md')
+
+  for (const path in modules) {
+    modules[path]().then((mod) => {
+      faqSections.value.push(mod)
+    })
   }
 }
-
-importFiles();
 
 </script>
 
