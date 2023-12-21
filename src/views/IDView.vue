@@ -40,7 +40,7 @@
   <script setup>
     import { useMain } from "@/stores/main"
     import { useRoute } from 'vue-router'
-    import { computed, onMounted } from 'vue' 
+    import { computed } from 'vue' 
     import DataSection from '@/components/data-display/DataSection.vue'
     import DataSidebar from '@/components/data-display/DataSidebar.vue'
     import ErrorNotFoundView from "./ErrorNotFoundView.vue"
