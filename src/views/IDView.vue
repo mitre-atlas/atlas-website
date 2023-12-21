@@ -65,7 +65,6 @@
     let dataObject = computed(() => {
       return mainStore.getDataObjectById(id)
     })
-    console.log(dataObject)
     
     let title = computed(() => {
       // Prepend parent technique name for a subtechnique
