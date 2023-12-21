@@ -579,14 +579,10 @@ export const useMain = defineStore('main', {
        */
       async init() {
         // Retrieve the threat matrix YAML data and populate store upon start
-        let atlasData = await fetch('/atlas-data/dist/ATLAS.yaml')
+        let atlasData = await fetch(import.meta.env.MODE === 'development'
+          ? '/atlas-data/dist/ATLAS.yaml'
+          : `${import.meta.env.BASE_URL}/atlas-data/dist/ATLAS.yaml`)
         let yamlString = await atlasData.text()
-
-        // File read for if development path is different
-        if (!yamlString) {
-          const devData = await fetch('/public/atlas-data/dist/ATLAS.yaml')
-          yamlString = await devData.text()
-        }
 
         // Get all contents, then parse and commit payload
         const promise = Promise.resolve(yamlString).then(contents => {
