@@ -80,7 +80,11 @@ const mainStore = useMain()
   const headers =  [
     { title: 'ID', key: 'id', align: 'end' },
     { title: 'Name', key: 'name', align: 'start' },
-    { title: 'Description', key: 'description', align: 'start' },
+    { 
+      title: objectTypePlural === 'studies' ? 'Summary' : 'Description', 
+      key: objectTypePlural === 'studies' ? 'summary' : 'description', 
+      align: 'start' 
+    },
   ]
   const search = ref('')
 
