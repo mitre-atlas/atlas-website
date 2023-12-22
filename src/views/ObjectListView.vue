@@ -20,9 +20,17 @@
   const mainStore = useMain()
 
   const route = useRoute()
+
   let { objectTypePlural } = route.params
 
+  // String representing the correct name in the url for case studies
+  const case_studies_name = "studies"
+
   let isObjectTypeValid = computed(() => {
+      if (objectTypePlural == case_studies_name) {
+        objectTypePlural = case_studies_name
+        return true
+      }
       return (Object.keys(mainStore.getDataObjectTypes)).includes(objectTypePlural)
   })
 

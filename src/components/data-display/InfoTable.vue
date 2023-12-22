@@ -68,8 +68,13 @@ const mainStore = useMain()
 
 
   const tableItems = computed(() => {
-    const obj = mainStore.getDataObjectsByType(objectTypePlural)
-    return obj
+
+    // Get case study objects if needed (store has it with the hyphen)
+    if (objectTypePlural == "studies") {
+      return mainStore.getDataObjectsByType('case-studies')
+    }
+
+    return mainStore.getDataObjectsByType(objectTypePlural)
   })
 
   const headers =  [
@@ -78,7 +83,6 @@ const mainStore = useMain()
     { title: 'Description', key: 'description', align: 'start' },
   ]
   const search = ref('')
-  console.log('tableItems = ', tableItems)
 
 </script>
 
