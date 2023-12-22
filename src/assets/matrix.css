@@ -82,6 +82,12 @@
   width: 1%;
   vertical-align: top;
 }
+.attack-and {
+  color: red;
+  font-size: 12px;
+  font-weight: normal;
+  vertical-align: super;
+}
 .matrix.side .tactic.name, .matrix.side .tactic.count {
   text-align: center;
   font-size: 16px;

@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
+import ObjectListView from '../views/ObjectListView.vue'
 import FAQ from '../views/resources/faq.vue'
 import adversarial from '../views/resources/adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
@@ -31,6 +32,10 @@ const routes = [
     path: '/:catchAll(.*)*', 
     name: 'ErrorNotFound',
     component: ErrorNotFoundView,
+  },
+  {
+    path: '/:objectTypePlural',
+    component: ObjectListView,
   },
   {
     path: '/:objectTypePlural/:id',
