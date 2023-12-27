@@ -17,30 +17,43 @@
         :search="search"
         items-per-page="-1"
       >
-      <template #[`header.name`]="{ column, isSorted, getSortIcon }">
-        <span>
-          {{ column.title }}
-          <!-- Display an info tooltip for ATT&CK-adapted objects -->
-          <AttackIconTooltip :items="tableItems" />
-        </span>
-        <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
-      </template>
-      <template #[`item.id`]="{ value }">
-        <router-link
-          :to="`/${objectTypePlural}/${value}`"
-        >
-        {{ value }}
-        </router-link>
-      </template>
-      <template #[`item.name`]="{ item, value }">
-        <router-link
-          :to="`/${objectTypePlural}/${item.id}`"
-        >
-        {{ value }}
-        </router-link>
-        <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
-      </template>
-      <template v-slot:bottom> </template>
+        <template #[`header.name`]="{ column, isSorted, getSortIcon }">
+          <span>
+            {{ column.title }}
+            <!-- Display an info tooltip for ATT&CK-adapted objects -->
+            <AttackIconTooltip :items="tableItems" />
+          </span>
+          <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
+        </template>
+        <template #[`item.id`]="{ value }">
+          <router-link
+            :to="`/${objectTypePlural}/${value}`"
+            class="pl-5"
+          >
+          {{ value }}
+          </router-link>
+        </template>
+        <template #[`item.name`]="{ item, value }">
+          <router-link
+            :to="`/${objectTypePlural}/${item.id}`"
+          >
+          {{ value }}
+          </router-link>
+          <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
+        </template>
+        <template #[`item.description`]="{ value }">
+          <div 
+            v-html="md.render(value)"
+            class="pa-5"
+          />
+        </template>
+        <template #[`item.summary`]="{ value }">
+          <div 
+            v-html="md.render(value)"
+            class="pa-5"
+          />
+        </template>
+        <template v-slot:bottom> </template>
       </v-data-table>
     </v-card>
 
@@ -55,6 +68,10 @@
 import { computed, ref } from 'vue' 
 import { useMain } from "@/stores/main"
 import AttackIconTooltip from '@/components/AttackIconToolTip.vue'
+import markdownit from 'markdown-it'
+const md = markdownit({
+  html: true
+})
 
 const mainStore = useMain()
 
