@@ -1,6 +1,19 @@
 <template>
+  <div v-if="isObjectTypeValid" class="text-left pt-10 pr-12 pl-12 pb-10">
+    <p class="text-h3 mt-10 mb-5 text-capitalize">
+      {{ objectTypePlural === 'studies' ? 'Case Studies' : objectTypePlural }}
+    </p>
+    <p
+      v-html="introText"
+      style="white-space: pre-wrap;"
+    />
+    <StudiesIntroText v-if="objectTypePlural === 'studies'" />
 
-  <div v-if="isObjectTypeValid">
+    <p class="my-6">
+      The table below lists {{ objectTypePlural }} from {{ VITE_MITRE_TITLE }}.
+      Scroll through the table or use the filter to narrow down the information.
+    </p>
+
     <InfoTable :objectTypePlural="objectTypePlural"></InfoTable>
   </div>
   <div v-else>
@@ -12,16 +25,35 @@
 <script setup>
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import InfoTable from "../components/data-display/InfoTable.vue"
-  import { computed } from 'vue' 
+  import { computed, ref } from 'vue' 
 
   import { useRoute } from 'vue-router'
   import { useMain } from "@/stores/main"
+
+  import jsyaml from 'js-yaml';
+  import StudiesIntroText from "./StudiesIntroText.vue"
 
   const mainStore = useMain()
 
   const route = useRoute()
 
   let { objectTypePlural } = route.params
+  const { VITE_MITRE_TITLE } = import.meta.env 
+
+  let introText = ref('');
+
+  if(objectTypePlural !== 'studies') {
+    fetch('/content/data-list-page-intros.yaml')
+    .then(response => response.text())
+    .then(data => {
+      introText.value = jsyaml.load(data)[objectTypePlural];
+      // remove single \n, but keep \n\n
+      introText.value = introText.value.replace(/(?<!\n)\n(?!\n)/g, "");
+    })
+    .catch(error => {
+      console.error('Error fetching YAML file:', error);
+    });
+  }
 
   // String representing the correct name in the url for case studies
   const case_studies_name = "studies"

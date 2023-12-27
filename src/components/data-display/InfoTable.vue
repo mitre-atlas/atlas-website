@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left px-16 mx-16">
+  <div class="text-left">
     <v-card>
       <template v-slot:text>
         <v-text-field
@@ -13,6 +13,7 @@
       <v-data-table 
         :items="tableItems"
         :headers="headers"
+        v-model:sort-by="sortBy"
         :search="search"
         items-per-page="-1"
       >
@@ -86,6 +87,8 @@ const mainStore = useMain()
       align: 'start' 
     },
   ]
+  // default sort by id for studies only
+  const sortBy = objectTypePlural === 'studies' ? [{ key: 'id', order: 'desc' }] : []
   const search = ref('')
 
 </script>
