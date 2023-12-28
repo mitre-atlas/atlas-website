@@ -45,13 +45,11 @@
         </v-col>
       </v-row>
 
-      <p class="text-h5 text-left mt-10 ml-6"
-        style="text-transform: capitalize;"
-      > 
+      <p class="text-h5 text-left mt-10 ml-6"> 
           Summary
       </p>
       <p 
-        class="text-body-1 text-left px-3 ml-6" 
+        class="text-body-1 text-left pl-3 ml-6" 
         v-html="md.render(study.summary)" 
       />
 
@@ -74,6 +72,21 @@
       <ProcedureTimeline 
         :study="study"
       />
+
+      <div v-if="study.references && study.references.length > 0" class="text-left ml-6">
+        <p class="text-h5 text-left mt-10"> 
+          Sources
+        </p>
+        <div v-for="reference in study.references" :key="reference.url" class="pl-3 mb-2">
+          <a v-if="reference.url && reference.title" :href="reference.url" target="_blank" rel="noopener noreferrer">
+            {{ reference.title || reference.url }}
+            <v-icon icon="mdi-open-in-new" size="small" />
+          </a>
+          <div v-else-if="reference.title">
+            {{ reference.title }}
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

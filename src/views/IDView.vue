@@ -7,16 +7,12 @@
         </div>
         <v-row>
           <v-col cols="9">
-              <v-list-item class="text-h5 text-left"
-              style="text-transform: capitalize !important;"
-              > 
-              Summary
+              <v-list-item class="text-h5 text-left"> 
+                Summary
               </v-list-item>
-              <v-list-item>
 
-              <!-- Render description as markdown (or "summary") if it's a case study -->
-              <!-- TODO: seperate component for case studies -->
-              <div class="text-body-1 text-left pa-3" v-html="dataObject.description != undefined ? markdown.render(dataObject.description) : markdown.render(dataObject.summary)" />
+              <v-list-item>
+                <div class="text-body-1 text-left pa-3" v-html="markdown.render(dataObject.description)" />
             </v-list-item>
           </v-col>
   
