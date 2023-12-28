@@ -41,7 +41,7 @@
         </v-col>
         <v-spacer />
         <v-col>
-          <!-- TODO: Add download data dropdown -->
+          <DownloadDataDropdown :study="study" />
         </v-col>
       </v-row>
 
@@ -69,9 +69,9 @@
         </v-col>
       </v-row>
 
-      <ProcedureTimeline 
-        :study="study"
-      />
+      <v-row>
+        <ProcedureTimeline :study="study" />
+      </v-row>
 
       <div v-if="study.references && study.references.length > 0" class="text-left ml-6">
         <p class="text-h5 text-left mt-10"> 
@@ -103,6 +103,7 @@
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
   import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
+  import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
 
   import markdownit from 'markdown-it'
   const md = markdownit({
