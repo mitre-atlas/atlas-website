@@ -22,6 +22,7 @@
     "markdown-it": "^14.0.0",
     "pinia": "^2.1.6",
     "pluralize": "^8.0.0",
+    "pptxgenjs": "^3.7.1",
     "roboto-fontface": "*",
     "vite-plugin-md": "^0.22.5",
     "vue": "^3.3.4",

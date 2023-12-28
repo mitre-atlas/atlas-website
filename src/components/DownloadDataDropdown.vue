@@ -28,6 +28,11 @@
 
 <script setup>
   import { downloadStudyFile } from '@/assets/tools.js'
+  import { makePPT } from '@/assets/powerpointFunctions.js'
+  import { useMain } from "@/stores/main"
+
+  const mainStore = useMain()
+
 
   const { study } = defineProps([
       /**
@@ -41,6 +46,7 @@
     { 
       title: 'PowerPoint (.pptx)', 
       icon: 'mdi-file-powerpoint-box-outline',
+      function: () => downloadPPT()
 
     },
     { title: 'Raw data (.yaml)', 
@@ -48,5 +54,14 @@
       function: () => downloadStudyFile({ study: study }, study.id) 
     },
   ]
+
+  async function downloadPPT() {
+    for (const procedure of study.procedure) {
+      const technique = await mainStore.getDataObjectById(procedure.technique);
+      procedure.techniqueObject = technique
+    }
+    makePPT(study)
+  }
+
 
 </script>
