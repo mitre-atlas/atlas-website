@@ -125,8 +125,6 @@
     return formatCaseStudyIncidentDate(study.value)
   })
 
-  console.log('study = ', study)
-
   
 </script>
   

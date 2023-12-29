@@ -326,7 +326,7 @@ function linkText (text, url) {
  * @param {Pptxgen} ppt
  * @param {Object} yaml
  */
-function procedureSlide (ppt, yaml, techniques) {
+function procedureSlide (ppt, yaml) {
   const rows = [
     [
       {
