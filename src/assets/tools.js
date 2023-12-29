@@ -230,7 +230,9 @@ export function downloadUrlAsFile (url) {
   xhr.onload = function () {
     let a = document.createElement('a')
     a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
-    a.download = path.basename(url) // Set download filename to url filename
+    const urlSegments = url.split('/');
+    const basename = urlSegments[urlSegments.length - 1];
+    a.download = basename;
     a.style.display = 'none'
     document.body.appendChild(a)
     a.click()

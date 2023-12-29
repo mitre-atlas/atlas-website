@@ -40,7 +40,7 @@
           </span>
         </v-col>
         <v-spacer />
-        <v-col>
+        <v-col class="text-right">
           <DownloadDataDropdown :study="study" />
         </v-col>
       </v-row>
@@ -64,8 +64,8 @@
             Procedure
           </div>
         </v-col>
-        <v-col>
-          <!-- TODO: Navigation Layer Dropdown -->
+        <v-col class="text-right">
+          <NavigatorLayerDropdown :study="study" />
         </v-col>
       </v-row>
 
@@ -104,6 +104,7 @@
   import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
   import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
   import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
+  import NavigatorLayerDropdown from '@/components/NavigatorLayerDropdown.vue'
 
   import markdownit from 'markdown-it'
   const md = markdownit({

@@ -56,11 +56,12 @@
   ]
 
   async function downloadPPT() {
-    for (const procedure of study.procedure) {
+    const studyCopy = JSON.parse(JSON.stringify(study))
+    for (const procedure of studyCopy.procedure) {
       const technique = await mainStore.getDataObjectById(procedure.technique);
       procedure.techniqueObject = technique
     }
-    makePPT(study)
+    makePPT(studyCopy)
   }
 
 
