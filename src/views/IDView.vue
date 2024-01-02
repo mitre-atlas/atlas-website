@@ -1,32 +1,33 @@
 <template>
-
-    <div v-if="dataObject != undefined">
-      <div class="pa-3">
-        <div class="text-h3 pa-10">
-          {{ title }}
-        </div>
-        <v-row>
-          <v-col cols="9">
-              <v-list-item class="text-h5 text-left"> 
-                Summary
-              </v-list-item>
-
-              <v-list-item>
-                <div class="text-body-1 text-left pa-3" v-html="markdown.render(dataObject.description)" />
-            </v-list-item>
-          </v-col>
-  
-          <v-col cols="3">
-            <DataSidebar :data-object="dataObject" />
-          </v-col>
-  
-        </v-row>
-        <v-list>
-          <DataSection v-for="(relatedObjs, objectType) in dataObject.relatedObjects" :key="objectType"
-            :item-type="objectType" :items="relatedObjs" :parent-object="dataObject" />
-        </v-list>
-      </div>
+  <div v-if="dataObject != undefined" class="pa-3">
+    <div class="text-h3 pa-10">
+      {{ title }}
     </div>
+      <v-row>
+        <v-col cols="9">
+            <v-list-item class="text-h5 text-left"> 
+              Summary
+            </v-list-item>
+
+            <v-list-item>
+              <div class="text-body-1 text-left pa-3" v-html="markdown.render(dataObject.description)" />
+          </v-list-item>
+        </v-col>
+
+        <v-col cols="3">
+          <DataSidebar :data-object="dataObject" />
+        </v-col>
+
+      </v-row>
+
+      <DataSection 
+        v-for="(relatedObjs, objectType) in relatedObjects" 
+        :key="objectType"
+        :itemType="objectType" 
+        :items="relatedObjs" 
+        :parentObject="dataObject"
+      />
+  </div>
     <div v-else>
       <!-- Display ErrorNotFound if ID is not found -->
       <ErrorNotFoundView />
@@ -48,7 +49,7 @@
   
     // Collect the plural of the object type (tactics, techniques, etc) and the object ID from the URL
     const route = useRoute()
-    let { id, objectTypePlural } = route.params
+    const { id, objectTypePlural } = route.params
 
     // TODO: add side nav logic
     // definePageMeta({
@@ -58,12 +59,23 @@
     //   mainStore.setNavItems(mainStore.getDataObjectsByType(objectTypePlural))
     // })
 
-    let dataObject = computed(() => {
+    const dataObject = computed(() => {
       return mainStore.getDataObjectById(id)
     })
     console.log('dataObject = ', dataObject)
+
+    const relatedObjects = computed(() => {
+      let relatedObjectsArrays = {}
+      Object.keys(dataObject.value.relatedObjects).forEach((key) => {
+        if(Array.isArray(dataObject.value.relatedObjects[key]) && typeof dataObject.value.relatedObjects[key][0] !== 'string') {
+          relatedObjectsArrays[key] = dataObject.value.relatedObjects[key]
+        }
+      })
+      return relatedObjectsArrays
+    })
+    console.log('relatedObjects = ', relatedObjects)
     
-    let title = computed(() => {
+    const title = computed(() => {
       // Prepend parent technique name for a subtechnique
       if ("subtechnique-of" in dataObject.value) {
         const parentTechnique = mainStore.getParent(
