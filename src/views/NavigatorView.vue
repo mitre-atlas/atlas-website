@@ -1,6 +1,6 @@
 <template>
   <div class="text-left pt-10 pr-12 pl-12 pb-10">
-    <p class="text-h3 mt-10 mb-5">
+    <p class="text-h3 mt-10">
       {{ title }}
     </p>
     <p>

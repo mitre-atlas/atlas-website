@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
+import StudiesIDView from '../views/StudiesIDView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import FAQ from '../views/resources/faq.vue'
 import adversarial from '../views/resources/adversarial-ml-101.vue'
@@ -42,6 +43,10 @@ const routes = [
     component: IDView,
   },
   {
+    path: '/studies/:id',
+    component: StudiesIDView,
+  },
+  {
     path: '/navigator',
     component: NavigatorView,
   },
@@ -49,7 +54,11 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior() {
+    // always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router
