@@ -62,7 +62,8 @@ export function makePPT (study, filename) {
   titleSlide(ppt, study)
   detailSlide(ppt, study)
   procedureSlide(ppt, study)
-  if (study.references !== []) {
+  // Create reference slide if references exist
+  if (Array.isArray(study.references) && study.references.length > 0) {
     referenceSlide(ppt, study)
   }
 
