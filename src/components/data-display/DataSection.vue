@@ -1,39 +1,43 @@
-<!-- Collapsable group for related data objects on individual data pages -->
 <template>
-    <v-list
-      v-if="items.length && typeof items[0] === 'object'"
-      :value="true"
-    >
-      <v-list-item>
-        <div class="text-capitalize text-h5" style="text-align: left">
-          {{ title }}
-        </div>
-      </v-list-item>
-  
-      <!-- TODO for when case studies are implemented: Use InfoTable (not div) if there's columnNames -->
-      <!-- <div
+  <v-list v-model:opened="titleGroup">
+    <v-list-group :value="title">
+      <template v-slot:activator="{ props }">
+        <v-row no-gutters>
+          <v-col cols="auto">
+            <v-list-item
+              class="text-capitalize text-left text-h5"
+              v-bind="props"
+            >
+              {{ title }}
+            </v-list-item>
+          </v-col>
+        </v-row>
+
+      </template>
+
+      <!-- Use InfoTable if there's columnNames -->
+      <InfoTable
         v-if="
           'columnNames' in items[0] && items[0]['object-type'] != 'case-study'
         "
         class="mx-8"
         :items="items"
-      > </div> -->
-  
-      <!-- Else Only show items in array of data objects -->
-      <v-list-item>
-        <related-objs-list
-  
-          :parent-object="parentObject"
-          :items="items"
-          :item-type="itemType"
-        />
-      </v-list-item>
-      </v-list>
-  </template>
+      />
+      <related-objs-list
+        v-else
+        :parent-object="parentObject"
+        :items="items"
+        :item-type="itemType"
+      />
+    </v-list-group>
+  </v-list>
+</template>
+
   <script setup lang="ts">
   import { dataObjectToPluralTitle } from "@/assets/dataHelpers.js";
-  import { computed } from 'vue' 
+  import { computed, ref } from 'vue' 
   import RelatedObjsList from './RelatedObjsList.vue'
+  import InfoTable from "@/components/data-display/InfoTable.vue"
   
   const { parentObject, items, itemType } = defineProps([
     /**
@@ -60,6 +64,9 @@
     }
     return dataObjectToPluralTitle(itemType)
   });
+
+  const titleGroup = ref([title.value])
+
   
   </script>
   

@@ -20,7 +20,7 @@
           <!-- Comma-separated -->
           <span v-if="i > 0">,</span>
           <!-- Display link with full label as text if available -->
-          <a :href="v.route">
+          <router-link :to="v.route">
   
             <span v-if="'label' in v">
               {{ v.label }}
@@ -28,13 +28,13 @@
             <span v-else>
               {{ v.name }}
             </span>
-          </a>
+          </router-link>
         </span>
       </span>
   
       <span v-else-if="isStringArray">
         <!-- Sort in alphabetical order -->
-        <Tag :tags="value" />
+        <Tag :tags="value.sort()" />
       </span>
   
       <!-- Otherwise, is tabular format - do not render as data side entry but rather in page contents -->
@@ -86,10 +86,8 @@
    */
   let doShowDataObjLinks = computed(() => {
     // Display items if the number of data objects fall below the defined threshold
-    if (!(isDataObjectArray(relatedObjs) && relatedObjs.length))
-      return true
     return (
-      isDataObjectArray(relatedObjs) && relatedObjs.length <= maxNumDisplay
+      isThisObjectArray && relatedObjs.length <= maxNumDisplay
     )
   })
   
@@ -102,11 +100,11 @@
     const plural = dataObjectToPluralTitle(objectType)
     const pluralTitle = capitalizeSidebar(plural, ' ')
     
-    if (isDataObjectArray(relatedObjs) && !doShowDataObjLinks.value) {
+    if (isThisObjectArray && !doShowDataObjLinks.value) {
       // Summarize count
       
       return `Number of ${pluralTitle}`
-    } else if (isDataObjectArray(relatedObjs) && relatedObjs.length > 1) {
+    } else if (isThisObjectArray && relatedObjs.length > 1) {
       // Multiple data objects
       return pluralTitle
     }
@@ -121,7 +119,7 @@
    * @type {Object[] or String or Number}
    */
   let value = computed(() => {
-    if (isDataObjectArray(relatedObjs) && !doShowDataObjLinks.value) {
+    if (isThisObjectArray && !doShowDataObjLinks.value) {
       // Summarize count for data objects over the display threshold
       return relatedObjs.length
     }
@@ -167,9 +165,9 @@
       // Same conditions as the template rendering,
       // i.e. render key if value will also render
       objectType === 'ATT&CK-reference' ||
-      isValuePrimitive ||
-      isDataObjectArray ||
-      isStringArray ||
+      isValuePrimitive.value ||
+      isThisObjectArray.value ||
+      isStringArray.value ||  
       // Don't render mitigation uses
       (isJavascriptObject(relatedObjs[0]) &&
         !('use' in relatedObjs[0]))

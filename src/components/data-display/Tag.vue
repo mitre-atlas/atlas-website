@@ -1,26 +1,25 @@
 <template>
     <span>
-      <v-tooltip v-for="(tag, i) in sortedTags" :key="i" top> 
-         <template #activator="{ on, attrs }">
+      <v-tooltip v-for="(tag, i) in tags" :key="i" :text="getTagDescription(tag)" location="top">
+        <template v-slot:activator="{ props }">
+          <!-- <v-btn v-bind="props">Tooltip</v-btn> -->
           <v-chip
-            class="text-left pa-0"
+            class="ma-1"
             density="compact"
-            variant="text"
-            v-bind="attrs"
-            v-on="on"
+            variant="outlined"
+            label
+            v-bind="props"
           >
             {{ tag }}
           </v-chip>
         </template>
-        <span class="text-caption">
-          {{ getTagDescription(tag) }}
-        </span>
       </v-tooltip>
     </span>
   </template>
   
   <script setup>
-    import { computed } from 'vue';
+    import { ref } from 'vue';
+    import jsyaml from 'js-yaml';
     
     const { tags } = defineProps([
       /**
@@ -28,29 +27,27 @@
        */
       'tags'
     ]);
-    const terms = []
+
+    const terms = ref([])
+
+    getYaml()
+
+    async function getYaml() {
+      try {
+          const categoriesResponse = await fetch('/content/descriptions/categories.yaml')
+          const categories = await categoriesResponse.text()
+          terms.value = jsyaml.load(categories).categories
+
+          const lifecycleResponse = await fetch('/content/descriptions/ML-lifecycle.yaml')
+          const lifecycles = await lifecycleResponse.text()
+          terms.value = terms.value.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
+      } catch (error) {
+          console.error('Error fetching YAML file:', error)
+      }
+    }
   
-    // TODO: get category descriptions from content
-    // let async fetch = () => {
-    //   // Retrieve description list
-    //   const categoryDescriptions = await $content('descriptions/categories').fetch()
-    //   terms = categoryDescriptions.categories
-  
-    //   const lifecycleDescriptions = await $content('descriptions/ML-lifecycle').fetch()
-    //   terms = terms.concat(lifecycleDescriptions['ML-lifecycle'])
-  
-    // }
-  
-    /**
-     * Tags in alphabetical order
-     */
-    let sortedTags = computed(() => {
-      // Make a copy as not to mutate prop
-      return tags.sort()
-    })
-  
-    let getTagDescription = (name) => {
-      const matchingTerm = terms.find(t => t.name === name)
+    function getTagDescription(name) {
+      const matchingTerm = terms.value.find(t => t.name === name)
       if (matchingTerm) {
         return matchingTerm.description
       }

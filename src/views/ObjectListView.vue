@@ -14,7 +14,7 @@
       Scroll through the table or use the filter to narrow down the information.
     </p>
 
-    <InfoTable :objectTypePlural="objectTypePlural"></InfoTable>
+    <InfoTable :items="tableItems"></InfoTable>
   </div>
   <div v-else>
     <!-- Display ErrorNotFound if object type is not found -->
@@ -64,6 +64,14 @@
         return true
       }
       return (Object.keys(mainStore.getDataObjectTypes)).includes(objectTypePlural)
+  })
+
+  const tableItems = computed(() => {
+    // Get case study objects if needed (store has it with the hyphen)
+    if (objectTypePlural == "studies") {
+      return mainStore.getDataObjectsByType('case-studies')
+    }
+    return mainStore.getDataObjectsByType(objectTypePlural)
   })
 
   
