@@ -62,7 +62,6 @@
     const dataObject = computed(() => {
       return mainStore.getDataObjectById(id)
     })
-    console.log('dataObject = ', dataObject)
 
     const relatedObjects = computed(() => {
       let relatedObjectsArrays = {}
@@ -73,7 +72,6 @@
       })
       return relatedObjectsArrays
     })
-    console.log('relatedObjects = ', relatedObjects)
     
     const title = computed(() => {
       // Prepend parent technique name for a subtechnique
