@@ -8,6 +8,7 @@ import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
 import StudiesIDView from '../views/StudiesIDView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
+import GeneralInformation from '../views/resources/GeneralInformation.vue'
 import FAQ from '../views/resources/faq.vue'
 import adversarial from '../views/resources/adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
@@ -30,9 +31,8 @@ const routes = [
     component: adversarial,
   },
   {
-    path: '/:catchAll(.*)*', 
-    name: 'ErrorNotFound',
-    component: ErrorNotFoundView,
+    path: '/resources/info',
+    component: GeneralInformation,
   },
   {
     path: '/:objectTypePlural',
@@ -49,6 +49,11 @@ const routes = [
   {
     path: '/navigator',
     component: NavigatorView,
+  },
+  {
+    path: '/:catchAll(.*)*', 
+    name: 'ErrorNotFound',
+    component: ErrorNotFoundView,
   },
 ]
 
