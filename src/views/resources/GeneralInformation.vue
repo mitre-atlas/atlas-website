@@ -63,10 +63,10 @@
               />
               <v-list-item
                 v-if="subitem.type === 'link'"
-                :title="subitem.url.substring(subitem.url.lastIndexOf('/') + 1)"
-                @click="downloadUrlAsFile(subitem.url)"
                 class="ml-10"
-              />
+              >
+                <a :href="subitem.url" download>{{subitem.url.substring(subitem.url.lastIndexOf('/') + 1)}}</a>
+              </v-list-item>
             </v-list>
           </v-list-group>
         </div>
@@ -165,22 +165,29 @@
             '<a href="https://github.com/mitre-atlas/atlas-navigator-data#export-to-excel" target="_blank">' +
             '&nbsp;See this README for more information.</a>',
         },
-        // excel files will be inserted here
+        {
+          type: 'link',
+          url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-matrices.xlsx'
+        },
+        {
+          type: 'link',
+          url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-mitigations.xlsx'
+        },
+        {
+          type: 'link',
+          url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-tactics.xlsx'
+        },
+        {
+          type: 'link',
+          url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-techniques.xlsx'
+        },
+        {
+          type: 'link',
+          url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas.xlsx'
+        },
       ]
     },
   ])
-
-  importExcelFiles()
-
-  function importExcelFiles() {
-    const modules = import.meta.glob('@/../public/excel-files/*.xlsx')
-    for (const key of Object.keys(modules)) {
-      items.value[2].subitems.push({
-        type: 'link',
-        url: key
-      })
-    }
-  }
 
   const repositories = {
     websites: [
