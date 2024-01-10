@@ -5,12 +5,12 @@
     </div>
       <v-row>
         <v-col cols="9">
-            <v-list-item class="text-h5 text-left"> 
+            <v-list-item class="text-h5"> 
               Summary
             </v-list-item>
 
             <v-list-item>
-              <div class="text-body-1 text-left pa-3" v-html="markdown.render(dataObject.description)" />
+              <div class="text-body-1 pa-3" v-html="markdown.render(dataObject.description)" />
           </v-list-item>
         </v-col>
 

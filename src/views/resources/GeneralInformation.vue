@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left pt-10 pr-12 pl-12 pb-10">
+  <div class="pt-10 pr-12 pl-12 pb-10">
     <p class="text-h3 mt-10">
       General Information
     </p>

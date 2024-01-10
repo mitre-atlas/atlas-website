@@ -51,8 +51,7 @@
                 v-for="(childLink, j) in link.links"
                 :key="j"
                 :to="childLink.href"
-                style="text-transform: capitalize !important"
-                class="px-6 text-button"
+                class="px-6 text-button text-capitalize"
               >
                 {{ childLink.name }}
               </v-list-item>
@@ -85,8 +84,7 @@
                 v-for="(childLink, j) in link.links"
                 :key="j"
                 :to="childLink.href"
-                class="px-6 text-button"
-                style="text-transform: capitalize !important"
+                class="px-6 text-button text-capitalize"
                 v-text="childLink.name"
               />
             </div>
@@ -95,8 +93,7 @@
               :to="link.href"
               text
               exact
-              class="px-6 text-button"
-              style="text-transform: capitalize !important"
+              class="px-6 text-button text-capitalize"
               v-text="link.name"
             />
           </div>

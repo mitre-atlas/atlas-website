@@ -2,22 +2,21 @@
 
   <div v-if="study != undefined">
     <div class="pa-3">
-      <div class="text-h3 pa-10 text-left">
+      <div class="text-h3 pa-10">
         {{ study.name }}
         <v-chip
-          class="ma-1 ml-3"
+          class="ma-1 ml-3 text-capitalize"
           :color="study['case-study-type'] === 'exercise' ? 'blue' : 'purple'"
           :text-color="study['case-study-type'] === 'exercise' ? 'blue' : 'purple'"
           label
           variant="outlined"
-          style="text-transform: capitalize;"
           :prepend-icon="study['case-study-type'] === 'exercise' ? 'mdi-clipboard-file-outline' : 'mdi-alert-circle-outline'"
         >
           {{ study['case-study-type'] }}
         </v-chip>
       </div>
 
-      <v-row align="center" class="text-left pl-12">
+      <v-row class="pl-12">
         <v-col cols="12" sm="5" md="7">
           <span> Incident Date:&nbsp; </span>
           <span v-if="study['incident-date']" class="font-weight-bold">
@@ -45,11 +44,11 @@
         </v-col>
       </v-row>
 
-      <p class="text-h5 text-left mt-10 ml-6"> 
+      <p class="text-h5  mt-10 ml-6"> 
           Summary
       </p>
       <p 
-        class="text-body-1 text-left pl-3 ml-6" 
+        class="text-body-1  pl-3 ml-6" 
         v-html="md.render(study.summary)" 
       />
 
@@ -58,8 +57,7 @@
 
       <v-row align="center">
         <v-col>
-          <div class="text-h5 text-left ml-6"
-          style="text-transform: capitalize;"
+          <div class="text-h5 ml-6 text-capitalize"
           > 
             Procedure
           </div>
@@ -73,8 +71,8 @@
         <ProcedureTimeline :study="study" />
       </v-row>
 
-      <div v-if="study.references && study.references.length > 0" class="text-left ml-6">
-        <p class="text-h5 text-left mt-10"> 
+      <div v-if="study.references && study.references.length > 0" class=" ml-6">
+        <p class="text-h5  mt-10"> 
           Sources
         </p>
         <div v-for="reference in study.references" :key="reference.url" class="pl-3 mb-2">

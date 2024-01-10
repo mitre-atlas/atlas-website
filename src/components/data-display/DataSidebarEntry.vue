@@ -1,5 +1,5 @@
 <template>
-    <div class="text-left pb-2">
+    <div class="pb-2">
       <span v-if="doShowKey" class="font-weight-bold">{{ key }}: </span>
   
       <!-- Link to ATT&CK -->
