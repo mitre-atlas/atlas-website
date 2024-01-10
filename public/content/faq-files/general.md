@@ -7,7 +7,7 @@ weight: 1
 
 Tactics are tactical adversary goals during an attack. They represent the “why” of a technique: the reason for performing an action.
 Tactics serve as useful contextual categories for individual techniques and cover standard notations for things adversaries do during an operation.
-[<sup>\[1\]</sup>][1] MITRE ATLAS<sup>&trade;</sup> tactics represent new adversary goals particular to machine learning systems, as well as tactics adapted from the MITRE ATT&CK<sup>&reg;</sup> Enterprise Matrix.
+[<sup>\[1\]</sup>][1] MITRE ATLAS<sup>&trade;</sup> tactics represent new adversary goals particular to artificial intelligence systems, as well as tactics adapted from the MITRE ATT&CK<sup>&reg;</sup> Enterprise Matrix.
 In those cases, ATT&CK tactic definitions are stretched to include ML concepts.
 
 #### What is a technique?
