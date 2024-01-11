@@ -1,6 +1,6 @@
 <template>
-  <div class="text-left pt-10 pr-12 pl-12 pb-10">
-    <p class="text-h3 mt-10">
+  <div>
+    <p class="text-h3">
       Contribute
     </p>
     <p>
@@ -85,6 +85,7 @@
   import jsyaml from 'js-yaml'
   import { ref } from 'vue'
   import { useDisplay } from 'vuetify'
+  import { getPathWithBase } from '@/assets/tools.js'
 
   const { smAndDown } = useDisplay()
 
@@ -94,7 +95,7 @@
   const contributorsA = ref([])
   const contributorsB = ref([])
 
-  fetch('/content/contributorslist.yaml')
+  fetch(getPathWithBase('/content/contributorslist.yaml'))
     .then(response => response.text())
     .then(data => {
       const contents = jsyaml.load(data)
