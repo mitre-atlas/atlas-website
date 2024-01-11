@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 import Markdown from 'vite-plugin-md'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -28,6 +29,8 @@ export default defineConfig(({ mode }) => {
         include: [/\.vue$/, /\.md$/],
       }),
       Markdown(),
+      // Resolve Buffer is not defined for @mdit-vue-plugin-frontmatter
+      nodePolyfills(),
     ],
     resolve: {
       alias: {

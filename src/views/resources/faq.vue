@@ -1,47 +1,57 @@
 <template>
-  <div class="pa-7 text-left"> 
+  <div class="text-left">
     <div class="text-h3">{{ title }}</div>
 
-    <div class="pl-4" v-for="section in faqSections" :key="section.frontmatter.title">
-      <div class="pt-7 pb-2 text-h6"> {{ section.frontmatter.title }} </div>
-      <component class="pb-8 text-body-1" :is="section.default"></component>
+    <div v-for="(section, i) in faqSections" :key="i">
+      <div class="text-h5 mt-10 mb-5">
+        {{ section.frontmatter.title }}
+      </div>
+      <div v-html="section.content"></div>
     </div>
 
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, reactive} from 'vue';
 
-const faqSections = ref([]);
+const md = inject('markdownit')
+
+const faqSections = reactive([]);
 const title = 'FAQ'
 
-importFiles();
 
-async function importFiles() {
-  const modules = import.meta.glob('@/../public/content/faq-files/*.md')
+// Dynamically import any Markdown files found
+const modules = import.meta.glob(
+  '@/../public/content/faq-files/*.md',
+  { as: 'raw', eager: true }
+)
 
-  for (const path in modules) {
-    modules[path]().then((mod) => {
-      faqSections.value.push(mod)
-    })
+// Convert Markdown to HTML
+Object.values(modules).map((m) => {
+  // Render each file's contents into HTML
+  // Frontmatter is parsed out into `frontmatter`
+  const container = {};
+  const mdAsHtml = md.render(m, container)
+
+  const data = {
+    frontmatter: container.frontmatter,
+    content: mdAsHtml
   }
-}
 
+  faqSections.push(data)
+})
+
+// Reorder the sections ascending according to the `weight` frontmatter, if exists
+faqSections.sort((a, b) => {
+  if ('weight' in a.frontmatter && 'weight' in b.frontmatter) {
+    // Lower weight at the top
+    return a.frontmatter.weight - b.frontmatter.weight
+  } else if ('title' in a.frontmatter && 'title' in b.frontmatter) {
+    // Sort alphabetically by title, if exists
+    return a.frontmatter.title.localeCompare(b.frontmatter.title)
+  }
+  // Default sort
+  return a - b
+})
 </script>
-
-<style>
-
-th, td {
-  border-bottom-width: 1px !important;
-  border-bottom-style: solid !important;
-  border-bottom-color: rgba(0,0,0,.12) !important;
-  padding: 5px;
-  padding-left: 0 !important;
-}
-
-table {
-  padding-top: 10px;
-}
-
-</style>

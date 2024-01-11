@@ -30,7 +30,7 @@
           </v-col>
         </v-row>
       </template>
-      <v-data-table 
+      <v-data-table
         :items="items"
         :headers="headers"
         v-model:sort-by="sortBy"
@@ -83,18 +83,16 @@
 /**
  * Table containing an organized list of items of one object type.
  */
-import { computed, ref } from 'vue' 
+import { computed, inject, ref } from 'vue'
 import AttackIconTooltip from '@/components/AttackIconToolTip.vue'
 import { useRoute } from 'vue-router'
 import { capitalize } from '@/assets/tools.js'
-import markdownit from 'markdown-it'
+
 import { useDisplay } from 'vuetify'
 
 const { mobile } = useDisplay()
 
-const md = markdownit({
-  html: true
-})
+const md = inject('markdownit')
 
 const route = useRoute()
 
