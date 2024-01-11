@@ -1,6 +1,6 @@
 
 <template>
-  <div class="pa-7"> 
+  <div> 
     <div class="text-h3">{{ title }}</div>
     <MarkdownContent class="pa-4 text-body-1"></MarkdownContent>
   </div>

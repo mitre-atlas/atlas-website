@@ -1,6 +1,6 @@
 <template>
-  <div class="pt-10 pr-12 pl-12 pb-10">
-    <p class="text-h3 mt-10">
+  <div>
+    <p class="text-h3">
       General Information
     </p>
     <p class="text-h5 my-5">

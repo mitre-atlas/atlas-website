@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <Header />
-        <v-main>
+        <v-main :class="`${isHome ? '' : 'ma-16 pt-16'}`" >
             <slot />
         </v-main>
         <Footer />
@@ -15,9 +15,16 @@
   
   import Footer from '@/components/Footer.vue'
   import Header from '@/components/Header.vue'
-  import { useMain } from "@/stores/main"
   import { computed } from 'vue' 
-  const mainStore = useMain();
+  import { useRoute } from 'vue-router'
+
+  const route = useRoute()  
+
+  const isHome = computed(() => {
+    console.log(route.path)
+    return route.path == "/"
+  });
+
   
   </script>
   

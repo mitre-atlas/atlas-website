@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-7"> 
+  <div> 
     <div class="text-h3">{{ title }}</div>
 
     <div class="pl-4" v-for="section in faqSections" :key="section.frontmatter.title">

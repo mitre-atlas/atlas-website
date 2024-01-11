@@ -1,8 +1,8 @@
 <template>
 
   <div v-if="study != undefined">
-    <div class="pa-3">
-      <div class="text-h3 pa-10">
+    <div>
+      <div class="text-h3 pb-10 text-center">
         {{ study.name }}
         <v-chip
           class="ma-1 ml-3 text-capitalize"
@@ -16,7 +16,7 @@
         </v-chip>
       </div>
 
-      <v-row class="pl-12">
+      <v-row class="ml-6">
         <v-col cols="12" sm="5" md="7">
           <span> Incident Date:&nbsp; </span>
           <span v-if="study['incident-date']" class="font-weight-bold">

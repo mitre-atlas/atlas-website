@@ -1,6 +1,6 @@
 <template>
-  <div v-if="dataObject != undefined" class="pa-3">
-    <div class="text-h3 pa-10">
+  <div v-if="dataObject != undefined">
+    <div class="text-h3 pb-10 text-center">
       {{ title }}
     </div>
       <v-row>
