@@ -274,3 +274,13 @@ export function setMetaData (studyData, studySchemaVersion) {
   }
   return studyData.meta
 }
+
+/**
+ * Prepends the .env-provided base URL to the provided path.
+ * For use by `fetch()`
+ * @param {string} pathString
+ */
+export function getPathWithBase (pathString) {
+  // BASE_URL defaults to `/`, uses path.join to construct valid paths
+  return path.join(import.meta.env.BASE_URL, pathString)
+}

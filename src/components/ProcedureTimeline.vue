@@ -8,9 +8,7 @@
       :key="i"
       dot-color="blue"
     >
-      <v-card
-        class="text-left"
-      >
+      <v-card>
         <template v-slot:title>
           <router-link :to="`/techniques/${procedure.technique}`">
             {{ getTechniqueName(procedure.technique) }}

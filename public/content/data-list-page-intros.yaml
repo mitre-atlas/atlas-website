@@ -3,7 +3,7 @@ tactics: |
   Tactics serve as useful contextual categories for individual techniques and cover standard notations for things adversaries do during an operation.
   <sup><a href="https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf">[1]</a></sup>
 
-  MITRE ATLAS<sup>&trade;</sup> tactics represent new adversary goals particular to machine learning systems, as well as tactics adapted from the MITRE ATT&CK<sup>&reg;</sup> Enterprise Matrix.
+  MITRE ATLAS<sup>&trade;</sup> tactics represent new adversary goals particular to artificial intelligence systems, as well as tactics adapted from the MITRE ATT&CK<sup>&reg;</sup> Enterprise Matrix.
   In those cases, ATT&CK tactic definitions are stretched to include ML concepts.
 techniques: |
   Techniques describe the means by which adversaries achieve tactical goals. They represent “how” an adversary achieves a tactical objective by performing an action.

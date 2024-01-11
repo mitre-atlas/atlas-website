@@ -3,7 +3,7 @@ title: Mitigation Terminology
 weight: 3
 ---
 
-#### What are the ML lifecycle stages?
+###### What are the ML lifecycle stages?
 
 The machine learning lifecycle, adapted from [Crisp-ML(Q)](https://ml-ops.org/content/crisp-ml), consists of the following stages:
 

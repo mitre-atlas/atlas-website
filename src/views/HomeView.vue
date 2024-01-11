@@ -8,9 +8,8 @@
       <v-row
         color="white"
         tile
-        class="pr-12 pl-12"
+        class="pr-12 pl-12 mb-5"
         width="100%"
-        style="margin-bottom: 5%; text-align: left"
       >
         <v-col :cols="mobile ? 12 : 9">
 

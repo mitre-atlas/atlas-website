@@ -3,23 +3,23 @@
       <!-- <template v-if="'route' in d">
         {{ getLabelById(d.id) || d.name }}
       </template> -->
-  
+
     <v-list-item
       v-if="'route' in d"
       :key="getLabelById(d.id) || d.name"
       :to="d.route"
-      class="pb-1 pt-1 mb-2 text-left text-body-1"
+      class="pb-1 pt-1 mb-2 text-body-1"
     >
       <div v-html="getLabelById(d.id) || d.name"></div>
     </v-list-item>
     </div>
   </template>
-  
+
   <script setup>
-  
+
   import { useMain } from "@/stores/main"
   const mainStore = useMain()
-  
+
   const { parentObject, items, itemType } = defineProps([
     /**
      * Data object that these items apply to
@@ -38,15 +38,15 @@
      */
     'itemType'
   ]);
-  
-  
+
+
   /**
    * Items sorted by ID in alphabetical order
    * @type {Object[]}
    */
    const itemsList = [items][0].sort((a, b) => (a.id > b.id) ? 1 : -1)
-  
-  
+
+
   /**
    * Returns the `label` of the specified object ID
    * @todo LW Is `label` available in the related objs info? Why query?
@@ -56,9 +56,4 @@
       const obj = mainStore.getDataObjectById(id)
       return obj.label
     })
-  
-
-  const baseUrl = import.meta.env.BASE_URL
-
   </script>
-  
