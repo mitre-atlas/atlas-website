@@ -6,6 +6,7 @@ import {
   dataObjectToPluralTitle,
   dataObjectToRoute
 } from '@/assets/dataHelpers.js'
+import { getPathWithBase } from '@/assets/tools'
 
 /**
  * Keys that will not be considered as properties or references to other data objects
@@ -84,7 +85,7 @@ export const useMain = defineStore('main', {
        * @alias mapGetters: getDataAttribute
        */
       getDataAttribute: state => key => state.data[key],
-    
+
       /**
        * Get a single array of all objects
        * @returns {object[]}
@@ -96,7 +97,7 @@ export const useMain = defineStore('main', {
        * @returns {object[]}
        */
       getDataObjectTypes: state => state.data.objects,
-    
+
       /**
        * Returns data objects under the provided object type, either as an object of { matrixId: [objs] }
        * for ex. tactic or technique index page use in filtering, or an array of data objects for ex.
@@ -113,12 +114,12 @@ export const useMain = defineStore('main', {
         // or an empty Array if not found
         // Ex. in rendering the studies page when there is no case-studies key in the data
         const content = state.data.objects[objType]
-    
+
         if (typeof returnObject !== 'undefined' && returnObject) {
           // Return the object with keys of matrix ID and values of data objects
           return content
         }
-    
+
         if (typeof matrixId === 'undefined') {
           // This is a top-level key containing an array of data objects
           if (Array.isArray(content)) {
@@ -132,7 +133,7 @@ export const useMain = defineStore('main', {
         // Otherwise access the matrix's objects by ID
         return content[matrixId] ?? []
       },
-    
+
       /**
        * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
        * that contain a specified key and value.
@@ -151,7 +152,7 @@ export const useMain = defineStore('main', {
             return objs.filter(obj => obj[key] === value)
           }
         },
-    
+
       /**
        * Retrieves an array of deep-copied data objects of a specific type, optionally that belong to a specific matrix,
        * that contain a specified key and value.
@@ -177,7 +178,7 @@ export const useMain = defineStore('main', {
           return objs
         }
       },
-    
+
       /**
        * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
        * that contain the specified value in the array under the given key.
@@ -197,7 +198,7 @@ export const useMain = defineStore('main', {
             return objs.filter(obj => key in obj && obj[key].includes(value))
           }
         },
-    
+
       /**
        * Returns an object with key/object-type to array of objects referenced by this object.
        * Re-keys specific items including "subtechnique-of" for title display purposes.
@@ -208,7 +209,7 @@ export const useMain = defineStore('main', {
       getReferencedDataObjects: function (state) {
         return function (argObj) {
         // Returns an object with key/object-type to array of objects referenced by this object
-    
+
         // Get object keys that may be references, i.e. are not default
         const dataKeys = Object.keys(argObj).filter(value => {
           // Handle tactics having techniques attached, or techniques having subtechniques attached,
@@ -227,7 +228,7 @@ export const useMain = defineStore('main', {
             value
           )
         })
-    
+
         // IDs of objects directly referenced by this page's object
         const referencedObjects = {}
         dataKeys.forEach(key => {
@@ -239,11 +240,11 @@ export const useMain = defineStore('main', {
             'id' in value[0]
           ) {
             // List of data objects for tabular format
-    
+
             // Pull out the list of field names other than 'id' to be column names
             let columnNames = Object.keys(value[0])
             columnNames = columnNames.filter(name => name !== 'id')
-    
+
             // Flatten into an array of data objects augmented with tabular data and column names
             const objs = value
               .map(v => {
@@ -256,7 +257,7 @@ export const useMain = defineStore('main', {
                 return augmentedObj
               })
               .flat()
-    
+
             // Assign to related objects
             referencedObjects[key] = objs
           } else {
@@ -276,19 +277,19 @@ export const useMain = defineStore('main', {
             }
           }
         })
-    
+
         // Handle subtechnique-of title
         if ('subtechnique-of' in referencedObjects) {
           // Access parent technique object from the array under the `subtechnique-of` key
           const parentTechniqueId = referencedObjects['subtechnique-of'][0]['id']
           // Access full object, including the tactics key
           const parentTechnique = this.getDataObjectById(parentTechniqueId)
-    
+
           // Add the parent technique's tactic(s) to the subtechnique's related objects
           referencedObjects['tactics'] = parentTechnique.tactics.map(id =>
             this.getDataObjectByIdDeepCopyDefault(id)
           )
-    
+
           // Re-key the parent technique object under the desired display label,
           // which expects an array
           referencedObjects['parent-technique'] = [parentTechnique]
@@ -298,7 +299,7 @@ export const useMain = defineStore('main', {
         return referencedObjects
       }
     },
-    
+
       /**
        * Returns an object with key/object-type to array of deep-copied objects that reference this object.
        * Re-keys specific items including "subtechniques" for title display purposes.
@@ -310,9 +311,9 @@ export const useMain = defineStore('main', {
       getDataObjectsReferencing: function (state) {
         return function (argObj) {
           // Return an object with key/object-type to array of deep-copied objects that reference this object
-      
+
           const id = argObj.id
-      
+
           // Find objects that reference this object's ID
           let objects = this.getDataObjects.filter(obj => {
             // Disregard the argObj itself
@@ -341,7 +342,7 @@ export const useMain = defineStore('main', {
           })
           // Make a deep copy of each object, with only default keys, i.e. id, name, route for linking
           objects = objects.map(obj => deepCopyDefault(obj))
-      
+
           // Other subtechniques
           if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
             const parentTechniqueId = id.substring(0, id.lastIndexOf('.'))
@@ -354,7 +355,7 @@ export const useMain = defineStore('main', {
             // Add other subtechniques that aren't this one
             objects = objects.concat(otherSubtechniques.filter(t => t.id !== id))
           }
-      
+
           // Add subtechniques of tactics to the technique list
           if (argObj['object-type'] === 'tactic') {
             let subtechniques = []
@@ -371,7 +372,7 @@ export const useMain = defineStore('main', {
             })
             objects = objects.concat(subtechniques)
           }
-      
+
           // Group by object type
           const results = objects.reduce((acc, obj) => {
             var objectType = obj['object-type']
@@ -381,7 +382,7 @@ export const useMain = defineStore('main', {
             acc[objectType].push(obj)
             return acc
           }, {})
-      
+
           // Label subtechniques if available
           if ('technique' in results && argObj['object-type'] === 'technique') {
             let subtechniqueKey = 'subtechniques'
@@ -398,22 +399,22 @@ export const useMain = defineStore('main', {
             }
             delete results['technique']
           }
-      
+
           // Adding ATT&CK object to relatedObjects for DataSidebar rendering
           if ('ATT&CK-reference' in argObj) {
             results['ATT&CK-reference'] = argObj['ATT&CK-reference']
           }
-      
+
           return results
         }
       },
-    
+
       /**
        * Returns an object of key/object-type to array of data objects related to this object
        * @returns {Object} Related data objects, keyed by display title or data object type
        */
       getRelatedDataObjects: function (state) {
-        return function (argObj) { 
+        return function (argObj) {
           // Returns an object of key/object-type to array of data objects related to this object
           const relatedObjs = {
             ...this.getReferencedDataObjects(argObj),
@@ -428,7 +429,7 @@ export const useMain = defineStore('main', {
             }, {})
         }
       },
-    
+
       /**
        * Retrieve a data object by ID
        * @param {string} value - Data object ID
@@ -441,7 +442,7 @@ export const useMain = defineStore('main', {
             return this.getDataObjects.find(obj => obj['id'] === value)
         }
       },
-    
+
       /**
        * Retrieve a data object by ID, deep-copying the object with only default keys present
        * @param {string} value - Data object ID
@@ -457,7 +458,7 @@ export const useMain = defineStore('main', {
             return obj
         }
       },
-    
+
       /**
        * Retrieves the ID of the first matrix
        * @returns {string} matrix ID
@@ -466,7 +467,7 @@ export const useMain = defineStore('main', {
       getFirstMatrixId: state => {
         return state.data.matrices[0].id
       },
-    
+
       /**
        * Retrieves an array of matrix IDs
        * @returns {string[]} matrix IDs
@@ -474,7 +475,7 @@ export const useMain = defineStore('main', {
       getMatrixIds: state => {
         return state.data.matrices.map(obj => obj.id)
       },
-    
+
       /**
        * Retrieve a matrix object by ID
        * @param {string} value - Matrix ID
@@ -578,10 +579,9 @@ export const useMain = defineStore('main', {
        * Loads in ATLAS.yaml data. Automatically called upon server start.
        */
       async init() {
+
         // Retrieve the threat matrix YAML data and populate store upon start
-        let atlasData = await fetch(import.meta.env.MODE === 'development'
-          ? '/atlas-data/dist/ATLAS.yaml'
-          : `${import.meta.env.BASE_URL}/atlas-data/dist/ATLAS.yaml`)
+        let atlasData = await fetch(getPathWithBase('/atlas-data/dist/ATLAS.yaml'))
         let yamlString = await atlasData.text()
 
         // Get all contents, then parse and commit payload

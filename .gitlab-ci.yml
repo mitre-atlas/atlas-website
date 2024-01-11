@@ -13,7 +13,9 @@ pages:
     paths:
       - node_modules/
   script:
-    - npm install
+    # Configure to set Navigator URL, etc.
+    - echo "VITE_BASE_URL=$CI_PROJECT_NAME" > .env
+    - cat .env
     - npm run build
     # navigate into the build output directory
     - cd dist
