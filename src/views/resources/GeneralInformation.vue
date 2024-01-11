@@ -80,11 +80,11 @@
     <div class="px-4 pb-4">
       <!-- Match padding indentation of surrounding list items -->
       <p>
-        The MITRE YouTube channel houses a 
-        <a target="_blank" href="https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu">video playlist</a> 
+        The MITRE YouTube channel houses a
+        <a target="_blank" href="https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu">video playlist</a>
         containing a collection of instructional videos for users of the {{ VITE_SHORT_NAME }} site.
       </p>
-      
+
       <p>
         Videos included:
       </p>
@@ -125,15 +125,12 @@
 
 <script setup>
   const { VITE_MITRE_TITLE, VITE_SHORT_NAME } = import.meta.env
-  import { ref } from 'vue'
+  import { ref, inject } from 'vue'
   import { version } from '/package.json'
   import { useMain } from "@/stores/main"
   import { downloadUrlAsFile } from '@/assets/tools.js'
-  import markdownit from 'markdown-it'
 
-  const md = markdownit({
-    html: true
-  })
+  const md = inject('markdownit')
 
   const mainStore = useMain()
 
@@ -161,7 +158,7 @@
       subitems: [
         {
           type: 'subHeader',
-          subHeader: 'Click on a file below to download.' + 
+          subHeader: 'Click on a file below to download.' +
             '<a href="https://github.com/mitre-atlas/atlas-navigator-data#export-to-excel" target="_blank">' +
             '&nbsp;See this README for more information.</a>',
         },
