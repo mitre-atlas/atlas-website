@@ -4,7 +4,7 @@
       class="mt-10"
     >
       <v-card-text class="text-body-2">
-        <p class="text-left pb-2">
+        <p class="pb-2">
           <span class="font-weight-bold">ID:</span> {{ dataObject.id }}
         </p>
         <p

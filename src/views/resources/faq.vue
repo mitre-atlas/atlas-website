@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left">
+  <div> 
     <div class="text-h3">{{ title }}</div>
 
     <div v-for="(section, i) in faqSections" :key="i">

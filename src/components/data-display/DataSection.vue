@@ -5,7 +5,7 @@
         <v-row no-gutters>
           <v-col cols="auto">
             <v-list-item
-              class="text-capitalize text-left text-h5"
+              class="text-capitalize text-h5"
               v-bind="props"
             >
               {{ title }}
