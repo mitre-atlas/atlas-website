@@ -21,7 +21,6 @@
   const route = useRoute()  
 
   const isHome = computed(() => {
-    console.log(route.path)
     return route.path == "/"
   });
 
