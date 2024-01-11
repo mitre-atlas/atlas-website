@@ -21,11 +21,11 @@
     <ErrorNotFoundView />
   </div>
 </template>
-  
+
 <script setup>
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import InfoTable from "../components/data-display/InfoTable.vue"
-  import { computed, ref } from 'vue' 
+  import { computed, ref } from 'vue'
 
   import { useRoute } from 'vue-router'
   import { useMain } from "@/stores/main"
@@ -33,17 +33,19 @@
   import jsyaml from 'js-yaml';
   import StudiesIntroText from "./StudiesIntroText.vue"
 
+  import { getPathWithBase } from '@/assets/tools.js'
+
   const mainStore = useMain()
 
   const route = useRoute()
 
   let { objectTypePlural } = route.params
-  const { VITE_MITRE_TITLE } = import.meta.env 
+  const { VITE_MITRE_TITLE } = import.meta.env
 
   let introText = ref('');
 
   if(objectTypePlural !== 'studies') {
-    fetch('/content/data-list-page-intros.yaml')
+    fetch(getPathWithBase('/content/data-list-page-intros.yaml'))
     .then(response => response.text())
     .then(data => {
       introText.value = jsyaml.load(data)[objectTypePlural];
@@ -74,6 +76,5 @@
     return mainStore.getDataObjectsByType(objectTypePlural)
   })
 
-  
+
 </script>
-  
