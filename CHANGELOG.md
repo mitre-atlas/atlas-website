@@ -1,5 +1,14 @@
 # ATLAS Website Changelog
 
+## [3.6.1]() (2024-01-12)
+
+#### Website
+- Minor mitigations updates
+- Updated events and LinkedIn info
+
+#### Data
+- Updated ATLAS data to version 4.5.1
+
 ## [3.6.0]() (2023-10-25)
 
 #### Website

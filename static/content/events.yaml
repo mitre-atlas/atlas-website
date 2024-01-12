@@ -160,4 +160,40 @@ data:
       Hacks in Taiwan Conference (HITCON) is technology-orientated cybersecurity conference.
       ATLAS will present on AI threat awareness.
     url: https://cfp2023.hitcon.org/en/
+    color:
+
+  - name: "Advantage DoD 2024: Defense Data & AI Symposium"
+    date: 2024-02-20
+    location: Washington, DC
+    description: >
+      Feb 20-22: This event, hosted by the Chief Digital and AI Office (CDAO) invites key data leaders and developers from government, industry, and academia to join together and discuss and build the future of cutting-edge data, analytics, and AI - guiding the enablement of the U.S. military's enduring decision advantage.
+    url: https://www.ncsi.com/event/cdao/
+    color: indigo
+  - name: Days of Shecurity 2024
+    date: 2024-04-25
+    location: San Francisco, CA & Virtual
+    description: |
+      Day of Shecurity is a free-to-attend interactive one-day conference that originally launched in 2017 in San Francisco for women in technology interested in cybersecurity. Day of Shecurity launched in Boston in 2019 and held a virtual, location-agnostic conferences in 2021. The event is an effort by Secure Diversity, the Lookout Foundation, Day of Shecurity Core Team, and various organizations that believe that diversity & inclusion matter in our industry.
+    url: https://www.dayofshecurity.com/
+    color: purple
+  - name: RSA Conference 2024
+    date: 2024-05-06
+    location: San Francisco, CA
+    description: |
+      May 6-9: In an ever-changing cybersecurity world, innovation and creativity are key. Join RSAC 2024 and discover The Art of Possible as we collectively create works that will change our perspective on what we can accomplish. Let's celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
+    url: https://www.rsaconference.com/usa
+    color: red
+  - name: Black Hat USA 2024
+    date: 2024-08-03
+    location: Las Vegas, NV
+    description: >
+      BlackHat is an internationally recognized cybersecurity event series providing the most technical and relevant information security research.
+    url: https://www.blackhat.com/
+    color: black
+  - name: DEF CON 2024
+    date: 2024-08-08
+    location: Las Vegas, NV
+    description: >
+      DEF CON is a hacker convention which takes place immediately following Black Hat in Las Vegas every year.
+    url: https://defcon.org/
     color: grey

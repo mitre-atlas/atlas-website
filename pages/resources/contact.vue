@@ -115,6 +115,13 @@ export default {
         title: 'ATLAS Video Playlist',
         text: 'See demos and walkthroughs on YouTube',
         link: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu'
+      },
+      {
+        icon: 'mdi-linkedin',
+        color: '#0077B5',
+        title: 'ATLAS on LinkedIn',
+        text: 'Follow us on LinkedIn',
+        link: 'https://www.linkedin.com/showcase/mitre-atlas/'
       }
     ]
   }),

@@ -3,7 +3,11 @@
     <page-title>{{ title }}</page-title>
 
     <page-section-title>
-      Current {{ mitreTitle }} Version
+      <a href="/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf">{{mitreTitle }} Fact Sheet</a>
+    </page-section-title>
+
+    <page-section-title>
+      Current {{ shortName }} Version
     </page-section-title>
 
     <v-list subheader>

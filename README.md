@@ -1,6 +1,6 @@
 # ATLAS Website
 
-ATLAS enables researchers to navigate the landscape of threats to artificial intelligence and machine learning systems. Visit https://atlas.mitre.org for more information.
+ATLAS enables researchers to navigate the landscape of threats to artificial intelligence systems. Visit https://atlas.mitre.org for more information.
 
 This repository contains the ATLAS website source code, which is built upon Nuxt.js and its static files served via Pages at https://atlas.mitre.org.
 

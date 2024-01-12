@@ -2,7 +2,7 @@
   <div>
     <page-title>{{ title }}</page-title>
 
-    {{ mitreTitle }} is a first-cut attempt at collating a knowledge base of how ML systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
+    {{ mitreTitle }} is a first-cut attempt at collating a knowledge base of how AI systems can be attacked. We need your help to make it holistic and fill in the missing gaps!
 
     <page-section-title class="pt-5">Corrections and Improvement</page-section-title>
 

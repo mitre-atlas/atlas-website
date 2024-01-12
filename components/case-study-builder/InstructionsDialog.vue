@@ -16,11 +16,11 @@
         <ol>
           <li>
             The attack exploits one or more vulnerabilities that compromise the
-            confidentiality, integrity, or availability of a ML system.
+            confidentiality, integrity, or availability of an AI system.
           </li>
           <li>
-            The attack is against a production/commercial ML system. This can be
-            on MLaaS or ML systems embedded in clients/at the edge.
+            The attack is against a production/commercial AI system. This can be
+            on MLaaS or AI systems embedded in clients/at the edge.
           </li>
           <li>
             Ensure you have permission to share this information and/or publish

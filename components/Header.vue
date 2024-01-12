@@ -58,7 +58,8 @@
               v-for="(childLink, j) in link.links"
               :key="j"
               nuxt
-              :to="childLink.href"
+              :to="childLink.to"
+              :href="childLink.href"
               exact
               style="text-transform: capitalize !important"
               class="px-6 text-button"
@@ -72,7 +73,7 @@
       <v-btn
         v-else
         exact
-        :to="link.href"
+        :to="link.to"
         text
         class="text-capitalize"
         nuxt
@@ -101,7 +102,8 @@
               <v-list-item
                 v-for="(childLink, j) in link.links"
                 :key="j"
-                :to="childLink.href"
+                :to="childLink.to"
+                :href="childLink.href"
                 text
                 exact
                 class="px-6 text-button"
@@ -112,7 +114,7 @@
             </div>
             <v-list-item
               v-else
-              :to="link.href"
+              :to="link.to"
               text
               exact
               class="px-6 text-button"
@@ -147,11 +149,11 @@ export default {
         links: [
           {
             name: 'Explore Case Studies',
-            href: '/studies'
+            to: '/studies'
           },
           {
             name: 'Build Case Study',
-            href: '/studies/create'
+            to: '/studies/create'
           }
         ]
       },
@@ -161,27 +163,31 @@ export default {
         links: [
           {
             name: 'General information',
-            href: '/resources/info'
+            to: '/resources/info'
+          },
+          {
+            name: 'ATLAS Fact Sheet',
+            href: '/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf'
           },
           {
             name: 'Adversarial ML 101',
-            href: '/resources/adversarial-ml-101'
+            to: '/resources/adversarial-ml-101'
           },
           {
             name: 'Contribute',
-            href: '/resources/contribute'
+            to: '/resources/contribute'
           },
           {
             name: 'FAQ',
-            href: '/resources/faq'
+            to: '/resources/faq'
           },
           {
             name: 'Updates',
-            href: '/resources/updates'
+            to: '/resources/updates'
           },
           {
             name: 'Contact Us',
-            href: '/resources/contact'
+            to: '/resources/contact'
           }
         ]
       }
@@ -197,7 +203,7 @@ export default {
       return [
         {
           name: 'Matrices',
-          href: `/matrices/${this.getFirstMatrixId}`
+          to: `/matrices/${this.getFirstMatrixId}`
         }
       ]
     },
@@ -211,7 +217,7 @@ export default {
         navLinks = [
           {
             name: 'Navigator',
-            href: '/navigator'
+            to: '/navigator'
           }
         ]
       }
@@ -225,7 +231,7 @@ export default {
 
         return {
           name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
-          href: `/${dataObjectToPluralTitle(objectType, true)}` // Last word of the above
+          to: `/${dataObjectToPluralTitle(objectType, true)}` // Last word of the above
         }
       })
 
