@@ -9,8 +9,8 @@ import IDView from '../views/IDView.vue'
 import StudiesIDView from '../views/StudiesIDView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformation from '../views/resources/GeneralInformation.vue'
-import FAQ from '../views/resources/Faq.vue'
-import Adversarial from '../views/resources/Adversarial-ml-101.vue'
+import ContributorsList from '../views/resources/ContributorsList.vue'
+import FAQ from '../views/resources/faq.vue'
 import NavigatorView from '../views/NavigatorView.vue'
 import ContactView from '../views/resources/Contact.vue'
 import EventsView from '../views/resources/Events.vue'
@@ -43,6 +43,10 @@ const routes = [
   {
     path: '/resources/events',
     component: EventsView,
+  },
+  {
+    path: '/resources/contribute',
+    component: ContributorsList,
   },
   {
     path: '/:objectTypePlural',
