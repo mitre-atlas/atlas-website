@@ -51,24 +51,21 @@
    * Headers for the data table.
    * @type {Array}
    */
-    const headers = computed(() => {[
+    const headers = computed(() => [
       {
-        text: 'Date',
-        value: 'date',
-        width: 150,
+        title: 'Date',
+        key: 'date',
         align: 'end'
       },
       {
-        text: 'Name',
-        value: 'name',
-        width: 100
+        title: 'Name',
+        key: 'name',
       },
       {
-        text: 'Summary',
-        value: 'description',
-        sortable: false
+        title: 'Summary',
+        key: 'description',
       }
     ]
-  })
+  )
 
 </script>
