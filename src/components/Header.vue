@@ -176,6 +176,10 @@
             {
               name: 'Contact Us',
               href: '/resources/contact'
+            },
+            {
+              name: 'Events',
+              href: '/resources/events'
             }
           ]
         }

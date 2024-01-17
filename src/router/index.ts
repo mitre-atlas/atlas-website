@@ -9,10 +9,11 @@ import IDView from '../views/IDView.vue'
 import StudiesIDView from '../views/StudiesIDView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformation from '../views/resources/GeneralInformation.vue'
-import FAQ from '../views/resources/faq.vue'
-import adversarial from '../views/resources/adversarial-ml-101.vue'
+import FAQ from '../views/resources/Faq.vue'
+import Adversarial from '../views/resources/Adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
-import ContactView from '../views/resources/contact.vue'
+import ContactView from '../views/resources/Contact.vue'
+import EventsView from '../views/resources/Events.vue'
 
 const routes = [
   {
@@ -28,8 +29,8 @@ const routes = [
     component: FAQ,
   },
   {
-    path: '/resources/adversarial-ml-101',
-    component: adversarial,
+    path: '/resources/Adversarial-ml-101',
+    component: Adversarial,
   },
   {
     path: '/resources/info',
@@ -38,6 +39,10 @@ const routes = [
   {
     path: '/resources/contact',
     component: ContactView,
+  },
+  {
+    path: '/resources/events',
+    component: EventsView,
   },
   {
     path: '/:objectTypePlural',
