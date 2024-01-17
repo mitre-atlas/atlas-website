@@ -12,6 +12,7 @@ import GeneralInformation from '../views/resources/GeneralInformation.vue'
 import FAQ from '../views/resources/faq.vue'
 import adversarial from '../views/resources/adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
+import ContactView from '../views/resources/contact.vue'
 
 const routes = [
   {
@@ -33,6 +34,10 @@ const routes = [
   {
     path: '/resources/info',
     component: GeneralInformation,
+  },
+  {
+    path: '/resources/contact',
+    component: ContactView,
   },
   {
     path: '/:objectTypePlural',
