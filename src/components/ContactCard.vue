@@ -20,12 +20,12 @@
 
       <div>
         <v-card-title
-          class="text-h6 pt-0"
+          class="text-h6 pt-0 text-wrap"
           v-text="item.title"
           >
         </v-card-title>
         <v-card-subtitle
-        class="text-body-1 text-white "
+        class="text-body-1 text-white text-wrap"
         >
           {{ item.text }}
         </v-card-subtitle>
