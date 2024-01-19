@@ -42,7 +42,7 @@
           <!-- Replaces "left of timeline" template contents -->
           <div
             v-if="mobile"
-            :class="`font-weight-light mb-4 text-${event.color} text--${colorModifier}`"
+            :class="`font-weight-light mb-4 text-${event.color}`"
           >
             {{ event.date }} - {{ event.location }}
           </div>
