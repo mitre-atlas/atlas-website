@@ -21,7 +21,7 @@
           <template #[`item.name`]="{ item }">
             <a class="font-weight-medium" :href="item.url" target="_blank">
               {{ item.name }}
-              <v-icon x-small> mdi-open-in-new </v-icon>
+              <v-icon size="x-small"> mdi-open-in-new </v-icon>
             </a>
           </template>
           <template #[`item.description`]="{ item }">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-h5 mt-5"> Upcoming Events </div>
+    <div class="text-h4 mt-5"> Upcoming Events </div>
 
     <v-timeline
       :dense="mobile"
@@ -11,17 +11,17 @@
         max-width="1000"
         v-for="event in formattedEvents"
         :key="event.name"
-        :dot-color="`${event.color}`"
+        :dot-color="`${event.color}-darken-3`"
         size="small"
       >
         <!-- Left of timeline -->
-        <template #opposite>
+        <template v-if="!mobile" #opposite>
           <span
-            :class="`text-h6 text-${event.color} }`"
+            :class="`text-h6 text-${event.color}-darken-3 }`"
             v-text="event.date"
           />
           <div
-            :class="`font-weight-light mb-4 text-${event.color}`"
+            :class="`font-weight-light mb-4 text-${event.color}-darken-3`"
           >
             {{ event.location }}
           </div>
@@ -29,12 +29,12 @@
         <!-- Right of timeline -->
         <div class="py-4 text-left">
           <a
-            :class="`headline text-${event.color}`"
+            :class="`text-h5 text-${event.color}-darken-3`"
             :href="event.url"
             target="_blank"
           >
             {{ event.name }}
-            <v-icon :color="`${event.color}}`" x-small>
+            <v-icon :color="`${event.color}-darken-3`" size="x-small">
               mdi-open-in-new
             </v-icon>
           </a>
@@ -42,7 +42,7 @@
           <!-- Replaces "left of timeline" template contents -->
           <div
             v-if="mobile"
-            :class="`font-weight-light mb-4 text-${event.color}`"
+            :class="`font-weight-light mb-4 text-${event.color}-darken-3 text--darken-3`"
           >
             {{ event.date }} - {{ event.location }}
           </div>

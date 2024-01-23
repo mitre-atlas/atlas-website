@@ -10,10 +10,8 @@
         size="72"
         >
         <v-icon
-        light
-          right
-          large
-          >
+          size="large"
+        >
           {{ item.icon }}
         </v-icon>
     </div>
@@ -25,7 +23,7 @@
           >
         </v-card-title>
         <v-card-subtitle
-        class="text-body-1 text-white text-wrap"
+          class="text-body-1 text-white text-wrap"
         >
           {{ item.text }}
         </v-card-subtitle>
