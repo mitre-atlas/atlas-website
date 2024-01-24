@@ -11,7 +11,7 @@ import BuildCaseStudyView from '../views/BuildCaseStudyView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformation from '../views/resources/GeneralInformation.vue'
 import ContributorsList from '../views/resources/ContributorsList.vue'
-import Faq from '../views/resources/Faq.vue'
+import Faq from '../views/resources/faq.vue'
 import Adversarial from '../views/resources/Adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
 
