@@ -14,6 +14,7 @@ import ContributorsListView from '../views/resources/ContributorsListView.vue'
 import FAQView from '../views/resources/FAQView.vue'
 import AdversarialView from '../views/resources/AdversarialML101View.vue'
 import NavigatorView from '../views/NavigatorView.vue'
+import MatrixView from '@/views/MatrixView.vue';
 import ContactView from '../views/resources/ContactView.vue'
 import EventsView from '../views/resources/EventsView.vue'
 
@@ -71,7 +72,11 @@ const routes = [
     component: NavigatorView,
   },
   {
-    path: '/:catchAll(.*)*', 
+    path: '/matrices/:id',
+    component: MatrixView,
+  },
+  {
+    path: '/:catchAll(.*)*',
     name: 'ErrorNotFound',
     component: ErrorNotFoundView,
   },
