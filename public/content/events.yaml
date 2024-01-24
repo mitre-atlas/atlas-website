@@ -189,11 +189,11 @@ data:
     description: >
       BlackHat is an internationally recognized cybersecurity event series providing the most technical and relevant information security research.
     url: https://www.blackhat.com/
-    color: black
+    color: grey
   - name: DEF CON 2024
     date: 2024-08-08
     location: Las Vegas, NV
     description: >
       DEF CON is a hacker convention which takes place immediately following Black Hat in Las Vegas every year.
     url: https://defcon.org/
-    color: grey
+    color: blue

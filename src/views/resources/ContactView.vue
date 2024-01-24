@@ -56,7 +56,7 @@
     },
     {
       icon: 'mdi-slack',
-      color: 'green darken-3',
+      color: 'green-darken-3',
       title: 'MITRE | ATLAS Slack',
       text: 'Join the Slack workspace for discussions with the broader community',
       link: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
@@ -79,7 +79,7 @@
     },
     {
       icon: 'mdi-youtube',
-      color: 'red darken-2',
+      color: 'red-darken-2',
       title: 'ATLAS Video Playlist',
       text: 'See demos and walkthroughs on YouTube',
       link: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu'

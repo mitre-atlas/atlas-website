@@ -11,17 +11,17 @@
         max-width="1000"
         v-for="event in formattedEvents"
         :key="event.name"
-        :dot-color="`${event.color}-darken-3`"
+        :dot-color="getColor(event)"
         size="small"
       >
         <!-- Left of timeline -->
         <template v-if="!mobile" #opposite>
           <span
-            :class="`text-h6 text-${event.color}-darken-3 }`"
+            :class="`text-h6 text-${getColor(event)} }`"
             v-text="event.date"
           />
           <div
-            :class="`font-weight-light mb-4 text-${event.color}-darken-3`"
+            :class="`font-weight-light mb-4 text-${getColor(event)}`"
           >
             {{ event.location }}
           </div>
@@ -29,12 +29,12 @@
         <!-- Right of timeline -->
         <div class="py-4 text-left">
           <a
-            :class="`text-h5 text-${event.color}-darken-3`"
+            :class="`text-h5 text-${getColor(event)}`"
             :href="event.url"
             target="_blank"
           >
             {{ event.name }}
-            <v-icon :color="`${event.color}-darken-3`" size="x-small">
+            <v-icon :color="getColor(event)" size="x-small">
               mdi-open-in-new
             </v-icon>
           </a>
@@ -42,7 +42,7 @@
           <!-- Replaces "left of timeline" template contents -->
           <div
             v-if="mobile"
-            :class="`font-weight-light mb-4 text-${event.color}-darken-3 text--darken-3`"
+            :class="`font-weight-light mb-4 text-${getColor(event)}`"
           >
             {{ event.date }} - {{ event.location }}
           </div>
@@ -58,7 +58,7 @@
 
 <script setup>
   import { useDisplay } from 'vuetify'
-  import { computed, inject } from 'vue'
+  import { computed, inject, ref } from 'vue'
   const md = inject('markdownit')
 
   // mobile boolean for contitional rendering
@@ -71,6 +71,8 @@
      */
     'events'
   ]);
+
+  const colorModifier = ref('darken-3')
 
   /**
    * Maps over all of the events and converts date field to readable format.
@@ -88,4 +90,12 @@
     })
   })
 
+  /**
+   * Returns an events color class with the colorModifier (e.g indigo-darken-3)
+   * Note (Jan 2024): In the current Vuetify3 black does not have a darken modifier so black will error out
+   * @returns {string}
+   */
+  function getColor(event) {
+    return (event.color + "-" + colorModifier.value)
+  }
 </script>
