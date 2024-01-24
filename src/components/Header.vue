@@ -178,7 +178,7 @@
               href: '/resources/contact'
             },
             {
-              name: 'Events',
+              name: 'Upcoming Events',
               href: '/resources/events'
             }
           ]

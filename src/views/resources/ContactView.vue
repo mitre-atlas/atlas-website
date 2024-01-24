@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="text-h3">
-            {{ title }}
-        </div>
-
+        <PageSectionTitle :pageTitle="title"/>
         <p class="text-body-1 my-5">
             Join our collaborative community to shape future tool and framework developments in AI security, threat mitigation, bias, privacy and other critical aspects of AI assurance.
         </p>
@@ -39,6 +36,7 @@
   
 <script setup>
   import ContactCard from '@/components/ContactCard.vue';
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
 
   const { VITE_CONTACT_EMAIL } = import.meta.env 
   import { ref } from 'vue'

@@ -1,9 +1,7 @@
 <template>
     <div>
-        <div class="text-h3">
-            {{ title }}
-        </div>
-
+        <PageSectionTitle :pageTitle="title"/>
+        
         <UpcomingEvents
           v-if="upcomingEvents.length > 0"
           :events="upcomingEvents"
@@ -21,6 +19,7 @@
 <script setup>
   import UpcomingEvents from "@/components/UpcomingEvents.vue"  
   import PastEvents from "@/components/PastEvents.vue"
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
 
   import { ref } from 'vue'
   import { getPathWithBase } from '@/assets/tools.js'
