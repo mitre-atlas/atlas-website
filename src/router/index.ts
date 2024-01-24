@@ -9,11 +9,13 @@ import IDView from '../views/IDView.vue'
 import StudiesIDView from '../views/StudiesIDView.vue'
 import BuildCaseStudyView from '../views/BuildCaseStudyView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
-import GeneralInformation from '../views/resources/GeneralInformation.vue'
-import ContributorsList from '../views/resources/ContributorsList.vue'
-import Faq from '../views/resources/faq.vue'
-import Adversarial from '../views/resources/Adversarial-ml-101.vue'
+import GeneralInformationView from '../views/resources/GeneralInformationView.vue'
+import ContributorsListView from '../views/resources/ContributorsListView.vue'
+import FAQView from '../views/resources/FAQView.vue'
+import AdversarialView from '../views/resources/AdversarialML101View.vue'
 import NavigatorView from '../views/NavigatorView.vue'
+import ContactView from '../views/resources/ContactView.vue'
+import EventsView from '../views/resources/EventsView.vue'
 
 const routes = [
   {
@@ -25,20 +27,28 @@ const routes = [
     component: TermsView,
   },
   {
-    path: '/resources/Faq',
-    component: Faq,
+    path: '/resources/faq',
+    component: FAQView,
   },
   {
-    path: '/resources/Adversarial-ml-101',
-    component: Adversarial,
+    path: '/resources/adversarial-ml-101',
+    component: AdversarialView,
   },
   {
     path: '/resources/info',
-    component: GeneralInformation,
+    component: GeneralInformationView,
+  },
+  {
+    path: '/resources/contact',
+    component: ContactView,
+  },
+  {
+    path: '/resources/events',
+    component: EventsView,
   },
   {
     path: '/resources/contribute',
-    component: ContributorsList,
+    component: ContributorsListView,
   },
   {
     path: '/:objectTypePlural',
