@@ -1,8 +1,6 @@
 <template>
   <div v-if="dataObject != undefined">
-    <div class="text-h3 pb-10 text-center">
-      {{ title }}
-    </div>
+      <PageSectionTitle :pageTitle="title"/>
       <v-row>
         <v-col cols="9">
             <v-list-item class="text-h5"> 
@@ -28,62 +26,66 @@
         :parentObject="dataObject"
       />
   </div>
-    <div v-else>
+  <div v-else>
       <!-- Display ErrorNotFound if ID is not found -->
       <ErrorNotFoundView />
-    </div>
+  </div>
+
   </template>
     
   <script setup>
+
     import { useMain } from "@/stores/main"
     import { useRoute } from 'vue-router'
     import { computed } from 'vue' 
     import DataSection from '@/components/data-display/DataSection.vue'
     import DataSidebar from '@/components/data-display/DataSidebar.vue'
+    import PageSectionTitle from "@//components/PageSectionTitle.vue"
     import ErrorNotFoundView from "./ErrorNotFoundView.vue"
-  
     import MarkdownIt from "markdown-it";
+    import { stringToSingular } from "@/assets/dataHelpers.js";
+
     const markdown = new MarkdownIt();
-  
     const mainStore = useMain()
-  
+
     // Collect the plural of the object type (tactics, techniques, etc) and the object ID from the URL
     const route = useRoute()
     const { id, objectTypePlural } = route.params
 
-    // TODO: add side nav logic
-    // definePageMeta({
-    // //   layout: 'side-nav'
-    // // })
-    // onMounted(() => {
-    //   mainStore.setNavItems(mainStore.getDataObjectsByType(objectTypePlural))
-    // })
-
+    // Get the data for this element
     const dataObject = computed(() => {
+      const obj = mainStore.getDataObjectById(id)
+
+      // Don't set object if the URL's object type is wrong -- should show 404
+      if (!obj || obj['object-type'] !== stringToSingular(objectTypePlural))
+        return undefined
+        
       return mainStore.getDataObjectById(id)
     })
 
     const relatedObjects = computed(() => {
       let relatedObjectsArrays = {}
-      Object.keys(dataObject.value.relatedObjects).forEach((key) => {
-        if(Array.isArray(dataObject.value.relatedObjects[key]) && typeof dataObject.value.relatedObjects[key][0] !== 'string') {
-          relatedObjectsArrays[key] = dataObject.value.relatedObjects[key]
-        }
-      })
+      if (dataObject.value && dataObject.value.relatedObjects) {
+        Object.keys(dataObject.value.relatedObjects).forEach((key) => {
+          if(Array.isArray(dataObject.value.relatedObjects[key]) && typeof dataObject.value.relatedObjects[key][0] !== 'string') {
+            relatedObjectsArrays[key] = dataObject.value.relatedObjects[key]
+          }
+        })
+      }
       return relatedObjectsArrays
     })
-    
+
+    // Page title is the element name
     const title = computed(() => {
       // Prepend parent technique name for a subtechnique
-      if ("subtechnique-of" in dataObject.value) {
-        const parentTechnique = mainStore.getParent(
-          dataObject.value
-        )
+      if (dataObject.value && "subtechnique-of" in dataObject.value) {
+        const parentTechnique = mainStore.getParent(dataObject.value)
         return `${parentTechnique.name}: ${dataObject.value.name}`
       }
       // Otherwise use the name
-      return dataObject.value.name
+      return dataObject.value ? dataObject.value.name : 'No Title Found'
     })
-    
+
   </script>
+  
     
