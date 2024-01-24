@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div class="text-h4 mt-5"> Upcoming Events </div>
-
     <v-timeline
       :dense="mobile"
       side="end" 

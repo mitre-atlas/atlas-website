@@ -27,7 +27,7 @@
   import jsyaml from 'js-yaml'
 
   // Set the title of the page (for tab title and to be displayed at the top of the page)
-  const title = ref('Events')
+  const title = ref('Upcoming Events')
 
   const events = ref([])
   const upcomingEvents = ref([])
