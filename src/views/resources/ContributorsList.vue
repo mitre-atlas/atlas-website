@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <p class="text-h3">
-      Contribute
-    </p>
+  <div class="text-body-1">
+    <PageSectionTitle :pageTitle="title"/>
     <p>
       {{ VITE_MITRE_TITLE }} is a first-cut attempt at collating a knowledge base of how ML systems
       can be attacked. We need your help to make it holistic and fill in the missing gaps!
@@ -82,10 +80,13 @@
 </template>
 
 <script setup>
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
   import jsyaml from 'js-yaml'
   import { ref } from 'vue'
   import { useDisplay } from 'vuetify'
   import { getPathWithBase } from '@/assets/tools.js'
+
+  const title = ref('Contribute')
 
   const { smAndDown } = useDisplay()
 

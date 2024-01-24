@@ -1,9 +1,7 @@
 <template>
   <div>
-    <p class="text-h3">
-      {{ title }}
-    </p>
-    <p>
+    <PageSectionTitle :pageTitle="title"/>
+    <p class="text-body-1">
       The {{ VITE_MITRE_TITLE }} version of the ATT&CK Navigator displays
       {{ VITE_SHORT_NAME }} techniques and allows users to create and view complex
       visualizations. In addition to the matrix, the Navigator also shows a
@@ -52,9 +50,10 @@
 
 <script setup>
   import { ref } from 'vue'
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
 
   const { VITE_MITRE_TITLE, VITE_SHORT_NAME, VITE_NAVIGATION_URL } = import.meta.env 
-  const title = VITE_SHORT_NAME + ' Navigator'
+  const title = ref(VITE_SHORT_NAME + ' Navigator')
 
   const loading = ref(true)
 

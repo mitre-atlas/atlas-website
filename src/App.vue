@@ -8,7 +8,6 @@
 
 <script>
 import Layout from './layouts/default.vue'
-import { computed } from 'vue' 
 import '@/assets/global.css'
 
 export default {

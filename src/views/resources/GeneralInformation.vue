@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <p class="text-h3">
-      General Information
-    </p>
+  <div class="text-body-1">
+    <PageSectionTitle :pageTitle="title"/>
     <p class="text-h5 my-5">
       Current {{ VITE_MITRE_TITLE }} Version
     </p>
@@ -124,11 +122,14 @@
 </template>
 
 <script setup>
-  const { VITE_MITRE_TITLE, VITE_SHORT_NAME } = import.meta.env
+  const { VITE_MITRE_TITLE } = import.meta.env
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
   import { ref, inject } from 'vue'
   import { version } from '/package.json'
   import { useMain } from "@/stores/main"
   import { downloadUrlAsFile } from '@/assets/tools.js'
+
+  const title = ref('General Information')
 
   const md = inject('markdownit')
 

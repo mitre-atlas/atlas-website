@@ -10,8 +10,8 @@ import StudiesIDView from '../views/StudiesIDView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformation from '../views/resources/GeneralInformation.vue'
 import ContributorsList from '../views/resources/ContributorsList.vue'
-import FAQ from '../views/resources/faq.vue'
-import adversarial from '../views/resources/adversarial-ml-101.vue'
+import Faq from '../views/resources/Faq.vue'
+import Adversarial from '../views/resources/Adversarial-ml-101.vue'
 import NavigatorView from '../views/NavigatorView.vue'
 
 const routes = [
@@ -24,12 +24,12 @@ const routes = [
     component: TermsView,
   },
   {
-    path: '/resources/faq',
-    component: FAQ,
+    path: '/resources/Faq',
+    component: Faq,
   },
   {
-    path: '/resources/adversarial-ml-101',
-    component: adversarial,
+    path: '/resources/Adversarial-ml-101',
+    component: Adversarial,
   },
   {
     path: '/resources/info',

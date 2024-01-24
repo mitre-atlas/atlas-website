@@ -1,8 +1,6 @@
 <template>
   <div v-if="isObjectTypeValid">
-    <p class="text-h3 mb-5 text-capitalize">
-      {{ objectTypePlural === 'studies' ? 'Case Studies' : objectTypePlural }}
-    </p>
+    <PageSectionTitle :pageTitle="title"/>
     <p
       v-html="introText"
       style="white-space: pre-wrap;"
@@ -23,6 +21,7 @@
 </template>
 
 <script setup>
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import InfoTable from "../components/data-display/InfoTable.vue"
   import { computed, ref } from 'vue'
@@ -33,7 +32,7 @@
   import jsyaml from 'js-yaml';
   import StudiesIntroText from "./StudiesIntroText.vue"
 
-  import { getPathWithBase } from '@/assets/tools.js'
+  import { getPathWithBase, capitalize } from '@/assets/tools.js'
 
   const mainStore = useMain()
 
@@ -43,6 +42,7 @@
   const { VITE_MITRE_TITLE } = import.meta.env
 
   let introText = ref('');
+  const title = ref(capitalize(objectTypePlural === 'studies' ? 'Case Studies' : objectTypePlural))
 
   if(objectTypePlural !== 'studies') {
     fetch(getPathWithBase('/content/data-list-page-intros.yaml'))

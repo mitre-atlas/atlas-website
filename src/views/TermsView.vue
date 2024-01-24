@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1 class="text-bold">Terms of Service</h1>
-    <page-section-title>License</page-section-title>
+  <div class="text-body-1">
+    <PageSectionTitle :pageTitle="title"/>
+    <div class="text-h5">License</div>
     <p>
       Licensed under the Apache License, Version 2.0 (the "License");
       you may not use this file except in compliance with the License.
@@ -22,6 +22,12 @@
     </p>
   </div>
 </template>
+
+<script setup>
+  import PageSectionTitle from "@//components/PageSectionTitle.vue"
+  import { ref } from 'vue';
+  const title = ref('Terms of Use')
+</script>
 
 <style>
 @media (min-width: 1024px) {
