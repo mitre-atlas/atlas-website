@@ -17,6 +17,7 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@mdi/font": "5.9.55",
     "@mdit-vue/plugin-frontmatter": "^2.0.0",
+    "@unhead/vue": "^1.8.10",
     "esbuild": "^0.19.9",
     "js-yaml": "^4.1.0",
     "jsonschema": "^1.4.1",

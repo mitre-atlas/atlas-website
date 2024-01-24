@@ -1,6 +1,6 @@
 <template>
   <div> 
-    <div class="text-h3">{{ title }}</div>
+    <PageSectionTitle :pageTitle="title"/>
 
     <div v-for="(section, i) in faqSections" :key="i">
       <div class="text-h5 mt-10 mb-5">
@@ -13,12 +13,15 @@
 </template>
 
 <script setup>
+import PageSectionTitle from "@//components/PageSectionTitle.vue"
 import { inject, reactive} from 'vue';
+import { ref } from 'vue'
+
+const title = ref('FAQ')
 
 const md = inject('markdownit')
 
 const faqSections = reactive([]);
-const title = 'FAQ'
 
 
 // Dynamically import any Markdown files found

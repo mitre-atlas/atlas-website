@@ -59,6 +59,30 @@ export function dataObjectToPluralTitle (
 }
 
 /**
+ * Singularizes a string.
+ * @example
+ * // Plural string
+ * const pluralString = 'techniques'
+ * // Singular string is 'technique'
+ * const singularString = stringToSingular(pluralString)
+ *
+ * @param {string} pluralString - Plural string
+ * @returns {string} A singularization of the string
+ */
+export function stringToSingular(pluralString) {
+  // Replace any dashes with spaces, i.e. case-studies > case studies
+  const tokens = pluralString.split('-')
+  // Singularize the last word
+  const lastWordIndex = tokens.length - 1
+  const singularLastWord = pluralize.singular(tokens[lastWordIndex])
+  // Replace the last word with its singular form
+  tokens[lastWordIndex] = singularLastWord
+  // Join the tokens back together with dashes
+  return tokens.join('-')
+}
+
+
+/**
  * Generates a URL route to the provided data object.
  * @example
  * // Truncated case study object
