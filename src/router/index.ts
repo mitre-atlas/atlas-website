@@ -7,6 +7,7 @@ import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
 import StudiesIDView from '../views/StudiesIDView.vue'
+import BuildCaseStudyView from '../views/BuildCaseStudyView.vue'
 import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformation from '../views/resources/GeneralInformation.vue'
 import ContributorsList from '../views/resources/ContributorsList.vue'
@@ -50,6 +51,10 @@ const routes = [
   {
     path: '/studies/:id',
     component: StudiesIDView,
+  },
+  {
+    path: '/studies/create',
+    component: BuildCaseStudyView,
   },
   {
     path: '/navigator',

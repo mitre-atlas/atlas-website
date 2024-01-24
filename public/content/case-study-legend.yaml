@@ -1,6 +1,6 @@
 legend:
   actor:
-    icon: mdi-arrow-projectile
+    icon: mdi-arrow-top-right
     name: Actor
     description: |
       The individual or group that performed this operation
@@ -53,7 +53,7 @@ legend:
       The victim system or organization targeted by the Actor
   
   name:
-    icon: mdi-format-title
-    name: Title
+    icon: mdi-tag-outline
+    name: Name
     description: |
       Name for this case study
