@@ -50,7 +50,8 @@
               <v-list-item
                 v-for="(childLink, j) in link.links"
                 :key="j"
-                :to="childLink.href"
+                :to="childLink.to"
+                :href="childLink.href"
                 class="px-6 text-button text-capitalize"
               >
                 {{ childLink.name }}
@@ -61,7 +62,7 @@
 
         <v-btn
           v-else
-          :to="link.href"
+          :to="link.to"
           class="text-capitalize"
           v-text="link.name"
           stacked
@@ -83,14 +84,15 @@
               <v-list-item
                 v-for="(childLink, j) in link.links"
                 :key="j"
-                :to="childLink.href"
+                :to="childLink.to"
+                :href="childLink.href"
                 class="px-6 text-button text-capitalize"
                 v-text="childLink.name"
               />
             </div>
             <v-list-item
               v-else
-              :to="link.href"
+              :to="link.to"
               text
               exact
               class="px-6 text-button text-capitalize"
@@ -114,6 +116,7 @@
   import { useDisplay } from "vuetify";
   import { useRoute } from 'vue-router'
   import { computed } from 'vue' 
+  import { getPathWithBase } from "@/assets/tools";
 
   const route = useRoute()
   const mainStore = useMain();
@@ -126,7 +129,7 @@
   const linksBeginning = computed(() => {
     return [{
       name: 'Matrices',
-      href: `/matrices/${mainStore.getFirstMatrixId}`
+      to: `/matrices/${mainStore.getFirstMatrixId}`
     }]
   })
 
@@ -141,11 +144,11 @@
           links: [
             {
               name: 'Explore Case Studies',
-              href: '/studies'
+              to: '/studies'
             },
             {
               name: 'Build Case Study',
-              href: '/studies/create'
+              to: '/studies/create'
             }
           ]
         },
@@ -155,31 +158,35 @@
           links: [
             {
               name: 'General information',
-              href: '/resources/info'
+              to: '/resources/info'
+            },
+            {
+              name: 'ATLAS Fact Sheet',
+              href: getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')
             },
             {
               name: 'Adversarial ML 101',
-              href: '/resources/adversarial-ml-101'
+              to: '/resources/adversarial-ml-101'
             },
             {
               name: 'Contribute',
-              href: '/resources/contribute'
+              to: '/resources/contribute'
             },
             {
               name: 'FAQ',
-              href: '/resources/faq'
+              to: '/resources/faq'
             },
             {
               name: 'Updates',
-              href: '/resources/updates'
+              to: '/resources/updates'
             },
             {
               name: 'Contact Us',
-              href: '/resources/contact'
+              to: '/resources/contact'
             },
             {
               name: 'Upcoming Events',
-              href: '/resources/events'
+              to: '/resources/events'
             }
           ]
         }
@@ -196,7 +203,7 @@
       navLinks = [
         {
           name: "Navigator",
-          href: "/navigator",
+          to: "/navigator",
         },
       ];
     }
@@ -208,7 +215,7 @@
     const dataLinks = dynamicDataKeys.map((objectType) => {
       return {
         name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
-        href: `/${dataObjectToPluralTitle(objectType, true)}`, // Last word of the above
+        to: `/${dataObjectToPluralTitle(objectType, true)}`, // Last word of the above
       };
     });
 
