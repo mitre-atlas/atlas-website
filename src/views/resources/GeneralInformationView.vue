@@ -2,7 +2,10 @@
   <div class="text-body-1">
     <PageSectionTitle :pageTitle="title"/>
     <p class="text-h5 my-5">
-      Current {{ VITE_MITRE_TITLE }} Version
+      <a :href="getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')">{{ VITE_MITRE_TITLE }} Fact Sheet</a>
+    </p>
+    <p class="text-h5 my-5">
+      Current {{ VITE_SHORT_NAME }} Version
     </p>
     <v-chip
       variant="flat"
@@ -122,7 +125,8 @@
 </template>
 
 <script setup>
-  const { VITE_MITRE_TITLE } = import.meta.env
+  const { VITE_MITRE_TITLE, VITE_SHORT_NAME } = import.meta.env
+  import { getPathWithBase } from '@/assets/tools.js'
   import PageSectionTitle from "@//components/PageSectionTitle.vue"
   import { ref, inject } from 'vue'
   import { version } from '/package.json'
