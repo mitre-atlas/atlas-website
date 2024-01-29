@@ -167,12 +167,24 @@
     <p class="text-h6 mb-0 mt-12">
       References
     </p>
-    <p class="text-body-2 text-grey">
+    <p class="text-body-2 text-grey mb-0">
       Optionally list sources for this case study.
     </p>
+    <SourceList
+      :sources="vModel.references"
+      @delete="deleteSource"
+      @updateSource="updateSource"
+    />
+    <AddSource 
+      v-if="showAddSourceForm"
+      :sources="vModel.references"
+      @cancel="showAddSourceForm = false"
+      @submit="addSource"
+    />
     <v-btn
+      v-else
       prepend-icon="mdi-plus"
-      @click="showAddNewStep = false"
+      @click="showAddSourceForm = true"
     >
       Add New Source
     </v-btn>
@@ -237,11 +249,13 @@
   import { getPathWithBase } from '@/assets/tools.js'
   import AddProcedure from '../components/case-study-form/AddProcedure.vue'
   import EditableProcedureTimeline from '../components/case-study-form/EditableProcedureTimeline.vue'
+  import AddSource from '../components/case-study-form/AddSource.vue'
+  import SourceList from '../components/case-study-form/SourceList.vue'
   import schema from '/public/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
   import { downloadStudyFile, setMetaData } from '@/assets/tools.js'
   import { makePPT } from '@/assets/powerpointFunctions.js'
   import { useMain } from "@/stores/main"
-  import PageSectionTitle from "@//components/PageSectionTitle.vue"
+  import PageSectionTitle from "@/components/PageSectionTitle.vue"
 
   const title = 'Create a Case Study'
 
@@ -267,7 +281,10 @@
   }
 
   const isMainFormValid = ref()
-  const vModel = reactive({procedure: []})
+  const vModel = reactive({
+    procedure: [],
+    references: []
+  })
   const textFields = ['name', 'target', 'actor', 'reporter', 'incident_date']
   const filename = ref('')
 
@@ -310,6 +327,21 @@
   const showAddNewStep = ref(false)
 
   const procedureForm = ref(null)
+
+  const showAddSourceForm = ref(false)
+
+  function addSource(source) {
+    vModel.references.push(source)
+    showAddSourceForm.value = false
+  }
+
+  function deleteSource(index) {
+    vModel.references.splice(index, 1)
+  }
+  
+  function updateSource(source, sourceIndex) {
+    vModel.references[sourceIndex] = source
+  }
 
   const downloadPptCheckbox = ref(false)
 

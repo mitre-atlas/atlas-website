@@ -2,11 +2,11 @@
   <v-form ref="procedureForm" @submit.prevent>
     <v-card
       title="Add Procedure Step"
-      class="mb-1 pa-6"
+
       variant="outlined"
       :style="{ borderColor: isProcedureFormValid ? 'grey' : 'red' }"
     >
-      <v-row>
+      <v-row class="pa-6">
         <v-col cols="12" lg="6">
           <v-autocomplete
             label="Tactic"
