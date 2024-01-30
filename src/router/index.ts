@@ -88,6 +88,10 @@ const routes = [
     component: MatrixView,
   },
   {
+    path: '/redesign',
+    component: () => import('@/views/HomeRedesign.vue')
+  },
+  {
     path: '/:catchAll(.*)*',
     name: 'ErrorNotFound',
     component: ErrorNotFoundView,

@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 import Markdown from 'vite-plugin-md'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
@@ -28,7 +29,9 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       vue({
         include: [/\.vue$/, /\.md$/],
+        template: { transformAssetUrls }
       }),
+      vuetify(),
       Markdown(),
       // Resolve Buffer is not defined for @mdit-vue-plugin-frontmatter
       nodePolyfills(),
