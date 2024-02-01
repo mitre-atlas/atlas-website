@@ -35,7 +35,7 @@
               v-bind="props"
               class="text-capitalize"
               variant="text"
-              
+
           >
             {{ link.name }}
             <v-icon right>
@@ -113,7 +113,7 @@
   import { dataObjectToPluralTitle } from "@/assets/dataHelpers.js";
   import { useDisplay } from "vuetify";
   import { useRoute } from 'vue-router'
-  import { computed } from 'vue' 
+  import { computed } from 'vue'
   import { getPathWithBase } from "@/assets/tools";
 
   const route = useRoute()
@@ -207,7 +207,7 @@
     }
 
     // Add data object links
-    const dataKeys = Object.keys(mainStore.getDataObjectTypes);
+    const dataKeys = mainStore.getDataObjectTypes;
     // Do not generate a route for case studies, which has its own defined templates
     const dynamicDataKeys = dataKeys.filter((k) => k !== "case-studies");
     const dataLinks = dynamicDataKeys.map((objectType) => {
