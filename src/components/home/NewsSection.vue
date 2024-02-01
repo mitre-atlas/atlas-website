@@ -1,7 +1,7 @@
 <template>
   <v-container class="home-panel">
     <v-row>
-      <div class="text-h3 mb-10">News and Resources</div>
+      <div :class="`text-${titleTextSize} mb-10`">News and Resources</div>
     </v-row>
     <v-row>
       <v-col v-for="event in events" :key="event.name" cols="4">
@@ -17,10 +17,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import jsyaml from 'js-yaml'
 import NewsCard from './NewsCard.vue'
 import { getPathWithBase } from '@/assets/tools.js'
+import { useDisplay } from 'vuetify'
+
+const { mdAndUp } = useDisplay()
+
+const titleTextSize = computed(() => (mdAndUp.value ? 'h3' : 'h4'))
 
 const events = ref([])
 
@@ -43,11 +48,4 @@ fetch(getPathWithBase('/content/events.yaml'))
   .catch((error) => {
     console.error('Error fetching YAML file:', error)
   })
-
-const items = [
-  {
-    imageSrc: 'https://www.ncsi.com/wp-content/uploads/2023/09/CDAO-Advantage2024-1920x470-1-1.png',
-    title: 'Advantage DoD 2024'
-  }
-]
 </script>

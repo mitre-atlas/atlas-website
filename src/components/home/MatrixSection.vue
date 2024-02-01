@@ -1,8 +1,9 @@
 <template>
-  <v-container fluid class="home-panel">
+  <v-container fluid class="home-panel navy-container text-white matrix-image">
+    <v-container>
     <v-row class="text-white h-100" align="center" justify="center">
       <v-col>
-        <div :class="`text-${calloutTextSize} ma-10`">
+        <div :class="`text-${calloutTextSize}`">
           ATLAS is modeled after and complementary to
           <span class="text-lightBlue">MITRE ATT&CK®</span>, raising awareness of the rapidly
           evolving vulnerabilities of <span class="text-lightBlue">Al-enabled systems</span> as they
@@ -11,13 +12,12 @@
       </v-col>
 
       <v-col>
-        <v-row class="mb-10">
+        <v-row class="mb-5">
           <v-col v-for="stat in matrixStats" :key="stat.label" :cols="mdAndUp ? '3' : '6'">
             <matrix-stat v-bind="stat"></matrix-stat>
           </v-col>
         </v-row>
-
-        <v-row justify="center" class="mt-10">
+         <v-row justify="center" class="mt-5">
           <v-btn
             class=""
             variant="tonal"
@@ -29,12 +29,15 @@
         </v-row>
       </v-col>
     </v-row>
+
+    </v-container>
   </v-container>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import MatrixStat from '@/components/home/MatrixStat.vue'
+import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue';
 import { useMain } from '@/stores/main'
 const store = useMain()
 
@@ -58,12 +61,30 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const calloutTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h5'))
+const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
 const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1'))
 </script>
 
 <style scoped>
-.v-container {
+.navy-container {
   background-color: rgb(var(--v-theme-navy));
+}
+.hero-image {
+  background:
+    /* L to R */
+    linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 40%, rgba(var(--v-theme-navy), 0.05)),
+    /*Top to Bottom, to align hero top color to app bar*/
+      linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
+    url('@/assets/network.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.matrix-image {
+  background:
+  /* Top to bottom, reveal of matrix top, fade into opaque */
+    linear-gradient(rgba(var(--v-theme-navy), 0.7),  rgba(var(--v-theme-navy), 1) 50%),
+    url('@/assets/matrix.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>

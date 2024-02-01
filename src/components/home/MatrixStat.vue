@@ -1,12 +1,12 @@
 <template>
-  <div class="ma-5">
+  <div class="ma-3">
     <v-row justify="center">
       <div :class="`text-${statValueSize} text-lightBlue`">
         {{ value }}
       </div>
     </v-row>
     <v-row justify="center">
-      <div :class="`text-${statLabelSize} font-weight-bold text-uppercase`">
+      <div :class="`text-${statLabelSize} font-weight-bold text-uppercase text-center`">
         {{ label }}
       </div>
     </v-row>
@@ -24,6 +24,6 @@ const { value, label } = defineProps({
 
 const { mdAndUp } = useDisplay()
 
-const statValueSize = computed(() => (mdAndUp.value ? 'h2' : 'h4'))
+const statValueSize = computed(() => (mdAndUp.value ? 'h3' : 'h4'))
 const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1'))
 </script>
