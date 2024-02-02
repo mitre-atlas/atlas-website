@@ -1,43 +1,50 @@
 <template>
-  <v-container fluid class="home-panel navy-container text-white matrix-image">
-    <v-container>
-    <v-row class="text-white h-100" align="center" justify="center">
-      <v-col>
-        <div :class="`text-${calloutTextSize}`">
-          ATLAS is modeled after and complementary to
-          <span class="text-lightBlue">MITRE ATT&CK®</span>, raising awareness of the rapidly
-          evolving vulnerabilities of <span class="text-lightBlue">Al-enabled systems</span> as they
-          extend beyond cyber.
-        </div>
-      </v-col>
+  <v-container class="pa-0" fluid>
+    <v-row class="matrix-image"></v-row>
 
-      <v-col>
-        <v-row class="mb-5">
-          <v-col v-for="stat in matrixStats" :key="stat.label" :cols="mdAndUp ? '3' : '6'">
-            <matrix-stat v-bind="stat"></matrix-stat>
+    <v-row
+      class="home-panel navy-container matrix-gradient text-white h-100"
+      align="center"
+      justify="center"
+    >
+      <v-container styling="padding-left: 0px; padding-right: 0px;">
+        <v-row>
+          <v-col>
+            <div :class="`text-${calloutTextSize}`">
+              ATLAS is modeled after and complementary to
+              <span class="text-lightBlue">MITRE ATT&CK®</span>, raising awareness of the rapidly
+              evolving vulnerabilities of <span class="text-lightBlue">Al-enabled systems</span> as
+              they extend beyond cyber.
+            </div>
+          </v-col>
+
+          <v-col>
+            <v-row class="mb-5">
+              <v-col v-for="stat in matrixStats" :key="stat.label" :cols="mdAndUp ? '3' : '6'">
+                <matrix-stat v-bind="stat"></matrix-stat>
+              </v-col>
+            </v-row>
+            <v-row justify="center" class="mt-5">
+              <v-btn
+                class=""
+                variant="tonal"
+                to="/matrices/ATLAS"
+                append-icon="mdi-chevron-right"
+                size="x-large"
+                >See the full ATLAS Matrix</v-btn
+              >
+            </v-row>
           </v-col>
         </v-row>
-         <v-row justify="center" class="mt-5">
-          <v-btn
-            class=""
-            variant="tonal"
-            to="/matrices/ATLAS"
-            append-icon="mdi-chevron-right"
-            size="x-large"
-            >See the full ATLAS Matrix</v-btn
-          >
-        </v-row>
-      </v-col>
+      </v-container>
     </v-row>
-
-    </v-container>
   </v-container>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import MatrixStat from '@/components/home/MatrixStat.vue'
-import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue';
+import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue'
 import { useMain } from '@/stores/main'
 const store = useMain()
 
@@ -69,22 +76,24 @@ const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1
 .navy-container {
   background-color: rgb(var(--v-theme-navy));
 }
-.hero-image {
-  background:
-    /* L to R */
-    linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 40%, rgba(var(--v-theme-navy), 0.05)),
-    /*Top to Bottom, to align hero top color to app bar*/
-      linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
-    url('@/assets/network.jpeg');
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 .matrix-image {
   background:
-  /* Top to bottom, reveal of matrix top, fade into opaque */
-    linear-gradient(rgba(var(--v-theme-navy), 0.7),  rgba(var(--v-theme-navy), 1) 50%),
+  /* Bottom to top, matrix top fades into opaque */ linear-gradient(
+      0deg,
+      rgba(var(--v-theme-navy), 1),
+      rgba(var(--v-theme-navy), 0.9) 20%,
+      rgba(var(--v-theme-navy), 0.8) 30%,
+      rgba(var(--v-theme-navy), 0.7) 40%,
+      rgba(var(--v-theme-navy), 0) 80%
+    ),
     url('@/assets/matrix.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: top center;
+  height: 18vw;
+}
+.matrix-gradient {
+  /* Accomodates for matrix image on top */
+  padding-top: 1em;
 }
 </style>

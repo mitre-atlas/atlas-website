@@ -26,10 +26,8 @@
         </v-card>
       </v-col>
 
-      <v-col cols="1"></v-col>
-
       <v-col>
-        <v-row>
+        <v-row :class="verticalSepOnMobile">
           <iframe
             class="mx-auto"
             width="560"
@@ -52,6 +50,7 @@ import { useDisplay } from 'vuetify'
 const { mdAndUp } = useDisplay()
 
 const centerButtonOnMobile = computed(() => (mdAndUp.value ? '' : ''))
+const verticalSepOnMobile = computed(() => (mdAndUp.value ? '' : 'mt-10'))
 </script>
 
 <style scoped></style>

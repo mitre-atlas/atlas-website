@@ -7,7 +7,7 @@
       </div>
     </v-card-title>
     <v-card-subtitle>
-      {{ subtitle }}
+      {{ formattedDate }} - {{ subtitle }}
     </v-card-subtitle>
     <v-card-text>
       {{ description }}
@@ -24,12 +24,12 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h5'))
+const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h6'))
 
-const { imageSrc, title, subtitle, description, url } = defineProps({
+const { imageSrc, title, subtitle, description, url, date } = defineProps({
   imageSrc: {
     type: String,
-    default: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+    default: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
   },
   title: String,
   subtitle: String,
@@ -37,6 +37,19 @@ const { imageSrc, title, subtitle, description, url } = defineProps({
   url: {
     type: String,
     default: null
-  }
+  },
+  date: {
+    type: String
+  },
+})
+
+const formattedDate = computed(() => {
+
+  return date.toLocaleDateString('default', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
 })
 </script>

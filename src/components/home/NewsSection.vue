@@ -10,6 +10,8 @@
           :subtitle="event.location"
           :description="event.description"
           :url="event.url"
+          :imageSrc="event.imageSrc"
+          :date="event.date"
         ></news-card>
       </v-col>
     </v-row>
@@ -25,7 +27,7 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const titleTextSize = computed(() => (mdAndUp.value ? 'h3' : 'h4'))
+const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h4'))
 
 const events = ref([])
 

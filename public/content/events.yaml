@@ -179,8 +179,10 @@ data:
   - name: RSA Conference 2024
     date: 2024-05-06
     location: San Francisco, CA
-    description: |
-      May 6-9: In an ever-changing cybersecurity world, innovation and creativity are key. Join RSAC 2024 and discover The Art of Possible as we collectively create works that will change our perspective on what we can accomplish. Let's celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
+    # description: |
+    #   May 6-9: In an ever-changing cybersecurity world, innovation and creativity are key. Join RSAC 2024 and discover The Art of Possible as we collectively create works that will change our perspective on what we can accomplish. Let's celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
+    description: >
+      Join RSAC 2024 and celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
     url: https://www.rsaconference.com/usa
     color: red
   - name: Black Hat USA 2024
