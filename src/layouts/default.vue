@@ -12,7 +12,7 @@
 <script setup>
   const name = "Default";
 
-  import Footer from '@/components/Footer.vue'
+  import Footer from '@/components/footer/Footer.vue'
   import Header from '@/components/Header.vue'
   import SideNav from '@/components/SideNav.vue'
   import { computed } from 'vue'
