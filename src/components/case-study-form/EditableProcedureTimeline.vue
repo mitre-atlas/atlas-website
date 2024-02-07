@@ -79,7 +79,10 @@
   ]);
 
   function getTechniqueLabel(procedure) {
-    return mainStore.getDataObjectById(procedure.technique).label
+    if(mainStore.getDataObjectById(procedure.technique) === undefined) {
+      return `(Label not found for technique ${procedure.technique})`
+    }
+    return mainStore.getDataObjectById(procedure.technique)?.label
   }
 
   const editIndex = ref()
