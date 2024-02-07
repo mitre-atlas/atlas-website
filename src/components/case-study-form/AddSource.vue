@@ -48,9 +48,9 @@
 
 <script setup>
   import { reactive, onMounted } from 'vue';
-  import { ref, computed } from 'vue'
+  import { ref } from 'vue'
 
-  const emit = defineEmits(['submit', 'cancel', 'delete', 'update'])
+  const emit = defineEmits(['submit', 'cancel', 'update'])
   const { sources, editSource, editIndex } = defineProps([
     /**
      * Array of sources already entered

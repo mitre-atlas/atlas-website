@@ -45,13 +45,13 @@
           hint="Describe how this technique was used in the case study"
           :disabled="!procedureStep.tactic"
           variant="outlined"
-          v-model="procedureStep.description"
+          v-model.trim="procedureStep.description"
           class="mx-3"
         />
       </v-row>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="$emit('updateShowAddNewStep')">Cancel</v-btn>
+        <v-btn @click="$emit(editProcedure ? 'cancel' : 'updateShowAddNewStep')">Cancel</v-btn>
         <v-btn 
           type="submit"
           color="green"
@@ -72,8 +72,30 @@
 </template>
 
 <script setup>
-  import { reactive, computed, ref } from 'vue'
+  import { reactive, computed, ref, onMounted, watch } from 'vue'
   import { useMain } from "@/stores/main"
+
+  const { editProcedure, editIndex } = defineProps([
+    /**
+     * Individual procedure being edited
+     * @type {Object}
+     */
+    'editProcedure',
+    /**
+     * Index of procedure being edited
+     * @type {Object}
+     */
+     'editIndex',
+  ])
+
+  onMounted(() => {
+    if(editProcedure) {
+      procedureStep.tactic = editProcedure.tactic
+      procedureStep.technique = editProcedure.technique
+      procedureStep.description = editProcedure.description
+    }
+  })
+
 
   const mainStore = useMain()
 
@@ -92,10 +114,17 @@
     },
   ]
 
-  const procedureStep = reactive({})
+  let procedureStep = reactive({})
 
   const tactics = computed(() => {
     return mainStore.getDataObjectsByType('tactics')
+  })
+
+  // changing tactic should clear out technique field
+  watch(() => procedureStep.tactic, (newVal, oldVal) => {
+    if(procedureStep.technique && newVal !== oldVal && oldVal !== undefined) {
+      procedureStep.technique = ''
+    }
   })
 
   const mapTechAndSub = computed(() => {
@@ -120,7 +149,7 @@
     return techs
   })
 
-  const emit = defineEmits(['submitProcedureStep'])
+  const emit = defineEmits(['submitProcedureStep', 'cancel', 'updateShowAddNewStep', 'update'])
 
   defineExpose({
     addProcedureStep
@@ -129,14 +158,16 @@
   function addProcedureStep() {
     formSubmitted.value = true
     procedureForm.value.validate()
-    if(procedureStep.description) {
-      procedureStep.description = procedureStep.description.trim()
+    if(isProcedureFormValid.value && editProcedure) {
+      const copy = JSON.parse(JSON.stringify(procedureStep))
+      emit('update', copy, editIndex)
+      formSubmitted.value = false
     }
-    if(isProcedureFormValid.value) {
+    else if(isProcedureFormValid.value) {
       const copy = JSON.parse(JSON.stringify(procedureStep))
       emit('submitProcedureStep', copy)
       procedureForm.value.reset()
-      formSubmitted.value = false;
+      formSubmitted.value = false
     }
   }
 
