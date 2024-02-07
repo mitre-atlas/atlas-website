@@ -35,7 +35,7 @@
                   <v-btn
                     text="Delete"
                     color="red"
-                    @click="isActive.value = false; $emit('delete', i)"
+                    @click="isActive.value = false; emitDelete(i)"
                   ></v-btn>
                 </v-card-actions>
               </v-card>
@@ -65,6 +65,13 @@
   function emitUpdate(editedSource, index) {
     emit('updateSource', editedSource, index)
     editIndex.value = null
+  }
+
+  function emitDelete(deleteIndex) {
+    emit('delete', deleteIndex)
+    if(editIndex.value > deleteIndex) {
+      editIndex.value--
+    }
   }
 
 

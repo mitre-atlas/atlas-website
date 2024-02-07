@@ -135,13 +135,12 @@
       </span>
     </p>
 
-    <v-row class="my-3 mx-6">
-      <EditableProcedureTimeline
-        v-if="vModel.procedure.length > 0"
-        :procedure="vModel.procedure"
-        @delete="deleteProcedure"
-      />
-    </v-row>
+    <EditableProcedureTimeline
+      v-if="vModel.procedure.length > 0"
+      :procedure="vModel.procedure"
+      @delete="deleteProcedure"
+      @updateProcedureStep="updateProcedureStep"
+    />
 
     <AddProcedure
       ref="procedureForm"
@@ -201,7 +200,7 @@
     <v-row>
       <v-col>
         <v-text-field
-          :v-model="filename"
+          v-model="filename"
           variant="outlined"
           label="Case Study Filename"
           prepend-inner-icon="mdi-file-download"
@@ -322,6 +321,10 @@
 
   function deleteProcedure(index) {
     vModel.procedure.splice(index, 1)
+  }
+  
+  function updateProcedureStep(updatedProcedure, index) {
+    vModel.procedure[index] = updatedProcedure
   }
 
   const showAddNewStep = ref(false)
