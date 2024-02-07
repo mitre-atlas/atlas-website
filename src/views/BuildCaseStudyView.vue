@@ -5,6 +5,13 @@
       {{ `v${schema.$version}` }}
     </v-chip>
   </v-row>
+  <v-row>
+    <UploadFileDialog 
+      @submit="fillForm"
+    />
+    <v-spacer />
+    <InstructionsDialog />
+  </v-row>
   <p class="text-h6 mb-0 mt-6">
     Details
   </p>
@@ -32,7 +39,7 @@
             ]"
           >
             <v-radio-group
-              v-model="vModel.caseStudyType"
+              v-model="vModel['case-study-type']"
               :prepend-icon="field.icon"
               density="compact"
               class="pl-4 pt-3"
@@ -78,8 +85,8 @@
         :label="field.name"
         :prepend-inner-icon="field.icon"
         :hint="field.description"
-        :rules="field.name === 'Reporter' && vModel['caseStudyType'] !== 'incident' ? [] : [requiredRule]"
-        :disabled="field.name === 'Reporter' && vModel['caseStudyType'] !== 'incident'"
+        :rules="field.name === 'Reporter' && vModel['case-study-type'] !== 'incident' ? [] : [requiredRule]"
+        :disabled="field.name === 'Reporter' && vModel['case-study-type'] !== 'incident'"
         class="mb-3"
       />
 
@@ -217,9 +224,6 @@
       />
     </v-row>
 
-
-
-
     <v-row class="align-center">
       <v-btn
         type="submit"
@@ -238,6 +242,18 @@
       >
         Please address any errors above.
       </v-alert>
+      <v-fade-transition class="pb-0">
+        <v-alert
+          v-if="successfulSubmission"
+          icon="mdi-check-circle-outline" 
+          color="green-lighten-5"
+          density="compact"
+          class="ml-6 text-green"
+        >
+          Your case study has been downloaded! Email your yaml file to 
+          <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>
+        </v-alert>
+      </v-fade-transition>
     </v-row>
   </v-form>
 </template>
@@ -246,6 +262,8 @@
   import { ref, watch, computed, reactive } from 'vue'
   import jsyaml from 'js-yaml'
   import { getPathWithBase } from '@/assets/tools.js'
+  import UploadFileDialog from '../components/case-study-form/UploadFileDialog.vue'
+  import InstructionsDialog from '../components/case-study-form/InstructionsDialog.vue'
   import AddProcedure from '../components/case-study-form/AddProcedure.vue'
   import EditableProcedureTimeline from '../components/case-study-form/EditableProcedureTimeline.vue'
   import AddSource from '../components/case-study-form/AddSource.vue'
@@ -280,7 +298,7 @@
   }
 
   const isMainFormValid = ref()
-  const vModel = reactive({
+  let vModel = reactive({
     procedure: [],
     references: []
   })
@@ -288,8 +306,8 @@
   const filename = ref('')
 
   const isStudyTypeValid = computed(() => {
-    if(vModel['caseStudyType']) return true
-    if(vModel['caseStudyType'] === undefined && !formSubmitted.value) return true
+    if(vModel['case-study-type']) return true
+    if(vModel['case-study-type'] === undefined && !formSubmitted.value) return true
     return false
   })
 
@@ -303,8 +321,21 @@
     return ''
   })
 
-  watch(formattedDate, (newVal) => {
+  watch(formattedDate, () => {
     vModel['incident-date'] = new Date(date.value)
+  })
+
+  watch(date, () => {
+    // Veutify date picker currently can only pick complete dates
+    vModel['incident-date-granularity'] = 'DATE'
+  })
+
+  watch(() => vModel['case-study-type'], () => {
+    // fix edge case where form doesnt mark reporter as required
+    // when switching type to incident after successful submit
+    if(formSubmitted.value) {
+      mainForm.value.validate()
+    }
   })
   
   const formSubmitted = ref(false)
@@ -350,15 +381,23 @@
 
   const mainForm = ref(null)
 
+  const successfulSubmission = ref(false)
+  let submissionTimeout
+
+  let metaData = reactive({})
+
   function downloadCaseStudy() {
     formSubmitted.value = true
     if(vModel.procedure.length === 0) {
       procedureForm.value.addProcedureStep()
     }
     if(isMainFormValid.value && vModel.procedure.length > 0) {
-      let studyData = { study: vModel }
+      let studyData = { 
+        study: vModel,
+        meta: metaData
+      }
 
-      if(vModel.caseStudyType === 'exercise' && vModel.reporter !== undefined) {
+      if(vModel['case-study-type'] === 'exercise' && vModel.reporter !== undefined) {
         delete studyData.study.reporter
       }
 
@@ -370,13 +409,24 @@
       if(downloadPptCheckbox.value) {
         downloadPPT(vModel)
       }
-      formSubmitted.value = false
+
+      successfulSubmission.value = true
+      clearTimeout(submissionTimeout)
+      submissionTimeout = setTimeout(() => {
+        successfulSubmission.value = false
+      }, "3000")
+
     }
   }
 
   async function downloadPPT(study) {
     for (const procedure of study.procedure) {
-      const technique = await mainStore.getDataObjectById(procedure.technique);
+      let technique = await mainStore.getDataObjectById(procedure.technique)
+      if(technique === undefined) {
+        technique = {
+          label: `Technique not found (${procedure.technique})`,
+        }
+      }
       procedure.techniqueObject = technique
     }
     makePPT(study)
@@ -384,6 +434,20 @@
     study.procedure.forEach((procedure) => {
       delete procedure.techniqueObject
     })
+  }
+
+  function fillForm(uploadedFile, uploadedFilename) {
+    showAddNewStep.value = true
+    filename.value = uploadedFilename
+
+    Object.keys(uploadedFile.study).forEach(key => {
+      if(key === 'incident-date') {
+        date.value = new Date(uploadedFile.study['incident-date'])
+      } else {
+        vModel[key] = uploadedFile.study[key]
+      }
+    })
+    metaData = uploadedFile.meta
   }
 
 

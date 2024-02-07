@@ -306,6 +306,9 @@ function detailSlide (ppt, yaml) {
  */
 function getUrlFromInfoObject (infoObject) {
   const baseUrl = window.location.origin
+  if(infoObject.label.startsWith('Technique not found')) {
+    return baseUrl
+  }
   return `${baseUrl}/${infoObject['object-type']}s/${infoObject.id}`
 }
 

@@ -260,7 +260,7 @@ export function setMetaData (studyData, studySchemaVersion) {
   studyData.meta = studyData.meta || {}
   const nowDate = new Date()
   // Only set the date-created once upon study creation
-  studyData.meta['date-created'] = studyData.meta['date-created'] ?? nowDate
+  studyData.meta['date-created'] = studyData.meta['date-created'] ? new Date(studyData.meta['date-created']) : nowDate
   // Always update date-updated
   studyData.meta['date-updated'] = nowDate
   // Set UUID

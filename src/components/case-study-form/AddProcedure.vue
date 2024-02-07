@@ -91,7 +91,7 @@
   onMounted(() => {
     if(editProcedure) {
       procedureStep.tactic = editProcedure.tactic
-      procedureStep.technique = editProcedure.technique
+      procedureStep.technique = mainStore.getDataObjectById(editProcedure.technique) === undefined ? '' : editProcedure.technique
       procedureStep.description = editProcedure.description
     }
   })
@@ -114,7 +114,11 @@
     },
   ]
 
-  let procedureStep = reactive({})
+  let procedureStep = reactive({
+    tactic: '',
+    technique: '',
+    description: ''
+  })
 
   const tactics = computed(() => {
     return mainStore.getDataObjectsByType('tactics')
@@ -122,7 +126,7 @@
 
   // changing tactic should clear out technique field
   watch(() => procedureStep.tactic, (newVal, oldVal) => {
-    if(procedureStep.technique && newVal !== oldVal && oldVal !== undefined) {
+    if(procedureStep.technique && newVal !== oldVal && !!oldVal) {
       procedureStep.technique = ''
     }
   })
