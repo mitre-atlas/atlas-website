@@ -131,7 +131,7 @@
   import { ref, inject } from 'vue'
   import { version } from '/package.json'
   import { useMain } from "@/stores/main"
-  import { downloadUrlAsFile } from '@/assets/tools.js'
+  import { downloadUrlAsFile, getLatestUpdateDate } from '@/assets/tools.js'
 
   const title = ref('General Information')
 
@@ -234,21 +234,4 @@
       }
     ]
   }
-
-  function getLatestUpdateDate() {
-    const modules = import.meta.glob('@/../public/content/update-files/*.md')
-    let dates = []
-    for (const key of Object.keys(modules)) {
-      const startIndex = key.lastIndexOf('/') + 1
-      const endIndex = key.lastIndexOf('.md')
-      const date = key.substring(startIndex, endIndex)
-      const [year, month] = date.split('-').map(Number)
-      dates.push(new Date(year, month - 1))
-    }
-    dates.sort((a, b) => a - b);
-    let latestDate = dates[dates.length - 1]
-    let latestDateString = `${latestDate.toLocaleString('default', { month: 'long' })} ${latestDate.getFullYear()}`
-    return latestDateString
-  }
-
 </script>

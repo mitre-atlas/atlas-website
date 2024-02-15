@@ -17,6 +17,8 @@ import NavigatorView from '../views/NavigatorView.vue'
 import MatrixView from '@/views/MatrixView.vue';
 import ContactView from '../views/resources/ContactView.vue'
 import EventsView from '../views/resources/EventsView.vue'
+import UpdatesListView from '../views/resources/UpdatesListView.vue'
+import UpdateView from '../views/resources/UpdateView.vue'
 
 const routes = [
   {
@@ -50,6 +52,14 @@ const routes = [
   {
     path: '/resources/contribute',
     component: ContributorsListView,
+  },
+  {
+    path: '/resources/updates',
+    component: UpdatesListView,
+  },
+  {
+    path: '/resources/updates/:date',
+    component: UpdateView,
   },
   {
     path: '/:objectTypePlural',

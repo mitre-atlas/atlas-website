@@ -284,3 +284,22 @@ export function getPathWithBase (pathString) {
   // BASE_URL defaults to `/`, uses path.join to construct valid paths
   return path.join(import.meta.env.BASE_URL, pathString)
 }
+
+/**
+ * Get the string with the month and year of the latest update
+ */
+export function getLatestUpdateDate() {
+  const modules = import.meta.glob('@/../public/content/update-files/*.md')
+  let dates = []
+  for (const key of Object.keys(modules)) {
+    const startIndex = key.lastIndexOf('/') + 1
+    const endIndex = key.lastIndexOf('.md')
+    const date = key.substring(startIndex, endIndex)
+    const [year, month] = date.split('-').map(Number)
+    dates.push(new Date(year, month - 1))
+  }
+  dates.sort((a, b) => a - b);
+  let latestDate = dates[dates.length - 1]
+  let latestDateString = `${latestDate.toLocaleString('default', { month: 'long' })} ${latestDate.getFullYear()}`
+  return latestDateString
+}
