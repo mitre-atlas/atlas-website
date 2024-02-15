@@ -34,12 +34,15 @@ const mainTheme = {
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
-    components,
-    directives,
-    theme: {
-      defaultTheme: 'mainTheme',
-      themes: {
-        mainTheme,
-      }
+  components,
+  directives,
+  theme: {
+    defaultTheme: 'mainTheme',
+    themes: {
+      mainTheme,
     }
-  })
+  },
+  display: {
+    mobileBreakpoint: 'sm',
+  }
+})
