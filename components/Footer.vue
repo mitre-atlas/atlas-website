@@ -61,6 +61,18 @@
                 Terms of Use
               </v-btn>
             </v-col>
+            <v-col
+              class="buttonClass"
+              cols="auto"
+            >
+              <!-- Osano cookie management popup -->
+              <v-btn
+                text
+                onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
+              >
+                Manage Cookies
+              </v-btn>
+            </v-col>
           </v-row>
         </v-col>
 
