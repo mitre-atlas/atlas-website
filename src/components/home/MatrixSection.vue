@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0" fluid>
+  <v-container class="px-0" fluid>
     <v-row class="matrix-image"></v-row>
 
     <v-row

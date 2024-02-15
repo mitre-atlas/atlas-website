@@ -1,20 +1,29 @@
 <template>
   <v-container fluid class="hero-image home-panel">
     <v-row align="center" justify="center" style="height: 100%">
-      <v-col :cols="iconColSize" :class="shouldTextCenter ? '' : 'ml-5'">
+      <!-- <v-col :cols="iconColSize" :class="shouldTextCenter ? '' : 'ml-5'">
         <v-img src="@/assets/atlas-graphic-white.png" max-height="200"></v-img>
-      </v-col>
+      </v-col> -->
 
       <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
-        <div :class="`text-${titleTextSize} font-weight-medium`">MITRE ATLAS™</div>
+        <!-- <div :class="`text-${titleTextSize} font-weight-medium`">MITRE ATLAS™</div> -->
 
-        <div :class="`text-${subtitleTextSize} text-uppercase mt-3`">
-          <span class="text-lightBlue"> Navigating </span>
-          the landscape of threats to artificial intelligence systems
+        <div :class="`text-${subtitleTextSize} mt-3`">
+          <b class="tagline">Navigate threats to AI systems through  <span class="text-highlighter">real-world insights</span></b>
         </div>
       </v-col>
 
-      <v-spacer></v-spacer>
+      <v-col align-self="end" :cols="buttonColSize" :class="`${shouldTextCenter} text-center`">
+         <v-btn
+          class=""
+          color="highlighter"
+          variant="flat"
+          to="/matrices/ATLAS"
+          append-icon="mdi-chevron-right"
+          :size="buttonSize"
+          >See the full ATLAS Matrix
+        </v-btn>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -27,9 +36,11 @@ const { mdAndUp } = useDisplay()
 
 const iconColSize = computed(() => (mdAndUp.value ? '2' : '12'))
 const textColSize = computed(() => (mdAndUp.value ? '7' : '12'))
-const shouldTextCenter = computed(() => mdAndUp.value ? '' : 'text-center')
+const buttonColSize = computed(() => (mdAndUp.value ? '4' : '12'))
+const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : 'small'))
+const shouldTextCenter = computed(() => mdAndUp.value ? 'ml-2' : 'text-center')
 const titleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h3'))
-const subtitleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h5'))
+const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
 </script>
 
 <style scoped>
@@ -38,9 +49,11 @@ const subtitleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h5'))
     /* L to R */
     linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 40%, rgba(var(--v-theme-navy), 0.05)),
     /*Top to Bottom, to align hero top color to app bar*/
-      linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
-    url('@/assets/network.jpeg');
+    linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
+    url('@/assets/GettyImages-1178228880.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+  height: 50vh;
 }
 </style>

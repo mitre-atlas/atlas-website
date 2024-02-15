@@ -17,6 +17,6 @@ ol, ul {
 }
 
 .home-panel {
-  padding-top: 7em;
-  padding-bottom: 7em;
+  padding-top: 7em !important;
+  padding-bottom: 7em !important;
 }

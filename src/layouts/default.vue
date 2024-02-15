@@ -1,11 +1,13 @@
 <template>
   <v-app>
       <Header />
-      <Footer />
+
       <SideNav v-if="doesPageHaveSideNav" />
       <v-main :class="`${isRouteFullView ? '' : 'ma-16 pt-16'}`" >
           <slot />
       </v-main>
+
+      <Footer />
   </v-app>
 </template>
 
