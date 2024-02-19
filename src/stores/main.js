@@ -55,7 +55,7 @@ export const useMain = defineStore('main', {
          * @type {boolean}
          * @alias state: doShowNavDrawer
          */
-        doShowNavDrawer: false,
+        doShowNavDrawer: true,
         /**
          * Items that populate the navigation drawer
          * @type {object|object[]} items - An object { title: string, data: data objects } specifying the navigation drawer title, or an array of data objects whose title is inferred from the type
@@ -528,10 +528,10 @@ export const useMain = defineStore('main', {
       TOGGLE_NAV_DRAWER(status) {
         if (typeof status === 'undefined') {
           // Toggle state
-          state.doShowNavDrawer = !state.doShowNavDrawer
+          this.doShowNavDrawer = !this.doShowNavDrawer
         } else if (typeof status === 'boolean') {
           // Set state
-          state.doShowNavDrawer = status
+          this.doShowNavDrawer = status
         }
       },
       /**

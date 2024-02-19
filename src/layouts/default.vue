@@ -1,11 +1,13 @@
 <template>
-    <v-app>
-        <Header />
-        <v-main :class="`${isHome ? '' : 'ma-16 pt-16'}`" >
-            <slot />
-        </v-main>
-        <Footer />
-    </v-app>
+  <v-app>
+      <Header />
+      <Footer />
+      <SideNav v-if="doesPageHaveSideNav" />
+      <v-main :class="`${isHome ? '' : 'ma-16 pt-16'}`" >
+          <slot />
+      </v-main>
+
+  </v-app>
 </template>
   
 <script setup>
@@ -13,9 +15,10 @@
   
   import Footer from '@/components/Footer.vue'
   import Header from '@/components/Header.vue'
+  import SideNav from '@/components/SideNav.vue'
   import { computed } from 'vue' 
   import { useRoute } from 'vue-router'
-  import { useHead } from '@unhead/vue';
+  import { useHead } from '@unhead/vue'
 
   const { VITE_MITRE_TITLE } = import.meta.env 
 
@@ -26,6 +29,11 @@
 
 
   const route = useRoute()  
+
+  const doesPageHaveSideNav = computed(() => {
+    return ['tactics', 'techniques', 'mitigations', 'studies'].includes(route.params.objectTypePlural) || 
+      (!route.params.objectTypePlural && route.params.id)
+  })
 
   const isHome = computed(() => {
     return route.path == "/"

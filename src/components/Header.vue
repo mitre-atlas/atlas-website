@@ -8,8 +8,7 @@
     style="z-index: 100"
   >
 
-  <!-- TODO: Implement doesPageHaveSideNav (see commented out function below) when tactic/technique/etc pages are done -->
-  <!-- <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />  -->
+  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" /> 
 
   <h1 class="pa-3">
     <router-link to="/">
@@ -232,6 +231,13 @@
   //         return false
   //       return route.name === 'matrices-id' || route.name.includes('objectTypePlural') || route.name.includes('studies')
   //     })
+  
+  const doesPageHaveSideNav = computed(() => {
+    return route.params.id || route.params.objectTypePlural
+  })
 
+  function toggle() {
+    mainStore.TOGGLE_NAV_DRAWER()
+  }
 
 </script>
