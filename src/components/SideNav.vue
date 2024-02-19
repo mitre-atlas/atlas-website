@@ -2,8 +2,8 @@
   <v-navigation-drawer
     v-model="doShowNavDrawer"
     :width="325"
-    class="ml-3"
-    style="z-index: 0"
+    class="pl-3"
+    style="height: 100%"
   >
     <v-list-item-title class="mt-10 text-h5 text-capitalize">
       {{ title }}

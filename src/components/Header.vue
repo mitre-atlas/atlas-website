@@ -5,7 +5,6 @@
     clipped-left
     elevate-on-scroll
     color="navy"
-    style="z-index: 100"
   >
 
   <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" /> 
