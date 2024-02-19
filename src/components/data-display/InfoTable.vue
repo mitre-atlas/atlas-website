@@ -88,10 +88,6 @@ import AttackIconTooltip from '@/components/AttackIconToolTip.vue'
 import { useRoute } from 'vue-router'
 import { capitalize } from '@/assets/tools.js'
 
-import { useDisplay } from 'vuetify'
-
-const { mobile } = useDisplay()
-
 const md = inject('markdownit')
 
 const route = useRoute()

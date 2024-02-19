@@ -5,7 +5,7 @@
     clipped-left
     elevate-on-scroll
     color="navy"
-    style="z-index: 100"
+    style="z-index: 100, max-width: 100%"
   >
 
   <!-- TODO: Implement doesPageHaveSideNav (see commented out function below) when tactic/technique/etc pages are done -->
