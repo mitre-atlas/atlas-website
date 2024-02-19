@@ -3,7 +3,6 @@
     v-model="doShowNavDrawer"
     :width="325"
     class="pl-3"
-    style="height: 100%"
   >
     <v-list-item-title class="mt-10 text-h5 text-capitalize">
       {{ title }}
