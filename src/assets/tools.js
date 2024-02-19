@@ -6,6 +6,7 @@
 import path from 'path'
 import { dump } from 'js-yaml'
 import { validate } from 'jsonschema'
+import jsyaml from 'js-yaml'
 
 import schema from '../../public/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
@@ -302,4 +303,22 @@ export function getLatestUpdateDate() {
   let latestDate = dates[dates.length - 1]
   let latestDateString = `${latestDate.toLocaleString('default', { month: 'long' })} ${latestDate.getFullYear()}`
   return latestDateString
+}
+
+/**
+ * Get tooltip descriptions for IDView tags and Table filters
+ */
+export async function getDescriptions() {
+  try {
+      const categoriesResponse = await fetch(getPathWithBase('/content/descriptions/categories.yaml'))
+      const categories = await categoriesResponse.text()
+      let output = jsyaml.load(categories).categories
+
+      const lifecycleResponse = await fetch(getPathWithBase('/content/descriptions/ML-lifecycle.yaml'))
+      const lifecycles = await lifecycleResponse.text()
+      output = output.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
+      return output
+  } catch (error) {
+      console.error('Error fetching YAML file:', error)
+  }
 }

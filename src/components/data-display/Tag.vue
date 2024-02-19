@@ -18,8 +18,8 @@
   </template>
   
   <script setup>
-    import { ref } from 'vue';
-    import jsyaml from 'js-yaml';
+    import { ref } from 'vue'
+    import { getDescriptions } from '@/assets/tools.js'
     
     const { tags } = defineProps([
       /**
@@ -30,23 +30,19 @@
 
     const terms = ref([])
 
-    getYaml()
+    fetchDescriptions()
 
-    async function getYaml() {
+    async function fetchDescriptions() {
       try {
-          const categoriesResponse = await fetch('/content/descriptions/categories.yaml')
-          const categories = await categoriesResponse.text()
-          terms.value = jsyaml.load(categories).categories
-
-          const lifecycleResponse = await fetch('/content/descriptions/ML-lifecycle.yaml')
-          const lifecycles = await lifecycleResponse.text()
-          terms.value = terms.value.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
+        terms.value = await getDescriptions()
       } catch (error) {
-          console.error('Error fetching YAML file:', error)
+        console.error("Failed to fetch descriptions:", error)
+        terms.value = []
       }
     }
   
     function getTagDescription(name) {
+      if(!terms.value.length) return ''
       const matchingTerm = terms.value.find(t => t.name === name)
       if (matchingTerm) {
         return matchingTerm.description
