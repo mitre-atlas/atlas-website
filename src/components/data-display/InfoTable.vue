@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-card>
-      <template v-slot:text>
+    <v-row class="mb-3">
+      <v-col :cols="smAndDown ? 12: ''">
         <v-text-field
           v-if="includeSearch"
           v-model="search"
@@ -29,52 +29,63 @@
             </v-btn>
           </v-col>
         </v-row>
+      </v-col>
+      <v-col v-if="categories.length > 0" :cols="smAndDown ? 6 : ''">
+        <TableFilter 
+          :categories="categories"
+          @updateFilters="updateFilters"
+        />
+      </v-col>
+      <v-col v-if="stages.length > 0" :cols="smAndDown ? 6 : ''">
+        <TableFilter 
+          :stages="stages"
+          @updateFilters="updateFilters"
+        />
+      </v-col>
+    </v-row>
+    <v-data-table
+      :items="filteredItems"
+      :headers="headers"
+      v-model:sort-by="sortBy"
+      :search="search"
+      items-per-page="-1"
+    >
+      <template #[`header.name`]="{ column, isSorted, getSortIcon }">
+        <span>
+          {{ column.title }}
+          <!-- Display an info tooltip for ATT&CK-adapted objects -->
+          <AttackIconTooltip :items="items" />
+        </span>
+        <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
       </template>
-      <v-data-table
-        :items="items"
-        :headers="headers"
-        v-model:sort-by="sortBy"
-        :search="search"
-        items-per-page="-1"
-      >
-        <template #[`header.name`]="{ column, isSorted, getSortIcon }">
-          <span>
-            {{ column.title }}
-            <!-- Display an info tooltip for ATT&CK-adapted objects -->
-            <AttackIconTooltip :items="items" />
-          </span>
-          <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
-        </template>
-        <template #[`item.id`]="{ item, value }">
-          <router-link
-            :to="item.route"
-            class="pl-5"
-          >
-          {{ value }}
-          </router-link>
-        </template>
-        <template #[`item.name`]="{ item, value }">
-          <router-link
-            :to="item.route"
-          >
-          {{ value }}
-          </router-link>
-          <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
-        </template>
-        <template
-          v-for="col in customTableCol"
-          #[`item.${col}`]="{ value }"
-          :key="col"
+      <template #[`item.id`]="{ item, value }">
+        <router-link
+          :to="item.route"
+          class="pl-5"
         >
-          <div
-            v-html="md.render(value)"
-            class="pa-5"
-          />
-        </template>
-        <template v-slot:bottom> </template>
-      </v-data-table>
-    </v-card>
-
+        {{ value }}
+        </router-link>
+      </template>
+      <template #[`item.name`]="{ item, value }">
+        <router-link
+          :to="item.route"
+        >
+        {{ value }}
+        </router-link>
+        <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
+      </template>
+      <template
+        v-for="col in customTableCol"
+        #[`item.${col}`]="{ value }"
+        :key="col"
+      >
+        <div
+          v-html="md.render(value)"
+          class="pa-5"
+        />
+      </template>
+      <template v-slot:bottom> </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -83,14 +94,14 @@
 /**
  * Table containing an organized list of items of one object type.
  */
-import { computed, inject, ref } from 'vue'
+import { computed, inject, ref, reactive } from 'vue'
 import AttackIconTooltip from '@/components/AttackIconToolTip.vue'
+import TableFilter from './TableFilter.vue'
 import { useRoute } from 'vue-router'
 import { capitalize } from '@/assets/tools.js'
-
 import { useDisplay } from 'vuetify'
 
-const { mobile } = useDisplay()
+const { smAndDown } = useDisplay()
 
 const md = inject('markdownit')
 
@@ -106,6 +117,51 @@ let { objectTypePlural } = route.params
     'items',
   ]);
 
+  const filters = reactive({
+    category: [],
+    'ML-lifecycle': []
+  })
+
+  const filteredItems = computed(() => {
+    if(filters.category.length === 0 && filters['ML-lifecycle'].length === 0) {
+      return items
+    }
+    return items.filter((item) => {
+      return (filters.category.every(i => item.category.includes(i))) &&
+      filters['ML-lifecycle'].every(i => item['ML-lifecycle'].includes(i))
+    })
+  })
+
+
+  function updateFilters(filterType, filterTerms) {
+    filters[filterType] = filterTerms
+  }
+
+  const categories = computed(() => {
+    return items.reduce((categoryArr, dataObj) => {
+      if('category' in dataObj) {
+        dataObj.category.forEach((category) => {
+          if(!categoryArr.includes(category)) {
+            categoryArr.push(category)
+          }
+        })
+      }
+      return categoryArr
+    }, [])
+  })
+  
+  const stages = computed(() => {
+    return items.reduce((lifecycleArr, dataObj) => {
+      if('ML-lifecycle' in dataObj) {
+        dataObj['ML-lifecycle'].forEach((stage) => {
+          if(!lifecycleArr.includes(stage)) {
+            lifecycleArr.push(stage)
+          }
+        })
+      }
+      return lifecycleArr
+    }, [])
+  })
 
   const headers = computed(() => {
     let output = [
@@ -147,6 +203,3 @@ let { objectTypePlural } = route.params
   }
 
 </script>
-
-<style scoped>
-</style>
