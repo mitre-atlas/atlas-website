@@ -287,22 +287,22 @@ export function getPathWithBase (pathString) {
 }
 
 /**
- * Get the string with the month and year of the latest update
+ * Get the string with the numeric month and year of the latest update.
+ *
+ * Ex. .../update-files/2024-01.md > 2024-01
  */
 export function getLatestUpdateDate() {
   const modules = import.meta.glob('@/../public/content/update-files/*.md')
-  let dates = []
-  for (const key of Object.keys(modules)) {
-    const startIndex = key.lastIndexOf('/') + 1
-    const endIndex = key.lastIndexOf('.md')
-    const date = key.substring(startIndex, endIndex)
-    const [year, month] = date.split('-').map(Number)
-    dates.push(new Date(year, month - 1))
-  }
-  dates.sort((a, b) => a - b);
-  let latestDate = dates[dates.length - 1]
-  let latestDateString = `${latestDate.toLocaleString('default', { month: 'long' })} ${latestDate.getFullYear()}`
-  return latestDateString
+  const updateFilepaths = Object.keys(modules)
+  // Filepaths are named with numeric YEAR-MONTH.md, so the last one is the most recent
+  const latestFilepath = updateFilepaths.pop(-1)
+
+  // Return the YEAR-MONTH portion of the filepath
+  const startIndex = latestFilepath.lastIndexOf('/') + 1
+  const endIndex = latestFilepath.lastIndexOf('.md')
+  const date = latestFilepath.substring(startIndex, endIndex)
+
+  return date
 }
 
 /**
