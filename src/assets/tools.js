@@ -6,6 +6,7 @@
 import path from 'path'
 import { dump } from 'js-yaml'
 import { validate } from 'jsonschema'
+import jsyaml from 'js-yaml'
 
 import schema from '../../public/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
 import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
@@ -286,20 +287,38 @@ export function getPathWithBase (pathString) {
 }
 
 /**
- * Get the string with the month and year of the latest update
+ * Get the string with the numeric month and year of the latest update.
+ *
+ * Ex. .../update-files/2024-01.md > 2024-01
  */
 export function getLatestUpdateDate() {
   const modules = import.meta.glob('@/../public/content/update-files/*.md')
-  let dates = []
-  for (const key of Object.keys(modules)) {
-    const startIndex = key.lastIndexOf('/') + 1
-    const endIndex = key.lastIndexOf('.md')
-    const date = key.substring(startIndex, endIndex)
-    const [year, month] = date.split('-').map(Number)
-    dates.push(new Date(year, month - 1))
+  const updateFilepaths = Object.keys(modules)
+  // Filepaths are named with numeric YEAR-MONTH.md, so the last one is the most recent
+  const latestFilepath = updateFilepaths.pop(-1)
+
+  // Return the YEAR-MONTH portion of the filepath
+  const startIndex = latestFilepath.lastIndexOf('/') + 1
+  const endIndex = latestFilepath.lastIndexOf('.md')
+  const date = latestFilepath.substring(startIndex, endIndex)
+
+  return date
+}
+
+/**
+ * Get tooltip descriptions for IDView tags and Table filters
+ */
+export async function getDescriptions() {
+  try {
+      const categoriesResponse = await fetch(getPathWithBase('/content/descriptions/categories.yaml'))
+      const categories = await categoriesResponse.text()
+      let output = jsyaml.load(categories).categories
+
+      const lifecycleResponse = await fetch(getPathWithBase('/content/descriptions/ML-lifecycle.yaml'))
+      const lifecycles = await lifecycleResponse.text()
+      output = output.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
+      return output
+  } catch (error) {
+      console.error('Error fetching YAML file:', error)
   }
-  dates.sort((a, b) => a - b);
-  let latestDate = dates[dates.length - 1]
-  let latestDateString = `${latestDate.toLocaleString('default', { month: 'long' })} ${latestDate.getFullYear()}`
-  return latestDateString
 }

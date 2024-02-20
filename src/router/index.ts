@@ -18,7 +18,8 @@ import MatrixView from '@/views/MatrixView.vue';
 import ContactView from '../views/resources/ContactView.vue'
 import EventsView from '../views/resources/EventsView.vue'
 import UpdatesListView from '../views/resources/UpdatesListView.vue'
-import UpdateView from '../views/resources/UpdateView.vue'
+
+import { getLatestUpdateDate } from '@/assets/tools.js'
 
 const routes = [
   {
@@ -54,12 +55,13 @@ const routes = [
     component: ContributorsListView,
   },
   {
+    // When a user visits the updates index page, redirect to the most recent update
     path: '/resources/updates',
-    component: UpdatesListView,
+    redirect: `/resources/updates/${getLatestUpdateDate()}`
   },
   {
     path: '/resources/updates/:date',
-    component: UpdateView,
+    component: UpdatesListView
   },
   {
     path: '/:objectTypePlural',

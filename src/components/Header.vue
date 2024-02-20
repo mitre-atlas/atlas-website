@@ -8,8 +8,7 @@
     style="z-index: 100, max-width: 100%"
   >
 
-  <!-- TODO: Implement doesPageHaveSideNav (see commented out function below) when tactic/technique/etc pages are done -->
-  <!-- <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />  -->
+  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
   <h1 class="pa-3">
     <router-link to="/">
@@ -37,7 +36,7 @@
               v-bind="props"
               class="text-capitalize"
               variant="text"
-              
+
           >
             {{ link.name }}
             <v-icon right>
@@ -115,7 +114,7 @@
   import { dataObjectToPluralTitle } from "@/assets/dataHelpers.js";
   import { useDisplay } from "vuetify";
   import { useRoute } from 'vue-router'
-  import { computed } from 'vue' 
+  import { computed } from 'vue'
   import { getPathWithBase } from "@/assets/tools";
 
   const route = useRoute()
@@ -233,5 +232,12 @@
   //       return route.name === 'matrices-id' || route.name.includes('objectTypePlural') || route.name.includes('studies')
   //     })
 
+  const doesPageHaveSideNav = computed(() => {
+    return route.params.id || route.params.objectTypePlural
+  })
+
+  function toggle() {
+    mainStore.TOGGLE_NAV_DRAWER()
+  }
 
 </script>
