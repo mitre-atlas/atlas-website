@@ -3,8 +3,9 @@
       <Header />
       <Footer />
       <SideNav v-if="doesPageHaveSideNav" />
-      <v-main :class="`${isHome ? '' : 'ma-16 pt-16'}`" >
-          <slot />
+      <v-main :class="`${isHome ? '' : 'mx-16'}`" >
+        <BreadCrumbs />
+        <slot />
       </v-main>
 
   </v-app>
@@ -16,6 +17,7 @@
   import Footer from '@/components/Footer.vue'
   import Header from '@/components/Header.vue'
   import SideNav from '@/components/SideNav.vue'
+  import BreadCrumbs from '@/components/BreadCrumbs.vue'
   import { computed } from 'vue' 
   import { useRoute } from 'vue-router'
   import { useHead } from '@unhead/vue'

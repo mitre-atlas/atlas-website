@@ -15,5 +15,16 @@
 </template>
 
 <script setup lang="ts">
+  import { onMounted, onUnmounted } from 'vue'
+  import { useMain } from "@/stores/main"
 
+  const mainStore = useMain()
+
+  onMounted(() => {
+    mainStore.$state.pageNotFoundDisplaying = true
+  })
+
+  onUnmounted(() => {
+    mainStore.$state.pageNotFoundDisplaying = false
+  })
 </script>

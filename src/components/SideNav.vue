@@ -13,7 +13,7 @@
       v-model:opened="open"
       open-strategy="multiple"
       density="compact"
-      style="width: 320px"
+      style="width: 310px"
     >
       <v-list-group
         v-for="(tacticObjects, matrixID, i) in data"

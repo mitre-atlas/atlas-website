@@ -75,7 +75,11 @@ export const useMain = defineStore('main', {
         /**
          * Accepted values for the _objectTypePlural route
          */
-        objectTypePluralValues: []
+        objectTypePluralValues: [],
+         /**
+         * Whether the 404 page is currently displayed
+         */
+        pageNotFoundDisplaying: false,
       }
   ),
 // other options...
