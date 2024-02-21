@@ -56,4 +56,8 @@ const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
   background-position: center;
   height: 50vh;
 }
+
+.tagline {
+  font-family: 'TradeGothicBold'
+}
 </style>

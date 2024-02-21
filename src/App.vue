@@ -25,4 +25,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
+@font-face {
+  font-family: 'TradeGothicBold';
+  src: url('@/assets/fonts/TradeGothicLTPro-Bold.otf');
+}
 </style>
