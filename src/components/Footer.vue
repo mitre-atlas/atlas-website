@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="pa-0" app :absolute="mobile">
+  <v-footer class="pa-0" app >
     <v-card class="pa-3 rounded-0" width="100%" color="navy">
       <v-row justify="center" align="center" no-gutters>
         <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">

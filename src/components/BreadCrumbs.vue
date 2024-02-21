@@ -1,6 +1,6 @@
 <template>
   <v-breadcrumbs 
-    v-if="route.path !== '/'" 
+    v-if="route.path !== '/' && route.path !== '/redesign'" 
     :items="items" color="blue" 
     class="mt-7 text-capitalize pl-0 text-body-2"
   >

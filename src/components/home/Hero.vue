@@ -54,7 +54,7 @@ const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 50vh;
+
 }
 
 .tagline {
