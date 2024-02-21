@@ -4,6 +4,7 @@
 
       <SideNav v-if="doesPageHaveSideNav" />
       <v-main :class="`${isRouteFullView ? '' : 'ma-16 pt-16'}`" >
+        <BreadCrumbs />
           <slot />
       </v-main>
 
@@ -17,6 +18,7 @@
   import Footer from '@/components/footer/Footer.vue'
   import Header from '@/components/Header.vue'
   import SideNav from '@/components/SideNav.vue'
+  import BreadCrumbs from '@/components/BreadCrumbs.vue'
   import { computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { useHead } from '@unhead/vue'
