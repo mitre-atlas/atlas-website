@@ -87,7 +87,7 @@
   let doShowDataObjLinks = computed(() => {
     // Display items if the number of data objects fall below the defined threshold
     return (
-      isThisObjectArray && relatedObjs.length <= maxNumDisplay
+      isThisObjectArray.value && relatedObjs.length <= maxNumDisplay
     )
   })
   
@@ -97,16 +97,14 @@
    */
   let key = computed(() => {
     // Header
-    if(objectType === 'ATT&CK-reference') return 'ATT&CK-reference'
-
     const plural = dataObjectToPluralTitle(objectType)
     const pluralTitle = capitalizeSidebar(plural, ' ')
     
-    if (isThisObjectArray && !doShowDataObjLinks.value) {
+    if (isThisObjectArray.value && !doShowDataObjLinks.value) {
       // Summarize count
       
       return `Number of ${pluralTitle}`
-    } else if (isThisObjectArray && relatedObjs.length > 1) {
+    } else if (isThisObjectArray.value && relatedObjs.length > 1) {
       // Multiple data objects
       return pluralTitle
     }
@@ -121,7 +119,7 @@
    * @type {Object[] or String or Number}
    */
   let value = computed(() => {
-    if (isThisObjectArray && !doShowDataObjLinks.value) {
+    if (isThisObjectArray.value && !doShowDataObjLinks.value) {
       // Summarize count for data objects over the display threshold
       return relatedObjs.length
     }
