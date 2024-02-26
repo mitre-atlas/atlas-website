@@ -44,7 +44,7 @@ export function makePPT (study, filename) {
 
       {
         text: {
-          text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+          text: '© 2024 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
           options: {
             y: '95%',
             w: '100%',
@@ -278,7 +278,7 @@ function detailSlide (ppt, yaml) {
 
       {
         text: {
-          text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+          text: '© 2024 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
           options: {
             y: '95%',
             w: '100%',
@@ -401,7 +401,7 @@ function procedureSlide (ppt, yaml) {
 
       {
         text: {
-          text: '© 2022 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
+          text: '© 2024 THE MITRE CORPORATION. ALL RIGHTS RESERVED.',
           options: {
             y: '95%',
             w: '100%',
