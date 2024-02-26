@@ -7,6 +7,7 @@
       v-for="(procedure, i) in study.procedure"
       :key="i"
       dot-color="blue"
+      size="medium"
     >
       <v-card>
         <template v-slot:title>

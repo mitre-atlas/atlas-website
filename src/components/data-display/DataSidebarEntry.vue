@@ -97,6 +97,8 @@
    */
   let key = computed(() => {
     // Header
+    if(objectType === 'ATT&CK-reference') return 'ATT&CK-reference'
+
     const plural = dataObjectToPluralTitle(objectType)
     const pluralTitle = capitalizeSidebar(plural, ' ')
     
