@@ -4,7 +4,7 @@
       <v-col>
         <v-card flat>
           <v-card-title>
-            <div class="text-h4">About MITRE ATLAS™</div>
+            <v-img src="@/assets/graphics/MITRE_ATLAS_logo_stacked.svg" max-height="150" :style="centerImageOnMoblile"></v-img>
           </v-card-title>
           <v-card-text>
             <div class="text-body-1 my-5">
@@ -51,6 +51,7 @@ const { mdAndUp } = useDisplay()
 
 const centerButtonOnMobile = computed(() => (mdAndUp.value ? '' : ''))
 const verticalSepOnMobile = computed(() => (mdAndUp.value ? '' : 'mt-10'))
+const centerImageOnMoblile = computed(() => (mdAndUp.value ? '' : '{ width: unset !important; }'))
 </script>
 
 <style scoped></style>

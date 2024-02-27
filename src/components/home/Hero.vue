@@ -1,13 +1,7 @@
 <template>
   <v-container fluid class="hero-image home-panel">
     <v-row align="center" justify="center" style="height: 100%">
-      <v-col :cols="iconColSize" :class="shouldTextCenter ? '' : 'ml-5'">
-        <v-img src="@/assets/graphics/atlas_logo_light.svg" max-height="200"></v-img>
-      </v-col>
-
       <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
-        <!-- <div :class="`text-${titleTextSize} font-weight-medium`">MITRE ATLAS™</div> -->
-
         <div :class="`text-${subtitleTextSize} mt-3`">
           <b class="tagline">Navigate threats to AI systems through  <span class="text-highlighter">real-world insights</span></b>
         </div>
@@ -34,12 +28,11 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const iconColSize = computed(() => (mdAndUp.value ? '1' : '12'))
-const textColSize = computed(() => (mdAndUp.value ? '6' : '12'))
+
+const textColSize = computed(() => (mdAndUp.value ? '7' : '12'))
 const buttonColSize = computed(() => (mdAndUp.value ? '4' : '12'))
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : 'small'))
 const shouldTextCenter = computed(() => mdAndUp.value ? 'ml-2' : 'text-center')
-const titleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h3'))
 const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
 </script>
 
