@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="hero-image home-panel">
     <v-row align="center" justify="center" style="height: 100%">
-      <!-- <v-col :cols="iconColSize" :class="shouldTextCenter ? '' : 'ml-5'">
-        <v-img src="@/assets/atlas-graphic-white.png" max-height="200"></v-img>
-      </v-col> -->
+      <v-col :cols="iconColSize" :class="shouldTextCenter ? '' : 'ml-5'">
+        <v-img src="@/assets/graphics/atlas_logo_light.svg" max-height="200"></v-img>
+      </v-col>
 
       <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
         <!-- <div :class="`text-${titleTextSize} font-weight-medium`">MITRE ATLAS™</div> -->
@@ -34,8 +34,8 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const iconColSize = computed(() => (mdAndUp.value ? '2' : '12'))
-const textColSize = computed(() => (mdAndUp.value ? '7' : '12'))
+const iconColSize = computed(() => (mdAndUp.value ? '1' : '12'))
+const textColSize = computed(() => (mdAndUp.value ? '6' : '12'))
 const buttonColSize = computed(() => (mdAndUp.value ? '4' : '12'))
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : 'small'))
 const shouldTextCenter = computed(() => mdAndUp.value ? 'ml-2' : 'text-center')
