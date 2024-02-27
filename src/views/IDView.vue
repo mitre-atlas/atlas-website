@@ -2,17 +2,17 @@
   <div v-if="dataObject != undefined">
       <PageSectionTitle :pageTitle="title"/>
       <v-row>
-        <v-col cols="9">
+        <v-col :cols="mdAndUp ? 9 : 12">
             <v-list-item class="text-h5"> 
               Summary
             </v-list-item>
 
             <v-list-item>
-              <div class="text-body-1 pa-3" v-html="markdown.render(dataObject.description)" />
+              <div :class="`text-body-1 ${mdAndUp ? 'pa-3' : ''}`" v-html="markdown.render(dataObject.description)" />
           </v-list-item>
         </v-col>
 
-        <v-col cols="3">
+        <v-col :cols="mdAndUp ? 3 : 12">
           <DataSidebar :data-object="dataObject" />
         </v-col>
 
@@ -44,6 +44,12 @@
     import ErrorNotFoundView from "./ErrorNotFoundView.vue"
     import MarkdownIt from "markdown-it";
     import { stringToSingular } from "@/assets/dataHelpers.js";
+    import { useDisplay } from 'vuetify'
+
+
+    // mobile boolean for contitional rendering
+    const { mdAndUp } = useDisplay()
+
 
     const markdown = new MarkdownIt();
     const mainStore = useMain()

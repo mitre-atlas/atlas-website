@@ -3,6 +3,8 @@
     v-model="doShowNavDrawer"
     :width="325"
     class="pl-3"
+    mobile-breakpoint="md"
+    :style="{height: smAndDown ? 'calc(100% - 64px)' : 'auto'}"
   >
     <v-list-item-title class="mt-10 text-h5 text-capitalize">
       {{ title }}
@@ -95,6 +97,9 @@
   import { useMain } from "@/stores/main"
   import { computed, ref, watch } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useDisplay } from 'vuetify'
+
+  const { mdAndDown, smAndDown } = useDisplay()
 
   const route = useRoute()
 
@@ -123,6 +128,11 @@
   watch(title, (newVal) => {
     open.value = [newVal]
   })
+
+  if(mdAndDown.value) {
+    // initially hide drawer on smaller screens
+    mainStore.$state.doShowNavDrawer = false
+  }
 
   const doShowNavDrawer = computed({
     // getter

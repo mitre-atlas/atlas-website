@@ -5,9 +5,10 @@
     clipped-left
     elevate-on-scroll
     color="navy"
+    style="z-index: 100, max-width: 100%"
   >
 
-  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" /> 
+  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
   <h1 class="pa-3">
     <router-link to="/">
@@ -230,7 +231,7 @@
   //         return false
   //       return route.name === 'matrices-id' || route.name.includes('objectTypePlural') || route.name.includes('studies')
   //     })
-  
+
   const doesPageHaveSideNav = computed(() => {
     return route.params.id || route.params.objectTypePlural
   })
