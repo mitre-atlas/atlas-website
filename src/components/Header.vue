@@ -7,12 +7,12 @@
     color="navy"
   >
 
-  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" /> 
+  <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
   <h1 class="pa-3">
     <router-link to="/">
       <img
-        src="../assets/MITRE-brand_ATLAS_MITRE_tm_white.svg"
+        src="../assets/graphics/MITRE_ATLAS_light.svg"
         width="200"
         contain
       />
@@ -230,7 +230,7 @@
   //         return false
   //       return route.name === 'matrices-id' || route.name.includes('objectTypePlural') || route.name.includes('studies')
   //     })
-  
+
   const doesPageHaveSideNav = computed(() => {
     return route.params.id || route.params.objectTypePlural
   })
