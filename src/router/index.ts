@@ -12,7 +12,7 @@ import ObjectListView from '../views/ObjectListView.vue'
 import GeneralInformationView from '../views/resources/GeneralInformationView.vue'
 import ContributorsListView from '../views/resources/ContributorsListView.vue'
 import FAQView from '../views/resources/FAQView.vue'
-import AdversarialView from '../views/resources/AdversarialML101View.vue'
+import AiSecurity101View from '../views/resources/AiSecurity101View.vue'
 import NavigatorView from '../views/NavigatorView.vue'
 import MatrixView from '@/views/MatrixView.vue';
 import ContactView from '../views/resources/ContactView.vue'
@@ -35,8 +35,13 @@ const routes = [
     component: FAQView,
   },
   {
+    path: '/resources/ai-security-101',
+    component: AiSecurity101View,
+  },
+  // Redirects the old 101 URL to the new one
+  {
     path: '/resources/adversarial-ml-101',
-    component: AdversarialView,
+    redirect: '/resources/ai-security-101',
   },
   {
     path: '/resources/info',
@@ -101,7 +106,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior() {
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        // Accomodate for the header height in px
+        top: 64
+      }
+    }
     // always scroll to top
     return { top: 0 }
   },

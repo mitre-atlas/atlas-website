@@ -163,8 +163,8 @@
               href: getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')
             },
             {
-              name: 'Adversarial ML 101',
-              to: '/resources/adversarial-ml-101'
+              name: 'AI Security 101',
+              to: '/resources/ai-security-101'
             },
             {
               name: 'Contribute',

@@ -9,6 +9,7 @@
       </v-main>
 
       <Footer />
+      <ScrollToTopButton />
   </v-app>
 </template>
 
@@ -19,6 +20,7 @@
   import Header from '@/components/Header.vue'
   import SideNav from '@/components/SideNav.vue'
   import BreadCrumbs from '@/components/BreadCrumbs.vue'
+  import ScrollToTopButton from '@/components/ScrollToTopButton.vue'
   import { computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { useHead } from '@unhead/vue'
