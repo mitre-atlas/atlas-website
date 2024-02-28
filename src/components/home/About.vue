@@ -27,8 +27,13 @@
       </v-col>
 
       <v-col>
+        <v-row>
+          <v-col>
+            <div class="text-h6">Quick Links</div>
+          </v-col>
+        </v-row>
         <v-row :class="verticalSepOnMobile">
-          <iframe
+          <!-- <iframe
             class="mx-auto"
             width="560"
             height="315"
@@ -36,7 +41,10 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-          ></iframe>
+          ></iframe> -->
+          <v-col v-for="link in quickLinks" :key="link.title" cols="6">
+            <v-btn :prepend-icon="link.icon" variant="text" class="text-capitalize" :size="linkSizeOnMobile" :to="link.link">{{ link.title }}</v-btn>
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -49,9 +57,69 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
+// About section
 const centerButtonOnMobile = computed(() => (mdAndUp.value ? '' : ''))
 const verticalSepOnMobile = computed(() => (mdAndUp.value ? '' : 'mt-10'))
 const centerImageOnMoblile = computed(() => (mdAndUp.value ? '' : '{ width: unset !important; }'))
+// Quick links
+const linkSizeOnMobile = computed(() => (mdAndUp.value ? 'large' : 'small'))
+
+const quickLinks = [
+  {
+    icon: 'mdi-account-circle',
+    color: 'blue',
+    title: 'Contact us',
+    link: '/resources/contact',
+  },
+  {
+    icon: 'mdi-school',
+    color: 'blue',
+    title: 'AI Security 101',
+    link: '/resources/ai-security-101',
+  },
+  {
+    icon: 'mdi-calendar',
+    color: 'blue',
+    title: 'Upcoming events',
+    link: '/resources/events',
+  },
+  {
+    icon: 'mdi-view-grid-plus',
+    color: 'blue',
+    title: 'See what\'s new',
+    link: '/resources/updates',
+  },
+  {
+    icon: 'mdi-file-download',
+    color: 'blue',
+    title: 'Get ATLAS Data',
+    link: '/resources/info',
+  },
+  {
+    icon: 'mdi-briefcase',
+    color: 'blue',
+    title: 'View case studies',
+    link: '/studies',
+  },
+  {
+    icon: 'mdi-flag',
+    color: 'blue',
+    title: 'View all tactics',
+    link: '/tactics',
+  },
+  {
+    icon: 'mdi-strategy',
+    color: 'blue',
+    title: 'View all techniques',
+    link: '/techniques',
+  },
+  {
+    icon: 'mdi-help',
+    color: 'blue',
+    title: 'Terminology and FAQ',
+    link: '/resources/faq',
+  }
+]
 </script>
 
 <style scoped></style>
