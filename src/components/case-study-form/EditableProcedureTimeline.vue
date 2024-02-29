@@ -1,26 +1,44 @@
 <template>
-  <v-timeline 
-    side="end"
+  <VueDraggable 
+    v-model="procedures"
+    handle=".handle"
+    :animation="150"
+    class="list"
+    ghostClass="ghost"
   >
-    <v-timeline-item
-      v-for="(procedure, i) in procedure"
-      :key="i"
+    <div
+      v-for="(procedure, i) in procedures"
+      :key="i + procedure.tactic + procedure.technique + procedure.description"
       dot-color="blue"
       size="medium"
       width="100%"
+      class="mb-3 pl-8 item"
     >
       <AddProcedure 
         v-if="i === editIndex"
         :editProcedure="procedure"
         :editIndex="editIndex"
         @cancel="editIndex = null"
-        @update="emitUpdate"
+        @update="updateProcedureStep"
       />
       <v-card
         v-else
         :title="getTechniqueLabel(procedure)"
         :subtitle="mainStore.getDataObjectById(procedure.tactic).name"
+        variant="outlined"
+        style="border: solid 1px; border-color: lightgray;"
       >
+        <template #append>
+          <div :style="{cursor: editIndex || procedures.length === 1 ? 'not-allowed' : 'grab'}">
+            <v-icon
+              :style="{'pointer-events': editIndex || procedures.length === 1 ? 'none' : ''}"
+              class="handle"
+              :color="editIndex || procedures.length === 1 ? 'grey-lighten-1' : 'grey-darken-3'"
+            >
+              mdi-arrow-up-down
+            </v-icon>
+          </div>
+        </template>
         <v-card-text
           v-if="procedure.description"
           v-html="md.render(procedure.description)"
@@ -49,7 +67,7 @@
                   <v-btn
                     text="Delete"
                     color="red"
-                    @click="isActive.value = false; emitDelete(i)"
+                    @click="isActive.value = false; deleteProcedure(i)"
                   ></v-btn>
                 </v-card-actions>
               </v-card>
@@ -57,26 +75,21 @@
           </v-dialog>
         </v-card-actions>
       </v-card>
-    </v-timeline-item>
-  </v-timeline>
+    </div>
+  </VueDraggable >
 </template>
 
 <script setup>
   import { useMain } from "@/stores/main"
   import { inject, ref } from "vue"
   import AddProcedure from './AddProcedure.vue'
+  import { VueDraggable } from 'vue-draggable-plus'
+
   const md = inject('markdownit')
 
   const mainStore = useMain()
 
-  const emit = defineEmits(['updateProcedureStep', 'delete'])
-  const { procedure } = defineProps([
-    /**
-     * Array of procedure entered in case study form
-     * @type {Array}
-     */
-    'procedure',
-  ]);
+  const procedures = defineModel()
 
   function getTechniqueLabel(procedure) {
     if(mainStore.getDataObjectById(procedure.technique) === undefined) {
@@ -87,16 +100,40 @@
 
   const editIndex = ref()
 
-  function emitUpdate(editedProcedure, index) {
-    emit('updateProcedureStep', editedProcedure, index)
+  function updateProcedureStep(updatedProcedure, index) {
+    procedures.value[index] = updatedProcedure
     editIndex.value = null
   }
 
-  function emitDelete(deleteIndex) {
-    emit('delete', deleteIndex)
-    if(editIndex.value > deleteIndex) {
-      editIndex.value--
-    }
+  function deleteProcedure(deleteIndex) {
+    procedures.value.splice(deleteIndex, 1)
   }
 
 </script>
+
+<style scoped>
+  .list {
+    border-left:2px solid #e0e0e0;
+  }
+
+  .list .item {
+    position: relative;
+  }
+
+  .list .item::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 10px;
+    display: block;
+    background: #005b94;
+    position: absolute;
+    left: -9px;
+    top: 50%;
+  }
+
+  .ghost .v-card {
+    opacity: .5;
+    background: #c8ebfb;
+  }
+</style>

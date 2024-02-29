@@ -144,9 +144,7 @@
 
     <EditableProcedureTimeline
       v-if="vModel.procedure.length > 0"
-      :procedure="vModel.procedure"
-      @delete="deleteProcedure"
-      @updateProcedureStep="updateProcedureStep"
+      v-model="vModel.procedure"
     />
 
     <AddProcedure
@@ -348,14 +346,6 @@
   function addProcedureStep(newStep) {
     vModel.procedure.push(newStep)
     showAddNewStep.value = true
-  }
-
-  function deleteProcedure(index) {
-    vModel.procedure.splice(index, 1)
-  }
-  
-  function updateProcedureStep(updatedProcedure, index) {
-    vModel.procedure[index] = updatedProcedure
   }
 
   const showAddNewStep = ref(false)
