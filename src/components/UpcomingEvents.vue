@@ -55,12 +55,8 @@
 </template>
 
 <script setup>
-  import { useDisplay } from 'vuetify'
   import { computed, inject, ref } from 'vue'
   const md = inject('markdownit')
-
-  // mobile boolean for contitional rendering
-  const { mobile } = useDisplay()
 
   const { events } = defineProps([
     /**

@@ -31,13 +31,13 @@
         </v-row>
       </v-col>
       <v-col v-if="categories.length > 0" :cols="smAndDown ? 6 : ''">
-        <TableFilter 
+        <TableFilter
           :categories="categories"
           @updateFilters="updateFilters"
         />
       </v-col>
       <v-col v-if="stages.length > 0" :cols="smAndDown ? 6 : ''">
-        <TableFilter 
+        <TableFilter
           :stages="stages"
           @updateFilters="updateFilters"
         />
@@ -149,7 +149,7 @@ let { objectTypePlural } = route.params
       return categoryArr
     }, [])
   })
-  
+
   const stages = computed(() => {
     return items.reduce((lifecycleArr, dataObj) => {
       if('ML-lifecycle' in dataObj) {

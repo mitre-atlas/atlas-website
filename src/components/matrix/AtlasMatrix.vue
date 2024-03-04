@@ -7,7 +7,7 @@
       Click on the blue links to learn more about each item, or search and view ATLAS tactics and techniques using the links at the top navigation bar.
     </div>
 
-    <MatrixAttackStyle :tactics="tactics"></MatrixAttackStyle>
+    <MatrixAttackStyle :tactics="tactics" style="overflow: auto;"></MatrixAttackStyle>
   </div>
 </template>
 

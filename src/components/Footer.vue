@@ -1,12 +1,12 @@
 <template>
-  <v-footer class="pa-0" app >
+  <v-footer class="pa-0" app :absolute="!mdAndUp">
     <v-card class="pa-3 rounded-0" width="100%" color="navy">
       <v-row justify="center" align="center" no-gutters>
-        <v-col cols="12" sm="2" :class="mobile ? 'pb-0 mb-n2' : ''">
+        <v-col cols="12" sm="2" :class="!mdAndUp ? 'pb-0 mb-n2' : ''">
           <a href="https://www.mitre.org" target="_blank">
             <img
               src="../assets/mitre-logo-white.svg"
-              :height="!mobile ? 45 : 25"
+              :height="mdAndUp ? 45 : 25"
               class="d-block mx-auto"
             />
           </a>
@@ -15,7 +15,7 @@
         <v-col cols="12" sm="8">
           <v-row justify="space-between" align="center">
             <v-card-text
-              :class="`text-center text-white ${mobile ? 'pb-6' : 'pt-5'}`"
+              :class="`text-center text-white ${!mdAndUp ? 'pb-6' : 'pt-5'}`"
             >
               MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a
               trademark and registered trademark of The MITRE Corporation.
@@ -23,11 +23,11 @@
           </v-row>
 
           <v-row
-            :class="`mt-n5 text-center ${mobile ? 'flex-row' : ''}`"
+            :class="`mt-n5 text-center ${!mdAndUp ? 'flex-row' : ''}`"
             justify="center"
           >
             <v-col
-              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
+              :class="`${!mdAndUp ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <!-- External link -->
@@ -40,7 +40,7 @@
               />
             </v-col>
             <v-col
-              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
+              :class="`${!mdAndUp ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <!-- Internal link -->
@@ -57,13 +57,13 @@
 
         <v-col cols="12" sm="2">
           <v-row
-            :class="`text-center ${mobile ? 'mb-5' : ''}`"
+            :class="`text-center ${!mdAndUp ? 'mb-5' : ''}`"
             justify="center"
             align="center"
           >
             <v-col
               class="text-center"
-              :class="`${mobile ? 'px-1 py-5' : 'px-1'}`"
+              :class="`${!mdAndUp ? 'px-1 py-5' : 'px-1'}`"
               cols="auto"
             >
               <v-btn
@@ -86,5 +86,5 @@
 import { useDisplay } from 'vuetify'
 
 // mobile boolean for contitional rendering
-const { mobile } = useDisplay()
+const { mdAndUp } = useDisplay()
 </script>
