@@ -4,7 +4,7 @@
       <div :class="`text-${titleTextSize} mb-10`">News and Resources</div>
     </v-row>
     <v-row>
-      <v-col v-for="event in events" :key="event.name" cols="4">
+      <v-col v-for="event in events" :key="event.name" :cols="mdAndUp ? 4 : 12">
         <news-card
           :title="event.name"
           :subtitle="event.location"
