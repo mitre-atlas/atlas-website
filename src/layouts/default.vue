@@ -3,7 +3,7 @@
       <Header />
 
       <SideNav v-if="doesPageHaveSideNav" />
-      <v-main :class="`${isRouteFullView ? '' : 'ma-16 pt-16'}`" >
+      <v-main :class="`${isRouteFullView ? '' : 'mx-16'}`" >
         <BreadCrumbs />
           <slot />
       </v-main>
