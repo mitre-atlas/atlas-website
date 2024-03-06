@@ -21,7 +21,7 @@ import { getLatestUpdateDate } from '@/assets/tools.js'
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/HomeRedesign.vue'),
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/terms',
