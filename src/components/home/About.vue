@@ -41,7 +41,6 @@
               :prepend-icon="link.icon"
               variant="text"
               :class="`text-none ${smAndUp ? 'text-body-1' : 'text-body-2'}`"
-              style="justify-content: unset"
               :size="linkSizeOnMobile"
               :to="link.link"
               block

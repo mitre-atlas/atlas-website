@@ -43,8 +43,7 @@
   // Routes which should not have margins and padding around the content
   const isRouteFullView = computed(() => {
     const routesWithNoMargins = [
-      '/',
-      '/redesign'
+      '/'
     ]
     return routesWithNoMargins.includes(route.path)
   });

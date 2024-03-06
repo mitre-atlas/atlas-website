@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
-import { useMain } from "@/stores/main"
 
-import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
@@ -91,10 +88,6 @@ const routes = [
   {
     path: '/matrices/:id',
     component: MatrixView,
-  },
-  {
-    path: '/redesign',
-    component: () => import('@/views/HomeRedesign.vue')
   },
   {
     path: '/:catchAll(.*)*',
