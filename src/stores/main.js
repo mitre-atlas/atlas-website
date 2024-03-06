@@ -98,9 +98,9 @@ export const useMain = defineStore('main', {
 
       /**
        * Get array containing the names of all the object types
-       * @returns {object[]}
+       * @returns {string[]}
        */
-      getDataObjectTypes: state => state.data.objects,
+      getDataObjectTypes: state => Object.keys(state.data.objects),
 
       /**
        * Returns data objects under the provided object type, either as an object of { matrixId: [objs] }

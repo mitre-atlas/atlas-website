@@ -1,11 +1,11 @@
 <template>
-  <v-breadcrumbs 
-    v-if="route.path !== '/'" 
-    :items="items" color="blue" 
+  <v-breadcrumbs
+    v-if="route.path !== '/'"
+    :items="items" color="blue"
     class="mt-7 text-capitalize pl-0 text-body-2"
   >
     <template v-slot:divider>
-      <v-icon icon="mdi-chevron-right" size="x-small" /> 
+      <v-icon icon="mdi-chevron-right" size="x-small" />
     </template>
     <template v-slot:title="{ item }">
       <span :style="{color: item.disabled ? 'black' : '#1976d2'}">{{ item.title }}</span>

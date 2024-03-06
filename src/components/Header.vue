@@ -13,7 +13,7 @@
   <h1 class="pa-3">
     <router-link to="/">
       <img
-        src="../assets/MITRE-brand_ATLAS_MITRE_tm_white.svg"
+        src="../assets/graphics/MITRE_ATLAS_light.svg"
         width="200"
         contain
       />
@@ -208,7 +208,7 @@
     }
 
     // Add data object links
-    const dataKeys = Object.keys(mainStore.getDataObjectTypes);
+    const dataKeys = mainStore.getDataObjectTypes;
     // Do not generate a route for case studies, which has its own defined templates
     const dynamicDataKeys = dataKeys.filter((k) => k !== "case-studies");
     const dataLinks = dynamicDataKeys.map((objectType) => {

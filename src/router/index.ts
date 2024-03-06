@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
-import { useMain } from "@/stores/main"
 
-import HomeView from '../views/HomeView.vue'
 import TermsView from '../views/TermsView.vue'
 import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
 import IDView from '../views/IDView.vue'
@@ -24,7 +21,7 @@ import { getLatestUpdateDate } from '@/assets/tools.js'
 const routes = [
   {
     path: '/',
-    component: HomeView,
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/terms',

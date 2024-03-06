@@ -65,7 +65,7 @@
         objectTypePlural = case_studies_name
         return true
       }
-      return (Object.keys(mainStore.getDataObjectTypes)).includes(objectTypePlural)
+      return mainStore.getDataObjectTypes.includes(objectTypePlural)
   })
 
   const tableItems = computed(() => {
