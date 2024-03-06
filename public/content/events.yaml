@@ -185,6 +185,7 @@ data:
       Join RSAC 2024 and celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
     url: https://www.rsaconference.com/usa
     color: red
+    imageSrc: rsa.jpg
   - name: Black Hat USA 2024
     date: 2024-08-03
     location: Las Vegas, NV
@@ -192,6 +193,7 @@ data:
       BlackHat is an internationally recognized cybersecurity event series providing the most technical and relevant information security research.
     url: https://www.blackhat.com/
     color: grey
+    imageSrc: blackhat.jpg
   - name: DEF CON 2024
     date: 2024-08-08
     location: Las Vegas, NV
@@ -199,3 +201,4 @@ data:
       DEF CON is a hacker convention which takes place immediately following Black Hat in Las Vegas every year.
     url: https://defcon.org/
     color: blue
+    imageSrc: defcon.jpg

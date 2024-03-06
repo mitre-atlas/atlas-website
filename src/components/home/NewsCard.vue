@@ -1,8 +1,10 @@
 <template>
-  <v-card max-width="400px">
-    <v-img :src="imageSrc" height="200px" cover></v-img>
+  <v-card class="d-flex flex-column fill-height" :max-width="mdAndUp ? '400px' : ''">
+    <a :href="url" target="_blank">
+      <v-img :src="imageUrl" cover style="height: 200px;" /> 
+    </a>
     <v-card-title>
-      <div :class="`text-${titleTextSize}`">
+      <div :class="`text-${titleTextSize} text-wrap`">
         {{ title }}
       </div>
     </v-card-title>
@@ -12,9 +14,18 @@
     <v-card-text>
       {{ description }}
     </v-card-text>
-    <v-card-actions v-if="url">
-      <v-btn class="" variant="text" :href="url" append-icon="mdi-chevron-right">Learn more</v-btn>
-    </v-card-actions>
+    <div>
+      <v-btn 
+        v-if="url" 
+        variant="text" 
+        :href="url"
+        target="_blank"
+        append-icon="mdi-chevron-right" 
+        class="justify-start ma-1"
+        >
+          Learn more
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
@@ -29,7 +40,7 @@ const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h6'))
 const { imageSrc, title, subtitle, description, url, date } = defineProps({
   imageSrc: {
     type: String,
-    default: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
+    default: 'network.jpeg',
   },
   title: String,
   subtitle: String,
@@ -39,17 +50,20 @@ const { imageSrc, title, subtitle, description, url, date } = defineProps({
     default: null
   },
   date: {
-    type: String
+    type: Date
   },
 })
 
 const formattedDate = computed(() => {
-
   return date.toLocaleDateString('default', {
     timeZone: 'UTC',
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })
+})
+
+const imageUrl = computed(() => {
+  return new URL(`../../assets/events/${imageSrc}`, import.meta.url).href;
 })
 </script>
