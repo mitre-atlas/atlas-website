@@ -127,7 +127,7 @@
    */
   const linksBeginning = computed(() => {
     return [{
-      name: 'Matrices',
+      name: 'Matrix',
       to: `/matrices/${mainStore.getFirstMatrixId}`
     }]
   })
@@ -222,18 +222,8 @@
     return linksBeginning.value.concat(navLinks, dataLinks).concat(linksEnding);
   });
 
-  // /**
-  //  * Determines if the page has a sidenav
-  //  * @returns {Boolean}
-  //  */
-  // const doesPageHaveSideNav = computed(() => {
-  //   if (route.name == undefined)
-  //         return false
-  //       return route.name === 'matrices-id' || route.name.includes('objectTypePlural') || route.name.includes('studies')
-  //     })
-
   const doesPageHaveSideNav = computed(() => {
-    return route.params.id || route.params.objectTypePlural
+    return route.params.objectTypePlural || (route.params.objectTypePlural && route.params.id)
   })
 
   function toggle() {
