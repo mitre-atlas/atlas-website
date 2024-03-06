@@ -30,7 +30,7 @@
                 variant="tonal"
                 to="/matrices/ATLAS"
                 append-icon="mdi-chevron-right"
-                size="x-large"
+                :size="buttonSize"
                 >See the full ATLAS Matrix</v-btn
               >
             </v-row>
@@ -68,6 +68,7 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
+const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
 const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1'))
 </script>
