@@ -1,14 +1,8 @@
-Setup similar to Vue 2 repo--see below
+# ATLAS Website
 
-## Prerequisites
+ATLAS enables researchers to navigate the landscape of threats to artificial intelligence systems. Visit https://atlas.mitre.org for more information.
 
-We recommend using Visual Studio Code (or VScode, as the cool kids call it) with a remote connection into a Ubuntu-based container. You can set up a container by following [these instructions](https://ai-platform.pages.mitre.org/compute-resources/other/gpu-server-setup/).
-
-Once you have done this and have a terminal connection to the remote server, you can execute the following instructions:
-
-1. `sudo apt-get install unzip` for Fast Node Manager dependencies
-2. To manage node versions, install <https://github.com/Schniz/fnm> and install the LTS via `fnm install --lts`. Currently we are using `v16` (`fnm use v16`), but we are working towards using v20 and newer versions 
-3. Check out this project repository, and it defaults to the `main` branch.
+This repository contains the ATLAS website source code, which is built upon Vue 3 and served via GitHub Pages at https://atlas.mitre.org.
 
 ## Initial Git Setup
 
@@ -19,27 +13,32 @@ Clone the repository using `git clone --recurse-submodules`, or if the repositor
 Once the submodule is available, run the following **once** to sparse checkout only the necessary files in the `dist` directory.
 
 ```bash
-git -C public/atlas-data/ config core.sparseCheckout true
-echo 'dist/*' >> .git/modules/public/atlas-data/info/sparse-checkout
-git submodule update --force --checkout public/atlas-data/
-
+git -C static/atlas-data/ config core.sparseCheckout true
+echo 'dist/*' >> .git/modules/static/atlas-data/info/sparse-checkout
+git submodule update --force --checkout static/atlas-data/
 ```
 
 ## Updating ATLAS Data
 
 To update `atlas-data`, run `git submodule update --remote` to get the latest from its main branch, then commit the result.
 
+## Development Setup
 
-## Project Setup
+Ensure node and npm are available - currently using node v20.
 
-```sh
-git submodule update --init
-npm install
+```bash
+# Install dependencies
+$ npm install
 
+# Serve with hot reload
+$ npm run dev
+
+# Build for production and launch preview server
+$ npm run build
+$ npm run preview
 ```
 
-### Compile and Hot-Reload for Development
+## Notice
 
-```sh
-npm run dev
-```
+Copyright 2021-2024 The MITRE Corporation.
+Approved for Public Release; Distribution Unlimited. Case Number 21-2363.
