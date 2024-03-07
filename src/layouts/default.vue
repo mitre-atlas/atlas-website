@@ -36,8 +36,7 @@
   const route = useRoute()
 
   const doesPageHaveSideNav = computed(() => {
-    return ['tactics', 'techniques', 'mitigations', 'studies'].includes(route.params.objectTypePlural) ||
-      (!route.params.objectTypePlural && route.params.id)
+    return ['tactics', 'techniques', 'mitigations', 'studies'].includes(route.params.objectTypePlural)
   })
 
   // Routes which should not have margins and padding around the content
