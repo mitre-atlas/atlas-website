@@ -223,7 +223,9 @@
   });
 
   const doesPageHaveSideNav = computed(() => {
-    return route.params.objectTypePlural || (route.params.objectTypePlural && route.params.id)
+    return route.params.objectTypePlural 
+      || (route.params.objectTypePlural && route.params.id) 
+      || (route.path.startsWith('/studies') && route.path !== '/studies/create')
   })
 
   function toggle() {
