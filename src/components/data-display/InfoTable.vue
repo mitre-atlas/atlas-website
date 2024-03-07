@@ -45,7 +45,7 @@
     </v-row>
     <v-data-table
       :items="filteredItems"
-      :headers="headers"
+      :headers="mdAndUp ? headers : removeIDCol(headers)"
       v-model:sort-by="sortBy"
       :search="search"
       items-per-page="-1"
@@ -58,7 +58,7 @@
         </span>
         <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
       </template>
-      <template #[`item.id`]="{ item, value }">
+      <template v-if="mdAndUp" #[`item.id`]="{ item, value }">
         <router-link
           :to="item.route"
           class="pl-5"
@@ -78,10 +78,9 @@
         v-for="col in customTableCol"
         #[`item.${col}`]="{ value }"
         :key="col"
-      >
-        <div
-          v-html="md.render(value)"
-          class="pa-5"
+      >  
+        <div class="pt-5 pb-5"
+          v-html="mdAndUp ? md.render(value) : md.render(truncateDescription(value))"
         />
       </template>
       <template v-slot:bottom> </template>
@@ -102,6 +101,7 @@ import { capitalize } from '@/assets/tools.js'
 import { useDisplay } from 'vuetify'
 
 const { smAndDown } = useDisplay()
+const { mdAndUp } = useDisplay()
 
 const md = inject('markdownit')
 
@@ -202,4 +202,13 @@ let { objectTypePlural } = route.params
     search.value = ''
   }
 
+  // Cut the displayed description down to at most 150 chars for mobile
+  function truncateDescription(description) {
+    return description.length > 150 ? description.substring(0, 150) + '...' : description;
+  }
+
+  // Cut the ID field out for mobile
+  function removeIDCol(headers) {
+    return headers.slice(1);
+  }
 </script>
