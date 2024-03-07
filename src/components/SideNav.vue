@@ -4,7 +4,6 @@
     :width="325"
     class="pl-3"
     mobile-breakpoint="md"
-    :style="{height: smAndDown ? 'calc(100% - 64px)' : 'auto'}"
   >
     <v-list-item-title class="mt-10 text-h5 text-capitalize">
       {{ title }}
