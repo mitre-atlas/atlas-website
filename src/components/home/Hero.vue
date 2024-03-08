@@ -45,7 +45,7 @@ const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
     linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 40%, rgba(var(--v-theme-navy), 0.05)),
     /*Top to Bottom, to align hero top color to app bar*/
       linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
-    url('@/assets/GettyImages-1178228880.jpg');
+    url('@/assets/GettyImages-1178228880-small.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
