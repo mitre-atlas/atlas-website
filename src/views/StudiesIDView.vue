@@ -71,10 +71,11 @@
     </v-row>
 
     <div v-if="study.references && study.references.length > 0" class=" ml-6">
-      <p class="text-h5  mt-10"> 
+      <p class="text-h5 mt-10"> 
         Sources
       </p>
-      <div v-for="reference in study.references" :key="reference.url" class="pl-3 mb-2">
+      <div v-for="(reference, index) in study.references" :key="reference.url" class="pl-3 mb-2">
+        <span>{{ index + 1 }}. </span>
         <a v-if="reference.url && reference.title" :href="reference.url" target="_blank" rel="noopener noreferrer">
           {{ reference.title || reference.url }}
           <v-icon icon="mdi-open-in-new" size="small" />
@@ -84,6 +85,7 @@
         </div>
       </div>
     </div>
+
   </div>
   <div v-else>
     <!-- Display ErrorNotFound if ID is not found -->
