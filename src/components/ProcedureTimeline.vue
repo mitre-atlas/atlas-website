@@ -11,12 +11,12 @@
     >
       <v-card>
         <template v-slot:title>
-          <router-link :to="`/techniques/${procedure.technique}`">
+          <router-link class="text-black" :to="`/techniques/${procedure.technique}`">
             {{ getTechniqueName(procedure.technique) }}
           </router-link>
         </template>
         <template v-slot:subtitle>
-          <router-link :to="`/tactics/${procedure.tactic}`">
+          <router-link class="text-black" :to="`/tactics/${procedure.tactic}`">
             {{ getTacticName(procedure.tactic) }}
           </router-link>
         </template>
