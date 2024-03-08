@@ -46,7 +46,7 @@
     <v-data-table
       :items="filteredItems"
       :headers="headers"
-      v-model:sort-by="sortBy"
+      :sortBy="objectTypePlural === 'studies' ? [{ key: 'id', order: 'desc' }] : []"
       :search="search"
       items-per-page="-1"
     >
@@ -184,8 +184,6 @@ let { objectTypePlural } = route.params
       : ['description']
   })
 
-  // default sort by id for studies only
-  const sortBy = objectTypePlural === 'studies' ? [{ key: 'id', order: 'desc' }] : []
   const search = ref('')
 
   const includeSearch = computed(() => {
