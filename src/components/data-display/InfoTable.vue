@@ -165,7 +165,7 @@ let { objectTypePlural } = route.params
 
   const headers = computed(() => {
     let output = [
-      { title: 'ID', key: 'id', align: 'end' },
+      { title: 'ID', key: 'id', align: mdAndUp.value ? 'end' : ' d-none' },
       { title: 'Name', key: 'name', align: 'start' },
     ]
     const col3 = customTableCol.value.map((columnName) => {
