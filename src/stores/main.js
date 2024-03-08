@@ -491,9 +491,9 @@ export const useMain = defineStore('main', {
       },
       /**
        * Retrieves whether the annoucement banner should be displayed
-       * @alias mapGetters: doShowAnnoucementBanner
+       * @alias mapGetters: getDoShowAnnoucementBanner
        */
-      doShowAnnoucementBanner: state => state.doShowAnnoucementBanner,
+      getDoShowAnnoucementBanner: state => state.doShowAnnoucementBanner,
       /**
        * Retrieves the array of accepted _objectTypePlural values
        */
