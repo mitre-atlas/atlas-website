@@ -29,5 +29,6 @@ export default {
 @font-face {
   font-family: 'TradeGothicBold';
   src: url('@/assets/fonts/TradeGothicLTPro-Bold.otf');
+  font-display: fallback;
 }
 </style>
