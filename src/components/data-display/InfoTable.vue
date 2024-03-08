@@ -58,7 +58,7 @@
         </span>
         <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
       </template>
-      <template v-if="mdAndUp" #[`item.id`]="{ item, value }">
+      <template #[`item.id`]="{ item, value }">
         <router-link
           :to="item.route"
           class="pl-5"
