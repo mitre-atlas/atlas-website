@@ -45,7 +45,7 @@
     </v-row>
     <v-data-table
       :items="filteredItems"
-      :headers="mdAndUp ? headers : removeIDCol(headers)"
+      :headers="headers"
       v-model:sort-by="sortBy"
       :search="search"
       items-per-page="-1"
@@ -207,8 +207,4 @@ let { objectTypePlural } = route.params
     return description.length > 150 ? description.substring(0, 150) + '...' : description;
   }
 
-  // Cut the ID field out for mobile
-  function removeIDCol(headers) {
-    return headers.slice(1);
-  }
 </script>
