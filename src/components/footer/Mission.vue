@@ -38,7 +38,7 @@ const { mdAndUp } = useDisplay()
 
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
-const calloutJustification = computed(() => (mdAndUp.value ? 'left' : 'center'))
+const calloutJustification = computed(() => (mdAndUp.value ? 'start' : 'center'))
 // TODO account for left justification of other content
 const missionJustification = computed(() => (mdAndUp.value ? 'center' : 'center'))
 </script>
