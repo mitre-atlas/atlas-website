@@ -78,10 +78,9 @@
         v-for="col in customTableCol"
         #[`item.${col}`]="{ value }"
         :key="col"
-      >
-        <div
-          v-html="md.render(value)"
-          class="pa-5"
+      >  
+        <div class="pt-5 pb-5"
+          v-html="mdAndUp ? md.render(value) : md.render(truncateDescription(value))"
         />
       </template>
       <template v-slot:bottom> </template>
@@ -102,6 +101,7 @@ import { capitalize } from '@/assets/tools.js'
 import { useDisplay } from 'vuetify'
 
 const { smAndDown } = useDisplay()
+const { mdAndUp } = useDisplay()
 
 const md = inject('markdownit')
 
@@ -165,7 +165,7 @@ let { objectTypePlural } = route.params
 
   const headers = computed(() => {
     let output = [
-      { title: 'ID', key: 'id', align: 'end' },
+      { title: 'ID', key: 'id', align: mdAndUp.value ? 'end' : ' d-none' },
       { title: 'Name', key: 'name', align: 'start' },
     ]
     const col3 = customTableCol.value.map((columnName) => {
@@ -198,6 +198,11 @@ let { objectTypePlural } = route.params
   function toggleSearch() {
     extendSearch.value = !extendSearch.value
     search.value = ''
+  }
+
+  // Cut the displayed description down to at most 150 chars for mobile
+  function truncateDescription(description) {
+    return description.length > 150 ? description.substring(0, 150) + '...' : description;
   }
 
 </script>
