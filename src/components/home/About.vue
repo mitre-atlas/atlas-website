@@ -39,7 +39,7 @@
           <v-col v-for="link in quickLinks" :key="link.title" cols="6">
             <v-btn
               :prepend-icon="link.icon"
-              variant="text"
+              variant="outlined"
               :class="`text-none ${smAndUp ? 'text-body-1' : 'text-body-2'}`"
               :size="linkSizeOnMobile"
               :to="link.link"
