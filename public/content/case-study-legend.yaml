@@ -1,6 +1,6 @@
 legend:
   actor:
-    icon: mdi-arrow-top-right
+    icon: mdi-arrow-projectile
     name: Actor
     description: |
       The individual or group that performed this operation
