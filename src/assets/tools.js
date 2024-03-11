@@ -209,7 +209,7 @@ const trimStrings = function (key, value) {
  * @param {string} filename - Filename without extension
  */
 export function downloadStudyFile (study, filename) {
-  const studyCopy = Object.assign({}, study)
+  const studyCopy = JSON.parse(JSON.stringify(study))
   EXTRA_ADDED_WEBSITE_KEYS.forEach(key => delete studyCopy.study[key])
   const studyYAML = dump(studyCopy, { replacer: trimStrings }).replace(
     'T00:00:00.000Z',
