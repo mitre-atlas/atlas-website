@@ -27,7 +27,7 @@ const faqSections = reactive([]);
 // Dynamically import any Markdown files found
 const modules = import.meta.glob(
   '@/../public/content/faq-files/*.md',
-  { as: 'raw', eager: true }
+  { query: '?raw', import: 'default', eager: true }
 )
 
 // Convert Markdown to HTML
