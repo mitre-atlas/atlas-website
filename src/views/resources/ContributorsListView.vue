@@ -2,14 +2,14 @@
   <div class="text-body-1">
     <PageSectionTitle :pageTitle="title"/>
     <p>
-      {{ VITE_MITRE_TITLE }} is a first-cut attempt at collating a knowledge base of how ML systems
+      {{ VITE_MITRE_TITLE }} is a continuously growing and evolving knowledge base of how ML systems
       can be attacked. We need your help to make it holistic and fill in the missing gaps!
     </p>
     <p class="text-h5 mt-10">
-      Corrections and Improvement
+      Feedback and Improvement
     </p>
     <p>
-      For immediate corrections to tactics, techniques, and case studies, please email 
+      Send us your feedback and improvements to tactics, techniques, and case studies: please email 
       <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or 
       <a href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ" target="_blank">join MITRE ATLAS on Slack</a> 
       and post on the <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank">#feedback-and-recommendations</a> channel.
@@ -18,8 +18,8 @@
       Contribute Case Studies
     </p>
     <p>
-      We are especially excited for new case-studies! We look forward to contributions from both
-      industry and academic researchers.
+      We are especially excited to capture new and unique attack pathways as case studies! We look forward to contributions from both
+      industry experts and academic researchers.
     </p>
     <p>
       Use the Case Study Builder to craft a submission file with details and technique mappings,
