@@ -8,6 +8,7 @@
       :key="i"
       dot-color="blue"
       size="medium"
+      width="100%"
     >
       <v-card>
         <template v-slot:title>
