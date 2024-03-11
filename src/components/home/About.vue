@@ -36,7 +36,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-for="link in quickLinks" :key="link.title" cols="6">
+          <v-col v-for="link in quickLinks" :key="link.title" :cols="linkColumnsOnMobile">
             <v-btn
               :prepend-icon="link.icon"
               variant="outlined"
@@ -65,6 +65,7 @@ const verticalSepOnMobile = computed(() => (mdAndUp.value ? '' : 'mt-5'))
 const centerImageOnMoblile = computed(() => (mdAndUp.value ? '' : '{ width: unset !important; }'))
 // Quick links
 const linkSizeOnMobile = computed(() => (mdAndUp.value ? 'large' : 'small'))
+const linkColumnsOnMobile = computed(() => (mdAndUp.value ? 6 : 12))
 
 const quickLinks = [
   {
