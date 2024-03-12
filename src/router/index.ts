@@ -1,21 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import TermsView from '../views/TermsView.vue'
-import ErrorNotFoundView from '../views/ErrorNotFoundView.vue'
-import IDView from '../views/IDView.vue'
-import StudiesIDView from '../views/StudiesIDView.vue'
-import BuildCaseStudyView from '../views/BuildCaseStudyView.vue'
-import ObjectListView from '../views/ObjectListView.vue'
-import GeneralInformationView from '../views/resources/GeneralInformationView.vue'
-import ContributorsListView from '../views/resources/ContributorsListView.vue'
-import FAQView from '../views/resources/FAQView.vue'
-import AiSecurity101View from '../views/resources/AiSecurity101View.vue'
-import NavigatorView from '../views/NavigatorView.vue'
-import MatrixView from '@/views/MatrixView.vue';
-import ContactView from '../views/resources/ContactView.vue'
-import EventsView from '../views/resources/EventsView.vue'
-import UpdatesListView from '../views/resources/UpdatesListView.vue'
-
 import { getLatestUpdateDate } from '@/assets/tools.js'
 
 const routes = [
@@ -25,15 +9,15 @@ const routes = [
   },
   {
     path: '/terms',
-    component: TermsView,
+    component: () => import('../views/TermsView.vue'),
   },
   {
     path: '/resources/faq',
-    component: FAQView,
+    component: () => import('../views/resources/FAQView.vue'),
   },
   {
     path: '/resources/ai-security-101',
-    component: AiSecurity101View,
+    component: () => import('../views/resources/AiSecurity101View.vue'),
   },
   // Redirects the old 101 URL to the new one
   {
@@ -42,19 +26,19 @@ const routes = [
   },
   {
     path: '/resources/info',
-    component: GeneralInformationView,
+    component: () => import('../views/resources/GeneralInformationView.vue'),
   },
   {
     path: '/resources/contact',
-    component: ContactView,
+    component: () => import('../views/resources/ContactView.vue'),
   },
   {
     path: '/resources/events',
-    component: EventsView,
+    component: () => import('../views/resources/EventsView.vue'),
   },
   {
     path: '/resources/contribute',
-    component: ContributorsListView,
+    component: () => import('../views/resources/ContributorsListView.vue'),
   },
   {
     // When a user visits the updates index page, redirect to the most recent update
@@ -63,36 +47,36 @@ const routes = [
   },
   {
     path: '/resources/updates/:date',
-    component: UpdatesListView
+    component: () => import('../views/resources/UpdatesListView.vue')
   },
   {
     path: '/:objectTypePlural',
-    component: ObjectListView,
+    component: () => import('../views/ObjectListView.vue'),
   },
   {
     path: '/:objectTypePlural/:id',
-    component: IDView,
+    component: () => import('../views/IDView.vue'),
   },
   {
     path: '/studies/:id',
-    component: StudiesIDView,
+    component: () => import('../views/StudiesIDView.vue'),
   },
   {
     path: '/studies/create',
-    component: BuildCaseStudyView,
+    component: () => import('../views/BuildCaseStudyView.vue'),
   },
   {
     path: '/navigator',
-    component: NavigatorView,
+    component: () => import('../views/NavigatorView.vue'),
   },
   {
     path: '/matrices/:id',
-    component: MatrixView,
+    component: () => import('@/views/MatrixView.vue'),
   },
   {
     path: '/:catchAll(.*)*',
     name: 'ErrorNotFound',
-    component: ErrorNotFoundView,
+    component: () => import('../views/ErrorNotFoundView.vue'),
   },
 ]
 
