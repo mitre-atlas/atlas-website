@@ -29,8 +29,8 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue' 
-  import { downloadUrlAsFile } from '@/assets/tools.js'
+  import { computed } from 'vue'
+  import { downloadUrlAsFile, constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
 
   const { study } = defineProps([
       /**
@@ -40,26 +40,21 @@
       'study',
     ]);
 
-  const individualCaseStudy = JSON.parse(import.meta.env.VITE_INDIVIDUAL_CASE_STUDY)
-
-  const rawJsonURL = computed(() => {
-    return individualCaseStudy.raw_link + study.id + individualCaseStudy.suffix
-  })
-
-  const navigatorURL = computed(() => {
-    return individualCaseStudy.navigator_link + rawJsonURL.value
-  })
+  // URL to the JSON file of this study's layer
+  const rawJsonURL = constructNavigatorLayerGitHubUrl(study.id)
+  // URL to open the above layer in the Navigator
+  const navigatorURL = constructNavigatorUrlToLayer(rawJsonURL)
 
   const options = [
-    { 
-      title: 'View on ATLAS Navigator', 
+    {
+      title: 'View on ATLAS Navigator',
       icon: 'mdi-open-in-new',
-      function: () => window.open(navigatorURL.value, '_blank')
+      function: () => window.open(navigatorURL, '_blank')
 
     },
-    { title: 'Download as raw data (.json)', 
-      icon: 'mdi-arrow-collapse-down', 
-      function: () => downloadUrlAsFile(rawJsonURL.value)
+    { title: 'Download as raw data (.json)',
+      icon: 'mdi-arrow-collapse-down',
+      function: () => downloadUrlAsFile(rawJsonURL)
     },
   ]
 

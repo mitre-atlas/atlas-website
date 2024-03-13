@@ -277,6 +277,30 @@ export function setMetaData (studyData, studySchemaVersion) {
 }
 
 /**
+ * Constructs the link to a specified Navigator layer file.
+ *
+ * @param {string} filename JSON filename, without the extension
+ * @param {string} directory (optional)
+ */
+export function constructNavigatorLayerGitHubUrl(filename, directory='dist/case-study-navigator-layers') {
+  // Env var containing the first part of a raw GitHub link pointing to Navigator layers on the main branch
+  const navigatorLayerGitHubUrl = import.meta.env.VITE_NAVIGATOR_LAYER_GITHUB_URL
+  // Construct the full URL to the layer file
+  return `${navigatorLayerGitHubUrl}/${directory}/${filename}.json`
+}
+
+/**
+ * Constructs the link to open the specified Navigator layer file
+ * in the ATLAS Navigator.
+ * @param {string} layerGitHubUrl
+ */
+export function constructNavigatorUrlToLayer(layerGitHubUrl) {
+  const navigatorUrl = import.meta.env.VITE_NAVIGATOR_URL
+  // Construct the full URL to open the layer file on the Navigator
+  return `${navigatorUrl}/#layerURL=${layerGitHubUrl}`
+}
+
+/**
  * Prepends the .env-provided base URL to the provided path.
  * For use by `fetch()`
  * @param {string} pathString
