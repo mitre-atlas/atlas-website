@@ -3,14 +3,15 @@
     <PageSectionTitle :pageTitle="title"/>
     <p>
       The {{ VITE_MITRE_TITLE }} version of the ATT&CK Navigator displays
-      {{ VITE_SHORT_NAME }} techniques and allows users to create and view complex
+      {{ VITE_SHORT_NAME }} techniques alongside ATT&CK Enterprise techniques
+      and allows users to create and view complex
       visualizations. In addition to the matrix, the Navigator also shows a
       frequency heat map of techniques used in {{ VITE_SHORT_NAME }} case studies.
       View the {{ VITE_SHORT_NAME }} Navigator below or at
       <a
-        :href="VITE_NAVIGATION_URL"
+        :href="VITE_NAVIGATOR_URL"
         target="_blank"
-      >{{ VITE_NAVIGATION_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a>.
+      >{{ VITE_NAVIGATOR_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a>.
     </p>
 
     <p class="pt-5 mb-10">
@@ -39,7 +40,7 @@
     </div>
     <iframe
       v-show="!loading"
-      :src="`${VITE_NAVIGATION_URL}`"
+      :src="`${VITE_NAVIGATOR_URL}`"
       width="90%"
       height="700px"
       frameBorder="0"
@@ -52,7 +53,7 @@
   import { ref } from 'vue'
   import PageSectionTitle from "@//components/PageSectionTitle.vue"
 
-  const { VITE_MITRE_TITLE, VITE_SHORT_NAME, VITE_NAVIGATION_URL } = import.meta.env
+  const { VITE_MITRE_TITLE, VITE_SHORT_NAME, VITE_NAVIGATOR_URL } = import.meta.env
   const title = ref(VITE_SHORT_NAME + ' Navigator')
 
   const loading = ref(true)

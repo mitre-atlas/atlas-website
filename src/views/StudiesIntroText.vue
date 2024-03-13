@@ -14,6 +14,7 @@
         impact to production AI systems. Each demonstrates one of the
         following characteristics:
       </p>
+      <p>
       <ol class="pl-4" style="line-height: 2.5">
         <li>
           Range of Attacks: Evasion, poisoning, model replication and
@@ -33,10 +34,17 @@
           non-security-sensitive applications like chatbots.
         </li>
       </ol>
+      </p>
+
+      View a heat map of techniques used in these case studies on the
+      <a target="_blank" :href="frequencyNavigatorUrl">ATLAS Navigator</a>.
   </div>
 </template>
 
 <script setup>
 const { VITE_MITRE_TITLE } = import.meta.env
-
+import { constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
+// Construct link to open the case study frequency Navigator layer on the ATLAS Navigator
+const frequencyLayerGitHubUrl = constructNavigatorLayerGitHubUrl('atlas_case_study_frequency', 'dist/default-navigator-layers')
+const frequencyNavigatorUrl = constructNavigatorUrlToLayer(frequencyLayerGitHubUrl)
 </script>

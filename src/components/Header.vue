@@ -158,6 +158,10 @@
               to: '/resources/info'
             },
             {
+              name: 'FAQ',
+              to: '/resources/faq'
+            },
+            {
               name: 'ATLAS Fact Sheet',
               href: getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')
             },
@@ -166,25 +170,25 @@
               to: '/resources/ai-security-101'
             },
             {
-              name: 'Contribute',
-              to: '/resources/contribute'
+              name: "ATLAS Navigator",
+              to: "/navigator",
             },
             {
-              name: 'FAQ',
-              to: '/resources/faq'
+              name: 'Contribute',
+              to: '/resources/contribute'
             },
             {
               name: 'Updates',
               to: '/resources/updates'
             },
             {
+              name: 'Upcoming Events',
+              to: '/resources/events'
+            },
+            {
               name: 'Contact Us',
               to: '/resources/contact'
             },
-            {
-              name: 'Upcoming Events',
-              to: '/resources/events'
-            }
           ]
         }
       ]
@@ -194,17 +198,6 @@
    * @returns {Object}
    */
   const linksModded = computed(() => {
-    // Add the Navigator Header item if specified
-    let navLinks = [];
-    if (true) { // TODO: Add boolean check for navigator
-      navLinks = [
-        {
-          name: "Navigator",
-          to: "/navigator",
-        },
-      ];
-    }
-
     // Add data object links
     const dataKeys = mainStore.getDataObjectTypes;
     // Do not generate a route for case studies, which has its own defined templates
@@ -217,12 +210,12 @@
     });
 
     // Sandwich data links between beginning and end links
-    return linksBeginning.value.concat(navLinks, dataLinks).concat(linksEnding);
+    return linksBeginning.value.concat(dataLinks).concat(linksEnding);
   });
 
   const doesPageHaveSideNav = computed(() => {
-    return route.params.objectTypePlural 
-      || (route.params.objectTypePlural && route.params.id) 
+    return route.params.objectTypePlural
+      || (route.params.objectTypePlural && route.params.id)
       || (route.path.startsWith('/studies') && route.path !== '/studies/create')
   })
 
