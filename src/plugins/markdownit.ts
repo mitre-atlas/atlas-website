@@ -19,31 +19,17 @@ const markdownit = new MarkdownIt({
 // Create proxy for rules modification
 const proxy = (tokens: any[], idx: number, options: object, env: object, self: any) => self.renderToken(tokens, idx, options);
 
-// Apply Vuetify text styling to paragraph elements
-// https://github.com/markdown-it/markdown-it/blob/master/docs/examples/renderer_rules.md#reusing-existing-rules
-const defaultParagraphOpenRenderer = markdownit.renderer.rules.paragraph_open || proxy;
-markdownit.renderer.rules.paragraph_open = function(tokens, idx, options, env, self) {
-   // Apply the Vuetify default body text class
-   // https://vuetifyjs.com/en/styles/text-and-typography/#typography
-   tokens[idx].attrJoin("class", 'text-body-1')
-   return defaultParagraphOpenRenderer(tokens, idx, options, env, self)
-};
-
 // Apply Vuetify text styling to list items
 const defaultBulletListOpenRenderer = markdownit.renderer.rules.bullet_list_open || proxy;
 markdownit.renderer.rules.bullet_list_open = function(tokens, idx, options, env, self) {
-  // Apply the Vuetify default body text class
-  // https://vuetifyjs.com/en/styles/text-and-typography/#typography
-  tokens[idx].attrJoin("class", 'text-body-1')
+  // Apply Vuetify styling
   tokens[idx].attrJoin("class", 'mb-4')
   return defaultBulletListOpenRenderer(tokens, idx, options, env, self)
 }
 
 const defaultOrderedListOpenRenderer = markdownit.renderer.rules.ordered_list_open || proxy;
 markdownit.renderer.rules.ordered_list_open = function(tokens, idx, options, env, self) {
-   // Apply the Vuetify default body text class
-   // https://vuetifyjs.com/en/styles/text-and-typography/#typography
-   tokens[idx].attrJoin("class", 'text-body-1')
+   // Apply the Vuetify styling
    tokens[idx].attrJoin("class", 'mb-4')
    return defaultOrderedListOpenRenderer(tokens, idx, options, env, self)
 }
@@ -70,7 +56,7 @@ markdownit.renderer.rules.heading_open = function(tokens, idx, options, env, sel
 
 const defaultTableOpenRenderer = markdownit.renderer.rules.table_open || proxy;
 markdownit.renderer.rules.table_open = (tokens, idx, options, env, self) => {
-  return `<div class="v-table v-table--density-comfortable text-body-1 mb-4"><div class="v-table__wrapper">${defaultTableOpenRenderer(tokens, idx, options, env, self)}`;
+  return `<div class="v-table v-table--density-comfortable mb-4"><div class="v-table__wrapper">${defaultTableOpenRenderer(tokens, idx, options, env, self)}`;
 };
 
 const defaultTableCloseRenderer = markdownit.renderer.rules.table_close || proxy;

@@ -3,7 +3,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
-import { loadFonts } from './plugins/webfontloader'
 import markdownit from './plugins/markdownit'
 import { useMain } from "@/stores/main";
 import { createHead } from '@unhead/vue'
@@ -30,5 +29,3 @@ const main = useMain();
 await main.init();
 
 app.mount('#app');
-
-loadFonts()

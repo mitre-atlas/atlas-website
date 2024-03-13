@@ -16,7 +16,7 @@
 
       <div>
         <v-card-title class="text-h6 pt-0 text-wrap" v-text="item.title"> </v-card-title>
-        <v-card-subtitle class="text-body-1 text-wrap">
+        <v-card-subtitle class="text-wrap">
           {{ item.text }}
         </v-card-subtitle>
       </div>
