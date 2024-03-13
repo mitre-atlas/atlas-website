@@ -8,6 +8,7 @@ import markdownit from './plugins/markdownit'
 import { useMain } from "@/stores/main";
 import { createHead } from '@unhead/vue'
 import VueGtag from "vue-gtag"
+import { insertOsano } from './plugins/osano'
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -23,7 +24,7 @@ if(import.meta.env.VITE_ANALYTICS_ID) {
     config: { id: import.meta.env.VITE_ANALYTICS_ID }
   })
 }
-
+insertOsano()
 
 // Initialize store
 const main = useMain();
