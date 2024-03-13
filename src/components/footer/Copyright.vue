@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-body-1">
+  <v-container>
     <div class="my-5">
 
       <div>&copy; 2021-2024 The MITRE Corporation. All Rights Reserved.</div>

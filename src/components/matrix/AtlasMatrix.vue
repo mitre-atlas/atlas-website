@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-10 text-body-1">
+    <div class="mb-10">
       The ATLAS Matrix below shows the progression of tactics used in attacks as columns from left to right,
       with ML techniques belonging to each tactic below.
       <span class="attack-and">&</span>&nbsp;indicates an adaption from ATT&CK.

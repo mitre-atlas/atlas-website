@@ -1,5 +1,5 @@
 <template>
-  <div class="text-body-1">
+  <div>
     <PageSectionTitle :pageTitle="title"/>
     <p>
       {{ VITE_MITRE_TITLE }} is a continuously growing and evolving knowledge base of how ML systems

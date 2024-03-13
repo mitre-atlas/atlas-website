@@ -23,7 +23,7 @@
         </v-col>
         <v-col :justify="missionJustification">
           <v-img src="@/assets/MITRE_Mission_Vertical_White.svg" height="100px"></v-img>
-          <a href="https://www.mitre.org" class="text-white text-body-1">www.mitre.org</a>
+          <a href="https://www.mitre.org" class="text-white">www.mitre.org</a>
         </v-col>
       </v-row>
     </v-container>

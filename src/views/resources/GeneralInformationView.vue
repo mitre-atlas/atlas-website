@@ -1,5 +1,5 @@
 <template>
-  <div class="text-body-1">
+  <div>
     <PageSectionTitle :pageTitle="title"/>
     <p class="text-h5 my-5">
       <a :href="getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')">{{ VITE_MITRE_TITLE }} Fact Sheet</a>

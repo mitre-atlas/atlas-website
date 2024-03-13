@@ -43,12 +43,12 @@
       </v-col>
     </v-row>
 
-    <p class="text-h5  mt-10 ml-6"> 
+    <p class="text-h5  mt-10 ml-6">
         Summary
     </p>
-    <p 
-      class="text-body-1  pl-3 ml-6" 
-      v-html="md.render(study.summary)" 
+    <p
+      class="pl-3 ml-6"
+      v-html="md.render(study.summary)"
     />
 
     <br>
@@ -57,7 +57,7 @@
     <v-row align="center">
       <v-col>
         <div class="text-h5 ml-6 text-capitalize"
-        > 
+        >
           Procedure
         </div>
       </v-col>
@@ -71,7 +71,7 @@
     </v-row>
 
     <div v-if="study.references && study.references.length > 0" class=" ml-6">
-      <p class="text-h5 mt-10"> 
+      <p class="text-h5 mt-10">
         Sources
       </p>
       <div v-for="(reference, index) in study.references" :key="reference.url" class="pl-3 mb-2">
@@ -92,11 +92,11 @@
     <ErrorNotFoundView />
   </div>
 </template>
-  
+
 <script setup>
   import { useMain } from "@/stores/main"
   import { useRoute } from 'vue-router'
-  import { computed, ref } from 'vue' 
+  import { computed, ref } from 'vue'
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
   import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
@@ -124,6 +124,5 @@
   })
   const title = computed(() => study.value.name)
 
-  
+
 </script>
-  

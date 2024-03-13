@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="text-body-1">
+    <p>
         Attacks on machine learning (ML) systems are being developed and
         released with increased regularity. Attacks have historically been
         performed in controlled settings, but attacks are increasingly
@@ -9,7 +9,7 @@
         information, trusted to make critical decisions with little oversight,
         and have little to no logging and alerting attached to their use.
       </p>
-      <p class="text-body-1">
+      <p>
         {{VITE_MITRE_TITLE }} case studies are selected because of the
         impact to production AI systems. Each demonstrates one of the
         following characteristics:

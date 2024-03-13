@@ -1,5 +1,5 @@
 <template>
-  <div class="text-body-1">
+  <div>
     <PageSectionTitle :pageTitle="title"/>
     <div class="text-h5">License</div>
     <p>

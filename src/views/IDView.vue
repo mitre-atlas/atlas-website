@@ -3,12 +3,12 @@
       <PageSectionTitle :pageTitle="title"/>
       <v-row>
         <v-col :cols="mdAndUp ? 9 : 12">
-            <v-list-item class="text-h5"> 
+            <v-list-item class="text-h5">
               Summary
             </v-list-item>
 
             <v-list-item>
-              <div :class="`text-body-1 ${mdAndUp ? 'pa-3' : ''}`" v-html="markdown.render(dataObject.description)" />
+              <div :class="`${mdAndUp ? 'pa-3' : ''}`" v-html="markdown.render(dataObject.description)" />
           </v-list-item>
         </v-col>
 
@@ -18,11 +18,11 @@
 
       </v-row>
 
-      <DataSection 
-        v-for="(relatedObjs, objectType) in relatedObjects" 
+      <DataSection
+        v-for="(relatedObjs, objectType) in relatedObjects"
         :key="objectType"
-        :itemType="objectType" 
-        :items="relatedObjs" 
+        :itemType="objectType"
+        :items="relatedObjs"
         :parentObject="dataObject"
       />
   </div>
@@ -32,12 +32,12 @@
   </div>
 
   </template>
-    
+
   <script setup>
 
     import { useMain } from "@/stores/main"
     import { useRoute } from 'vue-router'
-    import { computed } from 'vue' 
+    import { computed } from 'vue'
     import DataSection from '@/components/data-display/DataSection.vue'
     import DataSidebar from '@/components/data-display/DataSidebar.vue'
     import PageSectionTitle from "@//components/PageSectionTitle.vue"
@@ -65,7 +65,7 @@
       // Don't set object if the URL's object type is wrong -- should show 404
       if (!obj || obj['object-type'] !== stringToSingular(objectTypePlural))
         return undefined
-        
+
       return mainStore.getDataObjectById(id)
     })
 
@@ -93,5 +93,4 @@
     })
 
   </script>
-  
-    
+

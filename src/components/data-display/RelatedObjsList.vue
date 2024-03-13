@@ -8,7 +8,7 @@
       v-if="'route' in d"
       :key="getLabelById(d.id) || d.name"
       :to="d.route"
-      class="pb-1 pt-1 mb-2 text-body-1"
+      class="pb-1 pt-1 mb-2"
     >
       <div v-html="getLabelById(d.id) || d.name"></div>
     </v-list-item>

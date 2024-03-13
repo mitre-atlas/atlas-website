@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageSectionTitle :pageTitle="title" />
-    <p class="text-body-1 my-5">
+    <p class="my-5">
       Join our collaborative community to shape future tool and framework developments in AI
       security, threat mitigation, bias, privacy and other critical aspects of AI assurance.
     </p>
@@ -39,7 +39,7 @@
             <template v-slot:prepend>
               <v-icon :color="item.color">{{ item.icon }}</v-icon>
             </template>
-            <span class="text-none font-weight-bold text-body-1">
+            <span class="text-none font-weight-bold">
               {{ item.title }}
             </span>
           </v-btn>
