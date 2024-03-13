@@ -51,6 +51,8 @@
       introText.value = jsyaml.load(data)[objectTypePlural];
       // remove single \n, but keep \n\n
       introText.value = introText.value.replace(/(?<!\n)\n(?!\n)/g, "");
+      // ensure there is a space after every period
+      introText.value = introText.value.replace(/\.([^\s])/g, '. $1')
     })
     .catch(error => {
       console.error('Error fetching YAML file:', error);
