@@ -36,7 +36,7 @@ jobs:
         env:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           VITE_OSANO_SCRIPT: ${{ secrets.VITE_OSANO_SCRIPT }}
-        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID\nVITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT\nVITE_BASE_URL=website-deploy-test" > .env.production
+        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID\nVITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT" > .env.production
 
       - name: Install dependencies
         run: npm install
