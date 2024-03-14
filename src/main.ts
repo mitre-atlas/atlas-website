@@ -6,7 +6,8 @@ import vuetify from './plugins/vuetify'
 import markdownit from './plugins/markdownit'
 import { useMain } from "@/stores/main";
 import { createHead } from '@unhead/vue'
-import VueGtag from "vue-gtag"
+import { insertOsano } from './plugins/osano'
+import { insertAnalytics } from './plugins/analytics'
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -17,12 +18,9 @@ app.use(vuetify);
 app.use(markdownit);
 app.use(pinia);
 app.use(head)
-if(import.meta.env.VITE_ANALYTICS_ID) {
-  app.use(VueGtag, {
-    config: { id: import.meta.env.VITE_ANALYTICS_ID }
-  })
-}
 
+insertAnalytics(app)
+insertOsano()
 
 // Initialize store
 const main = useMain();

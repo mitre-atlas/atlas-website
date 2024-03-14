@@ -10,8 +10,20 @@
         <a href="https://www.mitre.org/privacy-policy">Privacy Policy</a>
         |
         <router-link to="/terms">Terms of Use</router-link>
-      </div>
 
+        <span v-if="VITE_OSANO_SCRIPT">
+          |
+          <a href="#" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')">Manage Cookies</a>
+        </span>
+      </div>
+      <!-- <v-btn
+        v-if="VITE_OSANO_SCRIPT"
+        class="mt-6"
+        variant="outlined"
+        onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
+      >
+        Manage Cookies
+      </v-btn> -->
       <!-- <v-btn
         to="/resources/contact"
         color="navy"
@@ -20,3 +32,13 @@
     </div>
   </v-container>
 </template>
+
+<script setup>
+const { VITE_OSANO_SCRIPT } = import.meta.env
+</script>
+
+<style>
+.osano-cm-widget {
+  display: none;
+}
+</style>
