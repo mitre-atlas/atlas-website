@@ -30,12 +30,13 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-      - name: Configure Google Analytics env var
+            
+      - name: Configure environment variables
         shell: bash
         env:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
-        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID" > .env.production
+          VITE_OSANO_SCRIPT: ${{ secrets.VITE_OSANO_SCRIPT }}
+        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID\nVITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT\nVITE_BASE_URL=website-deploy-test" > .env.production
 
       - name: Install dependencies
         run: npm install
