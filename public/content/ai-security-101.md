@@ -4,17 +4,28 @@ title: AI Security 101
 
 [[toc]]
 
-#### Overview
+#### What is AI Security?
 
-The emergence of machine learning (ML) and artificial intelligence (AI)-enabled systems has exposed new attack vectors and new types of vulnerabilities not covered by traditional cybersecurity practices. As predictive models, classification models, large language models (LLMs), and other generative technologies become more common, they are being increasingly targeted by attackers aiming to produce incorrect predictions, evade content policies, steal intellectual property, and compromise private data, along with executing traditional cybersecurity attacks. Threats to AI comprise an active and growing field that requires a technical and operational response.
+Artificial intelligence (AI) technology is advancing at a rapid rate and adoption is on the rise. Once limited only to highly controlled operational environments and use cases, today we see _AI-enabled systems_ &mdash; software systems with one or more AI components &mdash; effectively integrated into a variety of use cases and available to the public.
 
-_AI Security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks both to and from AI or AI-embedded systems. In this 101, we describe the most common threats to AI systems and how to design operating models with AI Security in mind. We discuss realistic threats documented within MITRE ATLAS as well as active areas of research in AI Security, red team and blue team activities, and risk mitigation throughout the full machine learning model lifecycle.
+_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In addition to heightening traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
 
-**Additional context for those with a background outside of machine learning:**
+In this 101, we describe the most common threats to AI-enabled systems and how to design operating models with AI security in mind. We discuss realistic threats documented within MITRE ATLAS&trade;,  active research areas in AI security, AI red team and blue team exercises, and risk mitigation throughout the AI model lifecycle.
 
-Machine learning models generally have two stages in their development, each with unique security vulnerabilities and mitigations. During the training stage, data is collected and processed, and a model is selected and fitted to the data, commonly called training or fine-tuning. After validating the model’s performance, the inference stage begins, where users or applications submit queries. The model then responds with predictions, classifications, or generative content, called inferences. When an inference occurs with a deployed model, live data is often collected to improve the model and monitor its real-world performance. The following diagram illustrates this pipeline:
+#### What are attacks on AI?
 
-<figure>
+Incorporating AI into a larger system can make the system susceptible to novel attacks that specifically target the AI. The techniques that adversaries use to carry out these attacks are distinct from traditional cyber techniques. By improving their understanding of these adversarial techniques, teams can work to mitigate the risks associated with AI incorporation.
+
+To better understand threats the wide range of effective attacks that can be used against to an AI-enabled system, we describe three important concepts that dictate an adversary’s path of attack: AI Access Periods, AI Access Points, and System Knowledge.
+
+_AI Access Periods_ can be broken into two learning stages, _training_ and _inference_. The training stage is a process that includes collecting and processing data, training a model, and validating the model’s performance. The end of the training stage and beginning of the inference stage occurs once a model is deployed. During the inference stage, users submit queries, and the model responds with predictions, classifications, or generative content known as the outputs (or inferences).
+
+_AI Access Points_ can either be _digital_ or _physical_. The most likely digital access point within an AI-enabled system would be API (application programing interface) access, where the only way to access the model within the system is to send a query and observe a response. A physical access point is used when an adversary interacts with data collected in the real world and influences the model’s behavior by physically modifying the data being collected.
+
+_System Knowledge_ refers to the amount of information an attacker knows about the ML components of the system. This knowledge can range from white-box, where adversaries have access to the model architecture, model weights and training data, to black-box where access and knowledge is limited to input and output responses during the inference stage (e.g. API access).
+
+
+<!-- <figure>
   <div class="v-responsive v-img" style="height: 400px;">
     <img src="../../src/assets/aisec101/pipeline.png"
     class="v-img__img v-img__img--contain"
@@ -22,36 +33,33 @@ Machine learning models generally have two stages in their development, each wit
     </div>
     <figcaption class="text-caption text-center">
     Figure 1: Machine learning development pipeline.</figcaption>
-</figure>
+</figure> -->
 
-#### Machine Learning Attacks
+The table below provides high-level descriptions of adversarial attacks and their possible effects on AI-enabled systems.
+For a comprehensive list we recommend exploring the full [ATLAS matrix](/matrices/ATLAS).
 
-Attacks on machine learning systems can occur during both training and inference. They generally are categorized as either white-box attacks or black-box attacks. In white-box attacks, adversaries have in-depth knowledge about the model architecture and weights and can customize attacks specifically for the system, increasing the likelihood of a successful attack. In black-box attacks the adversary only has access to the inputs and outputs to a system and may not be able to easily differentiate between AI-enabled components and traditional data processing components within the system, decreasing the likelihood of a successful attack. In gray-box attacks adversaries have partial information about the system such as data preprocessing.
+| Attack 		        | Overview	|
+| :---			        | :---      |
+| Poisoning Attack   | Attacker modifies the training data of an AI system to get a desired outcome at inference time. With influence over training data, an attacker can create backdoors in the model where an input with the specified trigger will result in a particular output. |
+| Evasion Attack     | Attacker elicits an incorrect response from a model by crafting adversarial inputs. Typically, these inputs are designed to be indistinguishable from normal data. These attacks can be targeted, where the attacker tries to produce a specific classification, or untargeted, where they attempt to produce any incorrect classification. |
+| Functional Extraction | Attacker recovers a functionally equivalent model by iteratively querying the model. This allows an attacker to examine the offline copy of the model before further attacking the online model. |
+| Inversion Attack | Attacker recovers sensitive information about the training data. This can include full reconstructions of the data, or attributes or properties of the data. This can be a successful attack on its own or can be used to perform other attacks such as Model Evasion.  |
+| Prompt Injection Attack | Attacker crafts malicious prompts as inputs to a large language model (LLM) that cause the LLM to act in unintended ways. These "prompt injections" are often designed to cause the model to ignore aspects of its original instructions and follow the adversary's instructions instead. |
+| Traditional Cyber Attack | Attacker uses well-established Tactics, Techniques, and Procedures (TTPs) from the cyber domain to attain their goal. These attacks may target model artifacts, API keys, data servers, or other foundational aspects of AI compute infrastructure distinct from the model itself. |
 
-Below are high-level descriptions of some of the most common types of adversarial attacks on AI systems and which stage of the pipeline they target. This chart can be considered a high-level overview of the most common methodologies used by adversarial actors. For a comprehensive list we recommend exploring the full [ATLAS matrix](/matrices/ATLAS).
 
-| Attack 		        | Overview	| Type |
-| :---:			        | :---      | :---:|
-| Model Poisoning   | Attacker contaminates the training data of an ML system to get a desired outcome at inference time. With influence over training data an attacker can create "backdoors" where an arbitrary input will result in a particular output. The model could be "reprogrammed" to perform a new undesired task. Further, access to training data could allow the attacker to create an offline model and execute a Model Evasion. Access to training data could also result in the compromise of private data. | Training |
-| Model Evasion     | Attacker elicits an incorrect response from a model by making small modifications to the query. These attacks can be targeted, where the attacker tries to produce a specific classification, or untargeted, where they attempt to produce any incorrect classification. | Inference |
-| Functional Extraction | Attacker recovers a functionally equivalent model by iteratively querying the model. This allows an attacker to examine the offline copy of the model before further attacking the online model. | Inference |
-| Model Inversion | Attacker reverse engineers a model and extracts sensitive information about the model architecture or training data. This can be a successful attack on its own or can be used to perform other attacks such as Model Evasion. | Inference |
-| Traditional Cyber Attacks | Attacker uses well-established Tactics, Techniques, and Procedures (TTPs) from the cyber domain to attain their goal. These attacks may target model artifacts, API keys, data servers, or other foundational aspects of ML compute infrastructure distinct from the model itself. | Both |
+#### How does security fit into AI model lifecycles?
 
-#### Operating Model
-
-##### The Model Lifecycle
-
-Developing and deploying a robust AI or ML model involves multiple phases of effort that typically involve different teams, developers, and stakeholders. Just as with the Software Development and Operations (DevOps) methodology, the field of Machine Learning Operations (MLOps) defines best practices and tools for deploying reliable, reproducible, and adaptable models. A good example of a model development pipeline with a MLOps focus is [CRISP-ML(Q)](https://ml-ops.org/content/crisp-ml), the Cross-Industry Standard Process for the development of Machine Learning applications with Quality assurance.
+An important consideration to countering attacks on AI-enabled systems is establishing clear operational procedures for managing a model throughout its lifecycle. Developing and deploying a robust AI model involves multiple phases of effort that typically involve different teams, developers, and stakeholders. Just as with the Software Development and Operations (DevOps) methodology, the field of Machine Learning Operations (MLOps) defines best practices and tools for deploying reliable, reproducible, and adaptable models. A good example of a model development pipeline with a MLOps focus is [CRISP-ML(Q)](https://ml-ops.org/content/crisp-ml), the Cross-Industry Standard Process for the development of Machine Learning applications with Quality assurance.
 
 CRISP-ML(Q) defines six phases in the model lifecycle:
 
-  1.	Business and Data Understanding
-  2.	Data Engineering (Data Preparation)
-  3.	Machine Learning Model Engineering
-  4.	Quality Assurance for Machine Learning Applications
-  5.	Deployment
-  6.	Monitoring and Maintenance
+  1.	_Business and Data Understanding_
+  2.	_Data Engineering (Data Preparation)_
+  3.	_Machine Learning Model Engineering_
+  4.	_Quality Assurance for Machine Learning Applications_
+  5.	_Deployment_
+  6.	_Monitoring and Maintenance_
 
 <figure>
   <div class="v-responsive v-img" style="height: 400px;">
@@ -64,41 +72,43 @@ CRISP-ML(Q) defines six phases in the model lifecycle:
     </figcaption>
 </figure>
 
-Each phase begins with defining the requirements and constraints of the task, and cycles through a process of identifying risks, risk evaluation, and risk mitigation until requirements are met. Teams often revisit earlier phases and loop through the pipeline multiple times as stakeholders define new requirements and constraints. It is expected that during the “Monitoring and Maintenance” phase that the process will return to the earlier development phases in response to changing real-world conditions, such as in response to concept drift and data drift, or in response to the actions of bad actors.
+Each phase begins with defining the requirements and constraints of the task, then cycles through a process of risk identification, risk evaluation, and risk mitigation until requirements are met. Teams often revisit earlier phases and loop through the pipeline multiple times as stakeholders define new requirements and constraints. It is expected that during the _Monitoring and Maintenance_ phase that the process will return to the earlier development phases in response to changing real-world conditions, such as in response to concept drift and data drift, or in response to the actions of bad actors.
 
-In ATLAS we tag [mitigations](/mitigations) with phases from the CRISP-ML(Q) lifecycle, to help the relevant teams involved with each phase identify known risks that could impact their task requirements, and possible ways to respond. We also encourage interested parties to read [the original paper on CRISP-ML(Q)](https://arxiv.org/pdf/2003.05155.pdf).
+In ATLAS, we tag [mitigations](/mitigations)  with phases from the CRISP-ML(Q) lifecycle, to help the relevant teams involved with each phase identify known vulnerabilities that could impact their task requirements, and possible ways to respond. We also encourage interested parties to read [the original paper on CRISP-ML(Q)](https://arxiv.org/pdf/2003.05155.pdf)
 
-##### Red Teams and Blue Teams
+
+#### How can I validate the security of my AI-enabled systems?
 
 Red team exercises are a common practice in cybersecurity, where a dedicated red team aims to uncover weaknesses and vulnerabilities in a system. Similarly, a blue team aims to counter the red team attacks and build up system defenses and resilience. Red team exercises are becoming more common as part of machine learning and AI security, especially in response to the rise of LLMs and associated prompt injection and jailbreaking attacks. Just as with its cybersecurity counterpart, AI red teaming can be organized within the [Build-Attack-Defend (BAD) framework](https://danielmiessler.com/p/red-blue-purple-teams/). The phases of the BAD framework are as follows:
 
-  1.	Build—commonly performed by a dedicated yellow team of designers and developers, the build phase aims to produce a baseline system with a focus on performance, and often leaves vulnerabilities unaddressed.
-  2.	Attack—during this phase the red team performs adversarial attacks and probes the baseline system for weaknesses.
-  3.	Defend—the blue team responds to adversarial attacks by integrating mitigations within the baseline system and improving the overall security and robustness of the system.
+  1.	Build &mdash; commonly performed by a dedicated yellow team of designers and developers, the build phase aims to produce a baseline system with a focus on performance, and often leaves vulnerabilities unaddressed.
+  2.	Attack &mdash; during this phase the red team performs adversarial attacks and probes the baseline system for weaknesses.
+  3.	Defend &mdash; the blue team responds to adversarial attacks by integrating mitigations within the baseline system and improving the overall security and robustness of the system.
 
 
 While independent teams might be responsible for different phases, interdisciplinary teams commonly perform multiple roles within the BAD framework. Teams should also share information between the different phases so that project requirements and vulnerabilities can be properly relayed to the various developers.
 
-##### Threat Models
 
-Organizations should plan red team exercises with a risk-based assessment of the AI system. These red teams should consider various threat models where realistic vulnerabilities are identified along with the corresponding likelihood of a successful attack. The exercises should consider a variety of adversaries, from the least resourceful to the most resourceful. The least resourceful may have only black box access, while the most resourceful adversary may gain white box access. The objectives of the adversaries should be included in the threat model, which could involve compromising the system’s confidentiality, availability, or integrity. The attacks could be untargeted (aiming to produce random errors) or targeted (aiming to produce a specific decision from the model). Finally, the severity of the impacts of a successful attack should be considered when determining the necessity and scope of a red team exercise.
-
-#### Research Areas
+#### Recent AI Security Topics
 
 AI Security is a constantly evolving field with subfields emerging as the technologies mature. We describe recent developments in three notable sub-fields below:
 
 ##### LLM Security
-Large Language Models (LLMs) are a particular category of natural language model trained on hundreds of billions of words and can generate text and, recently, images and videos in response to natural language prompts. They vaulted to public popularity with the release of OpenAI’s ChatGPT in November of 2022 due to their impressive performance on creative tasks such as content generation, style transfer, and text summarization.
+Large Language Models (LLMs) are a particular category of natural language models trained on hundreds of billions of words that can generate text or images and videos in response to natural language prompts. They vaulted to public popularity with the release of OpenAI’s ChatGPT in November of 2022 due to their ability to perform multiple complex tasks such as content generation, style transfer, and text summarization, all with a single model.
 
-From a security perspective, these systems introduce unique challenges to an ML pipeline due to the massive size of the training dataset and opaque internal architecture of the model. For example, indirect prompt injection attacks can be used to [extract a user’s personally identifiable information (PII)](/studies/AML.CS0021) or [influence the user to visit malicious websites](/studies/AML.CS0020). For sample adversarial techniques, see [LLM Prompt Injection](/techniques/AML.T0051), [Compromise LLM Plugins](/techniques/AML.T0053), and [LLM Jailbreak](/techniques/AML.T0054). A strong list of LLM security related papers, articles and tools can be found [here](https://llmsecurity.net/).
+From a security perspective, these systems introduce unique challenges to an AI pipeline due to the massive size of the training dataset, opaque internal architecture of the model, and use of natural language for input prompting.  For example, [indirect prompt injection attacks](/techniques/AML.T0051.001) can be used to [extract a user’s personally identifiable information (PII)](/studies/AML.CS0021) or [influence the user to visit malicious websites](/studies/AML.CS0020). For sample adversarial techniques, see [LLM Prompt Injection](/techniques/AML.T0051), [Compromise LLM Plugins](/techniques/AML.T0053), and [LLM Jailbreak](/techniques/AML.T0054).
+
+We [updated ATLAS in Fall 2023](https://www.mitre.org/news-insights/news-release/mitre-and-microsoft-collaborate-address-generative-ai-security-risks) to incorporate a new LLM focus that includes real-world case studies of adversarial attacks. In addition to this ATLAS work, we recommend [this external list](https://llmsecurity.net/) of LLM security related papers, articles, and tools for those interested in learning more.
+
+A strong list of LLM security related papers, articles and tools can be found [here](https://llmsecurity.net/).
 
 ##### Hardware Security
 
 Hardware security has been studied extensively in classical cybersecurity settings and is now being examined in relation to AI systems. Example hardware security attacks include:
 
-1.	Side channel attacks—information about the system is deduced from alternative information streams such as voltage measurements or response timing,
-2.	Fault injection attacks—systems are actively disrupted by faulty input data or physical environment disruptions, and
-3.	Hardware Trojan attacks—malicious backdoors are inserted into the hardware of the systems including GPUs and other platform circuitry.
+1.	Side channel attacks &mdash; information about the system is deduced from alternative information streams such as voltage measurements or response timing,
+2.	Fault injection attacks &mdash; systems are actively disrupted by faulty input data or physical environment disruptions, and
+3.	Hardware Trojan attacks &mdash; malicious backdoors are inserted into the hardware of the systems including GPUs and other platform circuitry.
 
 We refer interested technical readers to the following survey papers on this topic:
 - [Zhou et al. (2021): Deep Neural Network Security From a Hardware Perspective](https://ieeexplore.ieee.org/abstract/document/9642246)

@@ -23,3 +23,13 @@ const md = inject('markdownit')
   const title = ref(container.frontmatter.title)
 
 </script>
+
+<style scoped>
+>>> table, >>> th, >>> td  {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+>>> th, >>> td {
+  padding: 0.5rem;
+}
+</style>
