@@ -96,7 +96,7 @@
 <script setup>
   import { useMain } from "@/stores/main"
   import { useRoute } from 'vue-router'
-  import { computed, ref } from 'vue'
+  import { computed } from 'vue'
   import ErrorNotFoundView from "./ErrorNotFoundView.vue"
   import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
   import ProcedureTimeline from '@/components/ProcedureTimeline.vue'

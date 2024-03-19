@@ -45,7 +45,6 @@
 /**
  * Attack style matrix that contains the ATLAS data. This matrix appears on the home page and the matrices page.
  */
-import { computed } from 'vue'
 import { lastWord } from '@/assets/tools.js'
 import AttackTechniqueRow from '@/components/matrix/AttackTechniqueRow.vue'
 

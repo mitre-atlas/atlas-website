@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-  import { computed } from 'vue'
   import { downloadUrlAsFile, constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
 
   const { study } = defineProps([

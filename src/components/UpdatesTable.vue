@@ -3,7 +3,9 @@
 
       <div class="text-h6"> All Updates </div>
       <v-list>
-        <v-list-item v-for="update in updates"
+        <v-list-item
+          v-for="(update, i) in updates"
+          :key="i"
           class="text-h6 pa-0 text-blue text-wrap"
           :to="update.route"
         >

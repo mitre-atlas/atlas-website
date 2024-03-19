@@ -131,7 +131,7 @@
   import { ref, inject } from 'vue'
   import { version } from '/package.json'
   import { useMain } from "@/stores/main"
-  import { downloadUrlAsFile, getLatestUpdateDate } from '@/assets/tools.js'
+  import { getLatestUpdateDate } from '@/assets/tools.js'
 
   const title = ref('General Information')
 

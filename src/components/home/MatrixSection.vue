@@ -44,7 +44,6 @@
 <script setup>
 import { computed } from 'vue'
 import MatrixStat from '@/components/home/MatrixStat.vue'
-import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue'
 import { useMain } from '@/stores/main'
 const store = useMain()
 
@@ -70,7 +69,6 @@ const { mdAndUp } = useDisplay()
 
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
-const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1'))
 </script>
 
 <style scoped>

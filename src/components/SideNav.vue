@@ -9,7 +9,7 @@
       {{ title }}
     </v-list-item-title>
 
-    <v-list 
+    <v-list
       v-if="title === 'techniques' || title === 'tactics'"
       v-model:opened="open"
       open-strategy="multiple"
@@ -39,7 +39,7 @@
             class="ml-3 text-body-2 link"
           />
         </div>
-        <v-list 
+        <v-list
           v-if="title === 'techniques'"
           :opened="expandedTactics"
           open-strategy="multiple"
@@ -98,7 +98,7 @@
   import { useRoute } from 'vue-router'
   import { useDisplay } from 'vuetify'
 
-  const { mdAndDown, smAndDown } = useDisplay()
+  const { mdAndDown } = useDisplay()
 
   const route = useRoute()
 
