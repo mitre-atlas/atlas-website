@@ -63,7 +63,7 @@ CRISP-ML(Q) defines six phases in the model lifecycle:
 
 <figure>
   <div class="v-responsive v-img" style="height: 400px;">
-    <img src="/aisec101/crisp-ml-process.jpg"
+    <img src="/content/aisec101/crisp-ml-process.jpg"
     class="v-img__img v-img__img--contain"
     >
     </div>
