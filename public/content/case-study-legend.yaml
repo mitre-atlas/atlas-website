@@ -1,0 +1,59 @@
+legend:
+  actor:
+    icon: mdi-arrow-projectile
+    name: Actor
+    description: |
+      The individual or group that performed this operation
+
+  case_study_type:
+    icon: mdi-folder-search
+    name: Case Study Type
+    description: |
+      Whether this case study describes a real-world incident or a demonstration under a realistic threat model and representative Target system
+    options: 
+      exercise:
+        icon: mdi-clipboard-file-outline
+        name: Exercise
+        description: |
+          Operation performed by a red team to identify vulnerabilities
+      incident:
+        icon: mdi-alert-octagon-outline
+        name: Incident
+        description: |
+          Real world event
+
+  incident_date:
+    icon: mdi-calendar
+    name: Incident Date
+    description: |
+      Time period of when the event/incident occured
+
+  procedure:
+    icon: mdi-format-list-numbered
+    name: Procedure
+    description: |
+      Steps representing the timeline of the event, mapped to techniques 
+
+  reporter:
+    icon: mdi-bullhorn-outline
+    name: Reporter
+    description: |
+      The group that identified and reported this incident
+
+  summary:
+    icon: mdi-text
+    name: Summary
+    description: |
+      Description of the event
+
+  target:
+    icon: mdi-target-account
+    name: Target
+    description: |
+      The victim system or organization targeted by the Actor
+  
+  name:
+    icon: mdi-tag-outline
+    name: Name
+    description: |
+      Name for this case study

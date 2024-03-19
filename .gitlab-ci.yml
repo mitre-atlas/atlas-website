@@ -1,0 +1,37 @@
+image: node:latest
+
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+
+pages:
+  stage: deploy
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - node_modules/
+  script:
+    # Configure to set Navigator URL, etc.
+    - echo "VITE_BASE_URL=$CI_PROJECT_NAME" >> .env
+    - cat .env
+    - npm run build
+    # navigate into the build output directory
+    - cd dist
+    # fix for 404 on refresh issue
+    - cp index.html 404.html
+    - cd ..
+    - cp -a dist/. public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  tags:
+    - pages
+
+default:
+  before_script:
+    # Install and cache dependencies
+    - npm install --cache .npm --prefer-offline

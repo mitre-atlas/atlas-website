@@ -1,0 +1,204 @@
+data:
+  - name: RSA
+    date: 2021-05-17
+    location: Virtual
+    description: |
+      MITRE and Microsoft facilitated the [ATT&CK® for Adversarial Machine Learning: Tacky or Tasty?](https://www.rsaconference.com/library/Presentation/USA/2021/attck-for-adversarial-machine-learning-tacky-or-tasty) session.
+    url: https://www.rsaconference.com/events/2021-usa
+    color: red
+  - name: WACV
+    date: 2022-01-04
+    location: Waikoloa, HI
+    description: |
+      MITRE ATLAS hosted a booth at the Workshop on Applications of Computer Vision.
+    url: https://wacv2022.thecvf.com/
+    color: blue
+  - name: NAML
+    date: 2022-03-22
+    location: Virtual
+    description: ATLAS & AI security were presented at the Naval Applications of Machine Learning virtual conference in March!
+    url: https://sites.google.com/go.spawar.navy.mil/naml/agenda
+    color: cyan
+  - name: Purple Hats
+    date: 2022-04-21
+    location: Virtual
+    description: We presented on ATLAS & AI security at ATTACK IQ's Purple Hats virtual conference in April
+    url: https://www.purplehats.org/2022
+    color: deep-purple
+  - name: RSA
+    date: 2022-06-06
+    location: San Francisco, CA
+    description: |
+      MITRE, Microsoft, Google, and Meta/Facebook talked about AI Red Teaming, Security, and ATLAS at the RSA conference in-person in San Francisco in June!
+
+      Our ATLAS team was present at the MITRE booth all week.
+    url: https://www.rsaconference.com/usa
+    color: red
+  - name: ADSTAR
+    date: 2022-07-20
+    location: Sydney, Australia / Virtual
+    description: |
+      The Australian Defence Science, Technology and Research Summit (ADSTAR) is taking place from July 20 - 22.
+      This conference brings together industry, academia, and government to collaborate and share defense-related research and innovation.
+
+      The ATLAS team was present at the MITRE booth!
+    url: https://www.adstarsummit.com.au/event/3ea1388a-66ec-4605-b5a7-1c53931b9341/summary
+    color: orange
+  - name: MLMAC
+    date: 2022-08-12
+    location: Virtual
+    description: |
+      The ML Model Attribution Challenge (MLMAC) is a four-week event from August 12th to September 9th (AoE).
+
+      MLMAC challenges contestants to develop creative technical solutions for large language model attribution. This competition works toward AI assurance by developing forensic capabilities and establishing the difficulty of model attribution in natural language processing, and could contribute to the maturation of AI forensics as a subfield of AI security.
+    url: https://mlmac.io
+    color: deep-purple
+  - name: AIPR
+    date: 2022-10-11
+    location: Washington, DC
+    description: |
+      IEEE International Conference on AI and Pattern Recognition (AIPR) - MITRE helped organize and participate in the 51st annual AIPR workshop to continue pioneering new topics in applied image and visual understanding including topics around assured AI, explainable AI, and secure intelligent systems.
+    url: https://sites.google.com/aipr-workshop.org/aipr
+    color: yellow-darken-1
+  - name: CAMLIS
+    date: 2022-10-20
+    location: Arlington, VA
+    description: |
+      Conference on Applied Machine Learning (CAMLIS) - MITRE participated in this single track conference with presentations, posters, and tutorials on ML techniques and information security problems
+    url: https://www.camlis.org/
+    color: blue
+  - name: 15th ACM Workshop on Artificial Intelligence and Security (AISec)
+    date: 2022-11-11
+    description: |
+      Launching the second round of the Machine Learning Model Attribution Challenge (MLMAC).
+    location: Los Angeles, CA / Virtual
+    url: https://aisec.cc/
+    color: red
+  - name: AAAI Fall Symposium "The Role of AI in Responding to Climate Challenges"
+    date: 2022-11-17
+    location: Arlington, VA
+    description: |
+      Join us from November 17-19 for an action-packed program including keynotes, expert panels, contributed talks, and participatory discussions on how to best move the field of AI & climate change forward.
+    url: https://aaai.org/Symposia/Fall/fss22.php
+    color: blue-grey
+  - name: WACV
+    date: 2023-01-04
+    location: Waikoloa, HI
+    description: |
+      IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) is the premier international computer vision event comprising the main conference and several co-located workshops and tutorials. With its high quality and low cost, it provides an exceptional value for students, academics and industry researchers.
+    url: https://wacv2023.thecvf.com/home
+    color: light-blue
+  - name: IEEE Conference on Secure and Trustworthy Machine Learning (SaTML)
+    date: 2023-02-08
+    location: Raleigh, NC
+    description: |
+      This conference will expand on the theoretical and practical understandings of vulnerabilities inherent to ML systems, explore the robustness of ML algorithms and systems, and aid in developing a unified, coherent scientific community which aims to build trustworthy ML systems.  Results from the first round of the Machine Learning Model Attribution Challenge (MLMAC) will be announced.
+    url: https://satml.org/
+    color: orange
+  - name: Responsible AI in Military Global Summit
+    date: 2023-02-15
+    location: The Hague, Netherlands
+    description: |
+      The government of the Netherlands is hosting the first global Summit on Responsible Artificial Intelligence in the Military Domain (REAIM) on February 15 and 16 2023. REAIM 2023 will be a platform for all stakeholders to discuss the key opportunities, challenges and risks associated with military applications of AI. The MITRE ATLAS team will be showcasing ATLAS as part of the REIAM Innovation Hub events as well as engaging with other stakeholders around the world.
+    url: https://www.government.nl/ministries/ministry-of-foreign-affairs/events/reaim
+    color: blue
+  - name: MITRE Cybersecurity Days 2023
+    date: 2023-03-28
+    location: Virtual
+    description: |
+      MITRE Cybersecurity Days is being held from March 28 to 30, 2023.  This event showcases virtual technical presentations by MITRE cyber experts to discuss ways to address current and emerging technical cybersecurity trends and challenges, innovative approaches to meeting government needs and solving problems for a safer world, and future research directions.
+    url: \#
+    color: blue
+  - name: WiCyS Conference
+    date: 2023-03-16
+    location: Denver, CO
+    description: |
+      The WiCyS conference is the premier event to RECRUIT, RETAIN and ADVANCE women in cybersecurity. WiCyS brings together women in cybersecurity from academia, research, government, and industry. MITRE women will be giving a presentation on "Introduction to AI Red Teaming" during the event, which runs from March 16 to 18, 2023.
+    url: https://www.wicys.org/events/wicys-2023/
+    color: light-green
+  - name: RSA
+    date: 2023-04-24
+    location: San Francisco, CA
+    description: >
+      Join MITRE ATLAS' Dr. Christina Liaghati at RSA at a panel session on "Hardening AI/ML Systems - The Next Frontier of Cybersecurity" on April 24th.
+
+
+      As industries increasingly depend on AI/ML-enabled systems, they also introduce new attack surfaces and vulnerabilities. Failure to adequately harden AI/ML to adversarial machine learning attacks will inevitably lead to disruptions and destruction to networks and cyber-physical infrastructure. This panel will explore the importance of integrating resilience and assurance into AI/ML capabilities.
+    url: https://www.rsaconference.com/usa/agenda/session/Hardening%20AIML%20Systems%20-%20The%20Next%20Frontier%20of%20Cybersecurity
+    color: red
+  - name: Days of Shecurity
+    date: 2023-05-19
+    location: San Francisco, CA & Virtual
+    description: Days of Shecurity is a free-to-attend interactive conference for women in technology interested in cybersecurity. Join two of MITRE's AI researchers for their session "Introduction to AI Red Teaming" on May 19th in San Francisco.
+    url: https://www.dayofshecurity.com/may-2023
+    color: purple
+  - name: AFCEA DC Tech Summit
+    date: 2023-04-11
+    location: Washington, DC
+    description: >
+      Join MITRE ATLAS' Dr. Christina Liaghati at AFCEA DC for their annual event, which is expected
+      to convene 250-300 senior-level government and IT professionals (e.g. SES, Flag Officers, Directors, CIOs, C-level executives, Program and Project Managers). Dr. Liaghati will be speaking on the panel "The AI Advantage" with representatives from the U.S. Army and Department of Defense."
+    url: https://afceadc.swoogo.com/techsummit23
+    color: green
+  - name: '"AI Risky Business: Hands-on AI Payload Analysis" @ Black Hat 2023'
+    date: 2023-08-09
+    location: Las Vegas, NV & Virtual
+    description: >
+      From June 8-10, The Global Resilience Federation (GRF) Summit on AI Security & Trust will address concerns across sectors with content tailored for executives such as CIOs, CISOs and AI/ML experts to engage on effective approaches for managing security and trust in Artificial Intelligence and Machine Learning models.
+    url: https://www.grf.org/ai-security-2023
+    color: indigo
+  - name: "FutureIT: AI, Data and Tech Leadership"
+    date: 2023-11-08
+    location: New York, NY
+    description: Join the ATLAS team at FutureIT New York to talk about ATLAS and AI threat awareness.
+    url: https://events.ciofutureit.com/event/new-york/
+    color: light-green
+  - name: HITCON 2023
+    date: 2023-11-15
+    location: Taipei, Taiwan
+    description: >
+      Hacks in Taiwan Conference (HITCON) is technology-orientated cybersecurity conference.
+      ATLAS will present on AI threat awareness.
+    url: https://cfp2023.hitcon.org/en/
+    color:
+
+  - name: "Advantage DoD 2024: Defense Data & AI Symposium"
+    date: 2024-02-20
+    location: Washington, DC
+    description: >
+      Feb 20-22: This event, hosted by the Chief Digital and AI Office (CDAO) invites key data leaders and developers from government, industry, and academia to join together and discuss and build the future of cutting-edge data, analytics, and AI - guiding the enablement of the U.S. military's enduring decision advantage.
+    url: https://www.ncsi.com/event/cdao/
+    color: indigo
+  - name: Days of Shecurity 2024
+    date: 2024-04-25
+    location: San Francisco, CA & Virtual
+    description: |
+      Day of Shecurity is a free-to-attend interactive one-day conference that originally launched in 2017 in San Francisco for women in technology interested in cybersecurity. Day of Shecurity launched in Boston in 2019 and held a virtual, location-agnostic conferences in 2021. The event is an effort by Secure Diversity, the Lookout Foundation, Day of Shecurity Core Team, and various organizations that believe that diversity & inclusion matter in our industry.
+    url: https://www.dayofshecurity.com/
+    color: purple
+  - name: RSA Conference 2024
+    date: 2024-05-06
+    location: San Francisco, CA
+    # description: |
+    #   May 6-9: In an ever-changing cybersecurity world, innovation and creativity are key. Join RSAC 2024 and discover The Art of Possible as we collectively create works that will change our perspective on what we can accomplish. Let's celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
+    description: >
+      Join RSAC 2024 and celebrate limitless opportunities, challenge the status quo, and explore new horizons together.
+    url: https://www.rsaconference.com/usa
+    color: red
+    imageSrc: rsa.jpg
+  - name: Black Hat USA 2024
+    date: 2024-08-03
+    location: Las Vegas, NV
+    description: >
+      BlackHat is an internationally recognized cybersecurity event series providing the most technical and relevant information security research.
+    url: https://www.blackhat.com/
+    color: grey
+    imageSrc: blackhat.jpg
+  - name: DEF CON 2024
+    date: 2024-08-08
+    location: Las Vegas, NV
+    description: >
+      DEF CON is a hacker convention which takes place immediately following Black Hat in Las Vegas every year.
+    url: https://defcon.org/
+    color: blue
+    imageSrc: defcon.jpg

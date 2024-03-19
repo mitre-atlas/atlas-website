@@ -1,0 +1,56 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
+      - name: Configure environment variables
+        shell: bash
+        env:
+          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          VITE_OSANO_SCRIPT: ${{ secrets.VITE_OSANO_SCRIPT }}
+        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID\nVITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT" > .env.production
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for production
+        run: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm run build
+          # Fix for 404 on refresh issue
+          cp dist/index.html dist/404.html
+
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
