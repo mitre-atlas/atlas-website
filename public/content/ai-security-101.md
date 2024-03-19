@@ -8,35 +8,37 @@ title: AI Security 101
 
 Artificial intelligence (AI) technology is advancing at a rapid rate and adoption is on the rise. Once limited only to highly controlled operational environments and use cases, today we see _AI-enabled systems_ &mdash; software systems with one or more AI components &mdash; effectively integrated into a variety of use cases and available to the public.
 
-_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In addition to heightening traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
+_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In additional to the existence of traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
 
-In this 101, we describe the most common threats to AI-enabled systems and how to design operating models with AI security in mind. We discuss realistic threats documented within MITRE ATLAS&trade;,  active research areas in AI security, AI red team and blue team exercises, and risk mitigation throughout the AI model lifecycle.
+In this 101, we describe common threats to AI-enabled systems documented within MITRE ATLAS&trade;,  security and the AI lifecycle, and active research areas.
 
 #### What are attacks on AI?
 
 Incorporating AI into a larger system can make the system susceptible to novel attacks that specifically target the AI. The techniques that adversaries use to carry out these attacks are distinct from traditional cyber techniques. By improving their understanding of these adversarial techniques, teams can work to mitigate the risks associated with AI incorporation.
 
-To better understand threats the wide range of effective attacks that can be used against to an AI-enabled system, we describe three important concepts that dictate an adversary’s path of attack: AI Access Periods, AI Access Points, and System Knowledge.
+To better understand threats the wide range of effective attacks that can be used against to an AI-enabled system, we describe three important concepts that dictate an adversary’s path of attack: AI Access Time, AI Access Points, and System Knowledge.
 
-_AI Access Periods_ can be broken into two learning stages, _training_ and _inference_. The training stage is a process that includes collecting and processing data, training a model, and validating the model’s performance. The end of the training stage and beginning of the inference stage occurs once a model is deployed. During the inference stage, users submit queries, and the model responds with predictions, classifications, or generative content known as the outputs (or inferences).
+_AI Access Time_ can be broken into two stages, _training_ and _inference_. The training stage is a process that includes collecting and processing data, training a model, and validating the model’s performance. The end of the training stage and beginning of the inference stage occurs once a model is deployed. During the inference stage, users submit queries, and the model responds with predictions, classifications, or generative content known as the outputs (or inferences).
 
-_AI Access Points_ can either be _digital_ or _physical_. The most likely digital access point within an AI-enabled system would be API (application programing interface) access, where the only way to access the model within the system is to send a query and observe a response. A physical access point is used when an adversary interacts with data collected in the real world and influences the model’s behavior by physically modifying the data being collected.
+_AI Access Points_ can either be _digital_ or _physical_. A common digital access point within an AI-enabled system is API (application programing interface) access, where an adversary can interact with the model by sending a query and observing the response. A physical access point is used when an adversary interacts with data in the real world and influences the model’s behavior by physically modifying the data collected.
 
-_System Knowledge_ refers to the amount of information an attacker knows about the ML components of the system. This knowledge can range from white-box, where adversaries have access to the model architecture, model weights and training data, to black-box where access and knowledge is limited to input and output responses during the inference stage (e.g. API access).
+_System Knowledge_ refers to the amount of information an adversary knows about the ML components of the system. This knowledge can range from white-box, where adversaries have access to the model architecture, model weights and training data, to black-box where access and knowledge is limited to input and output responses during the inference stage (e.g. API access).
+
+The figure below depicts an example of an AI-enabled system containing a trained AI model and the different types of access time, access points and system knowledge  an adversary could leverage.
 
 
 <!-- <figure>
   <div class="v-responsive v-img" style="height: 400px;">
     <img src="/aisec101/pipeline.png"
     class="v-img__img v-img__img--contain"
-    >
+    />
     </div>
     <figcaption class="text-caption text-center">
     Figure 1: Machine learning development pipeline.</figcaption>
 </figure> -->
 
 The table below provides high-level descriptions of adversarial attacks and their possible effects on AI-enabled systems.
-For a comprehensive list we recommend exploring the full [ATLAS matrix](/matrices/ATLAS).
+For a comprehensive list we recommend exploring the [ATLAS matrix](/matrices/ATLAS).
 
 | Attack 		        | Overview	|
 | :---			        | :---      |
@@ -62,31 +64,20 @@ CRISP-ML(Q) defines six phases in the model lifecycle:
   6.	_Monitoring and Maintenance_
 
 <figure>
-  <div class="v-responsive v-img" style="height: 400px;">
-    <img src="/content/aisec101/crisp-ml-process.jpg"
-    class="v-img__img v-img__img--contain"
-    >
+    <div class="v-responsive v-img" style="height: 400px;">
+      <img src="/content/aisec101/crisp-ml-process.jpg" class="v-img__img v-img__img--contain" />
     </div>
     <figcaption class="text-caption text-center mb-4">
     Figure 2: "<a href="https://ml-ops.org/content/crisp-ml">The Machine Learning Development Life Cycle Process</a>" by <a href="https://github.com/visenger">visenger</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     </figcaption>
 </figure>
 
-Each phase begins with defining the requirements and constraints of the task, then cycles through a process of risk identification, risk evaluation, and risk mitigation until requirements are met. Teams often revisit earlier phases and loop through the pipeline multiple times as stakeholders define new requirements and constraints. It is expected that during the _Monitoring and Maintenance_ phase that the process will return to the earlier development phases in response to changing real-world conditions, such as in response to concept drift and data drift, or in response to the actions of bad actors.
 
-In ATLAS, we tag [mitigations](/mitigations)  with phases from the CRISP-ML(Q) lifecycle, to help the relevant teams involved with each phase identify known vulnerabilities that could impact their task requirements, and possible ways to respond. We also encourage interested parties to read [the original paper on CRISP-ML(Q)](https://arxiv.org/pdf/2003.05155.pdf)
+Each phase begins with defining the requirements and constraints of the task, then cycles through a process of risk identification, risk evaluation, and risk mitigation until requirements are met. Teams often revisit earlier phases and loop through the pipeline multiple times as stakeholders define new requirements and constraints.
 
+It is expected that during the _Monitoring and Maintenance_ phase that the process will return to earlier development phases in response to changing real-world conditions, such as concept drift, data drift, or malicious actions.
 
-#### How can I validate the security of my AI-enabled systems?
-
-Red team exercises are a common practice in cybersecurity, where a dedicated red team aims to uncover weaknesses and vulnerabilities in a system. Similarly, a blue team aims to counter the red team attacks and build up system defenses and resilience. Red team exercises are becoming more common as part of machine learning and AI security, especially in response to the rise of LLMs and associated prompt injection and jailbreaking attacks. Just as with its cybersecurity counterpart, AI red teaming can be organized within the [Build-Attack-Defend (BAD) framework](https://danielmiessler.com/p/red-blue-purple-teams/). The phases of the BAD framework are as follows:
-
-  1.	Build &mdash; commonly performed by a dedicated yellow team of designers and developers, the build phase aims to produce a baseline system with a focus on performance, and often leaves vulnerabilities unaddressed.
-  2.	Attack &mdash; during this phase the red team performs adversarial attacks and probes the baseline system for weaknesses.
-  3.	Defend &mdash; the blue team responds to adversarial attacks by integrating mitigations within the baseline system and improving the overall security and robustness of the system.
-
-
-While independent teams might be responsible for different phases, interdisciplinary teams commonly perform multiple roles within the BAD framework. Teams should also share information between the different phases so that project requirements and vulnerabilities can be properly relayed to the various developers.
+In ATLAS, we tag [mitigations](/mitigations) with phases from the CRISP-ML(Q) lifecycle to help each phase’s teams identify vulnerabilities that could impact their task requirements and possible ways to respond. We also encourage interested parties to read [the original paper on CRISP-ML(Q)](https://arxiv.org/pdf/2003.05155.pdf)
 
 
 #### Recent AI Security Topics
@@ -100,7 +91,6 @@ From a security perspective, these systems introduce unique challenges to an AI 
 
 We [updated ATLAS in Fall 2023](https://www.mitre.org/news-insights/news-release/mitre-and-microsoft-collaborate-address-generative-ai-security-risks) to incorporate a new LLM focus that includes real-world case studies of adversarial attacks. In addition to this ATLAS work, we recommend [this external list](https://llmsecurity.net/) of LLM security related papers, articles, and tools for those interested in learning more.
 
-A strong list of LLM security related papers, articles and tools can be found [here](https://llmsecurity.net/).
 
 ##### Hardware Security
 
@@ -110,13 +100,15 @@ Hardware security has been studied extensively in classical cybersecurity settin
 2.	Fault injection attacks &mdash; systems are actively disrupted by faulty input data or physical environment disruptions, and
 3.	Hardware Trojan attacks &mdash; malicious backdoors are inserted into the hardware of the systems including GPUs and other platform circuitry.
 
-We refer interested technical readers to the following survey papers on this topic:
+We refer interested readers to the following survey papers on this topic:
 - [Zhou et al. (2021): Deep Neural Network Security From a Hardware Perspective](https://ieeexplore.ieee.org/abstract/document/9642246)
 - [Xu et al. (2021): Security of Neural Networks from Hardware Perspective: A Survey and Beyond.](https://ieeexplore.ieee.org/document/9371637)
 
 ##### Policy
 
-As the significance of vulnerabilities in AI systems becomes more widely known, policy makers and political leaders have been exploring the best way to balance interests of privacy and innovation. In the United States, the [Executive Order 14110](https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/) recently directed over 50 federal entities to take action across a range of AI policy areas.  Several federal agencies have also enacted guidance on AI in recent years (e.g., [GSA AI Guide for Government](https://coe.gsa.gov/coe/ai-guide-for-government/print-all/index.html), [DoD Responsible AI Strategy](https://www.defense.gov/News/Releases/Release/Article/3588743/cdao-releases-responsible-ai-rai-toolkit-for-ensuring-alignment-with-rai-best-p/)), but legislation over academic and private sector bodies remains a complex issue with technological, economic, and ethical considerations. The most effective way to balance these factors is an open research question. We list a few leading relevant publications on this topic below:
+As the significance of vulnerabilities in AI-enabled systems becomes more widely known, policy makers and political leaders have been exploring the best way to balance interests of privacy and innovation. In the United States, the [Executive Order 14110](https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/) recently directed over 50 federal entities to take action across a range of AI policy areas.  Several federal agencies have also enacted guidance on AI in recent years (e.g., [GSA AI Guide for Government](https://coe.gsa.gov/coe/ai-guide-for-government/print-all/index.html), [DoD Responsible AI Strategy](https://www.defense.gov/News/Releases/Release/Article/3588743/cdao-releases-responsible-ai-rai-toolkit-for-ensuring-alignment-with-rai-best-p/)), but legislation over academic and private sector bodies remains a complex issue with technological, economic, and ethical considerations. The most effective way to balance these factors is an open research question.
+
+We list a few leading relevant publications on this topic below:
 
 - [AI Risk Management Framework](tps://www.nist.gov/itl/ai-risk-management-framework), NIST
 - [Guidelines for Secure AI System Development](https://www.ncsc.gov.uk/files/Guidelines-for-secure-AI-system-development.pdf), UK National Cyber Security Centre
@@ -129,9 +121,7 @@ As the significance of vulnerabilities in AI systems becomes more widely known, 
 - [S.3572 Algorithmic Accountability Act of 2022](https://www.congress.gov/bill/117th-congress/senate-bill/3572), 117th United States Congress
 - [EU Artificial Intelligence Act](https://www.europarl.europa.eu/news/en/headlines/society/20230601STO93804/eu-ai-act-first-regulation-on-artificial-intelligence), European Parliament
 
-#### Summary and Conclusions
-
-In this tutorial we covered the basics of machine learning and secure AI, both from a system-level and operations-level perspective. We also described the most common adversarial ML attacks commonly employed against modern machine learning systems, covered a standard operational lifecycle for an AI-enabled system, and covered emerging areas of research spanning engineering, linguistics, and policy-related domains. With this deeper understanding of the relationships between AI, cybersecurity, and policy domains, we encourage you to explore the additional resources MITRE offers on this topic:
+#### Other recommended reading
 
 - Our [Tactics](/tactics) and [Techniques](/techniques) pages list the methodologies adversaries use to infiltrate and/or compromise vulnerable AI systems. Our [Matrix](/matrices/ATLAS) organizes these potential vulnerabilities graphically and chronologically for easier visual understanding, and our [Mitigations](/mitigations) page contains information how to protect your systems against them.
 - For examples of what these system attacks look like “in the wild”, check out our growing list of [Case Studies](/studies). We also have a publicly available [database of vulnerabilities found in common models](https://airisk.io).
