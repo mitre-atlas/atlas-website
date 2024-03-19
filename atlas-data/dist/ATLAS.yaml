@@ -1,10 +1,10 @@
 ---
 id: ATLAS
 name: Adversarial Threat Landscape for AI Systems
-version: 4.5.1
+version: 4.5.2
 matrices:
 - id: ATLAS
-  name: ATLAS Machine Learning Threat Matrix
+  name: ATLAS Matrix
   tactics:
   - id: AML.TA0002
     name: Reconnaissance
@@ -19,7 +19,7 @@ matrices:
       Reconnaissance consists of techniques that involve adversaries actively or passively
       gathering information that can be used to support targeting.
 
-      Such information may include details of the victim organizations machine learning
+      Such information may include details of the victim organizations'' machine learning
       capabilities and research efforts.
 
       This information can be leveraged by the adversary to aid in other phases of
@@ -47,7 +47,7 @@ matrices:
       or capabilities.
 
       These resources can be leveraged by the adversary to aid in other phases of
-      the adversary lifecycle, such as ML Attack Staging.
+      the adversary lifecycle, such as [ML Attack Staging](/tactics/AML.TA0001).
 
       '
   - id: AML.TA0004
@@ -112,7 +112,7 @@ matrices:
       data.
 
       For example, an adversary might use a remote access tool to run a PowerShell
-      script that does Remote System Discovery.
+      script that does [Remote System Discovery](https://attack.mitre.org/techniques/T1018/).
 
       '
   - id: AML.TA0006
@@ -251,8 +251,8 @@ matrices:
       Techniques can include training proxy models, poisoning the target model, and
       crafting adversarial data to feed the target model.
 
-      Some of these techniques can be performed in an offline manor and are thus difficult
-      to mitigate.
+      Some of these techniques can be performed in an offline manner and are thus
+      difficult to mitigate.
 
       These techniques are often used to achieve the adversary''s end goal.
 
@@ -397,8 +397,9 @@ matrices:
 
       This will include not only reading academic papers that may identify the particulars
       of a successful attack, but also identifying pre-existing implementations of
-      those attacks. The adversary may [Adversarial ML Attack Implementations](/techniques/AML.T0016.000)
-      or [Adversarial ML Attacks](/techniques/AML.T0017.000) their own if necessary.'
+      those attacks. The adversary may obtain [Adversarial ML Attack Implementations](/techniques/AML.T0016.000)
+      or develop their own [Adversarial ML Attacks](/techniques/AML.T0017.000) if
+      necessary.'
     tactics:
     - AML.TA0002
   - id: AML.T0003
@@ -3061,9 +3062,9 @@ case-studies:
     a commercial face identification service with the intention of inducing a targeted
     misclassification.
 
-    This operation had a combination of traditional ATT&CK enterprise techniques such
-    as finding Valid account, and Executing code via an API - all interleaved with
-    adversarial ML specific attacks.
+    This operation had a combination of traditional MITRE ATT&CK techniques such as
+    finding valid accounts and executing code via an API - all interleaved with adversarial
+    ML specific attacks.
 
     '
   incident-date: 2020-01-01
@@ -3077,8 +3078,8 @@ case-studies:
       '
   - tactic: AML.TA0004
     technique: AML.T0012
-    description: 'The team gained access to said service via a valid account to gain
-      access and knowledge to api.
+    description: 'The team gained access to the commercial face identification service
+      and its API through a valid account.
 
       '
   - tactic: AML.TA0000
@@ -3105,7 +3106,7 @@ case-studies:
   - tactic: AML.TA0001
     technique: AML.T0043.000
     description: 'Using the proxy model, the red team optimized adversarial visual
-      pattern as a physical domain patch-based attack using expectation over transformation.
+      patterns as a physical domain patch-based attack using expectation over transformation.
 
       '
   - tactic: AML.TA0000

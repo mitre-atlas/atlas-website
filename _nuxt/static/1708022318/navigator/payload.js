@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/navigator", {data:[{}],fetch:{},mutations:[]});

@@ -53,7 +53,7 @@ legend:
       The victim system or organization targeted by the Actor
   
   name:
-    icon: mdi-format-title
-    name: Title
+    icon: mdi-tag-outline
+    name: Name
     description: |
       Name for this case study

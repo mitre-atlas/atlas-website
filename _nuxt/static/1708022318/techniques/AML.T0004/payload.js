@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/techniques/AML.T0004", {data:[{}],fetch:{},mutations:[]});
