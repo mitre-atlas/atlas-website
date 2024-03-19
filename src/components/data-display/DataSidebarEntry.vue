@@ -18,7 +18,7 @@
         <span v-for="(v, i) in value" :key="i">
 
           <!-- Comma-separated -->
-          <span v-if="i > 0">,</span>
+          <span v-if="i > 0">, </span>
           <!-- Display link with full label as text if available -->
           <router-link :to="v.route">
 
