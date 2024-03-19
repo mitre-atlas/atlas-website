@@ -24,18 +24,18 @@ _AI Access Points_ can either be _digital_ or _physical_. A common digital acces
 
 _System Knowledge_ refers to the amount of information an adversary knows about the ML components of the system. This knowledge can range from white-box, where adversaries have access to the model architecture, model weights and training data, to black-box where access and knowledge is limited to input and output responses during the inference stage (e.g. API access).
 
-The figure below depicts an example of an AI-enabled system containing a trained AI model and the different types of access time, access points and system knowledge  an adversary could leverage.
+The figure below depicts an example of an AI-enabled system containing a trained AI model and the different types of access time, access points and system knowledge an adversary could leverage.
 
-
-<!-- <figure>
-  <div class="v-responsive v-img" style="height: 400px;">
-    <img src="/aisec101/pipeline.png"
-    class="v-img__img v-img__img--contain"
-    />
+<p>
+<figure>
+    <div class="v-responsive v-img" style="height: 400px;">
+      <img src="/content/aisec101/ai-enabled-system.png" alt="AI-enabled system" class="v-img__img v-img__img--contain" />
     </div>
-    <figcaption class="text-caption text-center">
-    Figure 1: Machine learning development pipeline.</figcaption>
-</figure> -->
+    <figcaption class="text-caption text-center mb-4">
+    Figure 1: An AI-enabled system and key concepts.
+    </figcaption>
+</figure>
+</p>
 
 The table below provides high-level descriptions of adversarial attacks and their possible effects on AI-enabled systems.
 For a comprehensive list we recommend exploring the [ATLAS matrix](/matrices/ATLAS).
@@ -65,7 +65,7 @@ CRISP-ML(Q) defines six phases in the model lifecycle:
 
 <figure>
     <div class="v-responsive v-img" style="height: 400px;">
-      <img src="/content/aisec101/crisp-ml-process.jpg" class="v-img__img v-img__img--contain" />
+      <img src="/content/aisec101/crisp-ml-process.jpg" alt="CRISP-ML(Q) Machine Learning Development Life Cycle Process Diagram" class="v-img__img v-img__img--contain" />
     </div>
     <figcaption class="text-caption text-center mb-4">
     Figure 2: "<a href="https://ml-ops.org/content/crisp-ml">The Machine Learning Development Life Cycle Process</a>" by <a href="https://github.com/visenger">visenger</a>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
