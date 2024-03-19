@@ -25,11 +25,11 @@ const md = inject('markdownit')
 </script>
 
 <style scoped>
->>> table, >>> th, >>> td  {
+:deep(table), :deep(th), :deep(td)  {
   border: 1px solid black;
   border-collapse: collapse;
 }
->>> th, >>> td {
+:deep(th), :deep(td) {
   padding: 0.5rem;
 }
 </style>

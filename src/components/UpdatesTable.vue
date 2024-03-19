@@ -28,7 +28,7 @@ import { reactive } from 'vue';
   // Dynamically import any Markdown files found
   const modules = import.meta.glob(
     '@/../public/content/update-files/*.md',
-    { as: 'raw', eager: true }
+    { query: '?raw', import: 'default', eager: true }
   )
 
   // Regular expression to match the YYYY-MM date pattern in the filename
