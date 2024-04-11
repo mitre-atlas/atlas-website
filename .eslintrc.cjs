@@ -11,5 +11,10 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    "semi": ["error", "never"],
+    'max-len': ["error", { "code": 120 }],
+    "arrow-parens": ["error", "always"]
   }
 }

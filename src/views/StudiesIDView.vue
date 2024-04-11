@@ -1,15 +1,18 @@
 <template>
-
   <div v-if="study != undefined">
     <v-row class="align-center">
-      <PageSectionTitle :pageTitle="title"/>
+      <PageSectionTitle :pageTitle="title" />
       <v-chip
         class="ma-1 ml-3 text-capitalize"
         :color="study['case-study-type'] === 'exercise' ? 'blue' : 'purple'"
         :text-color="study['case-study-type'] === 'exercise' ? 'blue' : 'purple'"
         label
         variant="outlined"
-        :prepend-icon="study['case-study-type'] === 'exercise' ? 'mdi-clipboard-file-outline' : 'mdi-alert-circle-outline'"
+        :prepend-icon="
+          study['case-study-type'] === 'exercise'
+            ? 'mdi-clipboard-file-outline'
+            : 'mdi-alert-circle-outline'
+        "
       >
         {{ study['case-study-type'] }}
       </v-chip>
@@ -21,17 +24,13 @@
         <span v-if="study['incident-date']" class="font-weight-bold">
           {{ formattedIncidentDate }}&nbsp;
         </span>
-        <span v-if="study.reporter">
-          | Reporter:&nbsp;
-        </span>
+        <span v-if="study.reporter"> | Reporter:&nbsp; </span>
         <span v-if="study.reporter" class="font-weight-bold">
           {{ study.reporter }}
         </span>
-        <br>
+        <br />
         <span> Actor:&nbsp; </span>
-        <span v-if="study.actor" class="font-weight-bold">
-          {{ study.actor }}&nbsp;
-        </span>
+        <span v-if="study.actor" class="font-weight-bold"> {{ study.actor }}&nbsp; </span>
         <span> | Target:&nbsp; </span>
         <span v-if="study.target" class="font-weight-bold">
           {{ study.target }}
@@ -43,23 +42,15 @@
       </v-col>
     </v-row>
 
-    <p class="text-h5  mt-10 ml-6">
-        Summary
-    </p>
-    <p
-      class="pl-3 ml-6"
-      v-html="md.render(study.summary)"
-    />
+    <p class="text-h5 mt-10 ml-6">Summary</p>
+    <p class="pl-3 ml-6" v-html="md.render(study.summary)" />
 
-    <br>
+    <br />
     <v-divider class="pb-10" />
 
     <v-row align="center">
       <v-col>
-        <div class="text-h5 ml-6 text-capitalize"
-        >
-          Procedure
-        </div>
+        <div class="text-h5 ml-6 text-capitalize">Procedure</div>
       </v-col>
       <v-col class="text-right">
         <NavigatorLayerDropdown :study="study" />
@@ -70,13 +61,16 @@
       <ProcedureTimeline :study="study" />
     </v-row>
 
-    <div v-if="study.references && study.references.length > 0" class=" ml-6">
-      <p class="text-h5 mt-10">
-        Sources
-      </p>
+    <div v-if="study.references && study.references.length > 0" class="ml-6">
+      <p class="text-h5 mt-10">Sources</p>
       <div v-for="(reference, index) in study.references" :key="reference.url" class="pl-3 mb-2">
         <span>{{ index + 1 }}. </span>
-        <a v-if="reference.url && reference.title" :href="reference.url" target="_blank" rel="noopener noreferrer">
+        <a
+          v-if="reference.url && reference.title"
+          :href="reference.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {{ reference.title || reference.url }}
           <v-icon icon="mdi-open-in-new" size="small" />
         </a>
@@ -85,7 +79,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <div v-else>
     <!-- Display ErrorNotFound if ID is not found -->
@@ -94,35 +87,33 @@
 </template>
 
 <script setup>
-  import { useMain } from "@/stores/main"
-  import { useRoute } from 'vue-router'
-  import { computed } from 'vue'
-  import ErrorNotFoundView from "./ErrorNotFoundView.vue"
-  import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
-  import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
-  import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
-  import PageSectionTitle from "@//components/PageSectionTitle.vue"
-  import NavigatorLayerDropdown from '@/components/NavigatorLayerDropdown.vue'
+import { useMain } from '@/stores/main'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import ErrorNotFoundView from './ErrorNotFoundView.vue'
+import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
+import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
+import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
+import PageSectionTitle from '@//components/PageSectionTitle.vue'
+import NavigatorLayerDropdown from '@/components/NavigatorLayerDropdown.vue'
 
-  import markdownit from 'markdown-it'
-  const md = markdownit({
-    html: true
-  })
+import markdownit from 'markdown-it'
+const md = markdownit({
+  html: true
+})
 
-  const mainStore = useMain()
+const mainStore = useMain()
 
-  // Collect the plural of the object type (tactics, techniques, etc) and the object ID from the URL
-  const route = useRoute()
-  let { id } = route.params
+// Collect the plural of the object type (tactics, techniques, etc) and the object ID from the URL
+const route = useRoute()
+let { id } = route.params
 
-  const study = computed(() => {
-    return mainStore.getDataObjectById(id)
-  })
+const study = computed(() => {
+  return mainStore.getDataObjectById(id)
+})
 
-  const formattedIncidentDate = computed(() => {
-    return formatCaseStudyIncidentDate(study.value)
-  })
-  const title = computed(() => study.value.name)
-
-
+const formattedIncidentDate = computed(() => {
+  return formatCaseStudyIncidentDate(study.value)
+})
+const title = computed(() => study.value.name)
 </script>

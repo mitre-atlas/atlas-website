@@ -1,7 +1,7 @@
 <template>
   <v-list>
     <div v-for="(source, i) in sources" :key="i">
-      <AddSource 
+      <AddSource
         v-if="i === editIndex"
         :editSource="source"
         :editIndex="editIndex"
@@ -27,16 +27,9 @@
                   Delete {{ source.title || source.url }}?
                 </v-card-title>
                 <v-card-actions>
-                  <v-spacer/>
-                  <v-btn
-                    text="Cancel"
-                    @click="isActive.value = false"
-                  ></v-btn>
-                  <v-btn
-                    text="Delete"
-                    color="red"
-                    @click="isActive.value = false; emitDelete(i)"
-                  ></v-btn>
+                  <v-spacer />
+                  <v-btn text="Cancel" @click="isActive.value = false"></v-btn>
+                  <v-btn text="Delete" color="red" @click="emitDelete(i, isActive)"></v-btn>
                 </v-card-actions>
               </v-card>
             </template>
@@ -48,31 +41,33 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
-  import AddSource from '@/components/case-study-form/AddSource.vue'
+import { ref } from 'vue'
+import AddSource from '@/components/case-study-form/AddSource.vue'
 
-  const emit = defineEmits(['updateSource', 'delete'])
-  const { sources } = defineProps([
-    /**
-     * Individual source object from source list
-     * @type {Object}
-     */
-    'sources',
-  ])
+const emit = defineEmits(['updateSource', 'delete'])
+const { sources } = defineProps([
+  /**
+   * Individual source object from source list
+   * @type {Object}
+   */
+  'sources'
+])
 
-  const editIndex = ref()
+const editIndex = ref()
 
-  function emitUpdate(editedSource, index) {
-    emit('updateSource', editedSource, index)
-    editIndex.value = null
+function emitUpdate(editedSource, index) {
+  emit('updateSource', editedSource, index)
+  editIndex.value = null
+}
+
+function emitDelete(deleteIndex, dialogIsActive) {
+  // Emit the delete and manage the edit index as needed
+  emit('delete', deleteIndex)
+  if (editIndex.value > deleteIndex) {
+    editIndex.value--
   }
 
-  function emitDelete(deleteIndex) {
-    emit('delete', deleteIndex)
-    if(editIndex.value > deleteIndex) {
-      editIndex.value--
-    }
-  }
-
-
+  // Close the delete dialog
+  dialogIsActive.value = false
+}
 </script>

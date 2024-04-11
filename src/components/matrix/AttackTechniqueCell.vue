@@ -4,10 +4,7 @@
       <template #activator="{ on, attrs }">
         <router-link :to="`/techniques/${props.technique.id}`">
           {{
-            props.technique.name.substr(
-              0,
-              props.technique.name.length - techniqueLastWord.length
-            )
+            props.technique.name.substr(0, props.technique.name.length - techniqueLastWord.length)
           }}
           <div style="white-space: nowrap">
             {{ techniqueLastWord }}
@@ -53,5 +50,4 @@ const techniqueLastWord = computed(() => {
 })
 </script>
 
-<style scoped src="@/assets/matrix.css">
-</style>
+<style scoped src="@/assets/matrix.css"></style>
