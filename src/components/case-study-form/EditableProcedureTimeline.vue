@@ -1,5 +1,5 @@
 <template>
-  <VueDraggable 
+  <VueDraggable
     v-model="procedures"
     handle=".handle"
     :animation="150"
@@ -14,7 +14,7 @@
       width="100%"
       class="mb-3 pl-8 item"
     >
-      <AddProcedure 
+      <AddProcedure
         v-if="i === editIndex"
         :editProcedure="procedure"
         :editIndex="editIndex"
@@ -26,12 +26,12 @@
         :title="getTechniqueLabel(procedure)"
         :subtitle="mainStore.getDataObjectById(procedure.tactic).name"
         variant="outlined"
-        style="border: solid 1px; border-color: lightgray;"
+        style="border: solid 1px; border-color: lightgray"
       >
         <template #append>
-          <div :style="{cursor: editIndex || procedures.length === 1 ? 'not-allowed' : 'grab'}">
+          <div :style="{ cursor: editIndex || procedures.length === 1 ? 'not-allowed' : 'grab' }">
             <v-icon
-              :style="{'pointer-events': editIndex || procedures.length === 1 ? 'none' : ''}"
+              :style="{ 'pointer-events': editIndex || procedures.length === 1 ? 'none' : '' }"
               class="handle"
               :color="editIndex || procedures.length === 1 ? 'grey-lighten-1' : 'grey-darken-3'"
             >
@@ -39,10 +39,7 @@
             </v-icon>
           </div>
         </template>
-        <v-card-text
-          v-if="procedure.description"
-          v-html="md.render(procedure.description)"
-        />
+        <v-card-text v-if="procedure.description" v-html="md.render(procedure.description)" />
         <v-card-actions>
           <v-spacer />
           <v-btn icon="mdi-pencil" color="blue" @click="editIndex = i" />
@@ -56,19 +53,12 @@
                   {{ `Delete "${getTechniqueLabel(procedure)}"?` }}
                 </v-card-title>
                 <v-card-text>
-                  <div v-html="procedure.description"/>
+                  <div v-html="procedure.description" />
                 </v-card-text>
                 <v-card-actions>
-                  <v-spacer/>
-                  <v-btn
-                    text="Cancel"
-                    @click="isActive.value = false"
-                  ></v-btn>
-                  <v-btn
-                    text="Delete"
-                    color="red"
-                    @click="isActive.value = false; deleteProcedure(i)"
-                  ></v-btn>
+                  <v-spacer />
+                  <v-btn text="Cancel" @click="isActive.value = false"></v-btn>
+                  <v-btn text="Delete" color="red" @click="deleteProcedure(i, isActive)"></v-btn>
                 </v-card-actions>
               </v-card>
             </template>
@@ -76,64 +66,66 @@
         </v-card-actions>
       </v-card>
     </div>
-  </VueDraggable >
+  </VueDraggable>
 </template>
 
 <script setup>
-  import { useMain } from "@/stores/main"
-  import { inject, ref } from "vue"
-  import AddProcedure from './AddProcedure.vue'
-  import { VueDraggable } from 'vue-draggable-plus'
+import { useMain } from '@/stores/main'
+import { inject, ref } from 'vue'
+import AddProcedure from './AddProcedure.vue'
+import { VueDraggable } from 'vue-draggable-plus'
 
-  const md = inject('markdownit')
+const md = inject('markdownit')
 
-  const mainStore = useMain()
+const mainStore = useMain()
 
-  const procedures = defineModel()
+const procedures = defineModel()
 
-  function getTechniqueLabel(procedure) {
-    if(mainStore.getDataObjectById(procedure.technique) === undefined) {
-      return `(Label not found for technique ${procedure.technique})`
-    }
-    return mainStore.getDataObjectById(procedure.technique)?.label
+function getTechniqueLabel(procedure) {
+  if (mainStore.getDataObjectById(procedure.technique) === undefined) {
+    return `(Label not found for technique ${procedure.technique})`
   }
+  return mainStore.getDataObjectById(procedure.technique)?.label
+}
 
-  const editIndex = ref()
+const editIndex = ref()
 
-  function updateProcedureStep(updatedProcedure, index) {
-    procedures.value[index] = updatedProcedure
-    editIndex.value = null
-  }
+function updateProcedureStep(updatedProcedure, index) {
+  procedures.value[index] = updatedProcedure
+  editIndex.value = null
+}
 
-  function deleteProcedure(deleteIndex) {
-    procedures.value.splice(deleteIndex, 1)
-  }
-
+function deleteProcedure(deleteIndex, dialogIsActive) {
+  // Delete the procedure step at the given dialog
+  procedures.value.splice(deleteIndex, 1)
+  // Close the dialog
+  dialogIsActive.value = false
+}
 </script>
 
 <style scoped>
-  .list {
-    border-left:2px solid #e0e0e0;
-  }
+.list {
+  border-left: 2px solid #e0e0e0;
+}
 
-  .list .item {
-    position: relative;
-  }
+.list .item {
+  position: relative;
+}
 
-  .list .item::before {
-    content: "";
-    width: 16px;
-    height: 16px;
-    border-radius: 10px;
-    display: block;
-    background: #005b94;
-    position: absolute;
-    left: -9px;
-    top: 50%;
-  }
+.list .item::before {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  display: block;
+  background: #005b94;
+  position: absolute;
+  left: -9px;
+  top: 50%;
+}
 
-  .ghost .v-card {
-    opacity: .5;
-    background: #c8ebfb;
-  }
+.ghost .v-card {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
 </style>

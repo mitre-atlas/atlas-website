@@ -18,7 +18,7 @@ import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
  * @param {string} str
  * @returns {string}
  */
-export function capitalize (str) {
+export function capitalize(str) {
   return `${str[0].toUpperCase()}${str.slice(1)}`
 }
 
@@ -28,7 +28,7 @@ export function capitalize (str) {
  * @param {string} splitter
  * @returns {string}
  */
-export function capitalizeSidebar (str, splitter) {
+export function capitalizeSidebar(str, splitter) {
   const tokens = str.split(splitter)
   for (let i = 0; i < tokens.length; i++) {
     tokens[i] = capitalize(tokens[i])
@@ -41,7 +41,7 @@ export function capitalizeSidebar (str, splitter) {
  * @param {string} str
  * @returns {string}
  */
-export function lastWord (str) {
+export function lastWord(str) {
   const textArr = str.split(' ')
   return textArr[textArr.length - 1]
 }
@@ -54,7 +54,7 @@ export function lastWord (str) {
  * @param {string} [template='xxxx-xxxx-xxxx]
  * @returns {string}
  */
-export function generateID (template = 'xxxx-xxxx-xxxx') {
+export function generateID(template = 'xxxx-xxxx-xxxx') {
   // *NOT* RFC compliant, use this where the uniqueness isn't so important
   // adapted from stackoverflow
   return template.replace(/x/g, function (c) {
@@ -72,7 +72,7 @@ const depArray = []
  * Adds an error message if case study contains deprecated fields as labeled in the schema.
  * @see {@link https://github.com/tdegrunt/jsonschema#pre-property-validation-hook}
  */
-function preValidateProperty (object, key, schema, options, ctx) {
+function preValidateProperty(object, key, schema, options, ctx) {
   if (schema.deprecated && key in object) {
     depArray.push('Deprecation Error: ' + schema.depMessage)
   }
@@ -85,13 +85,13 @@ function preValidateProperty (object, key, schema, options, ctx) {
  * @param {ValidationError[]} errors - Array of `jsonschema` library ValidationError objects from the ValidationResult
  * @returns {string[]}
  */
-function getErrorList (errors) {
+function getErrorList(errors) {
   const errorArrayLength = errors.length
   // let errorMessages = 'File Errors: '
   const errorListSimplified = []
   // Iterates through error list to populate a new list that only contains user friendly (more readable) error messages
   for (let i = 0; i < errorArrayLength; i++) {
-    if (!(errors[i].stack).includes('subschema') && !(errors[i].stack).includes('constant: null')) {
+    if (!errors[i].stack.includes('subschema') && !errors[i].stack.includes('constant: null')) {
       errorListSimplified.push('File Error: ' + errors[i].stack)
     }
   }
@@ -103,7 +103,7 @@ function getErrorList (errors) {
  * @param {object} yamlObj - Object read from uploaded case study YAML file
  * @returns {(string[]|string)}} Array of error strings for display or empty string @todo Check on this
  */
-export function validFormatYAML (yamlObj) {
+export function validFormatYAML(yamlObj) {
   depArray.length = 0
   const validObj = validate(yamlObj, schema, { nestedErrors: true, preValidateProperty })
   // If yaml file format is valid
@@ -114,7 +114,9 @@ export function validFormatYAML (yamlObj) {
     return ''
   }
   // Else output error messages for user to correct formatting
-  return depArray.length !== 0 ? getErrorList(validObj.errors).concat(depArray) : getErrorList(validObj.errors)
+  return depArray.length !== 0
+    ? getErrorList(validObj.errors).concat(depArray)
+    : getErrorList(validObj.errors)
 }
 
 /**
@@ -122,7 +124,7 @@ export function validFormatYAML (yamlObj) {
  * @param {object} yamlObj - Object read from uploaded case study YAML file
  * @returns {boolean}
  */
-export function isSchemaOutdated (yamlObj) {
+export function isSchemaOutdated(yamlObj) {
   return yamlObj.meta.version !== schema.$version
 }
 
@@ -146,7 +148,7 @@ export function isSchemaOutdated (yamlObj) {
  * @param {object} caseStudy - Object as created by the case study builder
  * @returns {string} Long-form representation of the incident date
  */
-export function formatCaseStudyIncidentDate (caseStudy) {
+export function formatCaseStudyIncidentDate(caseStudy) {
   // Returns a string date in locale format
 
   const date = caseStudy['incident-date']
@@ -176,12 +178,9 @@ export function formatCaseStudyIncidentDate (caseStudy) {
  * @param {string} filename - Filename including extension
  * @param {object} text - Object representing file contents
  */
-export function download (filename, text) {
+export function download(filename, text) {
   const element = document.createElement('a')
-  element.setAttribute(
-    'href',
-    'data:text/plaincharset=utf-8,' + encodeURIComponent(text)
-  )
+  element.setAttribute('href', 'data:text/plaincharset=utf-8,' + encodeURIComponent(text))
   element.setAttribute('download', filename)
 
   element.style.display = 'none'
@@ -208,13 +207,10 @@ const trimStrings = function (key, value) {
  * @param {object} study - Case study data object from case study builder
  * @param {string} filename - Filename without extension
  */
-export function downloadStudyFile (study, filename) {
+export function downloadStudyFile(study, filename) {
   const studyCopy = JSON.parse(JSON.stringify(study))
-  EXTRA_ADDED_WEBSITE_KEYS.forEach(key => delete studyCopy.study[key])
-  const studyYAML = dump(studyCopy, { replacer: trimStrings }).replace(
-    'T00:00:00.000Z',
-    ''
-  )
+  EXTRA_ADDED_WEBSITE_KEYS.forEach((key) => delete studyCopy.study[key])
+  const studyYAML = dump(studyCopy, { replacer: trimStrings }).replace('T00:00:00.000Z', '')
   download(`${filename}.yaml`, studyYAML)
 }
 
@@ -223,7 +219,7 @@ export function downloadStudyFile (study, filename) {
  * For use serving files on GitHub.
  * @param {string} url
  */
-export function downloadUrlAsFile (url) {
+export function downloadUrlAsFile(url) {
   // Downloads a file located at url
   // Parameter url is a string
   const xhr = new XMLHttpRequest()
@@ -231,9 +227,9 @@ export function downloadUrlAsFile (url) {
   xhr.onload = function () {
     let a = document.createElement('a')
     a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
-    const urlSegments = url.split('/');
-    const basename = urlSegments[urlSegments.length - 1];
-    a.download = basename;
+    const urlSegments = url.split('/')
+    const basename = urlSegments[urlSegments.length - 1]
+    a.download = basename
     a.style.display = 'none'
     document.body.appendChild(a)
     a.click()
@@ -247,7 +243,7 @@ export function downloadUrlAsFile (url) {
  * Allows the browser to open the provided URL in a new tab.
  * @param {string} url
  */
-export function openNewTab (url) {
+export function openNewTab(url) {
   window.open(url, '_blank')
 }
 
@@ -256,12 +252,14 @@ export function openNewTab (url) {
  * @param {object} studyData - Case study object from the builder
  * @param {string} studySchemaVersion - Numeric string for the case study file version from nuxt.config.js
  */
-export function setMetaData (studyData, studySchemaVersion) {
+export function setMetaData(studyData, studySchemaVersion) {
   // Initialize meta key if not exists
   studyData.meta = studyData.meta || {}
   const nowDate = new Date()
   // Only set the date-created once upon study creation
-  studyData.meta['date-created'] = studyData.meta['date-created'] ? new Date(studyData.meta['date-created']) : nowDate
+  studyData.meta['date-created'] = studyData.meta['date-created']
+    ? new Date(studyData.meta['date-created'])
+    : nowDate
   // Always update date-updated
   studyData.meta['date-updated'] = nowDate
   // Set UUID
@@ -282,7 +280,10 @@ export function setMetaData (studyData, studySchemaVersion) {
  * @param {string} filename JSON filename, without the extension
  * @param {string} directory (optional)
  */
-export function constructNavigatorLayerGitHubUrl(filename, directory='dist/case-study-navigator-layers') {
+export function constructNavigatorLayerGitHubUrl(
+  filename,
+  directory = 'dist/case-study-navigator-layers'
+) {
   // Env var containing the first part of a raw GitHub link pointing to Navigator layers on the main branch
   const navigatorLayerGitHubUrl = import.meta.env.VITE_NAVIGATOR_LAYER_GITHUB_URL
   // Construct the full URL to the layer file
@@ -305,7 +306,7 @@ export function constructNavigatorUrlToLayer(layerGitHubUrl) {
  * For use by `fetch()`
  * @param {string} pathString
  */
-export function getPathWithBase (pathString) {
+export function getPathWithBase(pathString) {
   // BASE_URL defaults to `/`, uses path.join to construct valid paths
   return path.join(import.meta.env.BASE_URL, pathString)
 }
@@ -334,15 +335,17 @@ export function getLatestUpdateDate() {
  */
 export async function getDescriptions() {
   try {
-      const categoriesResponse = await fetch(getPathWithBase('/content/descriptions/categories.yaml'))
-      const categories = await categoriesResponse.text()
-      let output = jsyaml.load(categories).categories
+    const categoriesResponse = await fetch(getPathWithBase('/content/descriptions/categories.yaml'))
+    const categories = await categoriesResponse.text()
+    let output = jsyaml.load(categories).categories
 
-      const lifecycleResponse = await fetch(getPathWithBase('/content/descriptions/ML-lifecycle.yaml'))
-      const lifecycles = await lifecycleResponse.text()
-      output = output.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
-      return output
+    const lifecycleResponse = await fetch(
+      getPathWithBase('/content/descriptions/ML-lifecycle.yaml')
+    )
+    const lifecycles = await lifecycleResponse.text()
+    output = output.concat(jsyaml.load(lifecycles)['ML-lifecycle'])
+    return output
   } catch (error) {
-      console.error('Error fetching YAML file:', error)
+    console.error('Error fetching YAML file:', error)
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div> 
-    <PageSectionTitle :pageTitle="title"/>
+  <div>
+    <PageSectionTitle :pageTitle="title" />
 
     <div v-for="(section, i) in faqSections" :key="i">
       <div class="text-h5 mt-10 mb-5">
@@ -8,33 +8,32 @@
       </div>
       <div v-html="section.content"></div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import PageSectionTitle from "@//components/PageSectionTitle.vue"
-import { inject, reactive} from 'vue';
+import PageSectionTitle from '@//components/PageSectionTitle.vue'
+import { inject, reactive } from 'vue'
 import { ref } from 'vue'
 
 const title = ref('FAQ')
 
 const md = inject('markdownit')
 
-const faqSections = reactive([]);
-
+const faqSections = reactive([])
 
 // Dynamically import any Markdown files found
-const modules = import.meta.glob(
-  '@/../public/content/faq-files/*.md',
-  { query: '?raw', import: 'default', eager: true }
-)
+const modules = import.meta.glob('@/../public/content/faq-files/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+})
 
 // Convert Markdown to HTML
 Object.values(modules).map((m) => {
   // Render each file's contents into HTML
   // Frontmatter is parsed out into `frontmatter`
-  const container = {};
+  const container = {}
   const mdAsHtml = md.render(m, container)
 
   const data = {

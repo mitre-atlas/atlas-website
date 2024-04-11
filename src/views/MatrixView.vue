@@ -4,6 +4,6 @@
 </template>
 
 <script setup>
-import PageSectionTitle from '@/components/PageSectionTitle.vue';
-import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue';
+import PageSectionTitle from '@/components/PageSectionTitle.vue'
+import AtlasMatrix from '@/components/matrix/AtlasMatrix.vue'
 </script>

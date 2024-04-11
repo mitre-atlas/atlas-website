@@ -34,10 +34,7 @@ import pluralize from 'pluralize'
  * @param {boolean} [returnLastWordOnly=false] - Whether to return only the last word of the pluralization
  * @returns {string} A pluralization of the data object type
  */
-export function dataObjectToPluralTitle (
-  objectType,
-  returnLastWordOnly = false
-) {
+export function dataObjectToPluralTitle(objectType, returnLastWordOnly = false) {
   // Check if an object was passed as the arg, otherwise use the type as-is
   if (typeof objectType === 'object' && 'object-type' in objectType) {
     objectType = objectType['object-type']
@@ -81,7 +78,6 @@ export function stringToSingular(pluralString) {
   return tokens.join('-')
 }
 
-
 /**
  * Generates a URL route to the provided data object.
  * @example
@@ -103,14 +99,14 @@ export function stringToSingular(pluralString) {
  * @param {object} obj - Data object
  * @returns {string} Route portion of the URL to the data object
  */
-export function dataObjectToRoute (obj) {
+export function dataObjectToRoute(obj) {
   // Construct each route as a pluralization of the object type (last word) and the object ID
   // i.e. studies for case-study, techniques for technique
   const pluralLastWordOfObjectType = dataObjectToPluralTitle(obj, true)
   return `/${pluralLastWordOfObjectType}/${obj.id}`
 }
 
-export function isJavascriptObject (value) {
+export function isJavascriptObject(value) {
   // Note that arrays and null are also typed as object
   return typeof value === 'object' && !Array.isArray(value) && value != null
 }
@@ -120,7 +116,7 @@ export function isJavascriptObject (value) {
  *
  * @param {object} value
  */
-export function isDataObject (value) {
+export function isDataObject(value) {
   return (
     isJavascriptObject(value) && 'object-type' in value && !('use' in value) // Can occur with technique use in mitigations
   )
@@ -131,10 +127,10 @@ export function isDataObject (value) {
  *
  * @param {object} value
  */
-export function isDataObjectArray (value) {
+export function isDataObjectArray(value) {
   if (Array.isArray(value)) {
     // Check if it's an array of data objects
-    return value.every(v => isDataObject(v))
+    return value.every((v) => isDataObject(v))
   }
 
   return false

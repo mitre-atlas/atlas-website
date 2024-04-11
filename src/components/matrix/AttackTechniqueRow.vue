@@ -73,5 +73,4 @@ const toggleShow = computed(() => {
 })
 </script>
 
-<style scoped src="@/assets/matrix.css">
-</style>
+<style scoped src="@/assets/matrix.css"></style>

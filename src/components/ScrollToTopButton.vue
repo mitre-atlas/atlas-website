@@ -23,25 +23,25 @@
 </template>
 
 <script setup>
-  import { shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 
-  const model = shallowRef(false)
+const model = shallowRef(false)
 
-  function onScroll () {
-    model.value = window.scrollY > 200
-  }
+function onScroll() {
+  model.value = window.scrollY > 200
+}
 
-  function scrollToTop() {
-    window.scrollTo({top: 0, behavior: 'smooth'})
-  }
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 </script>
 
 <style scoped>
-  .pointer-events-none {
-    pointer-events: none;
-  }
+.pointer-events-none {
+  pointer-events: none;
+}
 
-  .pointer-events-initial {
-    pointer-events: initial;
-  }
+.pointer-events-initial {
+  pointer-events: initial;
+}
 </style>
