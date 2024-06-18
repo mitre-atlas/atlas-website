@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { inject } from 'vue'
 
 const md = inject('markdownit')
 

@@ -88,7 +88,8 @@
   font-weight: normal;
   vertical-align: super;
 }
-.matrix.side .tactic.name, .matrix.side .tactic.count {
+.matrix.side .tactic.name,
+.matrix.side .tactic.count {
   text-align: center;
   font-size: 16px;
 }
@@ -105,7 +106,8 @@
   border-collapse: collapse;
   width: 100%;
 }
-.matrix.side .tactic .techniques-table tr, .matrix.side .tactic .techniques-table td {
+.matrix.side .tactic .techniques-table tr,
+.matrix.side .tactic .techniques-table td {
   padding: 0;
 }
 .matrix.side .tactic .techniques-table tr {
@@ -187,7 +189,8 @@
   width: 1%;
   vertical-align: top;
 }
-.matrix.flat .tactic.name, .matrix.flat .tactic.count {
+.matrix.flat .tactic.name,
+.matrix.flat .tactic.count {
   text-align: center;
   font-size: 16px;
 }
@@ -279,7 +282,7 @@
 .matrix-controls button {
   border-color: #dfdfdf;
   background: white;
-  color: #39434C;
+  color: #39434c;
 }
 .matrix-controls button:hover {
   background: whitesmoke;

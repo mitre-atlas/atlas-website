@@ -7,7 +7,7 @@ import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
  * @param {Object} study
  * @param {String} filename
  */
-export function makePPT (study, filename) {
+export function makePPT(study, filename) {
   const ppt = new Pptxgen()
   ppt.layout = 'LAYOUT_16x9'
   // Slide layout with just title
@@ -75,13 +75,12 @@ export function makePPT (study, filename) {
   ppt.writeFile({ fileName: `${filename}.pptx` })
 }
 
-
 /**
  * Builds the title slide using the yaml
  * @param {Pptxgen} ppt
  * @param {Object} yaml
  */
-function titleSlide (ppt, yaml) {
+function titleSlide(ppt, yaml) {
   let textLabel = 'ATLAS Case Study'
   if (yaml['case-study-type']) {
     const type = yaml['case-study-type']
@@ -218,13 +217,12 @@ function titleSlide (ppt, yaml) {
     .addText(formattedDate, { placeholder: 'incidentDate' })
 }
 
-
 /**
  * Adds a summary slide using the yaml
  * @param {Pptxgen} ppt
  * @param {Object} yaml
  */
-function detailSlide (ppt, yaml) {
+function detailSlide(ppt, yaml) {
   ppt.defineSlideMaster({
     title: 'Summary',
     background: { color: 'FFFFFF' },
@@ -293,26 +291,24 @@ function detailSlide (ppt, yaml) {
     slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
   })
 
-  ppt.addSlide({ masterName: 'Summary' })
+  ppt
+    .addSlide({ masterName: 'Summary' })
     .addText('Summary', { placeholder: 'title' })
     .addText(yaml.summary, { placeholder: 'content' })
 }
-
 
 /**
  * Gets the url from from some object type
  * @param {Object} infoObject
  * @returns {String}
  */
-function getUrlFromInfoObject (infoObject) {
+function getUrlFromInfoObject(infoObject) {
   const baseUrl = window.location.origin
-  if(infoObject.label.startsWith('Technique not found')) {
+  if (infoObject.label.startsWith('Technique not found')) {
     return baseUrl
   }
   return `${baseUrl}/${infoObject['object-type']}s/${infoObject.id}`
 }
-
-
 
 /**
  * Links text to a given url
@@ -320,17 +316,16 @@ function getUrlFromInfoObject (infoObject) {
  * @param {String} url
  * @returns {Object}
  */
-function linkText (text, url) {
+function linkText(text, url) {
   return { text, options: { hyperlink: { url }, fontFace: 'Arial', fontSize: 10 } }
 }
-
 
 /**
  * Builds procedure slides using the yaml
  * @param {Pptxgen} ppt
  * @param {Object} yaml
  */
-function procedureSlide (ppt, yaml) {
+function procedureSlide(ppt, yaml) {
   const rows = [
     [
       {
@@ -375,15 +370,11 @@ function procedureSlide (ppt, yaml) {
 
     const row = [
       { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
-      linkText(
-        techniqueInfo.label,
-        getUrlFromInfoObject(techniqueInfo)
-      ),
+      linkText(techniqueInfo.label, getUrlFromInfoObject(techniqueInfo)),
       { text: description, options: { fontFace: 'Arial', fontSize: 10 } }
     ]
     rows.push(row)
   }
-
 
   ppt.defineSlideMaster({
     title: 'Procedure',
@@ -446,15 +437,14 @@ function procedureSlide (ppt, yaml) {
   })
 }
 
-
-
 /**
  * Builds the reference slides using the yaml
  * @param {Pptxgen} ppt
  * @param {Object} yaml
  */
-function referenceSlide (ppt, yaml) {
-  const slide = ppt.addSlide({ masterName: 'Content' })
+function referenceSlide(ppt, yaml) {
+  const slide = ppt
+    .addSlide({ masterName: 'Content' })
     .addText('References', { placeholder: 'title' })
 
   const texts = []
@@ -466,24 +456,44 @@ function referenceSlide (ppt, yaml) {
     if (hasText && hasUrl) {
       texts.push({
         text: JSON.parse(JSON.stringify(ref.title)),
-        options: { hyperlink: { url: ref.url, tooltip: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
+        options: {
+          hyperlink: { url: ref.url, tooltip: ref.url },
+          color: '0D2F4F',
+          fontFace: 'Arial',
+          fontSize: 12,
+          bullet: { type: 'number' },
+          paraSpaceAfter: 10,
+          breakLine: true
+        }
       })
     } else if (hasText) {
       texts.push({
         text: JSON.parse(JSON.stringify(ref.title)),
-        options: { color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
+        options: {
+          color: '0D2F4F',
+          fontFace: 'Arial',
+          fontSize: 12,
+          bullet: { type: 'number' },
+          paraSpaceAfter: 10,
+          breakLine: true
+        }
       })
     } else if (hasUrl) {
       texts.push({
         text: JSON.parse(JSON.stringify(ref.url)),
-        options: { hyperlink: { url: ref.url }, color: '0D2F4F', fontFace: 'Arial', fontSize: 12, bullet: { type: 'number' }, paraSpaceAfter: 10, breakLine: true }
+        options: {
+          hyperlink: { url: ref.url },
+          color: '0D2F4F',
+          fontFace: 'Arial',
+          fontSize: 12,
+          bullet: { type: 'number' },
+          paraSpaceAfter: 10,
+          breakLine: true
+        }
       })
     }
 
     // Add to slide
-    slide.addText(
-      texts,
-      { x: 0.5, y: 1.2, w: 9, h: 4, valign: 'top' }
-    )
+    slide.addText(texts, { x: 0.5, y: 1.2, w: 9, h: 4, valign: 'top' })
   })
 }

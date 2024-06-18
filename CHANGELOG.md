@@ -1,5 +1,10 @@
 # ATLAS Website Changelog
 
+## [4.0.1]() (2024-06-18)
+
+#### Website
+- Fixes to download filepaths and to display full subtechnique names
+
 ## [4.0.0]() (2024-03-11)
 
 Website redesign

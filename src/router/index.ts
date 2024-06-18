@@ -5,40 +5,40 @@ import { getLatestUpdateDate } from '@/assets/tools.js'
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/Home.vue'),
+    component: () => import('@/views/Home.vue')
   },
   {
     path: '/terms',
-    component: () => import('../views/TermsView.vue'),
+    component: () => import('../views/TermsView.vue')
   },
   {
     path: '/resources/faq',
-    component: () => import('../views/resources/FAQView.vue'),
+    component: () => import('../views/resources/FAQView.vue')
   },
   {
     path: '/resources/ai-security-101',
-    component: () => import('../views/resources/AiSecurity101View.vue'),
+    component: () => import('../views/resources/AiSecurity101View.vue')
   },
   // Redirects the old 101 URL to the new one
   {
     path: '/resources/adversarial-ml-101',
-    redirect: '/resources/ai-security-101',
+    redirect: '/resources/ai-security-101'
   },
   {
     path: '/resources/info',
-    component: () => import('../views/resources/GeneralInformationView.vue'),
+    component: () => import('../views/resources/GeneralInformationView.vue')
   },
   {
     path: '/resources/contact',
-    component: () => import('../views/resources/ContactView.vue'),
+    component: () => import('../views/resources/ContactView.vue')
   },
   {
     path: '/resources/events',
-    component: () => import('../views/resources/EventsView.vue'),
+    component: () => import('../views/resources/EventsView.vue')
   },
   {
     path: '/resources/contribute',
-    component: () => import('../views/resources/ContributorsListView.vue'),
+    component: () => import('../views/resources/ContributorsListView.vue')
   },
   {
     // When a user visits the updates index page, redirect to the most recent update
@@ -51,33 +51,33 @@ const routes = [
   },
   {
     path: '/:objectTypePlural',
-    component: () => import('../views/ObjectListView.vue'),
+    component: () => import('../views/ObjectListView.vue')
   },
   {
     path: '/:objectTypePlural/:id',
-    component: () => import('../views/IDView.vue'),
+    component: () => import('../views/IDView.vue')
   },
   {
     path: '/studies/:id',
-    component: () => import('../views/StudiesIDView.vue'),
+    component: () => import('../views/StudiesIDView.vue')
   },
   {
     path: '/studies/create',
-    component: () => import('../views/BuildCaseStudyView.vue'),
+    component: () => import('../views/BuildCaseStudyView.vue')
   },
   {
     path: '/navigator',
-    component: () => import('../views/NavigatorView.vue'),
+    component: () => import('../views/NavigatorView.vue')
   },
   {
     path: '/matrices/:id',
-    component: () => import('@/views/MatrixView.vue'),
+    component: () => import('@/views/MatrixView.vue')
   },
   {
     path: '/:catchAll(.*)*',
     name: 'ErrorNotFound',
-    component: () => import('../views/ErrorNotFoundView.vue'),
-  },
+    component: () => import('../views/ErrorNotFoundView.vue')
+  }
 ]
 
 const router = createRouter({
@@ -93,7 +93,7 @@ const router = createRouter({
     }
     // always scroll to top
     return { top: 0 }
-  },
+  }
 })
 
 export default router

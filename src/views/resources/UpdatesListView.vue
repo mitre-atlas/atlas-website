@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageSectionTitle :pageTitle="title"/>
+    <PageSectionTitle :pageTitle="title" />
     <v-row>
       <v-col :cols="`${mdAndUp ? 2 : 12}`">
         <UpdatesTable></UpdatesTable>
@@ -9,20 +9,19 @@
         <!-- Suspense is used to allow for await in the child component -->
         <Suspense>
           <UpdateContent :date="date"></UpdateContent>
-         </Suspense>
+        </Suspense>
       </v-col>
     </v-row>
-
   </div>
 </template>
 
 <script setup>
-import PageSectionTitle from "@/components/PageSectionTitle.vue"
-import UpdatesTable from "@/components/UpdatesTable.vue"
+import PageSectionTitle from '@/components/PageSectionTitle.vue'
+import UpdatesTable from '@/components/UpdatesTable.vue'
 import UpdateContent from '@/components/UpdateContent.vue'
 import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const { date } = route.params

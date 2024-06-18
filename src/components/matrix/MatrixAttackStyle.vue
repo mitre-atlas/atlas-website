@@ -61,5 +61,4 @@ const tacticLastWord = (tactic_name) => {
 }
 </script>
 
-<style scoped src="@/assets/matrix.css">
-</style>
+<style scoped src="@/assets/matrix.css"></style>

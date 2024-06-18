@@ -1,8 +1,5 @@
 <template>
-  <v-timeline
-    side="end"
-    class="ml-6 mt-6"
-  >
+  <v-timeline side="end" class="ml-6 mt-6">
     <v-timeline-item
       v-for="(procedure, i) in study.procedure"
       :key="i"
@@ -13,7 +10,7 @@
       <v-card>
         <template v-slot:title>
           <router-link class="text-black" :to="`/techniques/${procedure.technique}`">
-            {{ getTechniqueName(procedure.technique) }}
+            {{ getTechniqueLabel(procedure.technique) }}
           </router-link>
         </template>
         <template v-slot:subtitle>
@@ -21,37 +18,33 @@
             {{ getTacticName(procedure.tactic) }}
           </router-link>
         </template>
-        <v-card-text
-          v-html="md.render(procedure.description)"
-        />
+        <v-card-text v-html="md.render(procedure.description)" />
       </v-card>
     </v-timeline-item>
   </v-timeline>
 </template>
 
 <script setup>
-  import { useMain } from "@/stores/main"
-  import markdownit from 'markdown-it'
-  const md = markdownit({
-    html: true
-  })
-  const mainStore = useMain()
+import { useMain } from '@/stores/main'
+import markdownit from 'markdown-it'
+const md = markdownit({
+  html: true
+})
+const mainStore = useMain()
 
-  const { study } = defineProps([
-      /**
-       * Data object type (e.g. tactics)
-       * @type {Object}
-       */
-      'study',
-    ]);
+const { study } = defineProps([
+  /**
+   * Data object type (e.g. tactics)
+   * @type {Object}
+   */
+  'study'
+])
 
-  function getTechniqueName(technique) {
-    return mainStore.getDataObjectById(technique).name
-  }
+function getTechniqueLabel(technique) {
+  return mainStore.getDataObjectById(technique).label
+}
 
-  function getTacticName(tactic) {
-    return mainStore.getDataObjectById(tactic).name
-  }
-
-
+function getTacticName(tactic) {
+  return mainStore.getDataObjectById(tactic).name
+}
 </script>
