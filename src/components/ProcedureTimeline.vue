@@ -10,7 +10,7 @@
       <v-card>
         <template v-slot:title>
           <router-link class="text-black" :to="`/techniques/${procedure.technique}`">
-            {{ getTechniqueName(procedure.technique) }}
+            {{ getTechniqueLabel(procedure.technique) }}
           </router-link>
         </template>
         <template v-slot:subtitle>
@@ -40,8 +40,8 @@ const { study } = defineProps([
   'study'
 ])
 
-function getTechniqueName(technique) {
-  return mainStore.getDataObjectById(technique).name
+function getTechniqueLabel(technique) {
+  return mainStore.getDataObjectById(technique).label
 }
 
 function getTacticName(tactic) {
