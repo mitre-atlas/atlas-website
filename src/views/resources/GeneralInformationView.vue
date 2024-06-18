@@ -163,23 +163,23 @@ const items = ref([
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-matrices.xlsx'
+        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-matrices.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-mitigations.xlsx'
+        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-mitigations.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-tactics.xlsx'
+        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-tactics.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas-techniques.xlsx'
+        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-techniques.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/static/excel-files/atlas.xlsx'
+        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas.xlsx'
       }
     ]
   }
