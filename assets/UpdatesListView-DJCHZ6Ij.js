@@ -4,7 +4,7 @@ function __vite__mapDeps(indexes) {
   }
   return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
 }
-import{_ as j}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-BDwGvZEQ.js";import{u as v,D as O,o as c,l as h,b as i,w as r,F as k,r as N,a as T,E as R,e as A,t as V,G as U,n as H,m,C as W,ae as z,af as t,ag as B,y as F,V as K,d as g,ah as $}from"./index-BmQRBLpp.js";const y=`#### June 2021
+import{_ as j}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-DXVxqjrd.js";import{u as v,D as O,o as c,l as h,b as i,w as r,F as k,r as N,a as T,E as R,e as A,t as V,G as U,n as H,m,C as W,ae as z,af as t,ag as B,y as F,V as K,d as g,ah as $}from"./index-C87mkqTb.js";const y=`#### June 2021
 
 ##### Website v2.0.0 - 2.1.3
 

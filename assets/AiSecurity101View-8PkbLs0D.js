@@ -1,4 +1,4 @@
-import{_ as a}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-BDwGvZEQ.js";import{_ as s,C as o,y as r,o as c,l,b as d,e as h,m as u}from"./index-BmQRBLpp.js";const m=`---
+import{_ as a}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-DXVxqjrd.js";import{_ as s,C as o,y as r,o as c,l,b as d,e as h,m as u}from"./index-C87mkqTb.js";const m=`---
 title: AI Security 101
 ---
 
@@ -8,7 +8,7 @@ title: AI Security 101
 
 Artificial intelligence (AI) technology is advancing at a rapid rate and adoption is on the rise. Once limited only to highly controlled operational environments and use cases, today we see _AI-enabled systems_ &mdash; software systems with one or more AI components &mdash; effectively integrated into a variety of use cases and available to the public.
 
-_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In additional to the existence of traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
+_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In addition to the existence of traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
 
 In this 101, we describe common threats to AI-enabled systems documented within MITRE ATLAS&trade;,  security and the AI lifecycle, and active research areas.
 
