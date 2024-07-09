@@ -1,6 +1,6 @@
 # ATLAS Website Changelog
 
-## [4.1.0]() (2024-07-10)
+## [4.1.0]() (2024-07-09)
 
 #### Website
 - Displays created and modified dates for tactics, techniques, and mitigations
