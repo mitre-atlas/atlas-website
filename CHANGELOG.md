@@ -1,5 +1,13 @@
 # ATLAS Website Changelog
 
+## [4.1.0]() (2024-07-10)
+
+#### Website
+- Displays created and modified dates for tactics, techniques, and mitigations
+
+#### Data
+- Updated ATLAS data to [version 4.6.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#460-2024-07-09)
+
 ## [4.0.1]() (2024-06-18)
 
 #### Website
