@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-2">
+  <div :class="isVisible ? 'pb-4' : ''">
     <span v-if="doShowKey" class="font-weight-bold">{{ key }}: </span>
 
     <!-- Link to ATT&CK -->
@@ -73,6 +73,20 @@ const { objectType, relatedObjs } = defineProps([
 
 // Threshold for how many individual values to display before summarizing counts
 const maxNumDisplay = 3
+
+/**
+ * Whether to display this piece of data in the sidebar.
+ * Used to apply bottom padding to the container div if so
+ */
+let isVisible = computed(() => {
+  // Same conditions as if-else statements in template
+  return (
+    objectType === 'ATT&CK-reference' ||
+    isValuePrimitive.value ||
+    isThisObjectArray.value ||
+    isStringArray.value
+  )
+})
 
 /**
  * Whether to show indivdual values or summarize counts
