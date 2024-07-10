@@ -198,7 +198,7 @@ data:
     date: 2024-08-08
     location: Las Vegas, NV
     description: >
-      DEF CON is a hacker convention which takes place immediately following Black Hat in Las Vegas every year.
-    url: https://defcon.org/
+      The ATLAS team is giving the AI Security Keynote at the DEFCON AI Village and is also involved in shaping [Generative Red Team 2](https://aivillage.org/generative%20red%20team/generative-red-team-2/). Hope to see you there!
+    url: https://aivillage.org/
     color: blue
     imageSrc: defcon.jpg
