@@ -9,9 +9,7 @@
       </div>
     </v-card-title>
     <v-card-subtitle> {{ formattedDate }} - {{ subtitle }} </v-card-subtitle>
-    <v-card-text>
-      {{ description }}
-    </v-card-text>
+    <v-card-text v-html="md.render(description)"></v-card-text>
     <div>
       <v-btn
         v-if="url"
@@ -28,9 +26,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
+import { computed, inject } from 'vue'
+const md = inject('markdownit')
 
+import { useDisplay } from 'vuetify'
 const { mdAndUp } = useDisplay()
 
 const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h6'))
