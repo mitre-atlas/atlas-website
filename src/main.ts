@@ -24,6 +24,6 @@ insertOsano()
 
 // Initialize store
 const main = useMain()
-await main.init()
+await main.loadData()
 
 app.mount('#app')

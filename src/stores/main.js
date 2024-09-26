@@ -11,6 +11,7 @@ import { getPathWithBase } from '@/assets/tools'
  */
 const DEFAULT_DATA_OBJECT_KEYS = ['id', 'object-type', 'name', 'description']
 
+
 /**
  * Keys added as part of the nuxtServerInit ingest for website use.
  * To be stripped from objects before export.
@@ -402,6 +403,7 @@ export const useMain = defineStore('main', {
           ...this.getReferencedDataObjects(argObj),
           ...this.getDataObjectsReferencing(argObj)
         }
+
         // Sort object keys in alphabetical order for display
         return Object.keys(relatedObjs)
           .sort()
@@ -555,143 +557,199 @@ export const useMain = defineStore('main', {
     SET_OBJECT_TYPE_PLURAL_VALUES(payload) {
       this.objectTypePluralValues = [...payload]
     },
-    // Note that this function is called for every dynamic route generated via nuxt generate
-    // TODO Caching, also needs return or await
+
+
+  // Convert all date strings in a JS object to JavaScript Date objects
+  convertDatesToJS(data) {
+    if (Array.isArray(data)) {
+      return data.map(item => this.convertDatesToJS(item));
+    } else if (typeof data === 'object' && data !== null) {
+      const newData = {}
+      for (const key in data) {
+        if (key === 'created_date' || key === 'modified_date') {
+          newData[key] = new Date(data[key])
+        } else {
+          newData[key] = this.convertDatesToJS(data[key]);
+        }
+      }
+      return newData
+    }
+    return data // Return primitive types or null
+  },
+
     /**
-     * Loads in ATLAS.yaml data. Automatically called upon server start.
+     * Helper function to fetch YAML file
      */
-    async init() {
-      // Retrieve the threat matrix YAML data and populate store upon start
-      let atlasData = await fetch(getPathWithBase('/atlas-data/dist/ATLAS.yaml'))
-      let yamlString = await atlasData.text()
+    async fetchYaml() {
+      return fetch(getPathWithBase('/atlas-data/dist/ATLAS.yaml'))
+        .then((response) => response.text())
+        .then((text) => yaml.load(text))
+    },
 
-      // Get all contents, then parse and commit payload
-      const promise = Promise.resolve(yamlString).then((contents) => {
-        // Parse YAML
-        const data = yaml.load(contents)
+    /**
+     * Fetches ATLAS data either from API or YAML file
+     */
+    async fetchData() {
 
-        // Collect top-level data objects under the key 'objects'
-        const { id, name, version, matrices, ...objects } = data
-        const result = { id, name, version, matrices, objects }
-
-        // Hold on to all data objects, in a list-of-lists
-        // Starting with the top-level objects
-        let allDataObjects = Object.values(objects).flat()
-
-        // Add the route to each top-level object
-        allDataObjects.forEach((dataObj) => {
-          // Add a property for each data object's internal route
-          dataObj.route = dataObjectToRoute(dataObj)
-          if ('object-type' in dataObj && dataObj['object-type'] == 'case-study') {
-            dataObj.columnNames = ['summary']
-          }
-        })
-
-        // Pluralized last word of object-type values, which serve as route names
-        const objectTypePluralValues = new Set()
-
-        // Build matrix-like structure under each data object type
-        matrices.forEach((matrix, i) => {
-          // Collect data objects within each matrix
-          const { id, name, ...matrix_objs } = matrix
-
-          let allMatrixObjs = Object.values(matrix_objs).flat()
-          // Add the route to each matrix object
-          allMatrixObjs.forEach((dataObj) => {
-            // Add a property for each data object's internal route
-            dataObj.route = dataObjectToRoute(dataObj)
-
-            // Add label field
-            if (dataObj['object-type'] === 'technique') {
-              if ('subtechnique-of' in dataObj) {
-                const parentName = matrix_objs.techniques.find(
-                  (p) => p['id'] === dataObj['subtechnique-of']
-                ).name
-                dataObj.label = `${parentName}: ${dataObj.name}`
-              } else {
-                dataObj.label = dataObj.name
-              }
+      // Fetch from the API if its URL exists 
+      if (import.meta.env.VITE_API_URL) {
+        return fetch('/api/atlas-yaml/json')
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`There was an issue with fetching from the API. Error: ${response.status}`);
             }
+            return response.json();
           })
-
-          // Create a populated tree of tactics > techniques > subtechniques in the current data
-
-          // Split techniques into top-level parents, and subtechniques; add labels
-          const parentTechniques = matrix_objs.techniques.filter((t) => 'tactics' in t)
-          const subtechniques = matrix_objs.techniques.filter((t) => 'subtechnique-of' in t)
-
-          // Add subtechniques to top-level techniques
-          const populatedTechniques = parentTechniques.map((t) => {
-            // Check if any subtechniques reference this technique
-            if (subtechniques.some((s) => s['subtechnique-of'] === t.id)) {
-              // Add associated subtechniques to this technique, deep-copying and limited to default keys for linking
-              const associatedObjs = subtechniques.filter((s) => s['subtechnique-of'] === t.id)
-              t.subtechniques = associatedObjs.map((obj) => deepCopyDefault(obj))
-            }
-            return t
+          .then((data) => {
+            return this.convertDatesToJS(data)
           })
+          .catch((error) => {
+            console.log(error);
+            console.log("Loading site using ATLAS.yaml instead");
+            return this.fetchYaml();
+          });
 
-          // Add techniques to tactics
-          matrix_objs.tactics.map((t) => {
-            // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
-            const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
-            t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
-            return t
-          })
+      // Fetch from the files if there is no API URL or if the API fetch failed
+      } else {
+        return this.fetchYaml();
+      }
+    },
+    
 
-          // Iterate over objects and add them to the result
-          for (const [key, dataObjs] of Object.entries(matrix_objs)) {
-            // Add objects from this matrix into the result
-            if (key in objects) {
-              // Add to the existing object keyed by the matrix ID
-              objects[key][id] = dataObjs
-            } else {
-              // Otherwise initialize it
-              objects[key] = {
-                [id]: dataObjs
-              }
+    /**
+     * Takes ATLAS JSON data and properly processes and sets it in the store
+     */
+    processData(data) {
 
-              // Add to the list of accepted _objectTypeValues
-              const objectTypePlural = dataObjectToPluralTitle(key, true)
-              objectTypePluralValues.add(objectTypePlural)
-            }
+      // Collect top-level data objects under the key 'objects'
+      const { id, name, version, matrices, ...objects } = data
+      const result = { id, name, version, matrices, objects }
 
-            // Collect each matrix's objects for later operations
-            allDataObjects = allDataObjects.concat(dataObjs)
+      // Hold on to all data objects, in a list-of-lists
+      // Starting with the top-level objects
+      let allDataObjects = Object.values(objects).flat()
 
-            // Remove this key and values from the result's matrix,
-            // to reduce data duplciationg. Leaving ID and name
-            delete result.matrices[i][key]
-            result.matrices[i]['route'] = `/matrices/${id}`
-          }
-        })
-
-        // Commit the array of accepted _objectTypePlural values
-        this.SET_OBJECT_TYPE_PLURAL_VALUES(Array.from(objectTypePluralValues))
-
-        // Add all data objects to the store to facilitate finding by ID
-        result.allDataObjects = allDataObjects
-
-        // Commit data to the store, in preparation for using getters below
-        this.SET_ATLAS_DATA(result)
-
-        // Link each data object to related objects
-        allDataObjects.forEach((dataObj) => {
-          // Add a property for the data object's internal route
-          dataObj.route = dataObjectToRoute(dataObj)
-
-          // Apply to all objects but case studies, which have their own template
-          if (dataObj['object-type'] != 'case-study') {
-            // Add a property with other data objects referenced by this one or that reference this one
-            dataObj.relatedObjects = this.getRelatedDataObjects(dataObj)
-          }
-        })
-
-        // Commit the fully populated data
-        this.SET_ATLAS_DATA(result)
+      // Add the route to each top-level object
+      allDataObjects.forEach((dataObj) => {
+        // Add a property for each data object's internal route
+        dataObj.route = dataObjectToRoute(dataObj)
+        if ('object-type' in dataObj && dataObj['object-type'] == 'case-study') {
+          dataObj.columnNames = ['summary']
+        }
       })
 
-      return promise
+      // Pluralized last word of object-type values, which serve as route names
+      const objectTypePluralValues = new Set()
+
+      // Build matrix-like structure under each data object type
+      matrices.forEach((matrix, i) => {
+        // Collect data objects within each matrix
+        const { id, name, ...matrix_objs } = matrix
+
+        let allMatrixObjs = Object.values(matrix_objs).flat()
+        // Add the route to each matrix object
+        allMatrixObjs.forEach((dataObj) => {
+          // Add a property for each data object's internal route
+          dataObj.route = dataObjectToRoute(dataObj)
+
+          // Add label field
+          if (dataObj['object-type'] === 'technique') {
+            if ('subtechnique-of' in dataObj) {
+              const parentName = matrix_objs.techniques.find(
+                (p) => p['id'] === dataObj['subtechnique-of']
+              ).name
+              dataObj.label = `${parentName}: ${dataObj.name}`
+            } else {
+              dataObj.label = dataObj.name
+            }
+          }
+        })
+
+        // Create a populated tree of tactics > techniques > subtechniques in the current data
+
+        // Split techniques into top-level parents, and subtechniques; add labels
+        const parentTechniques = matrix_objs.techniques.filter((t) => 'tactics' in t)
+        const subtechniques = matrix_objs.techniques.filter((t) => 'subtechnique-of' in t)
+
+        // Add subtechniques to top-level techniques
+        const populatedTechniques = parentTechniques.map((t) => {
+          // Check if any subtechniques reference this technique
+          if (subtechniques.some((s) => s['subtechnique-of'] === t.id)) {
+            // Add associated subtechniques to this technique, deep-copying and limited to default keys for linking
+            const associatedObjs = subtechniques.filter((s) => s['subtechnique-of'] === t.id)
+            t.subtechniques = associatedObjs.map((obj) => deepCopyDefault(obj))
+          }
+          return t
+        })
+
+        // Add techniques to tactics
+        matrix_objs.tactics.map((t) => {
+          // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
+          const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
+          t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
+          return t
+        })
+
+        // Iterate over objects and add them to the result
+        for (const [key, dataObjs] of Object.entries(matrix_objs)) {
+          // Add objects from this matrix into the result
+          if (key in objects) {
+            // Add to the existing object keyed by the matrix ID
+            objects[key][id] = dataObjs
+          } else {
+            // Otherwise initialize it
+            objects[key] = {
+              [id]: dataObjs
+            }
+
+            // Add to the list of accepted _objectTypeValues
+            const objectTypePlural = dataObjectToPluralTitle(key, true)
+            objectTypePluralValues.add(objectTypePlural)
+          }
+
+          // Collect each matrix's objects for later operations
+          allDataObjects = allDataObjects.concat(dataObjs)
+
+          // Remove this key and values from the result's matrix,
+          // to reduce data duplciationg. Leaving ID and name
+          delete result.matrices[i][key]
+          result.matrices[i]['route'] = `/matrices/${id}`
+        }
+      })
+
+      // Commit the array of accepted _objectTypePlural values
+      this.SET_OBJECT_TYPE_PLURAL_VALUES(Array.from(objectTypePluralValues))
+
+      // Add all data objects to the store to facilitate finding by ID
+      result.allDataObjects = allDataObjects
+
+      // Commit data to the store, in preparation for using getters below
+      this.SET_ATLAS_DATA(result)
+
+      // Link each data object to related objects
+      allDataObjects.forEach((dataObj) => {
+        // Add a property for the data object's internal route
+        dataObj.route = dataObjectToRoute(dataObj)
+
+        // Apply to all objects but case studies, which have their own template
+        if (dataObj['object-type'] != 'case-study') {
+          // Add a property with other data objects referenced by this one or that reference this one
+          dataObj.relatedObjects = this.getRelatedDataObjects(dataObj)
+        }
+      })
+
+      // Commit the fully populated data
+      this.SET_ATLAS_DATA(result)
+    },
+
+    /**
+     * Loads in ATLAS data. Automatically called upon start
+     */
+    async loadData() {
+      // Retrieve the threat matrix JSON data, then process and populate store upon start
+      await this.fetchData().then((jsonData) => this.processData(jsonData))
+
     }
+
   }
 })
