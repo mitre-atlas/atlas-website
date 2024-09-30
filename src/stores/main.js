@@ -561,12 +561,20 @@ export const useMain = defineStore('main', {
 
   // Convert all date strings in a JS object to JavaScript Date objects
   convertDatesToJS(data) {
+    // The following field names are expected by the website to be dates
+    const dateFieldNames = [
+      'created_date',
+      'modified_date',
+      'incident-date'
+    ]
+
+    // Recursively look for the specified fields to cast their values as Dates
     if (Array.isArray(data)) {
       return data.map(item => this.convertDatesToJS(item));
     } else if (typeof data === 'object' && data !== null) {
       const newData = {}
       for (const key in data) {
-        if (key === 'created_date' || key === 'modified_date') {
+        if (dateFieldNames.includes(key)) {
           newData[key] = new Date(data[key])
         } else {
           newData[key] = this.convertDatesToJS(data[key]);
