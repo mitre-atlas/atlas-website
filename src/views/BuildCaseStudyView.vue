@@ -343,33 +343,24 @@ const isStudyTypeValid = computed(() => {
 const date = ref()
 const isDateEntered = ref(false)
 
-const formattedDate = computed(() => 
-  formatDateByGranularity()
-)
+const formattedDate = computed(() => {
+    if (date.value) {
+      const options = { year: 'numeric' }; // Display settings for year and month
 
-function formatDateByGranularity() {
-  if (date.value) {
-    const options = { year: 'numeric' }; // Display settings for year and month
+      if (vModel['incident-date-granularity'] === 'MONTH') {
 
-    if (vModel['incident-date-granularity'] === 'MONTH') {
-      // date.value.setDate(1); // Set day to 01
+        options.month = 'long'; // Display full month name
+        return date.value.toLocaleDateString('en-US', options)
 
-      options.month = 'long'; // Display full month name
-      return date.value.toLocaleDateString('en-US', options)
+      } else if (vModel['incident-date-granularity'] === 'YEAR') {
 
-    } else if (vModel['incident-date-granularity'] === 'YEAR') {
-      // date.value.setMonth(0); // Set month to 01 (January)
-      // date.value.setDate(1); // Set day to 01
-
-      return date.value.getFullYear().toString();
+        return date.value.getFullYear().toString();
+      }
+      return date.value.toISOString().split('T')[0];
     }
-    return date.value.toISOString().split('T')[0];
-    // return formatDate(date.value)
+    return ''
   }
-  return ''
-}
-
-watch(() => vModel['incident-date-granularity'], formatDateByGranularity)
+)
 
 watch(formattedDate, () => {
   vModel['incident-date'] = new Date(date.value)
