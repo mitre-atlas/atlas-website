@@ -93,6 +93,59 @@
         :rules="[requiredRule]"
       />
 
+      <div v-if="field.name === 'Incident Date Granularity'">
+        <v-hover>
+          <template v-slot:default="{ isHovering, props }">
+            <v-card
+              v-bind="props"
+              variant="outlined"
+              class="mb-0"
+              subtitle="Select granularity for the incident date"
+              height="150"
+              :style="[
+                isHovering && isGranularityValid
+                  ? { 'border-color': '#424242' }
+                  : { 'border-color': '#9E9E9E' },
+                !isGranularityValid ? { 'border-color': '#b00020' } : {}
+              ]"
+            >
+              <v-radio-group
+                v-model="vModel['incident-date-granularity']"
+                :prepend-icon="field.icon"
+                density="compact"
+                class="pl-4 pt-3"
+                :rules="[requiredRule]"
+                :hide-details="true"
+              >
+                <v-row v-for="option in field.options" :key="option.name">
+                  <v-hover>
+                    <template v-slot:default="{ isHovering, props }">
+                      <div class="d-flex">
+                        <v-radio
+                          v-bind="props"
+                          :label="option.name"
+                          :value="option.name.toUpperCase()"
+                        />
+                        <div v-if="isHovering" class="ml-6 text-caption pt-1">
+                          <v-icon>mdi-menu-right</v-icon>
+                          {{ option.description }}
+                        </div>
+                      </div>
+                    </template>
+                  </v-hover>
+                </v-row>
+              </v-radio-group>
+            </v-card>
+          </template>
+        </v-hover>
+        <div
+          :style="{ visibility: !isGranularityValid ? 'visible' : 'hidden', color: '#c13951' }"
+          class="ml-4 mt-1 mb-3 text-caption font-weight-medium"
+        >
+          Required
+        </div>
+      </div>
+
       <v-menu
         v-if="field.name === 'Incident Date'"
         :close-on-content-click="false"
@@ -252,6 +305,7 @@ async function getYaml() {
       'target',
       'actor',
       'reporter',
+      'incident_date_granularity',
       'incident_date',
       'summary'
     ]
@@ -267,10 +321,17 @@ async function getYaml() {
 const isMainFormValid = ref()
 let vModel = reactive({
   procedure: [],
-  references: []
+  references: [],
+  'incident-date-granularity': 'DATE' /// Default granularity to date
 })
-const textFields = ['name', 'target', 'actor', 'reporter', 'incident_date']
+const textFields = ['name', 'target', 'actor', 'reporter', 'incident_date_granularity', 'incident_date']
 const filename = ref('')
+
+const isGranularityValid = computed(() => {
+  if (vModel['incident-date-granularity']) return true
+  if (vModel['incident-date-granularity'] === undefined && !formSubmitted.value) return true
+  return false
+})
 
 const isStudyTypeValid = computed(() => {
   if (vModel['case-study-type']) return true
@@ -278,23 +339,40 @@ const isStudyTypeValid = computed(() => {
   return false
 })
 
+
 const date = ref()
 const isDateEntered = ref(false)
 
-const formattedDate = computed(() => {
+const formattedDate = computed(() => 
+  formatDateByGranularity()
+)
+
+function formatDateByGranularity() {
   if (date.value) {
-    return date.value.toISOString().split('T')[0]
+    const options = { year: 'numeric' }; // Display settings for year and month
+
+    if (vModel['incident-date-granularity'] === 'MONTH') {
+      // date.value.setDate(1); // Set day to 01
+
+      options.month = 'long'; // Display full month name
+      return date.value.toLocaleDateString('en-US', options)
+
+    } else if (vModel['incident-date-granularity'] === 'YEAR') {
+      // date.value.setMonth(0); // Set month to 01 (January)
+      // date.value.setDate(1); // Set day to 01
+
+      return date.value.getFullYear().toString();
+    }
+    return date.value.toISOString().split('T')[0];
+    // return formatDate(date.value)
   }
   return ''
-})
+}
+
+watch(() => vModel['incident-date-granularity'], formatDateByGranularity)
 
 watch(formattedDate, () => {
   vModel['incident-date'] = new Date(date.value)
-})
-
-watch(date, () => {
-  // Veutify date picker currently can only pick complete dates
-  vModel['incident-date-granularity'] = 'DATE'
 })
 
 watch(
