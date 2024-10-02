@@ -52,7 +52,7 @@
       <v-col>
         <div class="text-h5 ml-6 text-capitalize">Procedure</div>
       </v-col>
-      <v-col class="text-right">
+      <v-col class="text-right" v-if="!hide_layers_for_studies.includes(study.id)">
         <NavigatorLayerDropdown :study="study" />
       </v-col>
     </v-row>
@@ -116,4 +116,7 @@ const formattedIncidentDate = computed(() => {
   return formatCaseStudyIncidentDate(study.value)
 })
 const title = computed(() => study.value.name)
+
+// Hide layer dropdowns for selected case studies until data is published
+const hide_layers_for_studies = ['AML.CS0022', 'AML.CS0023', 'AML.CS0024', 'AML.CS0025']
 </script>
