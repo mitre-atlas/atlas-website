@@ -101,7 +101,8 @@ fetch(getPathWithBase('/content/contributorslist.yaml'))
 
     // Sort contributors alphabetically
     contributors.value = contents.data.map((c) => {
-      c.contributors.sort()
+      // May be no contributors field, only organization name
+      if (c.contributors) c.contributors.sort()
       return c
     })
 
