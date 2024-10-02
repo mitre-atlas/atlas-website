@@ -1,33 +1,38 @@
 <template>
-  <v-container fluid class="hero-image home-panel">
-    <v-row align="center" justify="center" style="height: 100%">
-      <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
-        <div :class="`text-${subtitleTextSize} mt-3`">
-          <b class="tagline"
-            >Navigate threats to AI systems through
-            <span class="text-highlighter">real-world insights</span></b
-          >
-        </div>
-      </v-col>
+  <v-container fluid class="hero-image pa-0" align="center">
+    <AnnoucementBanner />
+    <v-container fluid class="home-panel" align="left">
+      <v-row align="center" justify="center" style="height: 100%">
+        <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
+          <div :class="`text-${subtitleTextSize} mt-3`">
+            <b class="tagline"
+              >Navigate threats to AI systems through
+              <span class="text-highlighter">real-world insights</span></b
+            >
+          </div>
+        </v-col>
 
-      <v-col align-self="end" :cols="buttonColSize" :class="`${shouldTextCenter} text-center`">
-        <v-btn
-          class=""
-          color="highlighter"
-          variant="flat"
-          to="/matrices/ATLAS"
-          append-icon="mdi-chevron-right"
-          :size="buttonSize"
-          >See the full ATLAS Matrix
-        </v-btn>
-      </v-col>
-    </v-row>
+        <v-col align-self="end" :cols="buttonColSize" :class="`${shouldTextCenter} text-center`">
+          <v-btn
+            class=""
+            color="highlighter"
+            variant="flat"
+            to="/matrices/ATLAS"
+            append-icon="mdi-chevron-right"
+            :size="buttonSize"
+            >See the full ATLAS Matrix
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useDisplay } from 'vuetify'
+
+import AnnoucementBanner from '@/components/AnnouncementBanner.vue'
 
 const { mdAndUp } = useDisplay()
 

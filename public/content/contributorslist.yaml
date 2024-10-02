@@ -36,6 +36,74 @@ data:
       - Angela Tong
       - Amanda Vu
       - Kate Hanson
+      - Tabitha Colter
+      - Marcus Tyler
+      - Walker Lee Dimon
+      - Brett Profitt
+      - James Trent
+      - Aditya Kakade
+      - Henry Choy
+      - Vivien Jamba
+      - Daniel Smarda
+
+  -
+    organization: Intel
+    contributors:
+        - Ajit Joshi
+        - Todd Cramer
+        - Saurabh Swaroop
+        - Lalit Siroya        
+  
+  -
+    organization: AttackIQ
+    
+  -
+    organization: BlueRock
+    
+  -
+    organization: Booz Allen Hamilton
+  
+  -
+    organization: CATO Networks
+
+  -
+    organization: Citigroup
+
+  -
+    organization: Cloud Security Alliance
+
+  -
+    organization: CrowdStrike
+
+  -
+    organization: FS-ISAC
+
+  -
+    organization: Fujitsu
+
+  -
+    organization: HCA Healthcare
+
+  -
+    organization: HiddenLayer
+
+  -
+    organization: JP Morgan Chase Bank
+
+  -
+    organization: Standard Chartered
+
+  -
+    organization: Verizon Business
+    contributors:
+        - Jorge Orchilles
+        - Tim Schulz
+        - Heather Linn
+        - Kamila Wong
+        - Alexander Shapiro
+        - Harish Arunachalam
+        
+
 
   -
     organization: Microsoft

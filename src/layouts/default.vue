@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <Header />
 
+    <Header />
     <SideNav v-if="doesPageHaveSideNav" />
     <v-main :class="`${isRouteFullView ? '' : 'mx-16 mb-16'}`">
       <BreadCrumbs />
