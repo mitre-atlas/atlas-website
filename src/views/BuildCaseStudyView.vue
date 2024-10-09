@@ -35,7 +35,6 @@
                 :prepend-icon="field.icon"
                 density="compact"
                 class="pl-4 pt-3"
-                :rules="[requiredRule]"
                 :hide-details="true"
               >
                 <v-row v-for="option in field.options" :key="option.name">
@@ -99,14 +98,13 @@
             <v-card
               v-bind="props"
               variant="outlined"
-              class="mb-0"
+              class="mb-7"
               subtitle="Select granularity for the incident date"
               height="150"
               :style="[
-                isHovering && isGranularityValid
+                isHovering
                   ? { 'border-color': '#424242' }
-                  : { 'border-color': '#9E9E9E' },
-                !isGranularityValid ? { 'border-color': '#b00020' } : {}
+                  : { 'border-color': '#9E9E9E' }
               ]"
             >
               <v-radio-group
@@ -114,7 +112,6 @@
                 :prepend-icon="field.icon"
                 density="compact"
                 class="pl-4 pt-3"
-                :rules="[requiredRule]"
                 :hide-details="true"
               >
                 <v-row v-for="option in field.options" :key="option.name">
@@ -138,12 +135,6 @@
             </v-card>
           </template>
         </v-hover>
-        <div
-          :style="{ visibility: !isGranularityValid ? 'visible' : 'hidden', color: '#c13951' }"
-          class="ml-4 mt-1 mb-3 text-caption font-weight-medium"
-        >
-          Required
-        </div>
       </div>
 
       <v-menu
@@ -324,14 +315,8 @@ let vModel = reactive({
   references: [],
   'incident-date-granularity': 'DATE' /// Default granularity to date
 })
-const textFields = ['name', 'target', 'actor', 'reporter', 'incident_date_granularity', 'incident_date']
+const textFields = ['name', 'target', 'actor', 'reporter', 'incident_date']
 const filename = ref('')
-
-const isGranularityValid = computed(() => {
-  if (vModel['incident-date-granularity']) return true
-  if (vModel['incident-date-granularity'] === undefined && !formSubmitted.value) return true
-  return false
-})
 
 const isStudyTypeValid = computed(() => {
   if (vModel['case-study-type']) return true
@@ -433,6 +418,7 @@ function downloadCaseStudy() {
     }
 
     studyData.meta = setMetaData(studyData, schema.$version)
+
     downloadStudyFile(studyData, filename.value)
     if (downloadPptCheckbox.value) {
       downloadPPT(vModel)
