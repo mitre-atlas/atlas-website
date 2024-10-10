@@ -22,6 +22,25 @@ legend:
         description: |
           Real world event
 
+  incident_date_granularity:
+    icon: mdi-calendar-question
+    name: Incident Date Granularity
+    description: |
+      Level of precision at which incident date is recorded
+    options: 
+      day:
+        name: Date
+        description: |
+          Record date specific to the exact date, month, and year
+      month:
+        name: Month
+        description: |
+          Record date specific to only the month and year
+      year:
+        name: Year
+        description: |
+          Record date specific to only the year
+
   incident_date:
     icon: mdi-calendar
     name: Incident Date

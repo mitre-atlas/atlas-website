@@ -255,11 +255,13 @@ export function openNewTab(url) {
 export function setMetaData(studyData, studySchemaVersion) {
   // Initialize meta key if not exists
   studyData.meta = studyData.meta || {}
-  const nowDate = new Date()
+  const nowDate = new Date().toISOString()
+
   // Only set the date-created once upon study creation
   studyData.meta['date-created'] = studyData.meta['date-created']
     ? new Date(studyData.meta['date-created'])
     : nowDate
+
   // Always update date-updated
   studyData.meta['date-updated'] = nowDate
   // Set UUID
@@ -271,6 +273,7 @@ export function setMetaData(studyData, studySchemaVersion) {
   if (studyData.study['case-study-type'] === 'exercise') {
     studyData.study.reporter = ''
   }
+
   return studyData.meta
 }
 
