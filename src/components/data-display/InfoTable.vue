@@ -56,7 +56,9 @@
       </template>
       <template #[`item.name`]="{ item, value }">
         <router-link :to="item.route">
-          {{ value }}
+          <!-- Display full parent technique: subtechnique name if available -->
+          <div v-if="'label' in item">{{ item.label }}</div>
+          <div v-else>{{ value }}</div>
         </router-link>
         <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
       </template>

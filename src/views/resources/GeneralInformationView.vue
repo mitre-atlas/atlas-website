@@ -114,6 +114,16 @@
         </v-list-item>
       </div>
     </v-list>
+
+    <p class="text-h5 mt-10">Other ATLAS Resources</p>
+
+    <v-list lines="two">
+      <div v-for="site in otherSites" :key="site.name">
+        <v-list-item :title="site.name" :href="site.url" target="_blank">
+          <v-list-item-subtitle v-html="md.render(site.description)"></v-list-item-subtitle>
+        </v-list-item>
+      </div>
+    </v-list>
   </div>
 </template>
 
@@ -227,4 +237,17 @@ const repositories = {
     }
   ]
 }
+
+const otherSites = [
+  {
+    name: 'AI Incident Sharing',
+    description: 'Submit & received anonymized community AI incident data',
+    url: 'https://ai-incidents.mitre.org'
+  },
+  {
+    name: 'AI Risk Database',
+    description: 'Explore AI supply chain risk with the AI Risk Database',
+    url: 'https://ai-incidents.mitre.org'
+  }
+]
 </script>
