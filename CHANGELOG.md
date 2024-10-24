@@ -1,5 +1,11 @@
 # ATLAS Website Changelog
 
+## [4.2.1]() (2024-10-24)
+
+#### Website
+
+- Fixes
+
 ## [4.2.0]() (2024-10-01)
 
 #### Website
