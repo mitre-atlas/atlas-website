@@ -1,7 +1,6 @@
 ---
 data:
-  -
-    organization: MITRE
+  - organization: MITRE
     contributors:
       - Mikel Rodriguez
       - Christina Liaghati
@@ -46,67 +45,54 @@ data:
       - Vivien Jamba
       - Daniel Smarda
 
-  -
-    organization: Intel
+  - organization: Intel
     contributors:
-        - Ajit Joshi
-        - Todd Cramer
-        - Saurabh Swaroop
-        - Lalit Siroya        
-  
-  -
-    organization: AttackIQ
-    
-  -
-    organization: BlueRock
-    
-  -
-    organization: Booz Allen Hamilton
-  
-  -
-    organization: CATO Networks
+      - Ajit Joshi
+      - Todd Cramer
+      - Saurabh Swaroop
+      - Lalit Siroya
+      - Mostafa Elsaid
+      - Alexander Barabanov
 
-  -
-    organization: Citigroup
+  - organization: AttackIQ
 
-  -
-    organization: Cloud Security Alliance
+  - organization: BlueRock
 
-  -
-    organization: CrowdStrike
+  - organization: Booz Allen Hamilton
 
-  -
-    organization: FS-ISAC
+  - organization: CATO Networks
 
-  -
-    organization: Fujitsu
+  - organization: Citigroup
 
-  -
-    organization: HCA Healthcare
+  - organization: Cloud Security Alliance
 
-  -
-    organization: HiddenLayer
+  - organization: CrowdStrike
 
-  -
-    organization: JP Morgan Chase Bank
+  - organization: FS-ISAC
 
-  -
-    organization: Standard Chartered
+  - organization: Fujitsu
 
-  -
-    organization: Verizon Business
+  - organization: HCA Healthcare
+
+  - organization: HiddenLayer
+
+  - organization: JP Morgan Chase Bank
+
+  - organization: Standard Chartered
     contributors:
-        - Jorge Orchilles
-        - Tim Schulz
-        - Heather Linn
-        - Kamila Wong
-        - Alexander Shapiro
-        - Harish Arunachalam
-        
+      - Wojciech Lesicki
+      - Andrzej Agria
 
+  - organization: Verizon Business
+    contributors:
+      - Jorge Orchilles
+      - Tim Schulz
+      - Heather Linn
+      - Kamila Wong
+      - Alexander Schapiro
+      - Harish Arunachalam
 
-  -
-    organization: Microsoft
+  - organization: Microsoft
     contributors:
       - Ram Shankar
       - Siva Kumar
@@ -133,99 +119,83 @@ data:
       - Roberto Rodriguez
       - Will Pearce
 
-  -
-    organization: Bosch
+  - organization: Bosch
     contributors:
-        - Manojkumar Parmar
-        - Duplys Paul
-        - Jorge Guajardo Merchan
-        - Amit Phadke
-        - Adit Shah
-        - Tanya Motwani
-        - Pankaj Maurya
+      - Manojkumar Parmar
+      - Duplys Paul
+      - Jorge Guajardo Merchan
+      - Amit Phadke
+      - Adit Shah
+      - Tanya Motwani
+      - Pankaj Maurya
 
-  -
-    organization: IBM
+  - organization: IBM
     contributors:
       - Pin-Yu Chen
 
-  -
-    organization: NVIDIA
+  - organization: NVIDIA
     contributors:
       - David Reber Jr.
       - Keith Kozo
       - Christopher Cottrell
       - Daniel Rohrer
 
-  -
-    organization: Airbus
+  - organization: Airbus
     contributors:
       - Adam Wedgbury
 
-  -
-    organization: PricewaterhouseCoopers
+  - organization: PricewaterhouseCoopers
     contributors:
       - Michael Montecillo
 
-  -
-    organization: Deep Instinct
+  - organization: Deep Instinct
     contributors:
       - Nadav Maman
       - Shimon Noam Oren
       - Ishai Rosenberg
 
-  -
-    organization: Two Six Labs
+  - organization: Two Six Labs
     contributors:
       - David Slater
 
-  -
-    organization: University of Toronto
+  - organization: University of Toronto
     contributors:
       - Adelin Travers
       - Jonas Guan
       - Nicolas Papernot
 
-  -
-    organization: Cardiff University
+  - organization: Cardiff University
     contributors:
       - Pete Burnap
 
-  -
-    organization: Software Engineering Institute/Carnegie Mellon University
+  - organization: Software Engineering Institute/Carnegie Mellon University
     contributors:
       - Nathan M. VanHoudnos
 
-  -
-    organization: Berryville Institute of Machine Learning
+  - organization: Berryville Institute of Machine Learning
     contributors:
       - Gary McGraw
       - Harold Figueroa
       - Victor Shepardson
       - Richie Bonett
 
-  -
-    organization: Citadel AI
+  - organization: Citadel AI
     contributors:
       - Kenny Song
 
-  -
-    organization: McAfee
+  - organization: McAfee
     contributors:
       - Christiaan Beek
 
-  -
-    organization: Unaffiliated
+  - organization: Unaffiliated
     contributors:
       - Ken Luu
 
-  -
-    organization: Ant Group
+  - organization: Ant Group
     contributors:
       - Henry Xuef
 
-  -
-    organization: Palo Alto Networks
+  - organization: Palo Alto Networks
     contributors:
       - May Wang
       - Stefan Achleitner
@@ -233,31 +203,26 @@ data:
       - Ajaya Neupane
       - Lei Xu
 
-  -
-    organization: University of Chinese Academy of Sciences
+  - organization: University of Chinese Academy of Sciences
     contributors:
       - Neil Yale
       - Ying Zonghao
 
-  -
-    organization: Kaspersky
+  - organization: Kaspersky
     contributors:
       - Alexey Antonov
       - Alexey Kogtenkov
 
-  -
-    organization: spiderSilk
+  - organization: spiderSilk
     contributors:
       - Mossab Hussein
 
-  -
-    organization: Silent Break Security
+  - organization: Silent Break Security
     contributors:
       - Will Pearce
       - Nick Landers
 
-  -
-    organization: Brown University
+  - organization: Brown University
     contributors:
       - Vanya Cohen
       - Aaron Gokaslan
