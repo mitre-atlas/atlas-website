@@ -1,4 +1,4 @@
 [submodule "public/atlas-data"]
-	path = public/atlas-data
-	url = ../atlas-data.git
-	branch = develop
+        path = public/atlas-data
+        url = ../atlas-data.git
+        branch = publish-11-14-30-submodule-reference
