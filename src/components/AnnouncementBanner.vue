@@ -1,24 +1,12 @@
 <template>
-  <v-alert
-    v-if="showBanner"
-    closable
-    icon="mdi-clipboard-account"
-    color="white"
-    variant="tonal"
-    max-width="100%"
-    align="left"
-  >
+  <v-alert v-if="showBanner" closable icon="mdi-clipboard-check-outline" color="white" variant="tonal" max-width="100%" align="left">
     <span class="text-body-2">
+      Please take our <a class="text-lightBlue font-weight-bold text-decoration-underline" href="https://forms.office.com/Pages/ResponsePage.aspx?id=SNwgxlAdUkmLOd9NVNdNgvUh6fWQs9dNlvXpIGCIYZhUMEtXUUlKSUtPNlJESDMyRTk1RlQzVzZVMyQlQCN0PWcu">
+        ATLAS Feedback & Usage Survey
+      </a> by Friday, Nov 22 to help us plan the future of ATLAS!
       <!-- <v-icon class="pa-5" slot="icon" color="info">
         mdi-security
       </v-icon> -->
-      MITRE is hiring
-      <a
-        class="text-lightBlue font-weight-bold text-decoration-underline"
-        href="https://www.linkedin.com/posts/mitre-atlas_principal-ai-research-engineer-job-engineering-activity-7235300398008291330-wwuG"
-      >
-        AI security and research engineers!</a
-      >
     </span>
   </v-alert>
 </template>
