@@ -14,7 +14,7 @@ pages:
       - node_modules/
   script:
     # Configure to set Navigator URL, etc.
-    - echo "\nVITE_BASE_URL=$CI_PROJECT_NAME\n" >> .env
+    - echo -e "\nVITE_BASE_URL=$CI_PROJECT_NAME\n" >> .env
     - cat .env
     - npm run build
     # navigate into the build output directory
