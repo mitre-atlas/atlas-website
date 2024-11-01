@@ -118,5 +118,5 @@ const formattedIncidentDate = computed(() => {
 const title = computed(() => study.value.name)
 
 // Hide layer dropdowns for selected case studies until data is published
-const hide_layers_for_studies = ['AML.CS0022', 'AML.CS0023', 'AML.CS0024', 'AML.CS0025']
+const hide_layers_for_studies = []
 </script>

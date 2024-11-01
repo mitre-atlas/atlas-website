@@ -8,9 +8,9 @@ title: AI Security 101
 
 Artificial intelligence (AI) technology is advancing at a rapid rate and adoption is on the rise. Once limited only to highly controlled operational environments and use cases, today we see _AI-enabled systems_ &mdash; software systems with one or more AI components &mdash; effectively integrated into a variety of use cases and available to the public.
 
-_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system.  AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In additional to the existence of traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
+_AI security_ can be defined as the tools, strategies, and processes implemented that identify and prevent threats and attacks that could compromise the confidentiality, integrity, or availability of an AI model or AI-enabled system. AI security is a critical component of the AI development cycle to ensure safe and consistent performance throughout operation. In additional to the existence of traditional cybersecurity vulnerabilities, incorporating AI into systems also introduces new threat vectors and vulnerabilities that require a new set of security procedures. Identifying and mitigating these AI-enabled system vulnerabilities is an integral part of AI security and requires a technical and operational response.
 
-In this 101, we describe common threats to AI-enabled systems documented within MITRE ATLAS&trade;,  security and the AI lifecycle, and active research areas.
+In this 101, we describe common threats to AI-enabled systems documented within MITRE ATLAS&trade;, security and the AI lifecycle, and active research areas.
 
 #### What are attacks on AI?
 
@@ -40,15 +40,14 @@ The figure below depicts an example of an AI-enabled system containing a trained
 The table below provides high-level descriptions of adversarial attacks and their possible effects on AI-enabled systems.
 For a comprehensive list we recommend exploring the [ATLAS matrix](/matrices/ATLAS).
 
-| Attack 		        | Overview	|
-| :---			        | :---      |
-| Poisoning Attack   | Attacker modifies the training data of an AI system to get a desired outcome at inference time. With influence over training data, an attacker can create backdoors in the model where an input with the specified trigger will result in a particular output. |
-| Evasion Attack     | Attacker elicits an incorrect response from a model by crafting adversarial inputs. Typically, these inputs are designed to be indistinguishable from normal data. These attacks can be targeted, where the attacker tries to produce a specific classification, or untargeted, where they attempt to produce any incorrect classification. |
-| Functional Extraction | Attacker recovers a functionally equivalent model by iteratively querying the model. This allows an attacker to examine the offline copy of the model before further attacking the online model. |
-| Inversion Attack | Attacker recovers sensitive information about the training data. This can include full reconstructions of the data, or attributes or properties of the data. This can be a successful attack on its own or can be used to perform other attacks such as Model Evasion.  |
-| Prompt Injection Attack | Attacker crafts malicious prompts as inputs to a large language model (LLM) that cause the LLM to act in unintended ways. These "prompt injections" are often designed to cause the model to ignore aspects of its original instructions and follow the adversary's instructions instead. |
-| Traditional Cyber Attack | Attacker uses well-established Tactics, Techniques, and Procedures (TTPs) from the cyber domain to attain their goal. These attacks may target model artifacts, API keys, data servers, or other foundational aspects of AI compute infrastructure distinct from the model itself. |
-
+| Attack                   | Overview                                                                                                                                                                                                                                                                                                                                    |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Poisoning Attack         | Attacker modifies the training data of an AI system to get a desired outcome at inference time. With influence over training data, an attacker can create backdoors in the model where an input with the specified trigger will result in a particular output.                                                                              |
+| Evasion Attack           | Attacker elicits an incorrect response from a model by crafting adversarial inputs. Typically, these inputs are designed to be indistinguishable from normal data. These attacks can be targeted, where the attacker tries to produce a specific classification, or untargeted, where they attempt to produce any incorrect classification. |
+| Functional Extraction    | Attacker recovers a functionally equivalent model by iteratively querying the model. This allows an attacker to examine the offline copy of the model before further attacking the online model.                                                                                                                                            |
+| Inversion Attack         | Attacker recovers sensitive information about the training data. This can include full reconstructions of the data, or attributes or properties of the data. This can be a successful attack on its own or can be used to perform other attacks such as Model Evasion.                                                                      |
+| Prompt Injection Attack  | Attacker crafts malicious prompts as inputs to a large language model (LLM) that cause the LLM to act in unintended ways. These "prompt injections" are often designed to cause the model to ignore aspects of its original instructions and follow the adversary's instructions instead.                                                   |
+| Traditional Cyber Attack | Attacker uses well-established Tactics, Techniques, and Procedures (TTPs) from the cyber domain to attain their goal. These attacks may target model artifacts, API keys, data servers, or other foundational aspects of AI compute infrastructure distinct from the model itself.                                                          |
 
 #### How does security fit into AI model lifecycles?
 
@@ -56,12 +55,12 @@ An important consideration to countering attacks on AI-enabled systems is establ
 
 CRISP-ML(Q) defines six phases in the model lifecycle:
 
-  1.	_Business and Data Understanding_
-  2.	_Data Engineering (Data Preparation)_
-  3.	_Machine Learning Model Engineering_
-  4.	_Quality Assurance for Machine Learning Applications_
-  5.	_Deployment_
-  6.	_Monitoring and Maintenance_
+1. _Business and Data Understanding_
+2. _Data Engineering (Data Preparation)_
+3. _Machine Learning Model Engineering_
+4. _Quality Assurance for Machine Learning Applications_
+5. _Deployment_
+6. _Monitoring and Maintenance_
 
 <figure>
     <div class="v-responsive v-img" style="height: 400px;">
@@ -72,45 +71,44 @@ CRISP-ML(Q) defines six phases in the model lifecycle:
     </figcaption>
 </figure>
 
-
 Each phase begins with defining the requirements and constraints of the task, then cycles through a process of risk identification, risk evaluation, and risk mitigation until requirements are met. Teams often revisit earlier phases and loop through the pipeline multiple times as stakeholders define new requirements and constraints.
 
 It is expected that during the _Monitoring and Maintenance_ phase that the process will return to earlier development phases in response to changing real-world conditions, such as concept drift, data drift, or malicious actions.
 
 In ATLAS, we tag [mitigations](/mitigations) with phases from the CRISP-ML(Q) lifecycle to help each phase’s teams identify vulnerabilities that could impact their task requirements and possible ways to respond. We also encourage interested parties to read [the original paper on CRISP-ML(Q)](https://arxiv.org/pdf/2003.05155.pdf)
 
-
 #### Recent AI Security Topics
 
 AI Security is a constantly evolving field with subfields emerging as the technologies mature. We describe recent developments in three notable sub-fields below:
 
 ##### LLM Security
+
 Large Language Models (LLMs) are a particular category of natural language models trained on hundreds of billions of words that can generate text or images and videos in response to natural language prompts. They vaulted to public popularity with the release of OpenAI’s ChatGPT in November of 2022 due to their ability to perform multiple complex tasks such as content generation, style transfer, and text summarization, all with a single model.
 
-From a security perspective, these systems introduce unique challenges to an AI pipeline due to the massive size of the training dataset, opaque internal architecture of the model, and use of natural language for input prompting.  For example, [indirect prompt injection attacks](/techniques/AML.T0051.001) can be used to [extract a user’s personally identifiable information (PII)](/studies/AML.CS0021) or [influence the user to visit malicious websites](/studies/AML.CS0020). For sample adversarial techniques, see [LLM Prompt Injection](/techniques/AML.T0051), [Compromise LLM Plugins](/techniques/AML.T0053), and [LLM Jailbreak](/techniques/AML.T0054).
+From a security perspective, these systems introduce unique challenges to an AI pipeline due to the massive size of the training dataset, opaque internal architecture of the model, and use of natural language for input prompting. For example, [indirect prompt injection attacks](/techniques/AML.T0051.001) can be used to [extract a user’s personally identifiable information (PII)](/studies/AML.CS0021) or [influence the user to visit malicious websites](/studies/AML.CS0020). For sample adversarial techniques, see [LLM Prompt Injection](/techniques/AML.T0051), [Compromise LLM Plugins](/techniques/AML.T0053), and [LLM Jailbreak](/techniques/AML.T0054).
 
 We [updated ATLAS in Fall 2023](https://www.mitre.org/news-insights/news-release/mitre-and-microsoft-collaborate-address-generative-ai-security-risks) to incorporate a new LLM focus that includes real-world case studies of adversarial attacks. In addition to this ATLAS work, we recommend [this external list](https://llmsecurity.net/) of LLM security related papers, articles, and tools for those interested in learning more.
-
 
 ##### Hardware Security
 
 Hardware security has been studied extensively in classical cybersecurity settings and is now being examined in relation to AI systems. Example hardware security attacks include:
 
-1.	Side channel attacks &mdash; information about the system is deduced from alternative information streams such as voltage measurements or response timing,
-2.	Fault injection attacks &mdash; systems are actively disrupted by faulty input data or physical environment disruptions, and
-3.	Hardware Trojan attacks &mdash; malicious backdoors are inserted into the hardware of the systems including GPUs and other platform circuitry.
+1. Side channel attacks &mdash; information about the system is deduced from alternative information streams such as voltage measurements or response timing,
+2. Fault injection attacks &mdash; systems are actively disrupted by faulty input data or physical environment disruptions, and
+3. Hardware Trojan attacks &mdash; malicious backdoors are inserted into the hardware of the systems including GPUs and other platform circuitry.
 
 We refer interested readers to the following survey papers on this topic:
+
 - [Zhou et al. (2021): Deep Neural Network Security From a Hardware Perspective](https://ieeexplore.ieee.org/abstract/document/9642246)
 - [Xu et al. (2021): Security of Neural Networks from Hardware Perspective: A Survey and Beyond.](https://ieeexplore.ieee.org/document/9371637)
 
 ##### Policy
 
-As the significance of vulnerabilities in AI-enabled systems becomes more widely known, policy makers and political leaders have been exploring the best way to balance interests of privacy and innovation. In the United States, the [Executive Order 14110](https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/) recently directed over 50 federal entities to take action across a range of AI policy areas.  Several federal agencies have also enacted guidance on AI in recent years (e.g., [GSA AI Guide for Government](https://coe.gsa.gov/coe/ai-guide-for-government/print-all/index.html), [DoD Responsible AI Strategy](https://www.defense.gov/News/Releases/Release/Article/3588743/cdao-releases-responsible-ai-rai-toolkit-for-ensuring-alignment-with-rai-best-p/)), but legislation over academic and private sector bodies remains a complex issue with technological, economic, and ethical considerations. The most effective way to balance these factors is an open research question.
+As the significance of vulnerabilities in AI-enabled systems becomes more widely known, policy makers and political leaders have been exploring the best way to balance interests of privacy and innovation. In the United States, the [Executive Order 14110](https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/) recently directed over 50 federal entities to take action across a range of AI policy areas. Several federal agencies have also enacted guidance on AI in recent years (e.g., [GSA AI Guide for Government](https://coe.gsa.gov/coe/ai-guide-for-government/print-all/index.html), [DoD Responsible AI Strategy](https://www.defense.gov/News/Releases/Release/Article/3588743/cdao-releases-responsible-ai-rai-toolkit-for-ensuring-alignment-with-rai-best-p/)), but legislation over academic and private sector bodies remains a complex issue with technological, economic, and ethical considerations. The most effective way to balance these factors is an open research question.
 
 We list a few leading relevant publications on this topic below:
 
-- [AI Risk Management Framework](tps://www.nist.gov/itl/ai-risk-management-framework), NIST
+- [AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework), NIST
 - [Guidelines for Secure AI System Development](https://www.ncsc.gov.uk/files/Guidelines-for-secure-AI-system-development.pdf), UK National Cyber Security Centre
 - [A Unified Framework of Five Principles for AI in Society](https://hdsr.mitpress.mit.edu/pub/l0jsh9d1/release/8), Harvard Data Science Review
 - [A Taxonomy of Trustworthiness for Artificial Intelligence, UC Berkeley Center for Long-Term Cybersecurity](https://cltc.berkeley.edu/publication/a-taxonomy-of-trustworthiness-for-artificial-intelligence/)
