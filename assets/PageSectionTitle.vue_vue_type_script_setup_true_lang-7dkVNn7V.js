@@ -1,1 +1,0 @@
-import{al as a,ci as i,o as s,q as n,v as o}from"./index-DYijHe1n.js";const c={class:"text-h3 my-5"},m=a({__name:"PageSectionTitle",props:{pageTitle:{type:String,required:!0}},setup(e){const{pageTitle:t}=e;return i({title:t}),(r,l)=>(s(),n("div",c,o(e.pageTitle),1))}});export{m as _};

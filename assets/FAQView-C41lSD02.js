@@ -1,4 +1,4 @@
-import{_ as d}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-7dkVNn7V.js";import{r as h,z as u,D as p,o as s,q as r,g as m,F as g,s as f,b as o,v as y}from"./index-DYijHe1n.js";const v=`---
+import{_ as d}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-MdwKFcmm.js";import{r as h,z as u,D as p,o as s,q as r,g as m,F as g,s as f,b as o,v as y}from"./index-BJ3ql_OM.js";const v=`---
 title: Case Study Terminology
 weight: 2
 ---
