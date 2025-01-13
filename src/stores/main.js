@@ -66,7 +66,7 @@ export const useMain = defineStore('main', {
     /**
      * Whether to show the annoucement banner on pages
      */
-    doShowAnnoucementBanner: true,
+    doShowAnnoucementBanner: false,
     /**
      * Accepted values for the _objectTypePlural route
      */
