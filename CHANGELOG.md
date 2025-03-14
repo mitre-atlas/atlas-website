@@ -1,5 +1,15 @@
 # ATLAS Website Changelog
 
+## [4.3.0]() (2024-10-01)
+
+#### Website
+
+- New Zenity case study and techniques
+
+#### Data
+
+- Updated ATLAS data to [version 4.8.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#480-2025-03-14)
+
 ## [4.2.1]() (2024-10-24)
 
 #### Website

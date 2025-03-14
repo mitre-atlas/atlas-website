@@ -27,6 +27,10 @@ pages:
     paths:
       - public
   rules:
+    # Automatically run for branches containing "data-editor-publish" to demo published data
+    - if: $CI_COMMIT_BRANCH =~ /data-editor-publish/
+    
+    # Automatically run for the default branch (i.e. when any there are any commits or anything is merged to the default branch (including data-editor-publish branches))
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
     - pages
