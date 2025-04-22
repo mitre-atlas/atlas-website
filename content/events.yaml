@@ -202,3 +202,30 @@ data:
     url: https://aivillage.org/
     color: blue
     imageSrc: defcon.jpg
+
+  - name: "Future Tech DC: AI, Cybersecurity, and Trust"
+    date: 2025-05-19
+    location: Arlington, VA
+    description: >
+      The premier conference that explores the intersection of artificial intelligence, cybersecurity, and IT audit. Dr. Christina Liaghati, ATLAS Lead, will present a talk titled "MITRE ATLAS: Community Driven Tools for AI Security & Assurance."
+    url: https://isaca-gwdc.org/event/future-tech-dc/
+    color: grey
+    imageSrc: future_tech_dc.png
+
+  - name: Black Hat USA 2025
+    date: 2025-08-06
+    location: Las Vegas, NV
+    description: >
+      BlackHat is an internationally recognized cybersecurity event series providing the most technical and relevant information security research.
+    url: https://www.blackhat.com/
+    color: grey
+    imageSrc: blackhat.jpg
+
+  - name: NATO IST-210 Research Symposium (RSY) on AI Security and Assurance for Military Systems
+    date: 2025-10-21
+    location: McLean, VA
+    description: >
+      The main objective of the IST-210 RSY is to discuss the state-of-the-art techniques related to designing, developing, deploying and using secure, trustworthy and responsible AI for military operations. The symposium will feature presentations by leading researchers and professionals from academia, industry and research laboratories focusing on integrating secure and assured AI technologies with real NATO operational issues. The overarching objective of the symposium is to foster collaboration across fundamental research, industry applications, and military requirements, to address security and assurance challenges relevant to NATO and Allies.
+    url: https://events.sto.nato.int/index.php/upcoming-events
+    color: blue
+    imageSrc: nato.png

@@ -1,4 +1,4 @@
----
+import{_ as i}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-CffjYsZU.js";import{_ as o,z as s,r,q as c,g as l,b as d,t as f,o as u}from"./index-UwoAzBM5.js";const h=`---
 title: AI Security 101
 ---
 
@@ -193,3 +193,4 @@ We list a few leading relevant publications on this topic below:
 - Our [Tactics](/tactics) and [Techniques](/techniques) pages list the methodologies adversaries use to infiltrate and/or compromise vulnerable AI systems. Our [Matrix](/matrices/ATLAS) organizes these potential vulnerabilities graphically and chronologically for easier visual understanding, and our [Mitigations](/mitigations) page contains information how to protect your systems against them.
 - For examples of what these system attacks look like “in the wild”, check out our growing list of [Case Studies](/studies). We also have a publicly available [database of vulnerabilities found in common models](https://airisk.io).
 - Have suggestions on how we can make ATLAS more relevant to you and your organization? [Contact us via Slack, LinkedIn, Email, or Github](/resources/contact). We also welcome case study contributions through our interactive [Case Study Builder tool](/studies/create).
+`,g=["innerHTML"],p={__name:"AiSecurity101View",setup(m){const t=s("markdownit"),e={},n=t.render(h,e),a=r(e.frontmatter.title);return(y,b)=>(u(),c("div",null,[l(i,{pageTitle:a.value},null,8,["pageTitle"]),d("div",{innerHTML:f(n),class:"mx-10"},null,8,g)]))}},A=o(p,[["__scopeId","data-v-a7f6894c"]]);export{A as default};
