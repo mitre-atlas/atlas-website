@@ -139,6 +139,10 @@ const linksEnding = [
         to: '/resources/ai-security-101'
       },
       {
+        name: 'AI Security for Autonomous Systems',
+        to: '/resources/ai-security-autonomous-systems'
+      },
+      {
         name: 'ATLAS Navigator',
         to: '/navigator'
       },

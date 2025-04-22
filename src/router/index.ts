@@ -25,6 +25,10 @@ const routes = [
     redirect: '/resources/ai-security-101'
   },
   {
+    path: '/resources/ai-security-autonomous-systems',
+    component: () => import('../views/resources/AiSecurityAutonomousSystems.vue')
+  },
+  {
     path: '/resources/info',
     component: () => import('../views/resources/GeneralInformationView.vue')
   },

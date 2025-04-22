@@ -44,6 +44,10 @@ data:
       - Henry Choy
       - Vivien Jamba
       - Daniel Smarda
+      - Robert Coons
+      - Julian Waugh
+      - Therese Nkeng
+      - Nicholas Hayes
 
   - organization: Intel
     contributors:
@@ -118,6 +122,8 @@ data:
       - Pete Bryan
       - Roberto Rodriguez
       - Will Pearce
+      - Asaf Harari
+      - Idan Hen
 
   - organization: Bosch
     contributors:
@@ -190,6 +196,7 @@ data:
   - organization: Unaffiliated
     contributors:
       - Ken Luu
+      - Manojkumar Parmar
 
   - organization: Ant Group
     contributors:
@@ -233,3 +240,12 @@ data:
     contributors:
       - Michael Bargury
       - Marina Simakov
+
+  - organization: Trend Micro
+    contributors:
+      - Alfredo Oliveira
+      - David Fiser
+
+  - organization: US Bank
+    contributors:
+      - Inna Danilevich

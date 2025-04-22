@@ -102,6 +102,75 @@ We refer interested readers to the following survey papers on this topic:
 - [Zhou et al. (2021): Deep Neural Network Security From a Hardware Perspective](https://ieeexplore.ieee.org/abstract/document/9642246)
 - [Xu et al. (2021): Security of Neural Networks from Hardware Perspective: A Survey and Beyond.](https://ieeexplore.ieee.org/document/9371637)
 
+##### Autonomous Systems
+
+Our MITRE ATLAS team is conducting ongoing research on this intersection of AI security and autonomous systems and options for integrating the unique security considerations for AI-enabled autonomous systems into our existing matrix. As that continues, we wanted to write this article to introduce our initial high-level approach to the security landscape for AI-enabled autonomous systems that starts with a clearer breakdown of the typical stack for an autonomous system. Considering each component of the autonomy stack allows for better identification and understanding of the unique AI integrations and thus vulnerabilities. On the [AI Security for Autonomous Systems page](/resources/ai-security-autonomous-systems) you’ll find more information discussing our breakdown of the different components of the autonomy stack to highlight areas that can be enabled with AI.
+
+##### Malicious Use of AI - Cyber Domain
+
+We have observed a growing area of concern with respect to applying and leveraging AI technology, in particular generative models such as ChatGPT, towards the attack chain development against cyber systems. This domain, which we have coined “Malicious Use of AI for Cybersecurity”, does not directly align with the current scope or TTP structure of MITRE ATLAS or MITRE ATT&CK.
+
+Our ATLAS team is currently researching this malicious use of AI to uniquely enable cybersecurity attacks with the goal of illuminating cyber-centric insights into these threats. We are examining existing use cases and attack techniques where adversaries are leveraging AI to enhance or develop attack chains against specific operations and sectors such as critical infrastructure, focusing on real-world impacts and outcomes.
+
+For example, the integration of AI into cyber environments may offer asymmetric advantages for certain cyber operations against US supply chains or critical infrastructure. An outline of our current research is referenced in the table below. Future efforts are also intended to identify relevant intersections with the ATLAS and/or ATT&CK matrices, mapping out connections and developing new potential ATLAS products to ensure alignment with existing frameworks while addressing emerging AI-enhanced threats.
+
+<table style="width:60%; margin:0 auto; border:0; border-collapse: separate; border-spacing: 3px 12px;">
+  <caption class="text-caption text-center mb-4" style="caption-side: bottom;">
+    Figure: An outline of our current investigation scope, which is focused on capturing the effects and outcomes of malicious applications of AI towards various cyber operations and sectors. This scope is a work in progress.
+  </caption>
+
+  <tr>
+    <th colspan=100% style="border:0; font-size:24px; font-weight:bold;">Effects & Outcomes</th>
+  </tr>
+  <tr>
+    <th rowspan=4 style="background-color:#ffffff; border:0; min-width:50px; writing-mode:vertical-rl; font-size:24px; font-weight:bold;">Operations</th>
+  </tr>
+  <tr>
+    <td style="background-color:#0d2f4f; color:#ffffff; text-align:center; font-size: 18px; font-weight:bold;">Asymmetric Advantage</td>
+    <td style="background-color:#005b94; color:#ffffff">Lowered barrier of entry for attacks.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Accelerated evolution of attacks.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Increased attack complexity.</td>
+    <td style="background-color:#005b94; color:#ffffff;"></td>
+  </tr>
+  <tr>
+    <td style="background-color:#0D2F4F; color:#ffffff; text-align:center; font-size: 18px; font-weight:bold;">New attack Vectors</td>
+    <td style="background-color:#005b94; color:#ffffff;">AI-powered reconnaissance and vulnerability scanning.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Instantaneous evasion and adaptation.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Automated and AI-aided development.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Personalized phishing and social engineering.</td>
+  </tr>
+  <tr>
+    <td style="background-color:#0D2F4F; color:#ffffff; text-align:center; font-size: 18px; font-weight:bold;">Enhanced Threat Targeting</td>
+    <td style="background-color:#005b94; color:#ffffff;">AI-powered reconnaissance and vulnerability scanning.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Identification of evolving attack tactics.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Accelerated vulnerability discovery.</td>
+    <td style="background-color:#005b94; color:#ffffff;"></td>
+  </tr>
+
+  <tr>
+    <th rowspan=4 style="background-color:#ffffff; border:0; min-width:50px; writing-mode:vertical-rl; font-size:24px; font-weight:bold;">Sectors</th>
+  </tr>
+  <tr>
+    <td style="background-color:#0D2F4F; color:#ffffff; text-align:center; font-size: 18px; font-weight:bold;">Supply Chain</td>
+    <td style="background-color:#005b94; color:#ffffff;">Targeted supply chain compromise.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Supply chain attack persistence.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Predictive attack planning.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Automated system sabotage.</td>
+  </tr>
+  <tr>
+    <td style="background-color:#0D2F4F; color:#ffffff; text-align:center; font-size: 18px; font-weight:bold;">Critical Infrastructure</td>
+    <td style="background-color:#005b94; color:#ffffff;">Disruption of critical infrastructure operations.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Countermeasure deception.</td>
+    <td style="background-color:#005b94; color:#ffffff;">Rapid identification of interdependencies.</td>
+    <td style="background-color:#005b94; color:#ffffff;"></td>
+  </tr>
+</table>
+
+References: 
+
+- [Mapping Misuse of Generative AI](https://deepmind.google/discover/blog/mapping-the-misuse-of-generative-ai/) – Google Deepmind
+- [Evaluating Malicious Generative AI Capabilities](https://cetas.turing.ac.uk/publications/evaluating-malicious-generative-ai-capabilities) – Alan Turing Institute
+
 ##### Policy
 
 As the significance of vulnerabilities in AI-enabled systems becomes more widely known, policy makers and political leaders have been exploring the best way to balance interests of privacy and innovation. In the United States, several federal agencies have enacted guidance on AI (e.g., [GSA AI Guide for Government](https://coe.gsa.gov/coe/ai-guide-for-government/print-all/index.html), [DoD Responsible AI Strategy](https://www.defense.gov/News/Releases/Release/Article/3588743/cdao-releases-responsible-ai-rai-toolkit-for-ensuring-alignment-with-rai-best-p/)), but legislation over academic and private sector bodies remains a complex issue with technological, economic, and ethical considerations. The most effective way to balance these factors is an open research question.

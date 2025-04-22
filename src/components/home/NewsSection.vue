@@ -46,6 +46,9 @@ fetch(getPathWithBase('/content/events.yaml'))
 
     // Take the most recent
     events.value = events.value.slice(0, 3)
+
+    // Sort by date, oldest first
+    events.value.sort((a, b) => a.date - b.date)
   })
   .catch((error) => {
     console.error('Error fetching YAML file:', error)
