@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="my-5">
-      <div>&copy; 2021-2024 The MITRE Corporation. All Rights Reserved.</div>
+      <div>&copy; 2021-2025 The MITRE Corporation. All Rights Reserved.</div>
       <div>Approved for Public Release; Distribution Unlimited. Case Number 21-2363.</div>
       <div>
         MITRE ATLAS&trade; and MITRE ATT&CK<sup>&reg;</sup> are a trademark and registered trademark

@@ -40,5 +40,5 @@ $ npm run preview
 
 ## Notice
 
-Copyright 2021-2024 The MITRE Corporation.
+Copyright 2021-2025 The MITRE Corporation.
 Approved for Public Release; Distribution Unlimited. Case Number 21-2363.
