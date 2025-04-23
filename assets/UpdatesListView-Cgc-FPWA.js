@@ -1,4 +1,4 @@
-import{_ as R}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-CffjYsZU.js";import{e as T,D as V,q as h,o as d,b,g as a,w as c,F as N,s as G,c as v,E as U,v as H,G as W,n as B,t as m,z,ae as F,af as e,ag as K,r as $,h as J,i as f,ah as X}from"./index-UwoAzBM5.js";const L=`#### June 2021
+import{_ as R}from"./PageSectionTitle.vue_vue_type_script_setup_true_lang-DuHzWsQq.js";import{e as T,D as V,q as h,o as d,b,g as a,w as c,F as N,s as G,c as v,E as U,v as H,G as W,n as B,t as m,z,ae as F,af as e,ag as K,r as $,h as J,i as f,ah as X}from"./index-p9DeK3oM.js";const L=`#### June 2021
 
 ##### Website v2.0.0 - 2.1.3
 
@@ -444,11 +444,11 @@ The language in TTP names and descriptions has been updated to consistently pref
 
 - Added new case studies
 
-  - [AI Model Tampering via Supply Chain Attack](/studies/AML.CS0027)
-  - [Organization Confusion on Hugging Face](/studies/AML.CS0028)
-  - [LLM Jacking](/studies/AML.CS0029)
-  - [Malicious Models on Hugging Face](/studies/AML.CS0030)
-  - [Google Bard Conversation Exfiltration](/studies/AML.CS0031)
+  - [Organization Confusion on Hugging Face](/studies/AML.CS0027)
+  - [AI Model Tampering via Supply Chain Attack](/studies/AML.CS0028)
+  - [Google Bard Conversation Exfiltration](/studies/AML.CS0029)
+  - [LLM Jacking](/studies/AML.CS0030)
+  - [Malicious Models on Hugging Face](/studies/AML.CS0031)
 
 - Updated existing case studies
 
