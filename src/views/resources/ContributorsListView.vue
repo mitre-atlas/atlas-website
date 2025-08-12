@@ -8,17 +8,7 @@
     <p class="text-h5 mt-10">Feedback and Improvement</p>
     <p>
       Send us your feedback and improvements to tactics, techniques, and case studies: please email
-      <a href="mailto:atlas@mitre.org">atlas@mitre.org</a> or
-      <a
-        href="https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ"
-        target="_blank"
-        >join MITRE ATLAS on Slack</a
-      >
-      and post on the
-      <a href="https://slack.com/app_redirect?team=T02RY3VGBPS&channel=C03745F7LDQ" target="_blank"
-        >#feedback-and-recommendations</a
-      >
-      channel.
+      <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
     </p>
     <p class="text-h5 mt-10">Contribute Case Studies</p>
     <p>

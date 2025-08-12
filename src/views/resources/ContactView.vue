@@ -3,7 +3,7 @@
     <PageSectionTitle :pageTitle="title" />
     <p class="my-5">
       Join our collaborative community to shape future tool and framework developments in AI
-      security, threat mitigation, bias, privacy and other critical aspects of AI assurance.
+      security, threat mitigation, robustness, privacy and other critical aspects of AI assurance.
     </p>
 
     <!-- Rows of contact cards -->
@@ -77,13 +77,6 @@ const contacts = [
     title: 'ATLAS on LinkedIn',
     text: 'Follow us on LinkedIn',
     link: 'https://www.linkedin.com/showcase/mitre-atlas/'
-  },
-  {
-    icon: 'mdi-slack',
-    color: 'green-darken-3',
-    title: 'MITRE | ATLAS Slack',
-    text: 'Join the Slack workspace for discussions with the broader community',
-    link: 'https://join.slack.com/t/mitreatlas/shared_invite/zt-10i6ka9xw-~dc70mXWrlbN9dfFNKyyzQ'
   }
 ]
 const engages = [

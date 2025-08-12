@@ -29,6 +29,10 @@ const routes = [
     component: () => import('../views/resources/AiSecurityAutonomousSystems.vue')
   },
   {
+    path: '/resources/safe-ai',
+    component: () => import('../views/resources/SafeAIView.vue')
+  },
+  {
     path: '/resources/info',
     component: () => import('../views/resources/GeneralInformationView.vue')
   },

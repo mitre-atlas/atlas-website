@@ -143,6 +143,10 @@ const linksEnding = [
         to: '/resources/ai-security-autonomous-systems'
       },
       {
+        name: 'SAFE-AI: AI Security Controls and Guidelines',
+        to: '/resources/safe-ai'
+      },
+      {
         name: 'ATLAS Navigator',
         to: '/navigator'
       },

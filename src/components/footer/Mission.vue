@@ -6,7 +6,7 @@
           <v-row>
             <div :class="`text-${calloutTextSize} text-${calloutJustification}`">
               Join our collaborative community to shape future tool and framework developments in AI
-              security, threat mitigation, bias, privacy and other critical aspects of AI assurance.
+              security, threat mitigation, robustness, privacy and other critical aspects of AI assurance.
             </div>
           </v-row>
           <v-row :justify="`${calloutJustification}`" class="mt-5">

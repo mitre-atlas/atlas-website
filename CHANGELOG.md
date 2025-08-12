@@ -1,5 +1,27 @@
 # ATLAS Website Changelog
 
+## [4.5.0]() (2024-08-13)
+
+#### Website
+
+- Added SAFE-AI article
+
+#### Data
+
+- Updated ATLAS data to [version 4.9.1](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#491-2025-08-13)
+
+## [4.4.0]() (2024-04-22)
+
+#### Website
+
+- Added article on AI Security for Autonomous Systems
+- Added article on Malicious use of AI
+- Updated to include new/updated TTPs and case studies
+
+#### Data
+
+- Updated ATLAS data to [version 4.9.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#490-2025-04-22)
+
 ## [4.3.0]() (2024-10-01)
 
 #### Website
