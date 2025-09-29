@@ -1,5 +1,17 @@
 # ATLAS Website Changelog
 
+## [4.6.0]() (2024-09-30)
+
+##### Website v4.6.0
+
+- New techniques focused on generative and agentic AI.
+- New phishing website detector evasion case study.
+- Displays technique maturity on technique pages.
+
+#### Data
+
+- Updated ATLAS data to [version 5.0.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#500-2025-09-30)
+
 ## [4.5.0]() (2024-08-13)
 
 #### Website
