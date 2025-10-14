@@ -8,9 +8,14 @@
       <v-icon x-small> mdi-open-in-new </v-icon>
     </a>
 
-    <!-- Display strings or numbers as-is -->
-    <span v-else-if="isValuePrimitive">
+    <!-- Display numbers as-is -->
+    <span v-else-if="isValueNumber">
       {{ value }}
+    </span>
+
+    <!-- Display strings with first letter capitilized -->
+    <span v-else-if="isValueString">
+      {{ capitilizedValueString }}
     </span>
 
     <!-- Link to data objects -->
@@ -82,7 +87,8 @@ let isVisible = computed(() => {
   // Same conditions as if-else statements in template
   return (
     objectType === 'ATT&CK-reference' ||
-    isValuePrimitive.value ||
+    isValueNumber.value ||
+    isValueString.value ||
     isThisObjectArray.value ||
     isStringArray.value
   )
@@ -124,7 +130,7 @@ let key = computed(() => {
  * The value to display, either the values themselves, or a summarizing count
  * @type {Object[] or String or Number}
  */
-let value = computed(() => {
+const value = computed(() => {
   if (isThisObjectArray.value && !doShowDataObjLinks.value) {
     // Summarize count for data objects over the display threshold
     return relatedObjs.length
@@ -134,13 +140,34 @@ let value = computed(() => {
   return relatedObjs
 })
 
+
 /**
- * Whether the value is a string or a number
+ * Whether the value is a number
  * @type {Boolean}
  */
-let isValuePrimitive = computed(() => {
+let isValueNumber = computed(() => {
   const t = typeof value.value
-  return t === 'string' || t === 'number'
+  return t === 'number'
+})
+
+/**
+ * Whether the value is a string
+ * @type {Boolean}
+ */
+let isValueString = computed(() => {
+  const t = typeof value.value
+  return t === 'string'
+})
+
+
+/**
+ * Captilize first letter in a string
+ * @type {String}
+ */
+
+let capitilizedValueString = computed(() => {
+  const valueString = value.value
+  return valueString.charAt(0).toUpperCase() + valueString.slice(1)
 })
 
 /**
@@ -168,7 +195,8 @@ let doShowKey = computed(() => {
     // Same conditions as the template rendering,
     // i.e. render key if value will also render
     objectType === 'ATT&CK-reference' ||
-    isValuePrimitive.value ||
+    isValueNumber.value ||
+    isValueString.value ||
     isThisObjectArray.value ||
     isStringArray.value ||
     // Don't render mitigation uses

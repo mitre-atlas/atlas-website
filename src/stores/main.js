@@ -192,6 +192,37 @@ export const useMain = defineStore('main', {
       }
     },
 
+
+    /**
+     * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
+     * that contain the specified nested key in the array under the given key. The array is filtered to only contain
+     * items that match the specified value(s) for the nested key. 
+     * If the object has an empty array under the key after filtering, it is removed.
+     *
+     * @param {string} objType - Value of the data object's `object-type` field
+     * @param {string} key - Data object key field with which to match
+     * @param {string} nested_key - Data object nested key field with which to match
+     * @param {string[]} values - Array of values of the data object nested key field with which to match
+     * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
+     * @returns {object[]} Array of data objects matching the parameters
+     * @alias mapGetters: getDataObjectsByTypeKeyContainingValue
+     */
+
+    getDataObjectsFilteredbyNestedKeyValue: function (state) {
+    return function (objType, key, nested_key, values, matrixId) {
+    const objs = this.getDataObjectsByType(objType, matrixId)
+    return objs
+      .filter(obj => key in obj)
+      .map(obj => {
+        // Clone the object and filter the array under 'key'
+        const newObj = { ...obj };
+        newObj[key] = obj[key].filter(item => values.includes(item[nested_key]));
+        return newObj;
+      })
+      .filter(obj => obj[key].length > 0) // Only keep objects with matches
+  }
+},
+
     /**
      * Returns an object with key/object-type to array of objects referenced by this object.
      * Re-keys specific items including "subtechnique-of" for title display purposes.

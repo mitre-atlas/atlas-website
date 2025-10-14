@@ -23,7 +23,7 @@
         </v-col>
         <v-col :justify="missionJustification">
           <a href="https://www.mitre.org" class="text-white" style="display: inline-block">
-            <v-img src="@/assets/MITRE_Mission_Vertical_White.svg" height="100px" width="150px" />
+            <v-img src="@/assets/mitre-logo-white.svg" height="80" width="320" />
             www.mitre.org
           </a>
         </v-col>

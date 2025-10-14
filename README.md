@@ -13,9 +13,9 @@ Clone the repository using `git clone --recurse-submodules`, or if the repositor
 Once the submodule is available, run the following **once** to sparse checkout only the necessary files in the `dist` directory.
 
 ```bash
-git -C static/atlas-data/ config core.sparseCheckout true
-echo 'dist/*' >> .git/modules/static/atlas-data/info/sparse-checkout
-git submodule update --force --checkout static/atlas-data/
+git -C public/atlas-data/ config core.sparseCheckout true
+echo 'dist/*' >> .git/modules/public/atlas-data/info/sparse-checkout
+git submodule update --force --checkout public/atlas-data/
 ```
 
 ## Updating ATLAS Data

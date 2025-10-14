@@ -1,5 +1,16 @@
 # ATLAS Website Changelog
 
+## [4.7.0]() (2025-10-15)
+
+##### Website v4.7.0
+
+- Added technique maturity filter to matrix view
+- Added technique maturity tooltip to technique pages
+
+#### Data
+
+- Updated ATLAS data to [version 5.0.1](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#501-2025-10-15)
+
 ## [4.6.0]() (2024-09-30)
 
 ##### Website v4.6.0
