@@ -296,4 +296,78 @@
   justify-content: center;
 }
 
+.matrix-columns {
+  display: flex;
+  gap: 80px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.matrix-text {
+  width: 100%;
+}
+
+.matrix-filter {
+  justify-content: end;
+  margin-right: 30px;
+  margin-bottom: 6px;
+}
+
+.matrix-filter .fieldset-border {
+  display: flex;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.fieldset-legend {
+  margin-left: 15px;
+  padding: 0px 2px 0px 2px;
+}
+
+.matrix-filter .slider-width {
+  width: 300px;
+  min-width: 250px;
+  max-width: 100%;
+  padding: 0 5px 0 5px;
+}
+
+
+::v-deep(.slider-width .v-slider-track) {
+  --v-slider-track-size: 4px !important;
+}
+
+::v-deep(.slider-width .v-slider-thumb) {
+  --v-slider-thumb-size: 16px !important;
+}
+
+::v-deep(.slider-width .v-slider-thumb__label) {
+  min-width: 200px !important;
+  height:100px !important;
+}
+
+::v-deep(.v-slider-track__tick-label){
+  font-size: 12px;
+  font-weight: 200;
+}
+
+
+
+/* RIGHT MOST TICK*/
+.matrix-filter ::v-deep(.v-locale--is-ltr.v-slider.v-input--horizontal .v-slider-track__tick--last .v-slider-track__tick-label, .v-locale--is-ltr .v-slider.v-input--horizontal .v-slider-track__tick--last .v-slider-track__tick-label) {
+    transform: translateX(-85%);
+}
+
+/* LEFT MOST TICK */
+.matrix-filter ::v-deep(.v-locale--is-ltr.v-slider.v-input--horizontal .v-slider-track__tick--first .v-slider-track__tick-label, .v-locale--is-ltr .v-slider.v-input--horizontal .v-slider-track__tick--first .v-slider-track__tick-label) {
+    transform: translateX(-15%);
+}
+
+
+
+.matrix-filter .fieldset-border {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 6px;
+}
+
 /*# sourceMappingURL=matrix.css.map */

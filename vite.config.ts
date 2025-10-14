@@ -28,7 +28,12 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       vue({
         include: [/\.vue$/],
-        template: { transformAssetUrls }
+        template: {
+          transformAssetUrls,
+          compilerOptions: {
+            isCustomElement: (tag) => ['Fieldset'].includes(tag),
+          }
+        }
       }),
       vuetify(),
       // Resolve Buffer is not defined for @mdit-vue-plugin-frontmatter
@@ -40,6 +45,7 @@ export default defineConfig(({ mode }) => {
       }
     },
     server: {
+      allowedHosts: [ '.mitre.org' ],
       proxy: {
         '^/api/.*': {
           target: env.VITE_API_URL,
