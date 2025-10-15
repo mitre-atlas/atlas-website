@@ -98,8 +98,7 @@ data:
 
   - organization: Microsoft
     contributors:
-      - Ram Shankar
-      - Siva Kumar
+      - Ram Shankar Siva Kumar
       - Hyrum Anderson
       - Suzy Schapperle
       - Blake Strom
@@ -249,3 +248,12 @@ data:
   - organization: US Bank
     contributors:
       - Inna Danilevich
+
+  - organization: Gen Digital
+    contributors:
+      - Savino Dambra
+      - Kevin Roundy
+
+  - organization: Cisco
+    contributors:
+      - Hyrum Anderson
