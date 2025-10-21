@@ -1,5 +1,11 @@
 # ATLAS Website Changelog
 
+## [4.7.1]() (2025-10-21)
+
+##### Website v4.7.1
+
+- Updated contributors and corrected v4.6.0 release notes.
+
 ## [4.7.0]() (2025-10-15)
 
 ##### Website v4.7.0
