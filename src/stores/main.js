@@ -726,6 +726,7 @@ export const useMain = defineStore('main', {
           // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
           const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
           t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
+          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1));  
           return t
         })
 

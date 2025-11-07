@@ -1,14 +1,25 @@
 # ATLAS Website Changelog
 
+## [4.8.0]() (2025-11-06)
+
+#### Website v4.8.0
+
+- Updated the website to use ATLAS Data v5.1.0
+- Techniques are now sorted alphabetically when displayed under tactics.
+
+#### Data
+
+- Updated ATLAS data to [version 5.1.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#510-2025-11-06)
+
 ## [4.7.1]() (2025-10-21)
 
-##### Website v4.7.1
+#### Website v4.7.1
 
 - Updated contributors and corrected v4.6.0 release notes.
 
 ## [4.7.0]() (2025-10-15)
 
-##### Website v4.7.0
+#### Website v4.7.0
 
 - Added technique maturity filter to matrix view
 - Added technique maturity tooltip to technique pages
@@ -19,7 +30,7 @@
 
 ## [4.6.0]() (2024-09-30)
 
-##### Website v4.6.0
+#### Website v4.6.0
 
 - New techniques focused on generative and agentic AI.
 - New phishing website detector evasion case study.
