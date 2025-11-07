@@ -265,3 +265,21 @@ data:
   - organization: Cisco
     contributors:
       - Hyrum Anderson
+
+  - organization: Lumia Security
+    contributors:
+      - Stiv Kupchik
+
+  - organization: Pillar Security
+    contributors:
+      - Ziv Karliner
+
+  - organization: Bank of America
+
+  - organization: Fortinet
+
+  - organization: Lloyds Banking Group
+
+  - organization: Siemens
+
+  - organization: Sopra Steria
