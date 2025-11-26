@@ -266,6 +266,10 @@ data:
     contributors:
       - Hyrum Anderson
 
+  - organization: iProov
+    contributors:
+      - Panagiotis (Panos) Papadopoulos
+
   - organization: Lumia Security
     contributors:
       - Stiv Kupchik
@@ -279,6 +283,9 @@ data:
   - organization: Fortinet
 
   - organization: Lloyds Banking Group
+    contributors:
+      - Steven McGovern
+      - Greg Mathews
 
   - organization: Siemens
 
