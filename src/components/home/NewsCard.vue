@@ -13,11 +13,12 @@
     <div>
       <v-btn
         v-if="url"
-        variant="text"
+        variant="flat"
+        color="lightNavy"
         :href="url"
         target="_blank"
         append-icon="mdi-chevron-right"
-        class="justify-start ma-1"
+        class="justify-start ms-4 mb-2"
       >
         Learn more
       </v-btn>

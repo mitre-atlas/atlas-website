@@ -3,8 +3,8 @@
     <AnnoucementBanner />
     <v-container fluid class="home-panel" align="left">
       <v-row align="center" justify="center" style="height: 100%">
-        <v-col :cols="textColSize" :class="`text-white ${shouldTextCenter}`">
-          <div :class="`text-${subtitleTextSize} mt-3`">
+        <v-col :class="`text-white text-center text-lg-left`" lg="6" cols="12">
+          <div :class="`text-h4 text-md-h2 text-lg-h1 mt-3`">
             <b class="tagline"
               >Navigate threats to AI systems through
               <span class="text-highlighter">real-world insights</span></b
@@ -12,15 +12,14 @@
           </div>
         </v-col>
 
-        <v-col align-self="end" :cols="buttonColSize" :class="`${shouldTextCenter} text-center`">
+        <v-col align-self="end" lg="5" cols="12" :class="`text-lg-right text-center`">
           <v-btn
-            class=""
             color="highlighter"
             variant="flat"
             to="/matrices/ATLAS"
             append-icon="mdi-chevron-right"
             :size="buttonSize"
-            >See the full ATLAS Matrix
+            >Explore the ATLAS Threat Matrix
           </v-btn>
         </v-col>
       </v-row>
@@ -36,11 +35,8 @@ import AnnoucementBanner from '@/components/AnnouncementBanner.vue'
 
 const { mdAndUp } = useDisplay()
 
-const textColSize = computed(() => (mdAndUp.value ? '7' : '12'))
-const buttonColSize = computed(() => (mdAndUp.value ? '4' : '12'))
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
-const shouldTextCenter = computed(() => (mdAndUp.value ? 'ml-2' : 'text-center'))
-const subtitleTextSize = computed(() => (mdAndUp.value ? 'h1' : 'h4'))
+
 </script>
 
 <style scoped>

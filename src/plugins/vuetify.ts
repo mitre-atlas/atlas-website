@@ -15,18 +15,21 @@ const mainTheme = {
     primary: '#424242',
     secondary: '#4957b2',
     error: '#b00020',
-    info: '#2196f3',
+    info: '#1BB0E6',
     success: '#4caf50',
     warning: '#fb8c00',
     bruhus: '#fb8c00',
     blue: '#005B94',
     highlighter: '#FFF601',
+    lightNavy: '#2D4862',
+    mediumNavy: '#0E2F4F',
     darkNavy: '#0B2338',
     navy: '#0D2F4F',
     lightBlue: '#87DEFF',
     darkGray: '#7E8284',
     silver: '#D4D4D3',
     lightSilver: '#F1F3F4'
+    
   }
 }
 

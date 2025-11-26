@@ -8,12 +8,12 @@
       justify="center"
     >
       <v-container styling="padding-left: 0px; padding-right: 0px;">
-        <v-row>
+        <v-row class="mx-1 mx-md-0">
           <v-col>
             <div :class="`text-${calloutTextSize}`">
               ATLAS is modeled after and complementary to
-              <span class="text-lightBlue">MITRE ATT&CK®</span>, raising awareness of the rapidly
-              evolving vulnerabilities of <span class="text-lightBlue">Al-enabled systems</span> as
+              <a href="https://attack.mitre.org/" target="_blank" class="text-lightBlue">MITRE ATT&CK®</a>, raising awareness of the rapidly
+              evolving vulnerabilities of Al-enabled systems as
               they extend beyond cyber.
             </div>
           </v-col>
@@ -31,7 +31,7 @@
                 to="/matrices/ATLAS"
                 append-icon="mdi-chevron-right"
                 :size="buttonSize"
-                >See the full ATLAS Matrix</v-btn
+                >Explore the ATLAS Threat Matrix</v-btn
               >
             </v-row>
           </v-col>

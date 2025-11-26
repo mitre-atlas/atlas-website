@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="my-5">
+    <div class="my-5 mx-3 mx-md-0">
       <div>&copy; 2021-2025 The MITRE Corporation. All Rights Reserved.</div>
       <div>Approved for Public Release; Distribution Unlimited. Case Number 21-2363.</div>
       <div>

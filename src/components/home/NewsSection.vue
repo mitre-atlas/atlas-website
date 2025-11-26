@@ -1,10 +1,12 @@
 <template>
   <v-container class="home-panel">
     <v-row>
-      <div :class="`text-${titleTextSize} mb-10`">News and Resources</div>
+      <v-col>
+        <div class="text-h4 mb-10">News and Resources</div>
+      </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="event in events" :key="event.name" :cols="mdAndUp ? 4 : 12">
+      <v-col v-for="event in events" :key="event.name" cols="12" md="4">
         <news-card
           :title="event.name"
           :subtitle="event.location"
@@ -19,15 +21,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import jsyaml from 'js-yaml'
 import NewsCard from './NewsCard.vue'
 import { getPathWithBase } from '@/assets/tools.js'
-import { useDisplay } from 'vuetify'
-
-const { mdAndUp } = useDisplay()
-
-const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h4'))
 
 const events = ref([])
 

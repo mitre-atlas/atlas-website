@@ -21,3 +21,18 @@ ul {
   padding-top: 7em !important;
   padding-bottom: 7em !important;
 }
+
+a.v-btn.link-contribute {
+    background: #1BB0E6;
+    border-radius: 5px;
+    margin: auto 20px auto 10px;
+    padding:10px 12px;
+    height: fit-content !important;
+    font-weight: bold;
+    font-family: Roboto;
+}
+
+a.v-btn.link-contribute:hover, a.v-btn.bg-info:hover {
+  background-color: #11759A !important;
+}
+

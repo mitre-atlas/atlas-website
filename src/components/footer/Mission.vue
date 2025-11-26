@@ -1,19 +1,19 @@
 <template>
   <v-container fluid align="center" justify="center" class="navy-container home-panel">
     <v-container>
-      <v-row class="text-white">
-        <v-col>
-          <v-row>
+      <v-row class="text-white ga-10">
+        <v-col cols="12" md="4">
+          <v-row class="px-md-0 px-1">
             <div :class="`text-${calloutTextSize} text-${calloutJustification}`">
               Join our collaborative community to shape future tool and framework developments in AI
               security, threat mitigation, robustness, privacy and other critical aspects of AI assurance.
             </div>
           </v-row>
-          <v-row :justify="`${calloutJustification}`" class="mt-5">
+          <v-row :justify="calloutJustification" class="mt-5">
             <v-btn
               class="mt-5"
-              variant="tonal"
-              color="lightBlue"
+              variant="flat"
+              color="info"
               to="/resources/contact"
               append-icon="mdi-chevron-right"
               :size="buttonSize"
@@ -21,10 +21,12 @@
             >
           </v-row>
         </v-col>
-        <v-col :justify="missionJustification">
-          <a href="https://www.mitre.org" class="text-white" style="display: inline-block">
+        <v-spacer></v-spacer>
+        <v-col cols="12" md="auto">
+          <a href="https://www.mitre.org" class="text-white">
             <v-img src="@/assets/mitre-logo-white.svg" height="80" width="320" />
-            www.mitre.org
+            <div style="text-transform: capitalize; max-width: 130px;">Pioneering For A Better Future</div>
+            <div>www.mitre.org</div>
           </a>
         </v-col>
       </v-row>
@@ -41,8 +43,7 @@ const { mdAndUp } = useDisplay()
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
 const calloutJustification = computed(() => (mdAndUp.value ? 'start' : 'center'))
-// TODO account for left justification of other content
-const missionJustification = computed(() => (mdAndUp.value ? 'center' : 'center'))
+
 </script>
 
 <style scoped>

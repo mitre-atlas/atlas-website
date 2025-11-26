@@ -32,8 +32,7 @@
             </v-item-group>
           </v-list>
         </v-menu>
-
-        <v-btn v-else :to="link.to" class="text-capitalize" v-text="link.name" stacked />
+        <v-btn v-else :to="link.to" :class="['text-capitalize', `link-${link.name.toLowerCase()}`]" v-text="link.name" stacked />
       </v-toolbar-items>
     </template>
     <v-toolbar-items v-if="smAndDown">
@@ -106,17 +105,7 @@ const linksBeginning = computed(() => {
 const linksEnding = [
   {
     name: 'Case Studies',
-    isDropdown: true,
-    links: [
-      {
-        name: 'Explore Case Studies',
-        to: '/studies'
-      },
-      {
-        name: 'Build Case Study',
-        to: '/studies/create'
-      }
-    ]
+    to:'/studies'
   },
   {
     name: 'Resources',
@@ -167,6 +156,10 @@ const linksEnding = [
         to: '/resources/contact'
       }
     ]
+  },
+  {
+    name: 'Contribute',
+    to: '/resources/contribute'
   }
 ]
 

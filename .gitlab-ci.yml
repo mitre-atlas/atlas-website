@@ -33,7 +33,7 @@ pages:
     # Automatically run for the default branch (i.e. when any there are any commits or anything is merged to the default branch (including data-editor-publish branches))
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   tags:
-    - pages
+    - pages-no-cui
 
 default:
   before_script:
