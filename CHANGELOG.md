@@ -1,5 +1,9 @@
 # ATLAS Website Changelog
 
+## [4.9.0]() (2025-12-24)
+
+- Updated ATLAS data to [version 5.2.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#520-2025-12-24)
+
 ## [4.8.1]() (2025-11-25)
 
 - Updated ATLAS front page
@@ -27,8 +31,6 @@
 - Updated ATLAS data to [version 5.0.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#500-2025-09-30)
 
 ## [4.5.0]() (2024-08-13)
-
-#### Website
 
 - Added SAFE-AI article
 - Updated ATLAS data to [version 4.9.1](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#491-2025-08-13)
