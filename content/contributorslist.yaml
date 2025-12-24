@@ -48,6 +48,7 @@ data:
       - Julian Waugh
       - Therese Nkeng
       - Nicholas Hayes
+      - Jessica Manzione
 
   - organization: Intel
     contributors:
@@ -123,6 +124,7 @@ data:
       - Will Pearce
       - Asaf Harari
       - Idan Hen
+      - Simone Curzi
 
   - organization: Bosch
     contributors:
@@ -196,6 +198,8 @@ data:
     contributors:
       - Ken Luu
       - Manojkumar Parmar
+      - Vijay Lalwani
+      - Ishan Shree Dani
 
   - organization: Ant Group
     contributors:
@@ -256,6 +260,8 @@ data:
   - organization: US Bank
     contributors:
       - Inna Danilevich
+      - Joe Gumke
+      - Dragan Damjanovic
 
   - organization: Gen Digital
     contributors:
@@ -290,3 +296,17 @@ data:
   - organization: Siemens
 
   - organization: Sopra Steria
+
+  - organization: NEC Corporation
+    contributors:
+    - Takeuchi Toshiki
+
+  - organization: NEC Corporation India
+    contributors:
+    - Sareena Karapoola
+    - Abhishek Dhiman
+    - Pooja Natarajan
+
+  - organization: Accenture
+    contributors:
+    - Vias Lustig
