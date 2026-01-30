@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="mb-3">
+    <v-row class="mb-3" v-if="userInput">
       <v-col :cols="smAndDown ? 12 : ''">
         <v-text-field
           v-if="includeSearch"
@@ -50,7 +50,7 @@
         <v-icon v-if="isSorted(column)" :icon="getSortIcon(column)"></v-icon>
       </template>
       <template #[`item.id`]="{ item, value }">
-        <router-link :to="item.route" class="pl-5">
+        <router-link :to="item.route">
           {{ value }}
         </router-link>
       </template>
@@ -63,10 +63,12 @@
         <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
       </template>
       <template v-for="col in customTableCol" #[`item.${col}`]="{ value }" :key="col">
-        <div
-          class="pt-5 pb-5"
-          v-html="mdAndUp ? md.render(value) : md.render(truncateText(value))"
-        />
+        <div v-if="typeof(value) === 'string'" v-html="mdAndUp ? md.render(value) : md.render(truncateText(value))" />
+        <div v-if="typeof(value) === 'object'" >
+          <router-link :to="value.route">
+            {{ value.name }}
+          </router-link>
+        </div>
       </template>
       <template v-slot:bottom> </template>
     </v-data-table>
@@ -93,17 +95,29 @@ const route = useRoute()
 
 let { objectTypePlural } = route.params
 
-const { items } = defineProps([
+const { items, itemType } = defineProps([
   /**
    * Data rows for table
    * @type {Array}
    */
-  'items'
+  'items',
+  /**
+   * Data object type or a hyphen-delimited title
+   * @type {String}
+   */
+  'itemType'
 ])
 
 const filters = reactive({
   category: [],
   'ML-lifecycle': []
+})
+
+const userInput = computed(() => {
+  if (itemType == 'mitigation' || itemType == 'procedure_examples'){
+    return false
+  }
+  return true
 })
 
 const filteredItems = computed(() => {
@@ -150,7 +164,7 @@ const stages = computed(() => {
 
 const headers = computed(() => {
   let output = [
-    { title: 'ID', key: 'id', align: mdAndUp.value ? 'end' : ' d-none' },
+    { title: 'ID', key: 'id', align: mdAndUp.value ? 'start' : ' d-none' },
     { title: 'Name', key: 'name', align: 'start' }
   ]
   const col3 = customTableCol.value.map((columnName) => {

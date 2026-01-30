@@ -1,5 +1,11 @@
 # ATLAS Website Changelog
 
+## [4.10.0]() (2025-01-08)
+
+- Updated techniques page
+- Updated contributors list
+- Updated ATLAS data to [version 5.3.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#530-2026-01-30)
+
 ## [4.9.1]() (2025-01-08)
 
 - Fixed errors in 4.9.0 release notes.

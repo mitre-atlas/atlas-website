@@ -2,20 +2,39 @@
   <v-card flat class="mt-10">
     <v-card-text class="text-body-2">
       <p><span class="font-weight-bold">ID:</span> {{ dataObject.id }}</p>
-      <div v-for="(relatedObjs, objectType) in dataObject.relatedObjects" :key="objectType">
-        <template v-if="String(objectType) === 'maturity'">
-          <v-tooltip bottom>
-            <template #activator="{ props }">
-              <span v-bind="props">
-                <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
-              </span>
-            </template>
-            <span >{{ getTooltipText(relatedObjs) }}</span>
-          </v-tooltip>
-        </template>
-        <template v-else>
-          <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
-        </template>
+      <div v-if="dataObject['object-type'] != 'technique'">
+        <div v-for="(relatedObjs, objectType) in dataObject.relatedObjects" :key="objectType">
+          <template v-if="String(objectType) === 'maturity'">
+            <v-tooltip bottom>
+              <template #activator="{ props }">
+                <span v-bind="props">
+                  <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
+                </span>
+              </template>
+              <span >{{ getTooltipText(relatedObjs) }}</span>
+            </v-tooltip>
+          </template>
+          <template v-else>
+            <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
+          </template>
+        </div>
+      </div>
+      <div v-else>
+        <div v-for="(relatedObjs,objectType) in orderedRelatedObjs">
+          <template v-if="String(objectType) === 'maturity'">
+            <v-tooltip bottom>
+              <template #activator="{ props }">
+                <span v-bind="props">
+                  <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
+                </span>
+              </template>
+              <span >{{ getTooltipText(relatedObjs) }}</span>
+            </v-tooltip>
+          </template>
+          <template v-else>
+            <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" v-if="relatedObjs != undefined" />
+          </template>
+        </div>
       </div>
       <div class="pb-4">
         <span class="font-weight-bold">Created:</span>
@@ -31,6 +50,7 @@
 
 <script setup lang="ts">
 import DataSidebarEntry from '@/components/data-display/DataSidebarEntry.vue'
+import { computed } from 'vue';
 
 const { dataObject } = defineProps(['dataObject'])
 
@@ -53,4 +73,25 @@ function getTooltipText(relatedObjs: any): string {
   return ``
 }
 
+const getNumMitigations = () => {
+ if('mitigations' in dataObject.relatedObjects) {
+  return dataObject.relatedObjects['mitigations'].length
+ } 
+ else if('mitigation' in dataObject.relatedObjects) {
+  return dataObject.relatedObjects['mitigation'].length
+ } 
+ return 0
+}
+
+console.log(dataObject.relatedObjects)
+
+const orderedRelatedObjs = computed(() => ({
+  "subtechniques": 'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['subtechniques'] : undefined,
+  "subtechnique-of": 'parent-technique' in dataObject.relatedObjects ? dataObject.relatedObjects['parent-technique'] : undefined,
+  "other-subtechniques": 'other subtechniques' in dataObject.relatedObjects ? dataObject.relatedObjects['other subtechniques'] : undefined,
+  "tactic": 'tactic' in dataObject.relatedObjects ? dataObject.relatedObjects['tactic'] : undefined,
+  "maturity": 'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['maturity'] : undefined,
+  "number-of-case-studies": 'case-study' in dataObject.relatedObjects ? dataObject.relatedObjects['case-study'].length : 0,
+  "number-of-mitigations": getNumMitigations(),
+}))
 </script>

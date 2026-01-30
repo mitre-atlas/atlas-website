@@ -3,19 +3,19 @@
     <v-list-group :value="title">
       <template v-slot:activator="{ props }">
         <v-row no-gutters>
-          <v-col cols="auto">
+          <v-col cols="auto" class="w-100">
             <v-list-item class="text-capitalize text-h5" v-bind="props">
               {{ title }}
             </v-list-item>
           </v-col>
         </v-row>
       </template>
-
       <!-- Use InfoTable if there's columnNames -->
       <InfoTable
         v-if="'columnNames' in items[0] && items[0]['object-type'] != 'case-study'"
         class="mx-8"
         :items="items"
+        :itemType="itemType"
       />
       <related-objs-list
         v-else
@@ -50,14 +50,15 @@ const { parentObject, items, itemType } = defineProps([
    */
   'itemType'
 ])
-
 const title = computed(() => {
   if (Array.isArray(items) && items.length === 1) {
     // Return what may be a singular version of this title
-    return itemType.replace('-', ' ')
+    return itemType.replace('-', ' ').replace("_", ' ')
   }
-  return dataObjectToPluralTitle(itemType)
+  return dataObjectToPluralTitle(itemType).replace("_", ' ')
 })
-
 const titleGroup = ref([title.value])
+if(title.value === 'subtechniques' || title.value == 'other subtechniques'){
+  titleGroup.value = []
+}
 </script>

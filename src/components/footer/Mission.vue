@@ -5,8 +5,8 @@
         <v-col cols="12" md="4">
           <v-row class="px-md-0 px-1">
             <div :class="`text-${calloutTextSize} text-${calloutJustification}`">
-              Join our collaborative community to shape future tool and framework developments in AI
-              security, threat mitigation, robustness, privacy and other critical aspects of AI assurance.
+              Join our collaborative community to shape future tool and framework developments in threat
+              threat mitigation, robustness, privacy and other critical aspects of AI security.
             </div>
           </v-row>
           <v-row :justify="calloutJustification" class="mt-5">

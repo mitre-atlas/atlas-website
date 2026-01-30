@@ -1,30 +1,39 @@
 <template>
   <div v-if="dataObject != undefined">
     <PageSectionTitle :pageTitle="title" />
+
+    <!-- <DataSection
+      v-for="(relatedObjs, objectType) in subtechniques"
+      :key="objectType"
+      :itemType="objectType"
+      :items="relatedObjs"
+      :parentObject="dataObject"
+      style="border: 1px solid black; width: 50%; border-radius: 25px;"
+    /> -->
+
     <v-row>
       <v-col :cols="mdAndUp ? 9 : 12">
-        <v-list-item class="text-h5"> Summary </v-list-item>
 
         <v-list-item>
           <div
-            :class="`${mdAndUp ? 'pa-3' : ''}`"
             v-html="markdown.render(dataObject.description)"
           />
         </v-list-item>
       </v-col>
 
       <v-col :cols="mdAndUp ? 3 : 12">
-        <DataSidebar :data-object="dataObject" />
+        <DataSidebar :data-object="dataObject" style="border: 1px solid black; border-radius: 25px;"/>
       </v-col>
     </v-row>
-
-    <DataSection
-      v-for="(relatedObjs, objectType) in relatedObjects"
-      :key="objectType"
-      :itemType="objectType"
-      :items="relatedObjs"
-      :parentObject="dataObject"
-    />
+    <div v-for="entry in orderedObjects">
+      <DataSection
+        v-for="(relatedObjs, objectType) in entry"
+        :key="objectType"
+        :itemType="objectType"
+        :items="relatedObjs"
+        :parentObject="dataObject"
+      />
+    </div>
   </div>
   <div v-else>
     <!-- Display ErrorNotFound if ID is not found -->
@@ -77,6 +86,74 @@ const relatedObjects = computed(() => {
     })
   }
   return relatedObjectsArrays
+})
+
+const subtechniques = computed(()=> {
+  return Object.fromEntries(
+      Object.entries(relatedObjects.value)
+        .filter(([key]) => key == 'subtechniques' || key == 'other subtechniques')
+    );
+})
+
+const filteredRelatedObjects = computed(() => {
+  // Allows a page to ignore specific fields within each json so that they do not appear.
+  const ignore = ['tactic', 'tactics', 'subtechniques', 'other subtechniques',"case-study", "parent-technique"] 
+
+  if (relatedObjects.value?.mitigation){
+    relatedObjects.value.mitigation = relatedObjects.value.mitigation.map(item => ({
+      ...item,
+      label: item.name,
+      columnNames: ["description"]
+    }))
+  }
+  
+  if(relatedObjects.value['case-study'] && dataObject.value['object-type'] == 'technique') {
+    const procedure_examples = []
+    relatedObjects.value['case-study'].forEach(cs => {
+      cs.procedure.forEach(p => {
+          if (p.technique == dataObject.value.id){
+            procedure_examples.push({  
+              id: cs.id,
+              name: cs.name,
+              actor: cs.actor,
+              // tactic: relatedObjects.value.tactic ? relatedObjects.value.tactic.filter(tactic => tactic.id == p.tactic)[0].name : relatedObjects.value.tactics.filter(tactic => tactic.id == p.tactic)[0].name,
+              tactic: {
+                name: relatedObjects.value.tactic ? relatedObjects.value.tactic.filter(tactic => tactic.id == p.tactic)[0].name : relatedObjects.value.tactics.filter(tactic => tactic.id == p.tactic)[0].name,
+                route: relatedObjects.value.tactic ? relatedObjects.value.tactic.filter(tactic => tactic.id == p.tactic)[0].route : relatedObjects.value.tactics.filter(tactic => tactic.id == p.tactic)[0].route,
+              },
+              description: p.description,
+              'object-type': 'procedure_examples',
+              label: cs.name,
+              columnNames: ['actor', 'tactic', 'description'],
+              route: cs.route
+            })
+          }
+        }
+      )
+    })
+    relatedObjects.value.procedure_examples = procedure_examples
+  }
+  return Object.fromEntries(
+      Object.entries(relatedObjects.value)
+        .filter(([key]) => !ignore.includes(key))
+    );
+})
+
+
+const orderedObjects = computed(() => {
+  const order = ['procedure_examples', 'case-study', 'mitigation']
+  const orderedObjs = []
+  order.forEach(k => {
+    if (Object.keys(filteredRelatedObjects.value).includes(k)){
+      orderedObjs.push({[k]: filteredRelatedObjects.value[k]})
+    }
+  })
+  Object.keys(filteredRelatedObjects.value).forEach(k => {
+    if(!(order.includes(k))){
+      orderedObjs.push({[k]: filteredRelatedObjects.value[k]})
+    }
+  })
+  return orderedObjs
 })
 
 // Page title is the element name

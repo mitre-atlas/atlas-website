@@ -75,7 +75,20 @@ data:
 
   - organization: FS-ISAC
 
-  - organization: Fujitsu
+  - organization: Fujitsu Research of Europe Limited, UK
+    contributors:
+      - Inderjeet Singh
+      - Andrés Murillo, Fujitsu Research of Europe Limited, UK
+
+  - organization: Fujitsu Limited, Japan
+    contributors:
+      - Motoyoshi Sekiya, 
+      - Yuki Unno
+      - Junichi Suga
+
+  - organization: Fujitsu Defense & National Security Limited, Japan
+    contributors:
+      - Koji Yamada
 
   - organization: HCA Healthcare
 
@@ -310,3 +323,11 @@ data:
   - organization: Accenture
     contributors:
     - Vias Lustig
+
+  - organization: The National Institute of Information and Communications Technology
+    contributors:
+    - Takeshi Takahashi
+    - Keisuke Furumoto
+    - Akira Tanaka
+    - Chansu Han
+    - Kohei Miyamoto
