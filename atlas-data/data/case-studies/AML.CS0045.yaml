@@ -1,0 +1,72 @@
+---
+id: AML.CS0045
+name: Data Exfiltration via an MCP Server used by Cursor
+object-type: case-study
+summary: "The Backslash Security Research Team demonstrated that a Model Context Protocol\
+  \ (MCP) tool can be used as a vector for an indirect prompt injection attack on\
+  \ Cursor, potentially leading to the execution of malicious shell commands.\n\n\
+  The Backslash Security Research Team created a proof-of-concept MCP server capable\
+  \ of scraping webpages. When a user asks Cursor to use the tool to scrape a site\
+  \ containing a malicious prompt, the prompt is injected into Cursor\u2019s context.\
+  \ The prompt instructs Cursor to execute a shell command to exfiltrate the victim\u2019\
+  s AI agent configuration files containing credentials. Cursor does prompt the user\
+  \ before executing the malicious command, potentially mitigating the attack."
+incident-date: 2025-06-24
+incident-date-granularity: DATE
+procedure:
+- tactic: '{{resource_development.id}}'
+  technique: '{{llm_prompt_crafting.id}}'
+  description: "The researchers crafted a malicious prompt containing an instruction\
+    \ to execute the malicious shell command to exfiltrate the victim\u2019s AI agent\
+    \ credentials."
+- tactic: '{{resource_development.id}}'
+  technique: '{{stage_cap.id}}'
+  description: The researchers created a malicious web site containing the malicious
+    prompt.
+- tactic: '{{defense_evasion.id}}'
+  technique: '{{llm_prompt_obf.id}}'
+  description: The malicious prompt was hidden in the title tag of the webpage.
+- tactic: '{{resource_development.id}}'
+  technique: '{{stage_cap.id}}'
+  description: The researchers launched a web server to receive data exfiltrated from
+    the victim.
+- tactic: '{{initial_access.id}}'
+  technique: '{{drive_by_compromise.id}}'
+  description: "When a user asked Cursor to use an MCP tool to scrape the malicious\
+    \ website, the contents of the malicious prompt was retrieved and ingested into\
+    \ Cursor\u2019s context window."
+- tactic: '{{execution.id}}'
+  technique: '{{pi_indirect.id}}'
+  description: When the MCP server scraped the malicious web site, it returned the
+    injected prompt to the MCP client and poisoned the context of the Cursor LLM.
+    Cursor executed the malicious prompt embedded in the website scraped by the MCP
+    tool.
+- tactic: '{{privilege_escalation.id}}'
+  technique: '{{llm_plugin_compromise.id}}'
+  description: "The prompt injection invoked Cursor\u2019s ability to call command\
+    \ line tools via the `run_terminal_cmd` tool.\n\nCursor prompted the user before\
+    \ executing a shell command, potentially mitigating this attack."
+- tactic: '{{defense_evasion.id}}'
+  technique: '{{llm_prompt_obf.id}}'
+  description: When the MCP server scraped the malicious web site, it returned the
+    injected prompt to the MCP client and poisoned the context of the Cursor LLM.
+    The shell command in the malicious prompt was obscured via base64 encoding, making
+    it less clear to the user that something malicious may be executed.
+- tactic: '{{credential_access.id}}'
+  technique: '{{agent_tool_config.id}}'
+  description: "The shell command located the `.openapi.apiKey` and `.cursor/mcp.json`\
+    \ credentials files that were part of the Cursor\u2019s configuration."
+- tactic: '{{exfiltration.id}}'
+  technique: '{{exfil_agent_tool.id}}'
+  description: "The credentials files were exfiltrated to the researcher\u2019s server\
+    \ via a `curl` command invoked by Cursor's `run_terminal_cmd` tool."
+- tactic: '{{impact.id}}'
+  technique: '{{harm_financial.id}}'
+  description: A bad actor could use the stolen credentials cause financial damage
+    and could also steal other sensitive information from the victim user.
+target: Cursor
+actor: Backslash Security Research Team
+case-study-type: exercise
+references:
+- title: 'Simulating a Context-Poisoning Vulnerable MCP Server: A POC'
+  url: https://www.backslash.security/blog/simulating-a-vulnerable-mcp-server-for-context-poisoning

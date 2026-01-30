@@ -489,18 +489,47 @@
 - &supply_chain_software
   id: AML.T0010.001
   name: AI Software
-  description: 'Most AI systems rely on a limited set of AI frameworks.
+  description: 'Adversaries may target software packages that are commonly used in
+    AI-enabled systems or are part of the AI DevOps lifecycle. This can include deep
+    learning frameworks used to build AI models (e.g. PyTorch, TensorFlow, Jax), generative
+    AI integration frameworks (e.g. LangChain, LangFlow), inference engines, AI DevOps
+    tools, and Model Context Protocol servers, which give AI agents access to tools
+    and data resources. They may also target the dependency chains of any of these
+    software packages [\[1\]][1]. Additionally, adversaries may target specific components
+    used by AI software such as configuration files [\[2\]][2] or example usage of
+    AI tools, which may be distributed in Jupyter notebooks [\[3\]][3].
 
-    An adversary could get access to a large number of AI systems through a comprise
-    of one of their supply chains.
 
-    Many AI projects also rely on other open source implementations of various algorithms.
+    Adversaries may compromise legitimate packages [\[4\]][4] or publish malicious
+    software to a namesquatted location [\[1\]][1]. They may target package names
+    that are hallucinated by large language models [\[5\]][5] (see: Publish Hallucinated
+    Entities). They may also perform a "rugpull" in which they first publish a legitimate
+    package and then publish a malicious version once they reach a critical mass of
+    users [\[6\]][6].
 
-    These can also be compromised in a targeted way to get access to specific systems.'
+
+    [1]: https://pytorch.org/blog/compromised-nightly-dependency/ "Compromised PyTorch-nightly
+    dependency chain between December 25th and December 30th, 2022."
+
+    [2]: https://www.pillar.security/blog/new-vulnerability-in-github-copilot-and-cursor-how-hackers-can-weaponize-code-agents
+    "New Vulnerability in GitHub Copilot and Cursor: How Hackers Can Weaponize Code
+    Agents"
+
+    [3]: https://medium.com/mlearning-ai/careful-who-you-colab-with-fa8001f933e7 "Careful
+    Who You Colab With: abusing google colaboratory"
+
+    [4]: https://aws.amazon.com/security/security-bulletins/AWS-2025-015/ "Security
+    Update for Amazon Q Developer Extension for Visual Studio Code (Version #1.84)"
+
+    [5]: https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/slopsquatting-when-ai-agents-hallucinate-malicious-packages
+    "Slopsquatting: When AI Agents Hallucinate Malicious Packages"
+
+    [6]: https://www.koi.ai/blog/postmark-mcp-npm-malicious-backdoor-email-theft "First
+    Malicious MCP in the Wild: The Postmark Backdoor That''s Stealing Your Emails"'
   object-type: technique
   subtechnique-of: '{{supply_chain.id}}'
   created_date: 2021-05-13
-  modified_date: 2025-04-09
+  modified_date: 2026-01-29
 
 - &supply_chain_data
   id: AML.T0010.002
@@ -1940,19 +1969,25 @@
   id: AML.T0068
   name: LLM Prompt Obfuscation
   description: 'Adversaries may hide or otherwise obfuscate prompt injections or retrieval
-    content from the user to avoid detection.
+    content to avoid detection from humans, large language model (LLM) guardrails,
+    or other detection mechanisms.
 
 
     For text inputs, this may include modifying how the instructions are rendered
     such as small text, text colored the same as the background, or hidden HTML elements.
     For multi-modal inputs, malicious instructions could be hidden in the data itself
     (e.g. in the pixels of an image) or in file metadata (e.g. EXIF for images, ID3
-    tags for audio, or document metadata).'
+    tags for audio, or document metadata).
+
+
+    Inputs can also be obscured via an encoding scheme such as base64 or rot13. This
+    may bypass LLM guardrails that identify malicious content and may not be as easily
+    identifiable as malicious to a human in the loop.'
   object-type: technique
   tactics:
   - '{{defense_evasion.id}}'
   created_date: 2025-03-12
-  modified_date: 2025-12-18
+  modified_date: 2026-01-28
 
 - &llm_sys_info
   id: AML.T0069
@@ -2930,3 +2965,28 @@
   - '{{ml_attack_staging.id}}'
   created_date: 2025-11-25
   modified_date: 2025-12-23
+
+- &deploy_ai_agent
+  id: AML.T0103
+  name: Deploy AI Agent
+  description: 'Adversaries may launch AI agents in the victim''s environment to execute
+    actions on their behalf. AI agents may have access to a wide range of tools and
+    data sources, as well as permissions to access and interact with other services
+    and systems in the victim''s environment. The adversary may leverage these capabilities
+    to carry out their operations.
+
+
+    Adversaries may configure the AI agent by providing an initial system prompt and
+    granting access to tools, effectively defining their goals for the agent to achieve.
+    They may deploy the agent with excessive trust permissions and disable any user
+    interactions to ensure the agent''s actions aren''t blocked.
+
+
+    Launching an AI agent may provide for some autonomous behavior, allowing for the
+    agent to make decisions and determine how to achieve the adversary''s goals. This
+    also represents a loss of control for the adversary.'
+  object-type: technique
+  tactics:
+  - '{{execution.id}}'
+  created_date: 2026-01-28
+  modified_date: 2026-01-28

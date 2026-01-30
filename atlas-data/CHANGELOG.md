@@ -1,3 +1,24 @@
+## [5.3.0]() (2025-01-30)
+
+###### Techniques
+
+- Added new techniques
+
+  - [Deploy AI Agent](/techniques/AML.T0103)
+
+- Updated existing techniques
+
+  - [LLM Prompt Obfuscation](/techniques/AML.T0068)
+  - [AI Supply Chain Compromise: AI Software](/techniques/AML.T0010.001)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [Data Exfiltration via an MCP Server used by Cursor](/studies/AML.CS0045)
+  - [Data Destruction via Indirect Prompt Injection Targeting Claude Computer-Use](/studies/AML.CS0046)
+  - [Malicious AI Agent Discovered in Amazon Q VS Code Extension ](/studies/AML.CS0047)
+
 ## [5.2.0]() (2025-12-24)
 
 ###### Techniques
