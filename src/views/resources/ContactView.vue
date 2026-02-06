@@ -2,7 +2,7 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p class="my-5">
-      Join our collaborative community to shape future tool and framework developments in threat
+      Join our collaborative community to shape future tool and framework developments in
       threat mitigation, robustness, privacy and other critical aspects of AI security.
     </p>
 

@@ -86,7 +86,8 @@ const getNumMitigations = () => {
 console.log(dataObject.relatedObjects)
 
 const orderedRelatedObjs = computed(() => ({
-  "subtechniques": 'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['subtechniques'] : undefined,
+  "ATT&CK Reference": 'ATT&CK-reference' in dataObject.relatedObjects ? dataObject.relatedObjects['ATT&CK-reference'] : undefined,
+  "subtechniques": 'subtechniques' in dataObject.relatedObjects ? dataObject.relatedObjects['subtechniques'] : undefined,
   "subtechnique-of": 'parent-technique' in dataObject.relatedObjects ? dataObject.relatedObjects['parent-technique'] : undefined,
   "other-subtechniques": 'other subtechniques' in dataObject.relatedObjects ? dataObject.relatedObjects['other subtechniques'] : undefined,
   "tactic": 'tactic' in dataObject.relatedObjects ? dataObject.relatedObjects['tactic'] : undefined,

@@ -3,7 +3,7 @@
     <span v-if="doShowKey" class="font-weight-bold">{{ key }}: </span>
 
     <!-- Link to ATT&CK -->
-    <a v-if="objectType === 'ATT&CK-reference'" :href="relatedObjs.url" target="_blank">
+    <a v-if="relatedObjs['url']" :href="relatedObjs.url" target="_blank">
       {{ relatedObjs.id }}
       <v-icon x-small> mdi-open-in-new </v-icon>
     </a>
@@ -77,7 +77,8 @@ const { objectType, relatedObjs } = defineProps([
 ])
 
 // Threshold for how many individual values to display before summarizing counts
-const maxNumDisplay = 3
+// This is the only place subtechniques are listed now, so do not summarize.
+const maxNumDisplay = 100
 
 /**
  * Whether to display this piece of data in the sidebar.
