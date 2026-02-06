@@ -1,0 +1,87 @@
+---
+id: AML.CS0048
+name: Exposed ClawdBot Control Interfaces Leads to Credential Access and Execution
+object-type: case-study
+summary: "A security researcher identified hundreds of exposed ClawdBot control interfaces\
+  \ on the public internet. ClawdBot (now OpenClaw) \u201Cis a personal AI assistant\
+  \ you run on your own devices. It answers you on the channels you already use \u2026\
+  \ , plus extension channels. \u2026 It can speak and listen on macOS/iOS/Android,\
+  \ and can render a live Canvas you control.\u201D[<sup>\\[1\\]</sup>][1] The researcher\
+  \ was able to access credentials to a variety of connected applications via ClawdBot\u2019\
+  s configuration file. They were also able to invoke ClawdBot\u2019s skills by prompting\
+  \ it via the chat interface, leading to root access in the container.\n\nThe researcher\
+  \ searched Shodan[<sup>\\[2\\]</sup>][2] to identify Clawdbot instances exposed\
+  \ on the public internet, some without authentication enabled. The researcher demonstrated\
+  \ that the ClawdBot\u2019s authentication mechanism could be bypassed due to a proxy\
+  \ misconfiguration.\n\nWith access to ClawdBot\u2019s control interface, they were\
+  \ then able to access ClawdBot\u2019s configuration, which contained credentials\
+  \ to a variety of other services. Across various exposed instances of ClawdBot,\
+  \ they identified Anthropic API Keys, Telegram Bot Tokens, Slack Oauth Credentials,\
+  \ and Signal Device Linking URIs. The researcher prompted ClawdBot directly via\
+  \ the chat interface, which led to exposure of its system prompt. They were also\
+  \ able to get ClawdBot to execute commands via it\u2019s `bash` skill, which at\
+  \ least in once instance led to root access in the ClawdBot container.\n\nThe researcher\
+  \ noted a broad range of other impacts they could have had with this level of access,\
+  \ including:\n-\tManipulation of user chat history with the ClawdBot AI agent\n\
+  -\tExfiltration of conversation histories of any connected messaging services\n\
+  -\tImpersonation of users by sending messages on their behalf via connected messaging\
+  \ services\n\n[1]: https://github.com/openclaw/openclaw\n[2]: https://www.shodan.io/search?query=Clawdbot+Control"
+incident-date: 2026-01-25
+incident-date-granularity: DATE
+procedure:
+- tactic: '{{reconnaissance.id}}'
+  technique: '{{victim_research.id}}'
+  description: "The researcher performed targeting by searching for the title tag\
+    \ of ClawdBot\u2019s web-based control interface, \u201CClawdbot Control\u201D\
+    \ on Shodan, identifying hundreds of ClawdBot control interfaces exposed on the\
+    \ public internet."
+- tactic: '{{initial_access.id}}'
+  technique: '{{exploit_public_app.id}}'
+  description: "The researcher exploited a proxy misconfiguration present in ClawdBot\u2019\
+    s control server to gain access to control interfaces that had authentication\
+    \ enabled."
+- tactic: '{{credential_access.id}}'
+  technique: '{{agent_tool_config.id}}'
+  description: "The researcher accessed credentials to a variety of services stored\
+    \ in plaintext in ClawdBot\u2019s configuration file (`~/.clawdbot/clawdbot.json`,\
+    \ which is visible in the ClawdBot dashboard. Across various exposed ClawdBot\
+    \ instances, they found:\n- Anthropic API Keys \n- Telegram Bot Tokens\n- Slack\
+    \ Oauth Credentials\n- Signal Device Linking URIs"
+- tactic: '{{execution.id}}'
+  technique: '{{pi_indirect.id}}'
+  description: The researcher was able to prompt ClawdBot directly through the control
+    interface.
+- tactic: '{{discovery.id}}'
+  technique: '{{llm_sys_prompt.id}}'
+  description: "The researcher prompted ClawdBot to `cat SOUL.md` (the file containing\
+    \ ClawdBot\u2019s system prompt), and it replied with its contents."
+- tactic: '{{credential_access.id}}'
+  technique: '{{agent_tool_credentials.id}}'
+  description: The researcher prompted ClawdBot with `env` and it responded by invoking
+    its `bash` skill  and executing the `env` command, which contained additional
+    secrets for other services.
+- tactic: '{{privilege_escalation.id}}'
+  technique: '{{llm_plugin_compromise.id}}'
+  description: "The researcher prompted ClawdBot with `root` and it responded by invoking\
+    \ its \u2018bash`skill logged in as the root user."
+- tactic: '{{defense_evasion.id}}'
+  technique: '{{manip_llm_history.id}}'
+  description: "The researcher could have used the found Anthropic API Keys to manipulate\
+    \ the ClawdBot\u2019s chat history with the user including deleting or modifying\
+    \ messages."
+- tactic: '{{exfiltration.id}}'
+  technique: '{{exfiltrate_via_cyber.id}}'
+  description: The researcher could have used the discovered application tokens to
+    exfiltrate entire private conversation histories including shared files from any
+    connected messaging apps (e.g. Telegram, Slack, Discord, Signal, WhatsApp, etc.).
+- tactic: '{{impact.id}}'
+  technique: '{{harm_user.id}}'
+  description: "The researcher could have used the discovered application tokens to\
+    \ cause further harms to the user, including impersonation by sending messages\
+    \ on the user\u2019s behalf via any of the connected messaging apps."
+target: ClawdBot (now OpenClaw)
+actor: "Jamieson O\u2019Reilly"
+case-study-type: exercise
+references:
+- title: hacking clawdbot and eating lobster souls
+  url: https://x.com/theonejvo/status/2015401219746128322

@@ -1,0 +1,76 @@
+---
+id: AML.CS0050
+name: OpenClaw 1-Click Remote Code Execution
+object-type: case-study
+summary: "A security researcher demonstrated a 1-click remote code execution (RCE)\
+  \ vulnerability to the OpenClaw AI Agent via a malicious link containing a JavaScript\
+  \ script that only takes milliseconds to execute. This vulnerability has been reported\
+  \ and is being tracked to versions of OpenClaw as CVE-2026-25253. [<sup>\\[1\\]</sup>][1]\
+  \  OpenClaw \u201Cis a personal AI assistant you run on your own devices. It answers\
+  \ you on the chat apps you already use. Unlike SaaS assistants where your data lives\
+  \ on someone else\u2019s servers, OpenClaw runs where you choose \u2013 laptop,\
+  \ homelab, or VPS. Your infrastructure. Your keys. Your data.\u201D [<sup>\\[2\\\
+  ]</sup>][2]\n\nThe researcher demonstrated that when the victim clicks a malicious\
+  \ link, a client-side JavaScript script is executed on the victim\u2019s browser\
+  \ that can steal authentication tokens from the OpenClaw control interface via a\
+  \ WebSocket connection. It then uses Cross-Site WebSocket Hijacking to bypass localhost\
+  \ restrictions to the OpenClaw Gateway API.  Once the connection was established,\
+  \ it uses the stolen token to authenticate and modify the OpenClaw agent configuration\
+  \ to disable user confirmation and escape the container, allowing shell commands\
+  \ to be run directly on the host machine.\n\n[1]: https://nvd.nist.gov/vuln/detail/CVE-2026-25253\n\
+  [2]: https://openclaw.ai/blog/introducing-openclaw"
+incident-date: 2026-02-01
+incident-date-granularity: DATE
+procedure:
+- tactic: '{{resource_development.id}}'
+  technique: '{{develop_capabilities.id}}'
+  description: The researcher developed a 1-Click RCE JavaScript script.
+- tactic: '{{resource_development.id}}'
+  technique: '{{stage_cap.id}}'
+  description: The researcher staged the malicious script at an inconspicuous website.
+- tactic: '{{execution.id}}'
+  technique: '{{malicious_link.id}}'
+  description: "When the victim clicked the link to the researchers\u2019 website,\
+    \ the malicious JavaScript script executes in the user\u2019s browser."
+- tactic: '{{credential_access.id}}'
+  technique: '{{exploit_for_creds.id}}'
+  description: "The malicious script opened a background window to the victim\u2019\
+    s OpenClaw control interface with the `gatewayUrl` set to a WebSocket address\
+    \ on the researcher\u2019s server. OpenClaw\u2019s control interface trusts the\
+    \ `gatewayUrl` query string without validation and auto-connects on load, sending\
+    \ the Gateway token to the researcher\u2019s server."
+- tactic: '{{defense_evasion.id}}'
+  technique: '{{exploit_for_evasion.id}}'
+  description: The malicious script performed Cross-Site WebSocket Hijacking (CSWSH)
+    to bypass localhost network restrictions. It opened a new WebSocket connection
+    to the OpenClaw Gateway server on localhost.
+- tactic: '{{privilege_escalation.id}}'
+  technique: '{{valid_accounts.id}}'
+  description: "The malicious script used the stolen Gateway token to authenticate,\
+    \ allowing subsequent calls to OpenClaw\u2019s Gateway API on the victim\u2019\
+    s system."
+- tactic: '{{defense_evasion.id}}'
+  technique: '{{agent_modify_config.id}}'
+  description: "The malicious script disabled OpenClaw\u2019s security feature that\
+    \ prompts users before running potentially dangerous commands. This was done by\
+    \ sending the following payload to OpenClaw\u2019s Gateway API:\n```\n{ \"method\"\
+    : \"exec.approvals.set\",\n  \"params\": { \"defaults\": { \"security\": \"full\"\
+    , \"ask\": \"off\" } }\n}\n```"
+- tactic: '{{privilege_escalation.id}}'
+  technique: '{{escape_to_host.id}}'
+  description: "The malicious script disabled OpenClaw\u2019s sandboxing, forcing\
+    \ the agent to run commands directly on the host machine instead of inside a docker\
+    \ container. This was done by sending a `config.patch` request to OpenClaw\u2019\
+    s Gateway API to set `tools.exec.host` to \"gateway\"."
+- tactic: '{{execution.id}}'
+  technique: '{{cmd_script_interpreter.id}}'
+  description: "The malicious script achieved remote code execution by sending a `node.invoke`\
+    \ (OpenClaw\u2019s RPC mechanism) request to OpenClaw\u2019s API."
+target: OpenClaw
+actor: DepthFirst
+case-study-type: exercise
+references:
+- title: 1-Click RCE To Steal Your Moltbot Data and Keys (CVE-2026-25253)
+  url: https://depthfirst.com/post/1-click-rce-to-steal-your-moltbot-data-and-keys
+- title: CVE-2026-25253
+  url: https://nvd.nist.gov/vuln/detail/CVE-2026-25253

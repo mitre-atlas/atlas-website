@@ -1,4 +1,31 @@
-## [5.3.0]() (2025-01-30)
+## [5.4.0]() (2026-02-05)
+
+###### Techniques
+
+- Added new techniques
+
+  - [Publish Poisoned AI Agent Tool](/techniques/AML.T0104)
+  - [Escape to Host](/techniques/AML.T0105)
+  - [Exploitation for Credential Access](/techniques/AML.T0106)
+  - [Exploitation for Defense Evasion](/techniques/AML.T0107)
+  - [AI Agent](/techniques/AML.T0108)
+  - [User Execution: Poisoned AI Agent Tool](/techniques/AML.T0011.002)
+  - [User Execution: Malicious Link](/techniques/AML.T0011.003)
+
+- Updated existing techniques
+
+  - [Modify AI Agent Configuration](/techniques/AML.T0081)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [Exposed ClawdBot Control Interfaces Leads to Credential Access and Execution](/studies/AML.CS0048)
+  - [Supply Chain Compromise via Poisoned ClawdBot Skill](/studies/AML.CS0049)
+  - [OpenClaw 1-Click Remote Code Execution](/studies/AML.CS0050)
+  - [OpenClaw Command & Control via Prompt Injection](/studies/AML.CS0051)
+
+## [5.3.0]() (2026-01-30)
 
 ###### Techniques
 
