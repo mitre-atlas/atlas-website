@@ -77,8 +77,7 @@ const { objectType, relatedObjs } = defineProps([
 ])
 
 // Threshold for how many individual values to display before summarizing counts
-// This is the only place subtechniques are listed now, so do not summarize.
-const maxNumDisplay = 100
+const maxNumDisplay = 6
 
 /**
  * Whether to display this piece of data in the sidebar.

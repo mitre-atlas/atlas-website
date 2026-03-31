@@ -140,6 +140,10 @@ const linksEnding = [
         to: '/navigator'
       },
       {
+        name: 'ATLAS Knowledge Graph',
+        to: '/knowledge-graph'
+      },
+      {
         name: 'Contribute',
         to: '/resources/contribute'
       },

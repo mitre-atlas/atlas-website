@@ -1,5 +1,10 @@
 # ATLAS Website Changelog
 
+## [4.12.0]() (2026-03-30)
+
+- Added a new page for the [ATLAS Knowledge Graph](/knowledge-graph)
+- Updated ATLAS data to [version 5.5.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#550-2026-03-30)
+
 ## [4.11.0]() (2026-02-05)
 
 - Updated ATLAS data to [version 5.4.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#540-2026-02-05)

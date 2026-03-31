@@ -78,6 +78,10 @@ const routes = [
     component: () => import('../views/NavigatorView.vue')
   },
   {
+    path: '/knowledge-graph',
+    component: () => import('../views/KnowledgeGraphView.vue')
+  },
+  {
     path: '/matrices/:id',
     component: () => import('@/views/MatrixView.vue')
   },
