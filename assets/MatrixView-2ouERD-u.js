@@ -1,0 +1,1 @@
+import{L as e,f as t}from"./runtime-core.esm-bundler-CC_EXLrO.js";import{t as n}from"./AtlasMatrix-BZMZHSlN.js";var r={__name:`MatrixView`,setup(r){return(r,i)=>(e(),t(n))}};export{r as default};

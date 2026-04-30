@@ -1,0 +1,1 @@
+var e=`/assets/2025-12-B1maTXW4.md`;export{e as default};

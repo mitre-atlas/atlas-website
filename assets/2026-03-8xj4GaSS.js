@@ -1,0 +1,86 @@
+var e=`#### March 2026
+
+The ATLAS knowledge base is built from community contributions. We want to acknowledge the following for their contributions for this release:
+- The members of the [Center for Threat-Informed Defense](https://ctid.mitre.org/) (CTID) [Secure AI](https://ctid.mitre.org/projects/secure-ai/) project for feedback on new techniques and case studies.
+- Zenity for their help in developing new techniques and case studies:
+  - [AI Supply Chain Compromise: AI Agent Tool](/techniques/AML.T0010.005)
+  - [AI Supply Chain Rugpull](/techniques/AML.T0109)
+  - [AI Agent Tool Poisoning](/techniques/AML.T0110)
+  - [AI Supply Chain Reputation Inflation](/techniques/AML.T0111)
+  - [Machine Compromise](/techniques/AML.T0112)
+  - [Machine Compromise: Local AI Agent](/techniques/AML.T0112.000)
+  - [Machine Compromise: AI Artifacts](/techniques/AML.T0112.001)
+  - [Poisoned Postmark MCP Server Email Exfiltration](/studies/AML.CS0053)
+  - [Data Exfiltration via Remote Poisoned MCP Tool](/studies/AML.CS0054)
+  - [AI ClickFix: Hijacking Computer-Use Agents Using ClickFix](/studies/AML.CS0055)
+- National Institute of Information and Communications Technology for developing the following:
+  - [LLMSmith: RCE Vulnerabilities in LLM-Integrated Applications](/studies/AML.CS0052)
+  - [Discover AI Agent Configuration: Call Chains](/techniques/AML.T0084.003)
+- Fujitsu Research of Europe for contributions that led to new to [Cost Harvesting](/techniques/AML.0034) subtechniques:
+  - [Excessive Queries](/techniques/AML.T0034.000)
+  - [Resource-Intensive Queries](/techniques/AML.T0034.001)
+  - [Agentic Resource Consumption](/techniques/AML.T0034.002)
+
+##### Website v4.12.0
+
+- Added a new page for the [ATLAS Knowledge Graph](/knowledge-graph)
+- Updated the website to use ATLAS Data v5.5.0
+
+
+##### Data v5.5.0
+
+This version of ATLAS data contains 1 matrix, 16 tactics, 102 techniques, 65 sub-techniques, 35 mitigations, and 57 case studies.
+
+###### Techniques
+
+- Added new techniques
+
+  - [AI Supply Chain Compromise: AI Agent Tool](/techniques/AML.T0010.005)
+  - [AI Supply Chain Rug Pull](/techniques/AML.T0109)
+  - [AI Agent Tool Poisoning](/techniques/AML.T0110)
+  - [AI Supply Chain Reputation Inflation](/techniques/AML.T0111)
+  - [Machine Compromise](/techniques/AML.T0112)
+  - [Machine Compromise: Local AI Agent](/techniques/AML.T0112.000)
+  - [Machine Compromise: AI Artifacts](/techniques/AML.T0112.001)
+  - [Cost Harvesting: Excessive Queries](/techniques/AML.T0034.000)
+  - [Cost Harvesting: Resource-Intensive Queries](/techniques/AML.T0034.001)
+  - [Cost Harvesting: Agentic Resource Consumption](/techniques/AML.T0034.002)
+  - [Discover AI Agent Configuration: Call Chains](/techniques/AML.T0084.003)
+  - [Acquire Infrastructure: AI Service Proxies](/techniques/AML.T0008.005)
+
+
+- Updated existing techniques
+
+  - [Cost Harvesting](/techniques/AML.T0034)
+  - [Exfiltration via AI Agent Tool Invocation](/techniques/AML.T086)
+  - [Publish Poisoned AI Agent Tool](/techniques/AML.T0104)
+
+###### Mitigations
+
+- Updated existing mitigations
+
+  - [Code Signing](/mitigations/AML.M0013)
+  - [AI Telemetry Logging](/mitigations/AML.M0024)
+  - [Segmentation of AI Agent Components](/mitigations/AML.M0032)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [LLMSmith: RCE Vulnerabilities in LLM-Integrated Applications](/studies/AML.CS0052)
+  - [Poisoned Postmark MCP Server Email Exfiltration](/studies/AML.CS0053)
+  - [Data Exfiltration via Remote Poisoned MCP Tool](/studies/AML.CS0054)
+  - [AI ClickFix: Hijacking Computer-Use Agents Using ClickFix](/studies/AML.CS0055)
+  - [Model Distillation Campaigns Targeting Anthropic Claude](/studies/AML.CS0056)
+
+
+- Updated existing case studies
+
+  - [Supply Chain Compromise via Poisoned ClawdBot Skill](/studies/AML.CS0049)
+
+###### Release Statement
+
+©2026 The MITRE Corporation. ALL RIGHTS RESERVED
+
+Approved for public release. Distribution unlimited 25-02579-10.
+`;export{e as t};

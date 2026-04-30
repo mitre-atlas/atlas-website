@@ -1,0 +1,20 @@
+var e=`#### October 2025
+
+##### Website v4.7.1
+
+Updated contributors and corrected v4.6.0 release notes.
+
+##### Website v4.7.0
+
+Added technique maturity filter to matrix view and tooltip to technique pages.
+
+##### Data v5.0.1
+
+Minor language tweaks and typo fixes.
+
+###### Release Statement
+
+©2025 The MITRE Corporation. ALL RIGHTS RESERVED
+
+Approved for public release. Distribution unlimited 25-02579-2.
+`;export{e as t};

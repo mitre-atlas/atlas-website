@@ -1,0 +1,10 @@
+var e=`#### August 2025
+
+##### Website v4.5.0
+
+Added an article, [SAFE-AI: A Framework for Securing AI-Enabled Systems](/resources/safe-ai).
+
+##### Data v4.9.1
+
+Minor language tweaks and typo fixes.
+`;export{e as t};
