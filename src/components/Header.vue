@@ -32,7 +32,13 @@
             </v-item-group>
           </v-list>
         </v-menu>
-        <v-btn v-else :to="link.to" :class="['text-capitalize', `link-${link.name.toLowerCase()}`]" v-text="link.name" stacked />
+        <v-btn
+          v-else
+          :to="link.to"
+          :class="['text-capitalize', `link-${link.name.toLowerCase()}`]"
+          v-text="link.name"
+          stacked
+        />
       </v-toolbar-items>
     </template>
     <v-toolbar-items v-if="smAndDown">
@@ -105,7 +111,25 @@ const linksBeginning = computed(() => {
 const linksEnding = [
   {
     name: 'Case Studies',
-    to:'/studies'
+    to: '/studies'
+  },
+  {
+    name: 'Tools',
+    isDropdown: true,
+    links: [
+      {
+        name: 'ATLAS Navigator',
+        to: '/navigator'
+      },
+      {
+        name: 'ATLAS Knowledge Graph',
+        to: '/knowledge-graph'
+      },
+      {
+        name: 'ATLAS in Attack Flow',
+        to: '/attack-flow'
+      }
+    ]
   },
   {
     name: 'Resources',
@@ -116,49 +140,21 @@ const linksEnding = [
         to: '/resources/info'
       },
       {
-        name: 'FAQ',
-        to: '/resources/faq'
+        name: 'Updates',
+        to: '/resources/updates'
       },
       {
-        name: 'ATLAS Fact Sheet',
-        href: getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')
+        name: 'Contact Us',
+        to: '/resources/contact'
       },
       {
         name: 'AI Security 101',
         to: '/resources/ai-security-101'
       },
       {
-        name: 'AI Security for Autonomous Systems',
-        to: '/resources/ai-security-autonomous-systems'
+        name: 'Glossary',
+        to: '/resources/glossary'
       },
-      {
-        name: 'SAFE-AI: AI Security Controls and Guidelines',
-        to: '/resources/safe-ai'
-      },
-      {
-        name: 'ATLAS Navigator',
-        to: '/navigator'
-      },
-      {
-        name: 'ATLAS Knowledge Graph',
-        to: '/knowledge-graph'
-      },
-      {
-        name: 'Contribute',
-        to: '/resources/contribute'
-      },
-      {
-        name: 'Updates',
-        to: '/resources/updates'
-      },
-      {
-        name: 'Upcoming Events',
-        to: '/resources/events'
-      },
-      {
-        name: 'Contact Us',
-        to: '/resources/contact'
-      }
     ]
   },
   {

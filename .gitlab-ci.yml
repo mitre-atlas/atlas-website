@@ -3,7 +3,23 @@ image: node:latest
 variables:
   GIT_SUBMODULE_STRATEGY: normal
 
-pages:
+workflow:
+  rules:
+    # Create MR pipelines only when the MR targets develop
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"'
+
+    # Create normal branch pipelines only for pushes to develop
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+
+    # Do not create any other pipelines
+    - when: never
+
+default:
+  before_script:
+    # Install and cache dependencies
+    - npm install --cache .npm --prefer-offline
+
+.build_pages: &build_pages
   stage: deploy
   cache:
     key:
@@ -13,29 +29,32 @@ pages:
     paths:
       - node_modules/
   script:
-    # Configure to set Navigator URL, etc.
-    - echo -e "\nVITE_BASE_URL=$CI_PROJECT_NAME\n" >> .env
+    # Append to the existing .env instead of overwriting it
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        printf "\nVITE_BASE_URL=%s\n" "/$CI_PROJECT_NAME/mr-$CI_MERGE_REQUEST_IID/" >> .env
+      else
+        printf "\nVITE_BASE_URL=%s\n" "/$CI_PROJECT_NAME/" >> .env
+      fi
     - cat .env
     - npm run build
-    # navigate into the build output directory
-    - cd dist
     # fix for 404 on refresh issue
-    - cp index.html 404.html
-    - cd ..
-    - cp -a dist/. public/
-  artifacts:
-    paths:
-      - public
-  rules:
-    # Automatically run for branches containing "data-editor-publish" to demo published data
-    - if: $CI_COMMIT_BRANCH =~ /data-editor-publish/
-    
-    # Automatically run for the default branch (i.e. when any there are any commits or anything is merged to the default branch (including data-editor-publish branches))
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - cp dist/index.html dist/404.html
   tags:
     - pages-no-cui
 
-default:
-  before_script:
-    # Install and cache dependencies
-    - npm install --cache .npm --prefer-offline
+pages_develop:
+  <<: *build_pages
+  pages:
+    publish: dist
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+
+pages_mr_preview:
+  <<: *build_pages
+  pages:
+    publish: dist
+    path_prefix: "mr-$CI_MERGE_REQUEST_IID"
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"'

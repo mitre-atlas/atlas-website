@@ -2,8 +2,8 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p class="my-5">
-      Join our collaborative community to shape future tool and framework developments in
-      threat mitigation, robustness, privacy and other critical aspects of AI security.
+      Join our collaborative community to shape future tool and framework developments in threat
+      mitigation, robustness, privacy and other critical aspects of AI security.
     </p>
 
     <!-- Rows of contact cards -->
@@ -80,13 +80,6 @@ const contacts = [
   }
 ]
 const engages = [
-  {
-    icon: 'mdi-calendar',
-    color: 'blue-grey',
-    title: 'Events',
-    text: 'Join us at an upcoming event',
-    link: '/resources/events'
-  },
   {
     icon: 'mdi-lightbulb',
     color: 'yellow-darken-3',

@@ -101,11 +101,7 @@
               class="mb-7"
               subtitle="Select granularity for the incident date"
               height="150"
-              :style="[
-                isHovering
-                  ? { 'border-color': '#424242' }
-                  : { 'border-color': '#9E9E9E' }
-              ]"
+              :style="[isHovering ? { 'border-color': '#424242' } : { 'border-color': '#9E9E9E' }]"
             >
               <v-radio-group
                 v-model="vModel['incident-date-granularity']"
@@ -324,28 +320,23 @@ const isStudyTypeValid = computed(() => {
   return false
 })
 
-
 const date = ref()
 const isDateEntered = ref(false)
 
 const formattedDate = computed(() => {
-    if (date.value) {
-      const options = { year: 'numeric' }; // Display settings for year and month
+  if (date.value) {
+    const options = { year: 'numeric' } // Display settings for year and month
 
-      if (vModel['incident-date-granularity'] === 'MONTH') {
-
-        options.month = 'long'; // Display full month name
-        return date.value.toLocaleDateString('en-US', options)
-
-      } else if (vModel['incident-date-granularity'] === 'YEAR') {
-
-        return date.value.getFullYear().toString();
-      }
-      return date.value.toISOString().split('T')[0];
+    if (vModel['incident-date-granularity'] === 'MONTH') {
+      options.month = 'long' // Display full month name
+      return date.value.toLocaleDateString('en-US', options)
+    } else if (vModel['incident-date-granularity'] === 'YEAR') {
+      return date.value.getFullYear().toString()
     }
-    return ''
+    return date.value.toISOString().split('T')[0]
   }
-)
+  return ''
+})
 
 watch(formattedDate, () => {
   vModel['incident-date'] = new Date(date.value)

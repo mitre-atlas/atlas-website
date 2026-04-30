@@ -29,7 +29,6 @@ const mainTheme = {
     darkGray: '#7E8284',
     silver: '#D4D4D3',
     lightSilver: '#F1F3F4'
-    
   }
 }
 

@@ -31,7 +31,7 @@
           <td v-for="(tactic, i) in tactics" :key="i" class="tactic">
             <table class="techniques-table">
               <tbody v-for="(technique, j) in tactic.techniques" :key="j">
-                <attack-technique-row :technique="technique" />
+                <attack-technique-row :technique="technique" :expand-all="expandAll" />
               </tbody>
             </table>
           </td>
@@ -53,7 +53,12 @@ const props = defineProps({
    * List of tactics to create columns for the matrix
    * @type {Object}
    */
-  tactics: Object
+  tactics: Object,
+  /**
+   * When true, expands all subtechniques; when false, collapses them
+   * @type {Boolean}
+   */
+  expandAll: Boolean
 })
 
 const tacticLastWord = (tactic_name) => {

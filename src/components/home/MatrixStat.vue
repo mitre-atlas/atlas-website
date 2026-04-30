@@ -1,29 +1,23 @@
 <template>
-  <div class="ma-3">
-    <v-row justify="center">
-      <div :class="`text-${statValueSize} text-lightBlue`">
-        {{ value }}
-      </div>
-    </v-row>
-    <v-row justify="center">
-      <div :class="`text-${statLabelSize} font-weight-bold text-uppercase text-center`">
-        {{ label }}
-      </div>
-    </v-row>
+  <div class="ma-1 text-center">
+    <div :class="`text-h4 text-${statColor}`">
+      {{ value }}
+    </div>
+    <div class="text-white text-caption font-weight-bold text-uppercase text-right">
+      {{ label }}
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useDisplay } from 'vuetify'
-
-const { value, label } = defineProps({
+const { value, label, color } = defineProps({
   value: Number,
-  label: String
+  label: String,
+  color: {
+    type: String,
+    default: 'lightBlue'
+  }
 })
 
-const { mdAndUp } = useDisplay()
-
-const statValueSize = computed(() => (mdAndUp.value ? 'h3' : 'h4'))
-const statLabelSize = computed(() => (mdAndUp.value ? 'subtitle-1' : 'subtitle-1'))
+const statColor = color
 </script>

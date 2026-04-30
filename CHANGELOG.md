@@ -1,5 +1,14 @@
 # ATLAS Website Changelog
 
+## [4.13.0]() (2026-04-30)
+
+- Reorganized Resources into Tools and Resources
+- Removed out-of-date content
+- Updated home page to include the ATLAS matrix view
+- Added ATLAS in Attack Flow page
+- Added subtechnique dropdown to technique pages
+- Updated ATLAS data to [version 5.6.0](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#560-2026-04-30)
+
 ## [4.12.0]() (2026-03-30)
 
 - Added a new page for the [ATLAS Knowledge Graph](/knowledge-graph)

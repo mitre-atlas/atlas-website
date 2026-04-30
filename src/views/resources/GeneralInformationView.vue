@@ -1,11 +1,6 @@
 <template>
   <div>
     <PageSectionTitle :pageTitle="title" />
-    <p class="text-h5 my-5">
-      <a :href="getPathWithBase('/pdf-files/MITRE_ATLAS_Fact_Sheet.pdf')"
-        >{{ VITE_MITRE_TITLE }} Fact Sheet</a
-      >
-    </p>
     <p class="text-h5 my-5">Current {{ VITE_SHORT_NAME }} Version</p>
     <v-chip
       variant="flat"
@@ -59,41 +54,6 @@
           </v-list-group>
         </div>
       </v-list>
-    </div>
-
-    <p class="text-h5 mt-10">Instructional Videos</p>
-
-    <div class="px-4 pb-4">
-      <!-- Match padding indentation of surrounding list items -->
-      <p>
-        The MITRE YouTube channel houses a
-        <a
-          target="_blank"
-          href="https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu"
-          >video playlist</a
-        >
-        containing a collection of instructional videos for users of the {{ VITE_SHORT_NAME }} site.
-      </p>
-
-      <p>Videos included:</p>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://www.youtube.com/watch?v=3FN9v-y-C-w&list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu&index=1"
-          >
-            {{ VITE_MITRE_TITLE }} Website Overview</a
-          >
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://www.youtube.com/watch?v=Np_ip14YJGg&list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu&index=2"
-          >
-            Case Study Builder Walkthrough</a
-          >
-        </li>
-      </ul>
     </div>
 
     <p class="text-h5 mt-10">ATLAS GitHub Repositories</p>
@@ -247,7 +207,7 @@ const otherSites = [
   {
     name: 'AI Risk Database',
     description: 'Explore AI supply chain risk with the AI Risk Database',
-    url: 'https://ai-incidents.mitre.org'
+    url: 'https://ai-risk.mitre.org'
   }
 ]
 </script>

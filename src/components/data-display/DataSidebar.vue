@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="mt-10">
+  <v-card flat class="mt-0">
     <v-card-text class="text-body-2">
       <p><span class="font-weight-bold">ID:</span> {{ dataObject.id }}</p>
       <div v-if="dataObject['object-type'] != 'technique'">
@@ -11,7 +11,7 @@
                   <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
                 </span>
               </template>
-              <span >{{ getTooltipText(relatedObjs) }}</span>
+              <span>{{ getTooltipText(relatedObjs) }}</span>
             </v-tooltip>
           </template>
           <template v-else>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div v-else>
-        <div v-for="(relatedObjs,objectType) in orderedRelatedObjs">
+        <div v-for="(relatedObjs, objectType) in orderedRelatedObjs">
           <template v-if="String(objectType) === 'maturity'">
             <v-tooltip bottom>
               <template #activator="{ props }">
@@ -28,11 +28,15 @@
                   <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
                 </span>
               </template>
-              <span >{{ getTooltipText(relatedObjs) }}</span>
+              <span>{{ getTooltipText(relatedObjs) }}</span>
             </v-tooltip>
           </template>
           <template v-else>
-            <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" v-if="relatedObjs != undefined" />
+            <data-sidebar-entry
+              :object-type="objectType"
+              :related-objs="relatedObjs"
+              v-if="relatedObjs != undefined"
+            />
           </template>
         </div>
       </div>
@@ -50,13 +54,18 @@
 
 <script setup lang="ts">
 import DataSidebarEntry from '@/components/data-display/DataSidebarEntry.vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const { dataObject } = defineProps(['dataObject'])
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: '2-digit', timeZone: 'UTC' }
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+    timeZone: 'UTC'
+  }
   return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
 
@@ -74,25 +83,38 @@ function getTooltipText(relatedObjs: any): string {
 }
 
 const getNumMitigations = () => {
- if('mitigations' in dataObject.relatedObjects) {
-  return dataObject.relatedObjects['mitigations'].length
- } 
- else if('mitigation' in dataObject.relatedObjects) {
-  return dataObject.relatedObjects['mitigation'].length
- } 
- return 0
+  if ('mitigations' in dataObject.relatedObjects) {
+    return dataObject.relatedObjects['mitigations'].length
+  } else if ('mitigation' in dataObject.relatedObjects) {
+    return dataObject.relatedObjects['mitigation'].length
+  }
+  return 0
 }
 
 console.log(dataObject.relatedObjects)
 
 const orderedRelatedObjs = computed(() => ({
-  "ATT&CK Reference": 'ATT&CK-reference' in dataObject.relatedObjects ? dataObject.relatedObjects['ATT&CK-reference'] : undefined,
-  "subtechniques": 'subtechniques' in dataObject.relatedObjects ? dataObject.relatedObjects['subtechniques'] : undefined,
-  "subtechnique-of": 'parent-technique' in dataObject.relatedObjects ? dataObject.relatedObjects['parent-technique'] : undefined,
-  "other-subtechniques": 'other subtechniques' in dataObject.relatedObjects ? dataObject.relatedObjects['other subtechniques'] : undefined,
-  "tactic": 'tactic' in dataObject.relatedObjects ? dataObject.relatedObjects['tactic'] : undefined,
-  "maturity": 'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['maturity'] : undefined,
-  "number-of-case-studies": 'case-study' in dataObject.relatedObjects ? dataObject.relatedObjects['case-study'].length : 0,
-  "number-of-mitigations": getNumMitigations(),
+  'ATT&CK-reference':
+    'ATT&CK-reference' in dataObject.relatedObjects
+      ? dataObject.relatedObjects['ATT&CK-reference']
+      : undefined,
+  subtechniques:
+    'subtechniques' in dataObject.relatedObjects
+      ? dataObject.relatedObjects['subtechniques']
+      : undefined,
+  'subtechnique-of':
+    'parent-technique' in dataObject.relatedObjects
+      ? dataObject.relatedObjects['parent-technique']
+      : undefined,
+  'other-subtechniques':
+    'other subtechniques' in dataObject.relatedObjects
+      ? dataObject.relatedObjects['other subtechniques']
+      : undefined,
+  tactic: 'tactic' in dataObject.relatedObjects ? dataObject.relatedObjects['tactic'] : undefined,
+  maturity:
+    'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['maturity'] : undefined,
+  'number-of-case-studies':
+    'case-study' in dataObject.relatedObjects ? dataObject.relatedObjects['case-study'].length : 0,
+  'number-of-mitigations': getNumMitigations()
 }))
 </script>

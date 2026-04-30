@@ -13,7 +13,11 @@ const routes = [
   },
   {
     path: '/resources/faq',
-    component: () => import('../views/resources/FAQView.vue')
+    component: () => import('../views/resources/GlossaryView.vue')
+  },
+  {
+    path: '/resources/glossary',
+    component: () => import('../views/resources/GlossaryView.vue')
   },
   {
     path: '/resources/ai-security-101',
@@ -39,10 +43,6 @@ const routes = [
   {
     path: '/resources/contact',
     component: () => import('../views/resources/ContactView.vue')
-  },
-  {
-    path: '/resources/events',
-    component: () => import('../views/resources/EventsView.vue')
   },
   {
     path: '/resources/contribute',
@@ -80,6 +80,10 @@ const routes = [
   {
     path: '/knowledge-graph',
     component: () => import('../views/KnowledgeGraphView.vue')
+  },
+  {
+    path: '/attack-flow',
+    component: () => import('../views/AttackFlow.vue')
   },
   {
     path: '/matrices/:id',

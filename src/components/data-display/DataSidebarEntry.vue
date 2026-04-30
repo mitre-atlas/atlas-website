@@ -140,7 +140,6 @@ const value = computed(() => {
   return relatedObjs
 })
 
-
 /**
  * Whether the value is a number
  * @type {Boolean}
@@ -158,7 +157,6 @@ let isValueString = computed(() => {
   const t = typeof value.value
   return t === 'string'
 })
-
 
 /**
  * Captilize first letter in a string

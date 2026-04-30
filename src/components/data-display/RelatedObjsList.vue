@@ -1,38 +1,34 @@
 <template>
   <div v-for="(d, i) in itemsList" :key="i">
-    <span 
-      v-if="'route' in d"
-      :key="getLabelById(d.id)"
-    >
-    <!-- Case Studies -->
-      <v-list-group 
-        :value="getLabelById(d.id)" 
+    <span v-if="'route' in d" :key="getLabelById(d.id)">
+      <!-- Case Studies -->
+      <v-list-group
+        :value="getLabelById(d.id)"
         v-if="'object-type' in d && d['object-type'] == 'case-study'"
       >
         <template v-slot:prepend>
-          <v-icon :icon="mdi-link"></v-icon>
+          <v-icon :icon="mdi - link"></v-icon>
         </template>
         <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind="props"
-          >
-          <div> 
-            {{getLabelById(d.id)}} 
-            <v-btn icon="mdi-link" size="small" :to="d.route" variant="plain" color="blue"></v-btn> 
-          </div>
-        </v-list-item>
+          <v-list-item v-bind="props">
+            <div>
+              {{ getLabelById(d.id) }}
+              <v-btn
+                icon="mdi-link"
+                size="small"
+                :to="d.route"
+                variant="plain"
+                color="blue"
+              ></v-btn>
+            </div>
+          </v-list-item>
         </template>
         <v-list-item>
           <ProcedureTimeline :study="study(d.id)" />
         </v-list-item>
       </v-list-group>
       <!-- Any other subset of items -->
-      <v-list-item
-        v-else
-        :key="getLabelById(d.id)"
-        :to="d.route"
-        class="pb-1 pt-1 mb-2"
-      >
+      <v-list-item v-else :key="getLabelById(d.id)" :to="d.route" class="pb-1 pt-1 mb-2">
         <div v-html="getLabelById(d.id)"></div>
       </v-list-item>
     </span>

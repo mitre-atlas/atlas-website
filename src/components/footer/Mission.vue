@@ -25,7 +25,9 @@
         <v-col cols="12" md="auto">
           <a href="https://www.mitre.org" class="text-white">
             <v-img src="@/assets/mitre-logo-white.svg" height="80" width="320" />
-            <div style="text-transform: capitalize; max-width: 130px;">Pioneering For A Better Future</div>
+            <div style="text-transform: capitalize; max-width: 130px">
+              Pioneering For A Better Future
+            </div>
             <div>www.mitre.org</div>
           </a>
         </v-col>
@@ -43,7 +45,6 @@ const { mdAndUp } = useDisplay()
 const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 const calloutTextSize = computed(() => (mdAndUp.value ? 'h5' : 'h5'))
 const calloutJustification = computed(() => (mdAndUp.value ? 'start' : 'center'))
-
 </script>
 
 <style scoped>

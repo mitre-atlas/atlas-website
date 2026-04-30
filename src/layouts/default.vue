@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <Header />
     <SideNav v-if="doesPageHaveSideNav" />
     <v-main :class="`${isRouteFullView ? '' : 'mx-16 mb-16'}`">

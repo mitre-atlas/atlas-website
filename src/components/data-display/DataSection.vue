@@ -53,12 +53,12 @@ const { parentObject, items, itemType } = defineProps([
 const title = computed(() => {
   if (Array.isArray(items) && items.length === 1) {
     // Return what may be a singular version of this title
-    return itemType.replace('-', ' ').replace("_", ' ')
+    return itemType.replace('-', ' ').replace('_', ' ')
   }
-  return dataObjectToPluralTitle(itemType).replace("_", ' ')
+  return dataObjectToPluralTitle(itemType).replace('_', ' ')
 })
 const titleGroup = ref([title.value])
-if(title.value === 'subtechniques' || title.value == 'other subtechniques'){
+if (title.value === 'subtechniques' || title.value == 'other subtechniques') {
   titleGroup.value = []
 }
 </script>

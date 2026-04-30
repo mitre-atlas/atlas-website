@@ -63,8 +63,11 @@
         <span v-if="'ATT&CK-reference' in item" class="attack-and">&</span>
       </template>
       <template v-for="col in customTableCol" #[`item.${col}`]="{ value }" :key="col">
-        <div v-if="typeof(value) === 'string'" v-html="mdAndUp ? md.render(value) : md.render(truncateText(value))" />
-        <div v-if="typeof(value) === 'object'" >
+        <div
+          v-if="typeof value === 'string'"
+          v-html="mdAndUp ? md.render(value) : md.render(truncateText(value))"
+        />
+        <div v-if="typeof value === 'object'">
           <router-link :to="value.route">
             {{ value.name }}
           </router-link>
@@ -114,7 +117,7 @@ const filters = reactive({
 })
 
 const userInput = computed(() => {
-  if (itemType == 'mitigation' || itemType == 'procedure_examples'){
+  if (itemType == 'mitigation' || itemType == 'procedure_examples') {
     return false
   }
   return true

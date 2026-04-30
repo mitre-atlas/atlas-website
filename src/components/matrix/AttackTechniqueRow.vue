@@ -48,7 +48,7 @@
 /**
  * Renders technique and subtechnique information on the ATLAS matrix
  */
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import AttackTechniqueCell from '@/components/matrix/AttackTechniqueCell.vue'
 
 const props = defineProps({
@@ -56,10 +56,24 @@ const props = defineProps({
    * A list of techniques and their subtechniques to render on the matrix
    * @type {Object}
    */
-  technique: Object
+  technique: Object,
+  /**
+   * When true, expands all subtechniques; when false, collapses them
+   * @type {Boolean}
+   */
+  expandAll: Boolean
 })
 
 const doShowSubtechniques = ref(false)
+
+watch(
+  () => props.expandAll,
+  (newVal) => {
+    if (newVal !== undefined) {
+      doShowSubtechniques.value = newVal
+    }
+  }
+)
 
 /**
  * Opens and closes subtechnique drawers

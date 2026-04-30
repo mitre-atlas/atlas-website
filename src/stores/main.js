@@ -11,7 +11,6 @@ import { getPathWithBase } from '@/assets/tools'
  */
 const DEFAULT_DATA_OBJECT_KEYS = ['id', 'object-type', 'name', 'description']
 
-
 /**
  * Keys added as part of the nuxtServerInit ingest for website use.
  * To be stripped from objects before export.
@@ -192,11 +191,10 @@ export const useMain = defineStore('main', {
       }
     },
 
-
     /**
      * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
      * that contain the specified nested key in the array under the given key. The array is filtered to only contain
-     * items that match the specified value(s) for the nested key. 
+     * items that match the specified value(s) for the nested key.
      * If the object has an empty array under the key after filtering, it is removed.
      *
      * @param {string} objType - Value of the data object's `object-type` field
@@ -209,19 +207,19 @@ export const useMain = defineStore('main', {
      */
 
     getDataObjectsFilteredbyNestedKeyValue: function (state) {
-    return function (objType, key, nested_key, values, matrixId) {
-    const objs = this.getDataObjectsByType(objType, matrixId)
-    return objs
-      .filter(obj => key in obj)
-      .map(obj => {
-        // Clone the object and filter the array under 'key'
-        const newObj = { ...obj };
-        newObj[key] = obj[key].filter(item => values.includes(item[nested_key]));
-        return newObj;
-      })
-      .filter(obj => obj[key].length > 0) // Only keep objects with matches
-  }
-},
+      return function (objType, key, nested_key, values, matrixId) {
+        const objs = this.getDataObjectsByType(objType, matrixId)
+        return objs
+          .filter((obj) => key in obj)
+          .map((obj) => {
+            // Clone the object and filter the array under 'key'
+            const newObj = { ...obj }
+            newObj[key] = obj[key].filter((item) => values.includes(item[nested_key]))
+            return newObj
+          })
+          .filter((obj) => obj[key].length > 0) // Only keep objects with matches
+      }
+    },
 
     /**
      * Returns an object with key/object-type to array of objects referenced by this object.
@@ -589,32 +587,27 @@ export const useMain = defineStore('main', {
       this.objectTypePluralValues = [...payload]
     },
 
+    // Convert all date strings in a JS object to JavaScript Date objects
+    convertDatesToJS(data) {
+      // The following field names are expected by the website to be dates
+      const dateFieldNames = ['created_date', 'modified_date', 'incident-date']
 
-  // Convert all date strings in a JS object to JavaScript Date objects
-  convertDatesToJS(data) {
-    // The following field names are expected by the website to be dates
-    const dateFieldNames = [
-      'created_date',
-      'modified_date',
-      'incident-date'
-    ]
-
-    // Recursively look for the specified fields to cast their values as Dates
-    if (Array.isArray(data)) {
-      return data.map(item => this.convertDatesToJS(item));
-    } else if (typeof data === 'object' && data !== null) {
-      const newData = {}
-      for (const key in data) {
-        if (dateFieldNames.includes(key)) {
-          newData[key] = new Date(data[key])
-        } else {
-          newData[key] = this.convertDatesToJS(data[key]);
+      // Recursively look for the specified fields to cast their values as Dates
+      if (Array.isArray(data)) {
+        return data.map((item) => this.convertDatesToJS(item))
+      } else if (typeof data === 'object' && data !== null) {
+        const newData = {}
+        for (const key in data) {
+          if (dateFieldNames.includes(key)) {
+            newData[key] = new Date(data[key])
+          } else {
+            newData[key] = this.convertDatesToJS(data[key])
+          }
         }
+        return newData
       }
-      return newData
-    }
-    return data // Return primitive types or null
-  },
+      return data // Return primitive types or null
+    },
 
     /**
      * Helper function to fetch YAML file
@@ -629,37 +622,36 @@ export const useMain = defineStore('main', {
      * Fetches ATLAS data either from API or YAML file
      */
     async fetchData() {
-
-      // Fetch from the API if its URL exists 
+      // Fetch from the API if its URL exists
       if (import.meta.env.VITE_API_URL) {
         return fetch('/api/atlas-yaml/json')
           .then((response) => {
             if (!response.ok) {
-              throw new Error(`There was an issue with fetching from the API. Error: ${response.status}`);
+              throw new Error(
+                `There was an issue with fetching from the API. Error: ${response.status}`
+              )
             }
-            return response.json();
+            return response.json()
           })
           .then((data) => {
             return this.convertDatesToJS(data)
           })
           .catch((error) => {
-            console.log(error);
-            console.log("Loading site using ATLAS.yaml instead");
-            return this.fetchYaml();
-          });
+            console.log(error)
+            console.log('Loading site using ATLAS.yaml instead')
+            return this.fetchYaml()
+          })
 
-      // Fetch from the files if there is no API URL or if the API fetch failed
+        // Fetch from the files if there is no API URL or if the API fetch failed
       } else {
-        return this.fetchYaml();
+        return this.fetchYaml()
       }
     },
-    
 
     /**
      * Takes ATLAS JSON data and properly processes and sets it in the store
      */
     processData(data) {
-
       // Collect top-level data objects under the key 'objects'
       const { id, name, version, matrices, ...objects } = data
       const result = { id, name, version, matrices, objects }
@@ -726,7 +718,7 @@ export const useMain = defineStore('main', {
           // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
           const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
           t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
-          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1));  
+          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1))
           return t
         })
 
@@ -788,8 +780,6 @@ export const useMain = defineStore('main', {
     async loadData() {
       // Retrieve the threat matrix JSON data, then process and populate store upon start
       await this.fetchData().then((jsonData) => this.processData(jsonData))
-
     }
-
   }
 })
