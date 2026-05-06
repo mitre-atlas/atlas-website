@@ -1,0 +1,1 @@
+import{t as e}from"./2022-10-DCG-HalA.js";export{e as default};

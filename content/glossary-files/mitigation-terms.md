@@ -3,7 +3,7 @@ title: Mitigation Terms
 weight: 3
 ---
 
-###### What are the ML lifecycle stages?
+###### ML lifecycle stages
 
 The machine learning lifecycle, adapted from [Crisp-ML(Q)](https://ml-ops.org/content/crisp-ml), consists of the following stages:
 
@@ -17,3 +17,9 @@ The machine learning lifecycle, adapted from [Crisp-ML(Q)](https://ml-ops.org/co
 |  Monitoring and Maintenance    | Continually evaluating the deployed model to ensure it continues to fulfill quality assurance measures |
 
 In ATLAS, we tag [mitigations](/mitigations) with phases from the CRISP-ML(Q) lifecycle to help each phase’s teams identify vulnerabilities that could impact their task requirements and possible ways to respond.
+
+###### Mitigation Categories
+
+- **Policy**: Relating to procedures and processes that govern how tools are used, maintained, and deployed
+- **Technical - ML**: Relating to ML-specific hardware, software, and technological systems implemented to mitigate adversarial threats
+- **Technical - Cyber**: Relating to cyber-specific hardware, software, and technological systems implemented to mitigate adversarial threats.

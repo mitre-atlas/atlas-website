@@ -1,1 +1,0 @@
-import{Ft as e,L as t,b as n,m as r}from"./runtime-core.esm-bundler-CC_EXLrO.js";import{t as i}from"./vue.-sixQ7xP-CCj4NrOL.js";var a={class:`text-h3 my-5`},o=n({__name:`PageSectionTitle`,props:{pageTitle:{type:String,required:!0}},setup(n){return i({title:n.pageTitle}),(i,o)=>(t(),r(`div`,a,e(n.pageTitle),1))}});export{o as t};
