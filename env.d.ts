@@ -1,6 +1,10 @@
 /// <reference types="vite/client" />
 
-declare module 'vuetify/styles' {
-  const content: string
-  export default content
+import { VBtn } from 'vuetify/components'
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    VAtlasBtnPrimary: typeof VBtn
+    VAtlasBtnSecondary: typeof VBtn
+  }
 }

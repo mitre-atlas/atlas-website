@@ -3,7 +3,7 @@
     <Header />
     <SideNav v-if="doesPageHaveSideNav" />
     <v-main :class="`${isRouteFullView ? '' : 'mx-16 mb-16'}`">
-      <BreadCrumbs />
+      <BreadCrumbs v-if="!isRouteFullView" />
       <slot />
       <ScrollToTopButton />
     </v-main>
@@ -43,7 +43,7 @@ const doesPageHaveSideNav = computed(() => {
 
 // Routes which should not have margins and padding around the content
 const isRouteFullView = computed(() => {
-  const routesWithNoMargins = ['/']
+  const routesWithNoMargins = ['/', '/contribute', '/contribute/submit']
   return routesWithNoMargins.includes(route.path)
 })
 </script>

@@ -9,7 +9,14 @@ const markdownit = new MarkdownIt({
   html: true,
   linkify: true
 })
-  .use(MarkdownItAnchor)
+  .use(MarkdownItAnchor, {
+      slugify: (s) => s
+        .toLowerCase()
+        // keep only letters, numbers, _ and -
+        .replace(/[^a-z0-9_\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+  })
   .use(frontmatterPlugin)
   .use(tocPlugin, { level: [4, 5] })
 

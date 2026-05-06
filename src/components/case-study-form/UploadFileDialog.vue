@@ -40,14 +40,14 @@
 </template>
 
 <script setup>
-import schema from '/public/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
-import { generateID, validFormatYAML } from '@/assets/tools.js'
+import { caseStudySchema as schema } from '@/assets/schemas.js'
+import { validFormatYAML } from '@/assets/tools.js'
 import { CORE_SCHEMA, load } from 'js-yaml'
 import { reactive, ref, watch } from 'vue'
 
 let initialFilename = ''
 
-const selectedFile = ref()
+const selectedFile = ref(null)
 
 watch(selectedFile, () => {
   validateCount = 0
@@ -56,55 +56,35 @@ watch(selectedFile, () => {
   form.value.resetValidation()
 })
 
-function requiredRule(fileArray) {
-  return fileArray.length === 1 || `Required`
+function requiredRule(file) {
+  return !!file || 'Required'
 }
 
 let validateCount = 0
 
-function typeRule(fileArray) {
+function typeRule(file) {
+  if (!file) return true
   validateCount++
-  const file = fileArray[0]
   const expectedTypes = ['.yaml']
-  let fileType = ''
-  const extStartIndex = file?.name.lastIndexOf('.')
-  if (extStartIndex >= 0) {
-    fileType = file.name.slice(extStartIndex)
-    if (validateCount === 1) {
-      // grab name before it is overwritten with id
-      initialFilename = file.name.substring(0, extStartIndex)
-    }
+
+  const extStartIndex = file.name.lastIndexOf('.')
+  const fileType = extStartIndex >= 0 ? file.name.slice(extStartIndex) : ''
+
+  if (extStartIndex >= 0 && validateCount === 1) {
+    initialFilename = file.name.substring(0, extStartIndex)
   }
 
-  // Check file extension (though accept prop is in effect)
-  // Rename file name to prevent XSS
-  if (expectedTypes.includes(fileType)) {
-    // https://blog.yeswehack.com/yeswerhackers/file-upload-attacks-part-2/
-
-    Object.defineProperty(file, 'name', {
-      // prevents buffer overflow attack via name prop
-      writable: true,
-      value: generateID() + '.yaml'
-    })
-    return true
-  } else {
-    return `Invalid file type: expected .yaml, got ${fileType}`
-  }
+  return expectedTypes.includes(fileType)
+    ? true
+    : `Invalid file type: expected .yaml, got ${fileType}`
 }
 
-function sizeRule(fileArray) {
-  const file = fileArray[0]
-  const MB_TO_B = 1000000
-  const megabyteLimit = 2
-  const maxSize = MB_TO_B * megabyteLimit // the last number is in megabytes, the first converts it to bytes
-  const fileSize = file.size
-  if (fileSize <= 0) {
-    return 'Invalid file'
-  } else if (fileSize <= maxSize) {
-    return true
-  } else {
-    return `File too large, (${megabyteLimit} MB limit)`
-  }
+function sizeRule(file) {
+  if (!file) return true
+  const maxSize = 2 * 1_000_000
+  return file.size > 0 && file.size <= maxSize
+    ? true
+    : 'File too large, (2 MB limit)'
 }
 
 let errorMessages = reactive([])
@@ -113,8 +93,8 @@ const isFormValid = ref()
 let yamlErrors = ref(false)
 let showDialog = ref(false)
 
-async function validJsonRule(fileArray) {
-  const file = fileArray[0]
+async function validJsonRule(file) {
+  if (!file) return true
   const tryYamlText = await file.text()
   try {
     errorMessages = []
@@ -141,13 +121,13 @@ async function emitData() {
   await form.value.validate()
   if (isFormValid.value) {
     emit('submit', uploadedFile, initialFilename)
-    selectedFile.value = []
+    selectedFile.value = null
     showDialog.value = false
   }
 }
 
 function cancel(dialogIsActive) {
-  selectedFile.value = []
+  selectedFile.value = null
   dialogIsActive.value = false
 }
 </script>

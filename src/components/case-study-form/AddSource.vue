@@ -1,105 +1,88 @@
 <template>
-  <v-form @submit.prevent v-model="isSourceFormValid">
-    <v-card variant="outlined" :title="`Source ${getIndex()}`">
-      <v-text-field
-        v-model="source.title"
-        label="Description"
-        variant="outlined"
-        hint="Brief description (optional)"
-        prepend-inner-icon="mdi-file-edit-outline"
-        class="pt-6 px-6 pb-3"
+  <v-form ref="formRef" @submit.prevent="handleAdd" validate-on="input">
+    <v-card variant="flat" class="overflow-visible">
+      <ReferenceFields
+        ref="referenceFieldsRef"
+        v-model:description="source.title"
+        v-model:link="source.url"
+        :description-hint="`Brief description of the reference and its relevance to the ${typeWord} (optional)`"
+        description-class="pb-3"
       />
-      <v-text-field
-        v-model.trim="source.url"
-        label="URL"
-        variant="outlined"
-        hint="Link (optional)"
-        prepend-inner-icon="mdi-link"
-        class="px-6"
-        :rules="validUrlRule"
-      />
-      <v-card-actions>
-        <v-spacer />
-        <v-btn @click="$emit('cancel')">Cancel</v-btn>
-        <v-btn type="submit" color="green" @click="submit()"> Save </v-btn>
-      </v-card-actions>
-      <v-alert v-if="bothFieldsBlank" icon="mdi-alert" color="red-lighten-4">
-        Please complete at least one field
-      </v-alert>
+      <div v-if="!isEditing" class="w-100 text-end mt-3">
+        <v-btn
+          type="submit"
+          variant="flat"
+          icon="mdi-plus"
+          rounded="lg"
+          density="comfortable"
+          color="info"
+          :disabled="isAddDisabled"
+        />
+      </div>
     </v-card>
   </v-form>
 </template>
 
-<script setup>
-import { reactive, onMounted } from 'vue'
-import { ref } from 'vue'
+<script setup lang="ts">
+import { computed, nextTick, ref } from 'vue'
+import { contributionTypeWordFromKey } from '@/assets/contributionTools'
+import { VForm } from 'vuetify/components'
+import type { Reference } from '@/types/reference'
+import { isUrlValid } from '@/assets/tools'
+import ReferenceFields from '@/components/ReferenceFields.vue'
 
-const emit = defineEmits(['submit', 'cancel', 'update'])
-const { sources, editSource, editIndex } = defineProps([
-  /**
-   * Array of sources already entered
-   * @type {Array}
-   */
-  'sources',
-  /**
-   * Individual source object being edited
-   * @type {Object}
-   */
-  'editSource',
-  /**
-   * Index of source being edited
-   * @type {Number}
-   */
-  'editIndex'
-])
+type VFormInstance = InstanceType<typeof VForm>
 
-const isSourceFormValid = ref(false)
+const emit = defineEmits<{
+  (e: 'submit'): void
+}>()
 
-const source = reactive({
-  title: '',
-  url: ''
+const props = withDefaults(defineProps<{
+  /** Index of source being edited */
+  editIndex?: number
+
+  /** Parent type of object to which this resources will belong */
+  type?: string
+}>(), {
+  type: ''
 })
 
-onMounted(() => {
-  if (editSource) {
-    source.title = editSource.title
-    source.url = editSource.url
-  }
+const source = defineModel<Reference>({ required: true })
+const typeWord = computed(() => contributionTypeWordFromKey(props.type, true))
+
+const formRef = ref<VFormInstance | null>(null)
+const referenceFieldsRef = ref<{ focusDescription?: () => void } | null>(null)
+
+const isEditing = computed(() => typeof props.editIndex === 'number')
+const hasSourceContent = computed(() => {
+  return !!source.value.title?.trim() || !!source.value.url?.trim()
+})
+const isAddDisabled = computed(() => {
+  return !hasSourceContent.value || (!!source.value.url && !isUrlValid(source.value.url))
 })
 
-const validUrlRule = [
-  (value) => {
-    if (!value) return true
-    if (!value.startsWith('http://') && !value.startsWith('https://')) {
-      return 'URL does not start with http(s)://'
-    }
-    if (/\s/.test(value.trim())) return 'URL should not contain spaces'
-    try {
-      new URL(value)
-      return true
-    } catch (error) {
-      return 'URL is not valid'
-    }
-  }
-]
+async function handleAdd() {
+  if (isEditing.value || isAddDisabled.value) return
 
-const bothFieldsBlank = ref(false)
+  const result = await formRef.value?.validate()
+  if (!result?.valid) return
 
-function submit() {
-  if (!source.title && !source.url) {
-    bothFieldsBlank.value = true
-  } else if (isSourceFormValid.value && editSource) {
-    emit('update', source, editIndex)
-  } else if (isSourceFormValid.value) {
-    emit('submit', source)
-  }
+  emit('submit')
+  await nextTick()
+  focusFirst()
 }
 
-function getIndex() {
-  if (editSource) {
-    return editIndex + 1
-  } else {
-    return sources.length + 1
+function resetForm() {
+  source.value = {
+    title: '',
+    url: ''
   }
+  formRef.value?.resetValidation()
 }
+
+function focusFirst() {
+  referenceFieldsRef.value?.focusDescription?.()
+}
+
+defineExpose({ resetForm, focusFirst })
 </script>

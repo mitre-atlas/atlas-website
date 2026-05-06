@@ -10,15 +10,14 @@
             </div>
           </v-row>
           <v-row :justify="calloutJustification" class="mt-5">
-            <v-btn
+            <VAtlasBtnPrimary
               class="mt-5"
-              variant="flat"
-              color="info"
               to="/resources/contact"
               append-icon="mdi-chevron-right"
               :size="buttonSize"
-              >Connect with us</v-btn
             >
+              Connect with us
+            </VAtlasBtnPrimary>
           </v-row>
         </v-col>
         <v-spacer></v-spacer>

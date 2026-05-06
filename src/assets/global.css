@@ -22,17 +22,32 @@ ul {
   padding-bottom: 7em !important;
 }
 
-a.v-btn.link-contribute {
-  background: #1bb0e6;
+.v-btn.atlas-btn-primary,
+.v-btn.atlas-btn-secondary {
   border-radius: 5px;
-  margin: auto 20px auto 10px;
   padding: 10px 12px;
   height: fit-content !important;
-  font-weight: bold;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
 }
 
-a.v-btn.link-contribute:hover,
-a.v-btn.bg-info:hover {
-  background-color: #11759a !important;
+.v-btn.atlas-btn-primary:not(.v-btn--disabled):hover {
+  background-color: rgb(var(--v-theme-primaryHover)) !important;
+}
+
+.v-btn.atlas-btn-primary.v-btn--disabled.v-btn--variant-flat {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  color: rgba(var(--v-theme-on-surface), 0.26) !important;
+}
+
+.form-title {
+  color: rgb(var(--v-theme-darkInfo));
+  background-color: rgb(var(--v-theme-lightSilver));
+  padding: 0px 8px;
+  font-weight: 500;
+}
+
+/* account for header height + a padding when scrolling to anchors */
+[id] {
+  scroll-margin-top: calc(64px + 1.5rem);
 }

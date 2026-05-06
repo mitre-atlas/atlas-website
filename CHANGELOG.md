@@ -1,5 +1,11 @@
 # ATLAS Website Changelog
 
+## [4.14.0]() (2026-05-05)
+
+- Added new contribute page with links to new contribution forms
+- Updated and expanded contribution forms to allow for tactic, technique, mitigation, case study, and general contributions
+- Updated ATLAS data to [version 5.6.1](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#561-2026-05-05)
+
 ## [4.13.0]() (2026-04-30)
 
 - Reorganized Resources into Tools and Resources

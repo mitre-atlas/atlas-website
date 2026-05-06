@@ -1,98 +1,82 @@
 <template>
   <v-form ref="procedureForm" @submit.prevent>
-    <v-card
-      title="Add Procedure Step"
-      variant="outlined"
-      :style="{ borderColor: isProcedureFormValid ? 'grey' : 'red' }"
-    >
-      <v-row class="pa-6">
-        <v-col cols="12" lg="6">
-          <v-autocomplete
-            label="Tactic"
-            :items="tactics"
-            item-title="name"
-            item-value="id"
-            v-model="procedureStep.tactic"
-            variant="outlined"
-            prepend-inner-icon="mdi-magnify"
-            :rules="requiredRule"
-          />
-        </v-col>
-        <v-col cols="12" lg="6">
-          <v-autocomplete
-            label="Technique"
-            :items="mapTechAndSub"
-            item-title="name"
-            item-value="id"
-            v-model="procedureStep.technique"
-            :disabled="!procedureStep.tactic"
-            variant="outlined"
-            prepend-inner-icon="mdi-magnify"
-            :rules="requiredRule"
-          >
-            <template v-slot:item="{ props, item }">
-              <v-list-item
-                v-bind="props"
-                :prepend-icon="item.raw.tactics ? '' : 'mdi-subdirectory-arrow-right'"
-              />
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-textarea
-          label="Description"
-          prepend-inner-icon="mdi-text"
-          hint="Describe how this technique was used in the case study"
-          :disabled="!procedureStep.tactic"
-          variant="outlined"
-          v-model.trim="procedureStep.description"
-          class="mx-3"
-        />
-      </v-row>
+    <v-card variant="flat">
+      <div class="py-6">
+        <div class="mb-6">
+          <associated-type-selector type="tactics" v-model="procedureStep.tactic" :multiple="false" required
+            label="Case Study Procedure Step Tactic"
+            :hint="associatedTacticHint"
+            :show-validation="formSubmitted || props.showValidation"
+            :new-item-errors="tacticNewItemErrors" />
+        </div>
+        <div class="mb-6">
+          <associated-type-selector type="techniques" v-model="procedureStep.technique" :multiple="false"
+            :items="procedureTechniqueItems"
+            required label="Case Study Procedure Step Technique"
+            :hint="associatedTechniqueHint"
+            :show-validation="formSubmitted || props.showValidation"
+            :new-item-errors="techniqueNewItemErrors" />
+        </div>
+        <v-textarea label="Case Study Procedure Step Summary *"
+          hint="Description of the procedure step" variant="outlined" v-model.trim="procedureStep.description" required
+          :error="showDescriptionRequiredError" @update:focused="handleDescriptionFocused" />
+      </div>
       <v-card-actions>
         <v-spacer />
-        <v-btn @click="$emit(editProcedure ? 'cancel' : 'updateShowAddNewStep')">Cancel</v-btn>
-        <v-btn type="submit" color="green" @click="addProcedureStep()"> Save </v-btn>
+        <template v-if="props.editProcedure">
+          <v-btn @click="$emit('cancel')">Cancel</v-btn>
+          <v-btn type="submit" color="green" @click="addProcedureStep()">Save</v-btn>
+        </template>
+        <v-btn v-else type="submit" variant="flat" icon="mdi-plus" rounded="lg" density="comfortable" color="info"
+          :disabled="isAddDisabled" @click="addProcedureStep()" />
       </v-card-actions>
-      <v-alert
-        v-if="formSubmitted && isProcedureFormValid === false"
-        icon="mdi-alert"
-        color="red-lighten-4"
-      >
-        {{
-          procedureStep.tactic
-            ? 'Please fill out Technique'
-            : 'Please fill out Tactic and Technique'
-        }}
+      <v-alert v-if="formSubmitted && isProcedureFormValid === false" icon="mdi-alert" color="red-lighten-4">
+        Please fill out all required fields.
       </v-alert>
     </v-card>
   </v-form>
 </template>
 
 <script setup>
-import { reactive, computed, ref, onMounted, watch } from 'vue'
+import { reactive, computed, nextTick, ref, onMounted, watch } from 'vue'
 import { useMain } from '@/stores/main'
+import { validateUrl } from '@/assets/tools'
+import AssociatedTypeSelector from '../contribute-form/AssociatedTypeSelector.vue'
 
-const { editProcedure, editIndex } = defineProps([
+const props = defineProps({
   /**
    * Individual procedure being edited
    * @type {Object}
    */
-  'editProcedure',
+  editProcedure: {
+    type: Object,
+    default: null,
+  },
   /**
    * Index of procedure being edited
-   * @type {Object}
+   * @type {Number}
    */
-  'editIndex'
-])
+  editIndex: {
+    type: Number,
+    default: null,
+  },
+  showValidation: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const model = defineModel()
 
 onMounted(() => {
-  if (editProcedure) {
-    procedureStep.tactic = editProcedure.tactic
-    procedureStep.technique =
-      mainStore.getDataObjectById(editProcedure.technique) === undefined
+  if (props.editProcedure) {
+    procedureStep.value.tactic = props.editProcedure.tactic
+    procedureStep.value.technique =
+      typeof props.editProcedure.technique === 'string' &&
+      mainStore.getDataObjectById(props.editProcedure.technique) === undefined
         ? ''
-        : editProcedure.technique
-    procedureStep.description = editProcedure.description
+        : props.editProcedure.technique
+    procedureStep.value.description = props.editProcedure.description
   }
 })
 
@@ -100,60 +84,103 @@ const mainStore = useMain()
 
 const formSubmitted = ref(false)
 const procedureForm = ref(null)
+const descriptionTouched = ref(false)
+const associatedTacticHint = 'Select an ATLAS tactic, OR to suggest a new tactic, click the “Add New Tactic” button in the dropdown menu'
+const associatedTechniqueHint = 'Select an ATLAS technique, OR to suggest a new technique, click the “Add New Technique” button in the dropdown menu'
 const isProcedureFormValid = computed(() => {
   if (!formSubmitted.value) return true
-  if (procedureStep.tactic && procedureStep.technique) return true
-  return false
+  return isProcedureStepValid.value
 })
 
-const requiredRule = [
-  (value) => {
-    if (value) return true
-    return 'Required'
-  }
-]
-
-let procedureStep = reactive({
-  tactic: '',
-  technique: '',
-  description: ''
+const fallbackProcedureStep = reactive(createEmptyProcedureStep())
+const procedureStep = computed(() => {
+  return model.value ?? fallbackProcedureStep
 })
 
-const tactics = computed(() => {
-  return mainStore.getDataObjectsByType('tactics')
+const showDescriptionRequiredError = computed(
+  () => !procedureStep.value.description?.trim() &&
+    (descriptionTouched.value || formSubmitted.value || props.showValidation)
+)
+
+const hasProcedureContent = computed(() => {
+  return Boolean(
+    procedureStep.value.tactic ||
+    procedureStep.value.technique ||
+    procedureStep.value.description?.trim()
+  )
 })
+
+const isProcedureStepValid = computed(() => {
+  return Boolean(
+    isProcedureAssociatedValueValid(procedureStep.value.tactic) &&
+    isProcedureAssociatedValueValid(procedureStep.value.technique) &&
+    procedureStep.value.description?.trim()
+  )
+})
+
+const isAddDisabled = computed(() => !hasProcedureContent.value || !isProcedureStepValid.value)
+
+const tacticNewItemErrors = computed(() => getProcedureAssociatedErrors(procedureStep.value.tactic))
+const techniqueNewItemErrors = computed(() => getProcedureAssociatedErrors(procedureStep.value.technique))
+
+const procedureTechniqueItems = computed(() => {
+  if (!procedureStep.value.tactic) return []
+  if (isDraftItem(procedureStep.value.tactic)) return mainStore.getDataObjectsByType('techniques', 'ATLAS')
+
+  const parentTechniques = mainStore.getDataObjectsByTypeKeyContainingValue(
+    'techniques',
+    'tactics',
+    procedureStep.value.tactic,
+    'ATLAS'
+  )
+
+  return parentTechniques.flatMap((technique) => [
+    technique,
+    ...(technique.subtechniques ?? []),
+  ])
+})
+
+function handleDescriptionFocused(focused) {
+  if (!focused) descriptionTouched.value = true
+}
+
+function isDraftItem(value) {
+  return value && typeof value === 'object' && value.id === 'new'
+}
+
+function isProcedureAssociatedValueValid(value) {
+  if (!value) return false
+  if (!isDraftItem(value)) return true
+
+  return Boolean(
+    value.name?.trim() &&
+    value.summary?.trim() &&
+    validateUrl(value.referenceLink) === true
+  )
+}
+
+function getProcedureAssociatedErrors(value) {
+  const errors = {}
+  if (!isDraftItem(value)) return errors
+
+  if (!value.name?.trim()) errors.name = ['Name is required.']
+  if (!value.summary?.trim()) errors.summary = ['Summary is required.']
+
+  const referenceLinkError = validateUrl(value.referenceLink)
+  if (referenceLinkError !== true) errors.referenceLink = [referenceLinkError]
+
+  return errors
+}
 
 // changing tactic should clear out technique field
 watch(
-  () => procedureStep.tactic,
+  () => procedureStep.value.tactic,
   (newVal, oldVal) => {
-    if (procedureStep.technique && newVal !== oldVal && !!oldVal) {
-      procedureStep.technique = ''
+    if (procedureStep.value.technique && newVal !== oldVal && !!oldVal) {
+      procedureStep.value.technique = ''
     }
   }
 )
-
-const mapTechAndSub = computed(() => {
-  // Parent techniques that have the selected tactic as a parent
-  const techs = mainStore.getDataObjectsByTypeKeyContainingValue(
-    'techniques',
-    'tactics',
-    procedureStep.tactic
-  )
-
-  for (let i = 0; i < techs.length; i++) {
-    // Add subtechniques, if exist
-    if (techs[i].subtechniques) {
-      for (let j = 0; j < techs[i].subtechniques.length; j++) {
-        const subtechnique = techs[i].subtechniques[j]
-        // Insert into techniques array below the parent technique and any prior subtechniques
-        const index = i + 1 + j
-        techs.splice(index, 0, subtechnique)
-      }
-    }
-  }
-  return techs
-})
 
 const emit = defineEmits(['submitProcedureStep', 'cancel', 'updateShowAddNewStep', 'update'])
 
@@ -161,18 +188,42 @@ defineExpose({
   addProcedureStep
 })
 
-function addProcedureStep() {
+async function addProcedureStep() {
   formSubmitted.value = true
-  procedureForm.value.validate()
-  if (isProcedureFormValid.value && editProcedure) {
-    const copy = JSON.parse(JSON.stringify(procedureStep))
-    emit('update', copy, editIndex)
+  procedureForm.value?.validate()
+  const copy = JSON.parse(JSON.stringify(procedureStep.value))
+  const hasParentModel = !!model.value
+
+  if (isProcedureFormValid.value && props.editProcedure) {
+    emit('update', copy, props.editIndex)
     formSubmitted.value = false
+    descriptionTouched.value = false
   } else if (isProcedureFormValid.value) {
-    const copy = JSON.parse(JSON.stringify(procedureStep))
     emit('submitProcedureStep', copy)
-    procedureForm.value.reset()
+    if (!hasParentModel) resetProcedureStep()
     formSubmitted.value = false
+    descriptionTouched.value = false
+    await nextTick()
+    procedureForm.value?.resetValidation()
   }
+}
+
+function createEmptyProcedureStep() {
+  return {
+    tactic: '',
+    technique: '',
+    description: '',
+  }
+}
+
+function resetProcedureStep() {
+  const emptyProcedureStep = createEmptyProcedureStep()
+
+  if (model.value) {
+    Object.assign(model.value, emptyProcedureStep)
+    return
+  }
+
+  Object.assign(fallbackProcedureStep, emptyProcedureStep)
 }
 </script>

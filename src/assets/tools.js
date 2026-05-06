@@ -8,7 +8,7 @@ import { dump } from 'js-yaml'
 import { validate } from 'jsonschema'
 import jsyaml from 'js-yaml'
 
-import schema from '../../public/atlas-data/dist/schemas/atlas_website_case_study_schema.json'
+import { caseStudySchema as schema } from './schemas.js'
 import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
 
 /**
@@ -44,6 +44,36 @@ export function capitalizeSidebar(str, splitter) {
 export function lastWord(str) {
   const textArr = str.split(' ')
   return textArr[textArr.length - 1]
+}
+
+export function truncateText(value, max) {
+  const text = String(value ?? '').trim().replace(/\s+/g, ' ')
+  if (typeof max === 'number' && text.length > max) {
+    return text.slice(0, max) + '…'
+  }
+  return text
+}
+
+export function getReferenceDisplayText(reference, max) {
+  const text = reference?.title?.trim() || reference?.url?.trim() || 'Untitled reference'
+  return truncateText(text, max)
+}
+
+export function collectUniqueArrayValues(objs, key) {
+  const set = new Set()
+  objs.forEach((obj) => {
+    const val = obj?.[key]
+    if (Array.isArray(val)) {
+      val.forEach((value) => {
+        if (typeof value === 'string' && value.trim()) {
+          set.add(value)
+        }
+      })
+    } else if (typeof val === 'string' && val.trim()) {
+      set.add(val)
+    }
+  })
+  return Array.from(set).sort()
 }
 
 /**
@@ -351,4 +381,56 @@ export async function getDescriptions() {
   } catch (error) {
     console.error('Error fetching YAML file:', error)
   }
+}
+
+/**
+ * Check if a string is a valid URL
+ *
+ * Returns true when valid, or a string error message when invalid.
+ * @param {(string|null|undefined)} value
+ * @returns {(true|string)}
+ */
+export function validateUrl(value) {
+  if (!value) return true
+
+  const v = value.trim()
+  if (!v) return true
+
+  if (/\s/.test(v)) return 'URL must not contain spaces'
+
+  const hasProtocol = /^[a-z][a-z\d+.-]*:\/\//i.test(v)
+
+  try {
+    const url = new URL(hasProtocol ? v : `https://${v}`)
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return 'URL protocol must be http(s):// when provided'
+    }
+    if (!isHostWithTopLevelDomain(url.hostname)) return 'Invalid URL format'
+
+    return true
+  } catch {
+    return 'URL is not valid'
+  }
+}
+
+function isHostWithTopLevelDomain(host) {
+  const parts = host.split('.')
+  if (parts.length < 2) return false
+
+  const partsAreValid = parts.every((label) => {
+    return /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(label)
+  })
+  const topLevelDomain = parts[parts.length - 1]
+
+  return partsAreValid && /^[a-z]{2,}$/i.test(topLevelDomain)
+}
+
+/**
+ * Convenience boolean predicate built on validateUrl.
+ * @param {(string|null|undefined)} value
+ * @returns {boolean}
+ */
+export function isUrlValid(value) {
+  return validateUrl(value) === true
 }

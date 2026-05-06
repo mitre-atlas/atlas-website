@@ -85,7 +85,7 @@ const engages = [
     color: 'yellow-darken-3',
     title: 'Contribute',
     text: 'Find out how to contribute to the ATLAS framework',
-    link: '/resources/contribute'
+    link: '/contribute'
   },
   {
     icon: 'mdi-github',

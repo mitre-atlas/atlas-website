@@ -65,17 +65,12 @@
       <p class="text-h5 mt-10">Sources</p>
       <div v-for="(reference, index) in study.references" :key="reference.url" class="pl-3 mb-2">
         <span>{{ index + 1 }}. </span>
-        <a
-          v-if="reference.url && reference.title"
-          :href="reference.url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ reference.title || reference.url }}
+        <a v-if="reference.url" :href="reference.url" target="_blank" rel="noopener noreferrer">
+          {{ getReferenceDisplayText(reference) }}
           <v-icon icon="mdi-open-in-new" size="small" />
         </a>
-        <div v-else-if="reference.title">
-          {{ reference.title }}
+        <div v-else>
+          {{ getReferenceDisplayText(reference) }}
         </div>
       </div>
     </div>
@@ -91,7 +86,7 @@ import { useMain } from '@/stores/main'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import ErrorNotFoundView from './ErrorNotFoundView.vue'
-import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
+import { formatCaseStudyIncidentDate, getReferenceDisplayText } from '@/assets/tools.js'
 import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
 import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'

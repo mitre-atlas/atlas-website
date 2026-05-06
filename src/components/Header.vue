@@ -32,13 +32,14 @@
             </v-item-group>
           </v-list>
         </v-menu>
-        <v-btn
-          v-else
+        <VAtlasBtnPrimary
+          v-else-if="link.name === 'Contribute'"
           :to="link.to"
-          :class="['text-capitalize', `link-${link.name.toLowerCase()}`]"
+          class="my-auto ml-3 mr-5"
           v-text="link.name"
           stacked
         />
+        <v-btn v-else :to="link.to" class="text-capitalize" v-text="link.name" stacked />
       </v-toolbar-items>
     </template>
     <v-toolbar-items v-if="smAndDown">
@@ -153,13 +154,13 @@ const linksEnding = [
       },
       {
         name: 'Glossary',
-        to: '/resources/glossary'
-      },
+        to: { name: 'Glossary' }
+      }
     ]
   },
   {
     name: 'Contribute',
-    to: '/resources/contribute'
+    to: '/contribute'
   }
 ]
 

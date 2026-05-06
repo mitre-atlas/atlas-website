@@ -14,18 +14,8 @@
         <v-card-title> Case study considerations </v-card-title>
         <v-card-text class="text-subtitle-2 text-grey-darken-1">
           <ol>
-            <li>
-              The attack exploits one or more vulnerabilities that compromise the confidentiality,
-              integrity, or availability of a ML system.
-            </li>
-            <li>
-              The attack is against a production/commercial ML system. This can be on MLaaS or ML
-              systems embedded in clients/at the edge.
-            </li>
-            <li>
-              Ensure you have permission to share this information and/or publish this research.
-              Please follow the proper channels before reporting a new attack and make sure you are
-              practicing responsible disclosure.
+            <li v-for="consideration in caseStudyConsiderations" :key="consideration">
+              {{ consideration }}
             </li>
           </ol>
         </v-card-text>
@@ -74,6 +64,18 @@
     </template>
   </v-dialog>
 </template>
+
+<script setup>
+import {
+  caseStudyConsiderations as caseStudySpecificConsiderations,
+  getResponsibleDisclosureConsideration,
+} from '@/assets/contributionTools'
+
+const caseStudyConsiderations = [
+  ...caseStudySpecificConsiderations,
+  getResponsibleDisclosureConsideration('case study'),
+]
+</script>
 
 <style scoped>
 li {

@@ -24,28 +24,33 @@
       <v-card
         v-else
         :title="getTechniqueLabel(procedure)"
-        :subtitle="mainStore.getDataObjectById(procedure.tactic).name"
+        :subtitle="getTacticLabel(procedure)"
         variant="outlined"
+        density="compact"
         style="border: solid 1px; border-color: lightgray"
       >
         <template #append>
           <div :style="{ cursor: editIndex || procedures.length === 1 ? 'not-allowed' : 'grab' }">
             <v-icon
-              :style="{ 'pointer-events': editIndex || procedures.length === 1 ? 'none' : '' }"
+              v-if="procedures.length > 1"
               class="handle"
               :color="editIndex || procedures.length === 1 ? 'grey-lighten-1' : 'grey-darken-3'"
             >
-              mdi-arrow-up-down
+              mdi-cursor-move
             </v-icon>
           </div>
         </template>
-        <v-card-text v-if="procedure.description" v-html="md.render(procedure.description)" />
-        <v-card-actions>
+        <v-card-text
+          v-if="procedure.description"
+          class="flex-grow-0 py-1"
+          v-html="md.renderInline(procedure.description)"
+        />
+        <v-card-actions class="py-1">
           <v-spacer />
-          <v-btn icon="mdi-pencil" color="blue" @click="editIndex = i" />
+          <v-icon icon="mdi-pencil" color="#2D4863" class="opacity-100 mr-5" @click="editIndex = i" />
           <v-dialog width="500">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-delete" color="red" />
+              <v-icon v-bind="props" icon="mdi-delete-outline" color="#2D4863" class="opacity-100" />
             </template>
             <template v-slot:default="{ isActive }">
               <v-card>
@@ -80,24 +85,43 @@ const md = inject('markdownit')
 const mainStore = useMain()
 
 const procedures = defineModel()
+const emit = defineEmits(['delete-procedure', 'update-procedure'])
+
+function getProcedureValueLabel(value, typeLabel) {
+  if (!value) {
+    return `No ${typeLabel} selected`
+  }
+
+  if (typeof value === 'object' && value !== null) {
+    return value.name?.trim() || `Unnamed ${typeLabel}`
+  }
+
+  const dataObject = mainStore.getDataObjectById(value)
+  return dataObject?.label ?? dataObject?.name ?? `(Label not found for ${typeLabel} ${value})`
+}
 
 function getTechniqueLabel(procedure) {
-  if (mainStore.getDataObjectById(procedure.technique) === undefined) {
-    return `(Label not found for technique ${procedure.technique})`
-  }
-  return mainStore.getDataObjectById(procedure.technique)?.label
+  return getProcedureValueLabel(procedure.technique, 'technique')
+}
+
+function getTacticLabel(procedure) {
+  return getProcedureValueLabel(procedure.tactic, 'tactic')
 }
 
 const editIndex = ref()
 
 function updateProcedureStep(updatedProcedure, index) {
+  const originalProcedure = procedures.value[index]
   procedures.value[index] = updatedProcedure
+  emit('update-procedure', updatedProcedure, index, originalProcedure)
   editIndex.value = null
 }
 
 function deleteProcedure(deleteIndex, dialogIsActive) {
+  const deletedProcedure = procedures.value[deleteIndex]
   // Delete the procedure step at the given dialog
   procedures.value.splice(deleteIndex, 1)
+  emit('delete-procedure', deletedProcedure, deleteIndex)
   // Close the dialog
   dialogIsActive.value = false
 }

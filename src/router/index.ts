@@ -17,6 +17,7 @@ const routes = [
   },
   {
     path: '/resources/glossary',
+    name: 'Glossary',
     component: () => import('../views/resources/GlossaryView.vue')
   },
   {
@@ -45,8 +46,12 @@ const routes = [
     component: () => import('../views/resources/ContactView.vue')
   },
   {
-    path: '/resources/contribute',
-    component: () => import('../views/resources/ContributorsListView.vue')
+    path: '/contribute',
+    component: () => import('../views/ContributeView.vue')
+  },
+  {
+    path: '/contribute/submit',
+    component: () => import('../views/ContributeFormView.vue')
   },
   {
     // When a user visits the updates index page, redirect to the most recent update
@@ -100,12 +105,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+
     if (to.hash) {
-      return {
-        el: to.hash,
-        // Accomodate for the header height in px
-        top: 64
-      }
+      // manually scroll so we can delay until next animation to account for
+      // both cold loads and page navigation
+      requestAnimationFrame(() => {
+        const el = document.getElementById(to.hash.slice(1))
+        // mimic focusing linked elements on page nav
+        el?.focus({ preventScroll: true })
+        el?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      })
+
+      return false
     }
     // always scroll to top
     return { top: 0 }

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import yaml from 'js-yaml'
 
 import { dataObjectToPluralTitle, dataObjectToRoute } from '@/assets/dataHelpers.js'
-import { getPathWithBase } from '@/assets/tools'
+import { collectUniqueArrayValues, getPathWithBase } from '@/assets/tools'
 
 /**
  * Keys that will not be considered as properties or references to other data objects
@@ -73,7 +73,9 @@ export const useMain = defineStore('main', {
     /**
      * Whether the 404 page is currently displayed
      */
-    pageNotFoundDisplaying: false
+    pageNotFoundDisplaying: false,
+    categoryValues: [],
+    mlLifecycleValues: []
   }),
   // other options...
   getters: {
@@ -523,7 +525,12 @@ export const useMain = defineStore('main', {
         }
         return null
       }
-    }
+    },
+
+    getAllCategoryValues: (state) => state.categoryValues,
+
+    getAllMlLifecycleValues: (state) => state.mlLifecycleValues
+
   },
   actions: {
     /**
@@ -587,10 +594,22 @@ export const useMain = defineStore('main', {
       this.objectTypePluralValues = [...payload]
     },
 
+    SET_CATEGORY_VALUES(payload) {
+      this.categoryValues = [...payload]
+    },
+
+    SET_ML_LIFECYCLE_VALUES(payload) {
+      this.mlLifecycleValues = [...payload]
+    },
+
     // Convert all date strings in a JS object to JavaScript Date objects
     convertDatesToJS(data) {
       // The following field names are expected by the website to be dates
-      const dateFieldNames = ['created_date', 'modified_date', 'incident-date']
+      const dateFieldNames = [
+        'created_date',
+        'modified_date',
+        'incident-date'
+      ]
 
       // Recursively look for the specified fields to cast their values as Dates
       if (Array.isArray(data)) {
@@ -647,6 +666,7 @@ export const useMain = defineStore('main', {
         return this.fetchYaml()
       }
     },
+    
 
     /**
      * Takes ATLAS JSON data and properly processes and sets it in the store
@@ -718,7 +738,7 @@ export const useMain = defineStore('main', {
           // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
           const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
           t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
-          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1))
+          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1));  
           return t
         })
 
@@ -769,6 +789,12 @@ export const useMain = defineStore('main', {
           dataObj.relatedObjects = this.getRelatedDataObjects(dataObj)
         }
       })
+
+      const categoryValues = collectUniqueArrayValues(allDataObjects, 'category')
+      const mlLifecycleValues = collectUniqueArrayValues(allDataObjects, 'ml-lifecycle')
+
+      this.SET_CATEGORY_VALUES(categoryValues)
+      this.SET_ML_LIFECYCLE_VALUES(mlLifecycleValues)
 
       // Commit the fully populated data
       this.SET_ATLAS_DATA(result)

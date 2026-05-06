@@ -72,7 +72,7 @@ const quickLinks = [
   {
     icon: 'mdi-help-circle',
     title: 'ATLAS Glossary',
-    link: '/resources/glossary'
+    link: { name: 'Glossary' }
   }
 ]
 </script>
