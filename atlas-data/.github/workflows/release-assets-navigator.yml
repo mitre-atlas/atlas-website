@@ -1,0 +1,74 @@
+name: Release Assets Navigator
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Existing release tag to upload assets to (e.g., v1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: Resolve release tag and versioned input
+        id: tag
+        run: |
+          TAG="${{ inputs.tag }}"
+
+          if ! [[ "$TAG" =~ ^v[0-9]{4}\.[0-9]{2}(\.[0-9]+)?$ ]]; then
+            echo "Invalid tag format: $TAG. Expected vYYYY.MM or vYYYY.MM.N"
+            exit 1
+          fi
+
+          VERSION="${TAG#v}"
+          INPUT="dist/v6/ATLAS-${VERSION}.yaml"
+
+          if [ ! -f "$INPUT" ]; then
+            echo "Versioned input file not found: $INPUT"
+            exit 1
+          fi
+
+          echo "value=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "input=$INPUT" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "${{ steps.tag.outputs.value }}" --repo "${{ github.repository }}"
+
+      - name: Generate Navigator layer JSON
+        run: |
+          uv run generate-navigator-layers -i "${{ steps.tag.outputs.input }}"
+
+      - name: Stage prefixed navigator assets
+        run: |
+          mkdir -p release-assets
+          cp dist/default-navigator-layers/atlas_layer_matrix.json release-assets/navigator-atlas_layer_matrix.json
+          cp dist/default-navigator-layers/atlas_case_study_frequency.json release-assets/navigator-atlas_case_study_frequency.json
+          for file in dist/case-study-navigator-layers/*.json; do
+            base="$(basename "$file")"
+            cp "$file" "release-assets/navigator-$base"
+          done
+
+      - name: Upload navigator assets to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ steps.tag.outputs.value }}" \
+            release-assets/* \
+            --repo "${{ github.repository }}" \
+            --clobber

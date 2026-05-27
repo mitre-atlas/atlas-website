@@ -1,8 +1,0 @@
----
-extends: default
-
-rules:
-  line-length: disable
-  indentation:
-    spaces: consistent
-    indent-sequences: consistent

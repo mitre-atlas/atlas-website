@@ -1,3 +1,74 @@
+## [2026.05]() (2026-05-27)
+
+Starting with this release, there is a split in versioning between the ATLAS Knowledge Base content and the ATLAS Data Format. Monthly ATLAS content releases will follow a YYYY.MM.N versioning scheme with the version stored in the Collection object. ATLAS data format changes will follow semantic versioning. Previously, changes to either content or format were conflated in a single SemVer version.
+
+##### Content v2026.05
+
+- All techniques are updated to include one or more platforms (Predictive AI, Generative AI, Agentic AI, Enterprise).
+
+##### Format v6.0.0
+
+- Introduced a new ATLAS YAML format (v6.0.0)
+  - stronger consistency, normalized object modeling, and first-class relationship representation
+  - added platforms field to techniques
+- Added full validation and data management tooling
+  - Pydantic schemas for strict schema validation
+  - SQLAlchemy ORM models for persistent versioned content management
+  - FastAPI REST API for managing and updating ATLAS data
+- Removed the old workflow for constructing ATLAS.yaml
+- Added/updated downstream generation scripts for STIX, Excel, and Navigator outputs
+  - centralized all downstream scripts to the atlas-data repository
+- Added a test suite for the API
+- Migrated and preserved historical ATLAS releases:
+  - historical content retained under dist/legacy/
+  - historical releases migrated into the v6 structure (dist/v6/)
+  - release/version mapping tracked in manifest
+  - deprecated ATLAS.yaml
+
+###### ATLAS v6 data model
+
+The v6 format introduces substantial structural improvements:
+- Added new field to techniques that denotes the platform(s) the adversary is operating in
+- Standardized top-level export model around:
+  - collection, matrix
+  - keyed maps for tactics, techniques, mitigations, case-studies.
+  - centralized relationships map for easier downstream consumption.
+- Enforced consistency in object typing and identity:
+  - common field names across object types.
+  - computed UUID behavior tied to stable IDs.
+  - canonical ID patterns per object type.
+  - strict object-type enums.
+- Elevated relationships to first-class objects with typed semantics:
+  - sequences, achieves, specializes, mitigates, employs.
+  - support for relationship metadata like position, tactic, step-id, leads-to, and descriptions.
+- Cleaned and normalized reference handling and serialization behavior.
+- Improved date handling/constraints and enum ordering consistency.
+
+###### API, database, and validation
+- Added FastAPI app entrypoint and route structure for:
+  - version lifecycle management.
+  - version-scoped CRUD across collection, matrix, tactics, techniques, mitigations, and case studies.
+  - YAML export endpoint for a selected version.
+- Added SQLAlchemy model layer with:
+  - version-aware object storage.
+  - relationship table and integrity constraints.
+  - derived ORM properties for graph-style access patterns.
+- Added script to populate DB from ATLAS YAML v6.
+- Normalized export behavior for deterministic output.
+
+###### Tools for downstream asset generation
+- Updated STIX generation with maturity filtering and improved compatibility options.
+- Updated Navigator layer generation for matrix and case-study visualizations.
+- Updated Excel generation workflow for generating workbook artifacts.
+- Consolidated scripts into tools/ directory (from other repositories).
+- Added CI/release workflows for publishing YAML/STIX/Navigator/Excel artifacts.
+
+###### Testing
+- Added integration tests for API behavior and data round-tripping.
+- Updated CI workflows and validation checks.
+- Refactored test structure to align with the new architecture.
+
+
 ## [5.6.1]() (2026-05-05)
 
 Minor fixes to contribution schemas.

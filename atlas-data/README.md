@@ -1,139 +1,267 @@
-# MITRE | ATLAS Data
+# MITRE ATLAS Data
 
-ATLAS enables researchers to navigate the landscape of threats to artificial intelligence systems.  Visit https://atlas.mitre.org for more information.
+This repository distributes data for [MITRE ATLAS&trade;](https://atlas.mitre.org/) (Adversarial Threat Landscape for AI Systems), a public knowledge base of adversary TTPs targeting AI systems.
 
-This repository contains tactics, techniques, mitigations, case studies, and other data used by the ATLAS website and associated tools.
+It includes the supporting tooling for parsing, validating, and managing ATLAS data.
 
-## Distributed files
+## Quick Start with ATLAS Data
 
-Located the `dist` directory:
+Install uv: https://docs.astral.sh/uv/getting-started/installation/
 
-- `ATLAS.yaml`
-    + All ATLAS-related data available in one file
-    + See the schemas and usage below for more details. Top-level keys include:
-        ```yaml
-        id: ATLAS
-        name: Adversarial Threat Landscape for AI Systems
-        version: Version number for this data release
-
-        matrices: List of matrix data
-        - id: ATLAS
-          name: ATLAS Matrix
-          tactics: List of tactic objects
-          techniques: List of technique and subtechnique objects
-          mitigations: List of mitigation objects
-
-        case-studies: List of case study objects
-        ```
-- `schemas/`
-    + Optional JSON Schema files for validation use
-    + `atlas_output_schema.json`
-        * Describes the `ATLAS.yaml` format
-    + `atlas_website_case_study_schema.json`
-        * Describes the case study file format
-
-### Getting the files
-
-Clone this repository to get access to the distributed files, or alternatively directly access via raw GitHub link.
-
-#### As a Git submodule
-
-The [ATLAS Website](https://github.com/mitre-atlas/atlas-website) uses this data repository as a Git submodule for access to the distributed files.
-
-To add this repository as a submodule to your own repository, run the following which clones into the directory `atlas-data`.
-
+Install dependencies:
 ```bash
-git submodule add -b main <atlas-data-repository>
+uv sync
 ```
 
-Once the submodule is available, run the following once to sparse checkout only the necessary files in the `dist` directory.  Assumes that the submodule is available at the path `atlas-data`.
+Activate virtual environment:
 ```bash
-git -C atlas-data config core.sparseCheckout true
-echo 'dist/*' >> .git/modules/atlas-data/info/sparse-checkout
-git submodule update --force --checkout atlas-data
+source .venv/bin/activate
 ```
 
-To update `atlas-data`, run `git submodule update --remote` to get the latest from its main branch, then commit the result.
-
-### Example usage
-
-The following code blocks show examples of parsing ATLAS data.  Assume `atlas_data_filepath` holds the path to the `ATLAS.yaml` file.
-
-#### Python
+Parse and validate ATLAS data in Python:
 ```python
-# pip install pyyaml
 import yaml
+from pathlib import Path
+from atlas.schemas import AtlasExport
 
-with open(atlas_data_filepath) as f:
-    # Parse YAML
-    data = yaml.safe_load(f)
+path = Path("dist/ATLAS-latest.yaml")
 
-    first_matrix = data['matrices'][0]
-    tactics = first_matrix['tactics']
-    techniques = first_matrix['techniques']
+with path.open("r") as f:
+    raw = yaml.safe_load(f)
 
-    studies = data['case-studies']
+atlas_data = AtlasExport.model_validate(raw)
+
+print("Release version:", atlas_data.collection.version)
+print("Tactics:", len(atlas_data.tactics))
+print("Techniques:", len(atlas_data.techniques))
+print("Mitigations:", len(atlas_data.mitigations))
+print("Relationships:", len(atlas_data.relationships))
 ```
 
-#### NodeJS
-```js
-const fs = require('fs')
-// npm install js-yaml
-const yaml = require('js-yaml')
+## Project layout
 
-fs.readFile(atlas_data_filepath, 'utf-8', (_, contents) => {
-    // Parse YAML
-    const data = yaml.load(contents)
+- `dist/` - distributed ATLAS data files and the release manifest.
+- `atlas/` - ATLAS Python package containing Pydantic schemas and REST API
+- `tools/` - command-line tooling to populate ATLAS YAML into the database and generate additional distribution formats (STIX, Navigator layers, Excel).
+- `tests/` - test suite for ATLAS data and REST API
+- `.github/workflows/` - CI workflows for release asset generation
 
-    const first_matrix = data['matrices'][0]
 
-    const tactics = first_matrix['tactics']
-    const techniques = first_matrix['techniques']
+## Distributed ATLAS Data
 
-    const studies = data['case-studies']
-})
+The latest ATLAS data is stored in `dist/ATLAS-latest.yaml`
+
+### Versioning
+
+ATLAS releases monthly content updates. It follows two versioning schemes:
+
+- **Content version**: data content version in `collection.version` that follows YYYY.MM.N versioning (e.g. `2026.05`).
+- **Format version**: data format version in `format-version` that follows semantic versioning (e.g. `6.0.0`).
+
+`dist/manifest.yaml` ties these together by listing which file path implements which format-version for each release.
+
+Note: separating content from format versions started with 2026.05 / 6.0.0. Previously content and format changes followed combined SEMVER versioning.
+
+### Distributed Versions
+
+A summary of distributed ATLAS YAML files:
+
+- `dist/ATLAS-latest.yaml` will always point to the latest content in the latest format.
+- `dist/v6/ATLAS-latest.yaml` will always point to the latest content in v6 format.
+- `dist/v6/ATLAS-{version}.yaml` contain historical versions of ATLAS migrated to v6 format.
+- `dist/legacy/ATLAS-{version}.yaml` contain historical versions of ATLAS in their original format at time of release.
+- `dist/ATLAS.yaml` is deprecated and will no longer be updated.
+
+The manifest (`dist/manifest.yaml`) contains a complete listing of distributed files. It maps each content release to one or more files by `format-version`.
+
+## ATLAS Data Format
+
+Current distributable ATLAS format is represented by `atlas.schemas.AtlasExport`.
+
+Top-level keys:
+
+- `format-version`
+- `collection`
+- `matrix`
+- `tactics`
+- `techniques`
+- `mitigations`
+- `case-studies`
+- `relationships`
+
+High-level shape (abbreviated):
+
+```yaml
+format-version: 6.0.0
+
+collection:
+  id: ATLAS-collection
+  version: "2026.05"
+  name: ATLAS
+  description: Adversarial Threat Landscape for AI Systems
+
+matrix:
+  id: ATLAS-matrix
+  name: ATLAS
+
+tactics:
+  AML.TA0002:
+    id: AML.TA0002
+    object-type: tactic
+    name: Reconnaissance
+
+techniques:
+  AML.T0005:
+    id: AML.T0005
+    object-type: technique
+    maturity: Demonstrated
+    platforms:
+      - Predictive AI
+
+mitigations:
+  AML.M0001:
+    id: AML.M0001
+    object-type: mitigation
+
+case-studies:
+  AML.CS0001:
+    id: AML.CS0001
+    object-type: case-study
+    type: Incident
+
+relationships:
+  ATLAS-matrix:
+    sequences: [...]
+  AML.T0005:
+    achieves: [...]
+  AML.M0001:
+    mitigates: [...]
+  AML.CS0001:
+    employs: [...]
 ```
 
-### JSON Schema validation example
+### ID conventions
 
-JSON Schema files are generated from this project's internal [schemas](schemas/README.md) for other tools to use. For example, the ATLAS website validates uploaded case study files against the case study schema file with the following:
+The format enforces typed ID patterns, including:
 
-#### NodeJS
+- Collection ID: `ATLAS-collection`
+- Matrix ID: `ATLAS-matrix`
+- Tactic ID: `AML.TA####`
+- Technique ID: `AML.T####`
+- Sub-technique ID: `AML.T####.###`
+- Mitigation ID: `AML.M####`
+- Case study ID: `AML.CS####`
 
-```js
-// npm install jsonschema
-import { validate } from 'jsonschema'
-import caseStudySchema from '<path_to_case_study_schema_file>'
+### Relationship types
 
-// Assume this is a populated website case study object
-const caseStudyObj = {...}
+ATLAS object relationships are explicit and typed:
 
-// Validate case study object against schema and emit errors that may occur from nested `anyOf` validations
-const validatorResult = validate(caseStudyObj, caseStudySchema, { nestedErrors: true })
+- `sequences`: matrix -> tactic (ordered matrix layout)
+- `achieves`: technique -> tactic
+- `specializes`: sub-technique -> parent technique
+- `mitigates`: mitigation -> technique
+- `employs`: case study -> technique (includes `tactic`, `step-id`, `leads-to` metadata)
 
-if (validatorResult.valid) {
-    // Good
-} else {
-    // Process validatorResult.errors
-}
+## REST API
 
+The REST API is designed to manage the ATLAS data. Data can be imported from a v6 ATLAS YAML file, modified via calls the the API, and exported for distribution.
+
+The API is backed by a SQLite database stored at `sqlite:///./atlas.db`.
+
+### Quick Start with the API
+
+Install uv: https://docs.astral.sh/uv/getting-started/installation/
+
+Install dependencies:
+```bash
+uv sync
 ```
 
-## Development
+Activate virtual environment:
+```bash
+source .venv/bin/activate
+```
 
-This repository also contains the source data and scripts to customize and expand the ATLAS framework.  See [setup instructions](tools/README.md#development-setup) and the READMEs in each directory linked below for usage.
+Load atlas data into the database:
+```bash
+uv run populate-atlas-db -i dist/v6/ATLAS-2026.05.yaml
+```
 
-- [Data](data/README.md) holds templated data for ATLAS tactics, techniques, and case studies, from which `ATLAS.yaml` is generated.
-- [Schemas](schemas/README.md) defines each ATLAS object type and ID.
-- [Tools](tools/README.md) contains scripts to generate the distributed files and import data files.
+Run API locally:
+```bash
+fastapi run atlas/api.py --reload
+```
 
-**Tests**
+It is now possible to browse the api docs at http://localhost:8000/docs
 
-This project uses `pytest` for data validation. See [tests](tests/README.md) for more information.
+Export the data from the API:
+```bash
+curl http://localhost:8000/versions/2026.05/data -o ATLAS-export.yaml
+```
 
+### REST API Endpoints
 
-## Related work
+- health:
+  - `GET /health`
+- version management:
+  - `POST /versions`
+  - `GET /versions`
+  - `GET /versions/{version}`
+  - `PATCH /versions/{version}`
+  - `DELETE /versions/{version}`
+  - `GET /versions/{version}/data` (exports version as YAML)
+- data management (version-scoped):
+  - `/{version}/collection/`
+  - `/{version}/matrix/`
+  - `/{version}/tactics/`
+  - `/{version}/techniques/`
+  - `/{version}/mitigations/`
+  - `/{version}/case-studies/`
 
-ATLAS is modeled after the [MITRE ATT&CK® framework](https://attack.mitre.org). ATLAS tactics and techniques can be complementary to those in ATT&CK.
+## Tools
 
-ATLAS data is also available in [STIX and ATT&CK Navigator layer formats](https://github.com/mitre-atlas/atlas-navigator-data) for use with the [ATLAS Navigator](https://mitre-atlas.github.io/atlas-navigator/).
+Tools for generating downstream data formats.
+
+### ATLAS to STIX
+
+Entrypoint: `atlas-to-stix` (`tools/atlas_to_stix.py`)
+
+Generate ATLAS STIX:
+```bash
+uv run tools/atlas_to_stix.py -i dist/v6/ATLAS-2026.05.yaml -o dist/stix-atlas.json
+```
+
+Generate ATLAS + ATT&CK Enterprise STIX bundle:
+```bash
+uv run tools/atlas_to_stix.py -i dist/v6/ATLAS-2026.05.yaml --include-attack -o dist/stix-atlas-attack-enterprise.json
+```
+
+Other options:
+- `--include-case-studies`
+- `--maturity-threshold {feasible,demonstrated,realized}`
+- `--url`, `--source_name`, `--identity_name`
+
+### ATLAS to Excel
+
+Entrypoint: `atlas-to-excel` (`tools/atlas_to_excel.py`)
+
+Generate ATLAS Excel workbooks:
+```bash
+uv run atlas-to-excel -i dist/v6/ATLAS-2026.05.yaml
+```
+
+Default output directory: `dist/excel-files/`
+
+### Generate ATLAS Navigator layers
+
+Entrypoint: `generate-navigator-layers` (`tools/generate_navigator_layers.py`)
+
+Generate Navigator layers:
+```bash
+uv run generate-navigator-layers -i dist/v6/ATLAS-2026.05.yaml
+```
+
+## Release Statement
+
+Approved for Public Release; Distribution Unlimited. Public Release Case Number 26-1162
+©2026 The MITRE Corporation. ALL RIGHTS RESERVED.

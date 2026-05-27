@@ -1,10 +1,8 @@
 # Contributing to ATLAS Data
 
-Contributions are welcome - feel free to use the issues or make pull requests to the `develop` branch for general questions and fixes.
+Contributions are welcome - feel free to open issues or make pull requests.
 
-To propose additions or significant changes to the ATLAS framework, please email [atlas@mitre.org](mailto:atlas@mitre.org).
-
-To help construct case study submissions, please use the [case study builder](https://atlas.mitre.org/studies/create).
+To contribute new content to the ATLAS knowledge base, please visit https://atlas.mitre.org/contribute
 
 ## Developer's Certificate of Origin 1.1
 

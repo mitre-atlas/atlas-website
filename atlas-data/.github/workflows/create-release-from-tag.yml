@@ -1,0 +1,112 @@
+name: Create Release From Tag
+
+on:
+  push:
+    tags:
+      - "v[0-9][0-9][0-9][0-9].[0-9][0-9]"
+      - "v[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9]*"
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Resolve tag and version
+        id: tag
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if ! [[ "$TAG" =~ ^v[0-9]{4}\.[0-9]{2}(\.[0-9]+)?$ ]]; then
+            echo "Invalid tag format: $TAG. Expected vYYYY.MM or vYYYY.MM.N"
+            exit 1
+          fi
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure release does not already exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${{ steps.tag.outputs.tag }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "Release for tag ${{ steps.tag.outputs.tag }} already exists."
+            exit 1
+          fi
+
+      - name: Extract changelog section
+        id: notes
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          import re
+
+          version = os.environ["VERSION"]
+          changelog = Path("CHANGELOG.md")
+          text = changelog.read_text(encoding="utf-8")
+
+          start_re = re.compile(rf"^## \[{re.escape(version)}\]\(\) .*\n", re.MULTILINE)
+          next_header_re = re.compile(r"^## \[", re.MULTILINE)
+
+          start_match = start_re.search(text)
+          if not start_match:
+              raise SystemExit(f"Could not find CHANGELOG section for version {version} in {changelog}")
+
+          start = start_match.end()
+          next_match = next_header_re.search(text, pos=start)
+          end = next_match.start() if next_match else len(text)
+
+          body = text[start:end].strip()
+          if not body:
+              raise SystemExit(f"CHANGELOG section for version {version} is empty")
+
+          notes_path = Path("release-notes.md")
+          notes_path.write_text(body + "\n", encoding="utf-8")
+          PY
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.tag.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --title "${{ steps.tag.outputs.tag }}" \
+            --notes-file release-notes.md
+
+  generate-stix-assets:
+    needs: create-release
+    uses: ./.github/workflows/release-assets-stix.yml
+    with:
+      tag: ${{ needs.create-release.outputs.tag }}
+    secrets: inherit
+
+  generate-navigator-assets:
+    needs: create-release
+    uses: ./.github/workflows/release-assets-navigator.yml
+    with:
+      tag: ${{ needs.create-release.outputs.tag }}
+    secrets: inherit
+
+  generate-excel-assets:
+    needs: create-release
+    uses: ./.github/workflows/release-assets-excel.yml
+    with:
+      tag: ${{ needs.create-release.outputs.tag }}
+    secrets: inherit
+
+  upload-versioned-yaml-asset:
+    needs: create-release
+    uses: ./.github/workflows/release-assets-versioned-yaml.yml
+    with:
+      tag: ${{ needs.create-release.outputs.tag }}
+    secrets: inherit

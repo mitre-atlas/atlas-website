@@ -1,0 +1,52 @@
+name: Generate Release Assets
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to upload assets to (e.g., v2026.05.1)"
+        required: true
+        type: string
+      asset_group:
+        description: "Which assets to generate and upload"
+        required: true
+        type: choice
+        options:
+          - all
+          - stix
+          - navigator
+          - excel
+          - versioned-yaml
+        default: all
+
+permissions:
+  contents: write
+
+jobs:
+  stix:
+    if: ${{ inputs.asset_group == 'all' || inputs.asset_group == 'stix' }}
+    uses: ./.github/workflows/release-assets-stix.yml
+    with:
+      tag: ${{ inputs.tag }}
+    secrets: inherit
+
+  navigator:
+    if: ${{ inputs.asset_group == 'all' || inputs.asset_group == 'navigator' }}
+    uses: ./.github/workflows/release-assets-navigator.yml
+    with:
+      tag: ${{ inputs.tag }}
+    secrets: inherit
+
+  excel:
+    if: ${{ inputs.asset_group == 'all' || inputs.asset_group == 'excel' }}
+    uses: ./.github/workflows/release-assets-excel.yml
+    with:
+      tag: ${{ inputs.tag }}
+    secrets: inherit
+
+  versioned-yaml:
+    if: ${{ inputs.asset_group == 'all' || inputs.asset_group == 'versioned-yaml' }}
+    uses: ./.github/workflows/release-assets-versioned-yaml.yml
+    with:
+      tag: ${{ inputs.tag }}
+    secrets: inherit

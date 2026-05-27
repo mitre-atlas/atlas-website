@@ -160,6 +160,29 @@
             "type": "string",
             "pattern": "^(?:[A-Z]+\\d*\\.)+T\\d{4}\\.\\d{3}$"
         },
+        "id_technique_with_use": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/id_technique"
+                        },
+                        {
+                            "$ref": "#/definitions/id_subtechnique"
+                        }
+                    ]
+                },
+                "use": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "use"
+            ],
+            "additionalProperties": false
+        },
         "inline_technique": {
             "type": "object",
             "properties": {
@@ -180,6 +203,33 @@
                 "object-type",
                 "name",
                 "description"
+            ],
+            "additionalProperties": false
+        },
+        "inline_technique_with_use": {
+            "type": "object",
+            "properties": {
+                "object-type": {
+                    "const": "technique"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "references": {
+                    "$ref": "#/definitions/references"
+                },
+                "use": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "object-type",
+                "name",
+                "description",
+                "use"
             ],
             "additionalProperties": false
         },
@@ -353,7 +403,10 @@
                                 "$ref": "#/definitions/id_subtechnique"
                             },
                             {
-                                "$ref": "#/definitions/inline_technique"
+                                "$ref": "#/definitions/id_technique_with_use"
+                            },
+                            {
+                                "$ref": "#/definitions/inline_technique_with_use"
                             }
                         ]
                     }

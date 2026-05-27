@@ -1,0 +1,44 @@
+name: Release Assets Versioned YAML
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Existing release tag to upload assets to (e.g., v1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  upload-versioned-yaml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Resolve release tag and version
+        id: tag
+        run: |
+          TAG="${{ inputs.tag }}"
+          SOURCE="dist/v6/ATLAS-${TAG#v}.yaml"
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "source=$SOURCE" >> "$GITHUB_OUTPUT"
+
+      - name: Verify release exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "${{ steps.tag.outputs.tag }}" --repo "${{ github.repository }}"
+
+      - name: Upload versioned YAML to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ steps.tag.outputs.tag }}" \
+            "${{ steps.tag.outputs.source }}" \
+            --repo "${{ github.repository }}" \
+            --clobber
