@@ -125,19 +125,11 @@ const techniqueNewItemErrors = computed(() => getProcedureAssociatedErrors(proce
 
 const procedureTechniqueItems = computed(() => {
   if (!procedureStep.value.tactic) return []
-  if (isDraftItem(procedureStep.value.tactic)) return mainStore.getDataObjectsByType('techniques', 'ATLAS')
+  if (isDraftItem(procedureStep.value.tactic)) {
+    return mainStore.getDataObjectsByType('techniques', mainStore.getFirstMatrixId)
+  }
 
-  const parentTechniques = mainStore.getDataObjectsByTypeKeyContainingValue(
-    'techniques',
-    'tactics',
-    procedureStep.value.tactic,
-    'ATLAS'
-  )
-
-  return parentTechniques.flatMap((technique) => [
-    technique,
-    ...(technique.subtechniques ?? []),
-  ])
+  return mainStore.getProcedureTechniqueOptionsByTactic(procedureStep.value.tactic)
 })
 
 function handleDescriptionFocused(focused) {

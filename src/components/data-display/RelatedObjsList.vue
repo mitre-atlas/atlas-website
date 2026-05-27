@@ -38,9 +38,10 @@
 <script setup>
 import { useMain } from '@/stores/main'
 import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
+import { computed } from 'vue'
 const mainStore = useMain()
 
-const { parentObject, items, itemType } = defineProps([
+const props = defineProps([
   /**
    * Data object that these items apply to
    * @type {Object}
@@ -63,19 +64,30 @@ const { parentObject, items, itemType } = defineProps([
  * Items sorted by ID in alphabetical order
  * @type {Object[]}
  */
-const itemsList = [items][0].sort((a, b) => (a.id > b.id ? 1 : -1))
+const itemsList = computed(() => {
+  const source = Array.isArray(props.items) ? [...props.items] : []
+  return source.sort((a, b) => (a.id > b.id ? 1 : -1))
+})
+
+const labelById = computed(() => {
+  const result = new Map()
+  itemsList.value.forEach((item) => {
+    const obj = mainStore.getDataObjectById(item.id)
+    result.set(item.id, obj?.label || obj?.name || item.name)
+  })
+  return result
+})
 
 /**
  * Returns the `label` of the specified object ID
  * @todo LW Is `label` available in the related objs info? Why query?
  * @param {String} id - Data object ID
  */
-let getLabelById = (id) => {
-  const obj = mainStore.getDataObjectById(id)
-  return obj.label || obj.name
+const getLabelById = (id) => {
+  return labelById.value.get(id) || id
 }
 
-let study = (id) => {
+const study = (id) => {
   return mainStore.getDataObjectById(id)
 }
 </script>

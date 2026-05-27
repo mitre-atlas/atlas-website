@@ -1,49 +1,79 @@
 <template>
   <v-app>
-    <Header />
-    <SideNav v-if="doesPageHaveSideNav" />
-    <v-main :class="`${isRouteFullView ? '' : 'mx-16 mb-16'}`">
-      <BreadCrumbs v-if="!isRouteFullView" />
-      <slot />
-      <ScrollToTopButton />
-    </v-main>
+    <template v-if="isErrorRoute">
+      <Header />
+      <v-main class="mx-16 mb-16">
+        <slot />
+      </v-main>
+      <Footer />
+    </template>
+    <template v-else>
+      <Header />
+      <SideNav v-if="doesPageHaveSideNav" />
+      <v-main :class="layoutMainClass">
+        <BreadCrumbs v-if="showBreadcrumbs" />
+        <slot />
+        <ScrollToTopButton />
+      </v-main>
 
-    <Footer />
+      <Footer />
+    </template>
   </v-app>
 </template>
 
 <script setup>
-const name = 'Default'
-
 import Footer from '@/components/footer/Footer.vue'
 import Header from '@/components/Header.vue'
 import SideNav from '@/components/SideNav.vue'
 import BreadCrumbs from '@/components/BreadCrumbs.vue'
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue'
+import { MITRE_TITLE } from '@/config/env'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 
-const { VITE_MITRE_TITLE } = import.meta.env
-
-// Set the page/tab title to ${title} | ${VITE_MITRE_TITLE} using page title from each individual view if it is given
+// Set the page/tab title to ${title} | ${MITRE_TITLE} using page title from each individual view if it is given
 useHead({
   titleTemplate: (pageTitle) =>
-    pageTitle ? `${pageTitle} | ${VITE_MITRE_TITLE}` : VITE_MITRE_TITLE
+    pageTitle ? `${pageTitle} | ${MITRE_TITLE}` : MITRE_TITLE
 })
 
 const route = useRoute()
 
-const doesPageHaveSideNav = computed(() => {
-  return (
-    ['tactics', 'techniques', 'mitigations', 'studies'].includes(route.params.objectTypePlural) ||
-    (route.path.startsWith('/studies') && route.path !== '/studies/create')
-  )
+const routeMeta = computed(() => route.meta || {})
+
+const isErrorRoute = computed(() => {
+  return routeMeta.value.section === 'error'
 })
 
-// Routes which should not have margins and padding around the content
+const doesPageHaveSideNav = computed(() => {
+  const metaValue = routeMeta.value.showSideNav
+  if (typeof metaValue === 'boolean') {
+    return metaValue
+  }
+
+  return false
+})
+
 const isRouteFullView = computed(() => {
-  const routesWithNoMargins = ['/', '/contribute', '/contribute/submit']
-  return routesWithNoMargins.includes(route.path)
+  const metaValue = routeMeta.value.fullWidth
+  if (typeof metaValue === 'boolean') {
+    return metaValue
+  }
+
+  return false
+})
+
+const showBreadcrumbs = computed(() => {
+  const metaValue = routeMeta.value.showBreadcrumbs
+  if (typeof metaValue === 'boolean') {
+    return metaValue
+  }
+
+  return !isRouteFullView.value
+})
+
+const layoutMainClass = computed(() => {
+  return isRouteFullView.value ? '' : 'mx-16 mb-16'
 })
 </script>

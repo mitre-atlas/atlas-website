@@ -22,7 +22,7 @@
         <v-btn
           color="highlighter"
           variant="flat"
-          to="/matrices/ATLAS"
+          :to="matrixRoute"
           append-icon="mdi-chevron-right"
           :size="buttonSize"
           >Explore the ATLAS Threat Matrix
@@ -43,6 +43,14 @@ import { useMain } from '@/stores/main'
 const { mdAndUp } = useDisplay()
 
 const store = useMain()
+
+const matrixRoute = computed(() => {
+  const version = store.getActiveNavigationVersion
+  if (version) {
+    return `/v/${encodeURIComponent(version)}/matrices/${store.getFirstMatrixId}`
+  }
+  return `/matrices/${store.getFirstMatrixId}`
+})
 
 const matrixStats = store.getDataObjectTypes.map((objType) => {
   return {

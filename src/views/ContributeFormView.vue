@@ -36,7 +36,8 @@
                             variant="outlined"
                             label="Primary Contribution Type *"
                             persistent-hint
-                            hint="While additional types may be associated with the submission, select the primary type you would like to contribute"
+                            hint="While additional types may be associated with the submission,
+                            select the primary type you would like to contribute"
                             @update:model-value="requestContributionSwitch({ type: $event, editTarget: null })"
                         ></v-select>
                         <div v-if="type && type !== 'other'">
@@ -134,7 +135,9 @@
             </div>
         </v-container>
         <v-container :class="{ 'mt-8': type !== 'other', 'pt-0': type === 'other' }">
-            <!-- todo: Sticky Side-bar Nav with links to each of the main expandable sections, e.g. for techniques: Contact Details, Technique Details, Associated Tactics, Associated Mitigations, Technique References, Submit-->
+            <!-- todo: Sticky Side-bar Nav with links to each main expandable section,
+            e.g. for techniques: Contact Details, Technique Details, Associated Tactics,
+            Associated Mitigations, Technique References, Submit-->
             <v-row v-if="showSubComponentEditForm" align="stretch" class="ma-0">
                 <v-col cols="12" sm="3" class="pa-0 pr-0 pr-sm-6" v-if="type && type !== 'other'">
                     <div class="sticky-nav">
@@ -155,12 +158,12 @@
     </v-defaults-provider>
 </template>
 <script setup>
-import FormStructure from '@/components/contribute-form/FormStructure.vue';
-import UploadContributionDialog from '@/components/contribute-form/UploadContributionDialog.vue';
+import FormStructure from '@/components/contribute-form/FormStructure.vue'
+import UploadContributionDialog from '@/components/contribute-form/UploadContributionDialog.vue'
 import { ref, onMounted, onBeforeUnmount, nextTick, watch, computed } from 'vue'
-import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router';
-import { getReferenceDisplayText, truncateText } from '@/assets/tools';
-import { REFERENCE_DISPLAY_MAX_CHARS } from '@/types/reference';
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
+import { getReferenceDisplayText, truncateText } from '@/assets/tools'
+import { REFERENCE_DISPLAY_MAX_CHARS } from '@/types/reference'
 import {
     caseStudyConsiderations,
     getMatrixAssociations,
@@ -170,21 +173,22 @@ import {
     getContributionTypeOptions,
     isContributionTypeKey,
     mapContributionToDraft,
-} from '@/assets/contributionTools.js';
-import { useMain } from '@/stores/main';
+} from '@/assets/contributionTools.js'
+import { getStoreObjectCollectionKey, isMatrixTypeKey } from '@/assets/objectTypes.js'
+import { useMain } from '@/stores/main'
 
-const mainStore = useMain();
-const route = useRoute();
-const router = useRouter();
-const CONTRIBUTION_SUMMARY_MAX_CHARS = 180;
+const mainStore = useMain()
+const route = useRoute()
+const router = useRouter()
+const CONTRIBUTION_SUMMARY_MAX_CHARS = 180
 
-const types = getContributionTypeOptions();
-const routeAction = Array.isArray(route.query.action) ? route.query.action[0] : route.query.action;
-const action = ref(routeAction === 'edit' ? 'edit' : 'add');
-const routeType = Array.isArray(route.query.type) ? route.query.type[0] : route.query.type;
-const type = ref(isContributionTypeKey(routeType) ? routeType : "");
-const typeWord = computed(() => contributionTypeWordFromKey(type.value));
-const typeWordLower = computed(() => contributionTypeWordFromKey(type.value, true));
+const types = getContributionTypeOptions()
+const routeAction = Array.isArray(route.query.action) ? route.query.action[0] : route.query.action
+const action = ref(routeAction === 'edit' ? 'edit' : 'add')
+const routeType = Array.isArray(route.query.type) ? route.query.type[0] : route.query.type
+const type = ref(isContributionTypeKey(routeType) ? routeType : "")
+const typeWord = computed(() => contributionTypeWordFromKey(type.value))
+const typeWordLower = computed(() => contributionTypeWordFromKey(type.value, true))
 const formTitle = computed(() => {
     if (action.value === 'edit' && selectedEditTarget.value?.name) {
         return `${selectedEditTarget.value.name} ${typeWord.value}`
@@ -219,8 +223,8 @@ const formFieldDefaults = {
     VFileInput: contributionFieldDefaults,
 }
 
-const editTypes = getContributionTypeOptions(false);
-const editTarget = ref(null);
+const editTypes = getContributionTypeOptions(false)
+const editTarget = ref(null)
 
 function requestContributionSwitch(nextSelection) {
     if (isCurrentSelection(nextSelection)) {
@@ -321,12 +325,14 @@ watch (action, () => {type.value = null; editTarget.value = null})
 
 // Populate the list of possible values available in the editTarget dropdown based on the editType selected
 const editTargets = computed(() => {
-    const t = type.value == 'studies' ? 'case-studies' : type.value;
-    const matrixId = type.value == 'studies' ? undefined : 'ATLAS';
-    return (t && t !== 'other') ? 
-        mainStore.getDataObjectsByType(t, matrixId).sort((a, b) => a.name.localeCompare(b.name)) 
+    const selectedType = type.value || ''
+    const storeCollectionKey = getStoreObjectCollectionKey(selectedType)
+    const matrixId = isMatrixTypeKey(selectedType) ? mainStore.getFirstMatrixId : undefined
+
+    return (selectedType && selectedType !== 'other') ?
+        mainStore.getDataObjectsByType(storeCollectionKey, matrixId).sort((a, b) => a.name.localeCompare(b.name))
         : []
-});
+})
 
 const selectedEditTarget = computed(() => {
     if (action.value !== 'edit' || !editTarget.value) return null
@@ -433,15 +439,15 @@ function detailsTransformer(section, draft, typeWord) {
     }
 
     if (draft.name) {
-        return { body: truncateText(`${typeWord} ${draft.name}`, CONTRIBUTION_SUMMARY_MAX_CHARS) };
+        return { body: truncateText(`${typeWord} ${draft.name}`, CONTRIBUTION_SUMMARY_MAX_CHARS) }
     } else return null
 }
 
-function associatedTransformer(section, draft, typeWord) {
+function associatedTransformer(section, draft) {
     const associatedType = section.associatedType
-    const associatedArray = draft[associatedType] ?? [];
+    const associatedArray = draft[associatedType] ?? []
 
-    if (!associatedArray.length) return {};
+    if (!associatedArray.length) return {}
 
     if (action.value === 'edit') {
         return {
@@ -454,7 +460,7 @@ function associatedTransformer(section, draft, typeWord) {
     return {
         title: section.title + ":",
         body: associatedArray.map((element, idx) => `${idx + 1}. ${newAssociatedTransformer(element)}`).join("\n")
-    };
+    }
 }
 
 function associationRemovalTransformer(section, draft) {
@@ -470,18 +476,18 @@ function associationRemovalTransformer(section, draft) {
 }
 
 
-function referenceTransformer(section, draft, typeWord) {
-    if (!draft.references.length) return {};
+function referenceTransformer(section, draft) {
+    if (!draft.references.length) return {}
     return {
         title: "References:",
         body: draft.references
             .map((element, idx) => `${idx + 1}. ${getReferenceDisplayText(element, REFERENCE_DISPLAY_MAX_CHARS)}`)
             .join("\n")
-    };
+    }
 }
 
-function procedureTransformer(section, draft, typeWord) {
-    if (!draft.csProcedures.length) return {};
+function procedureTransformer(section, draft) {
+    if (!draft.csProcedures.length) return {}
     return {
         title: "Procedure Steps:",
         body: draft.csProcedures
@@ -528,7 +534,6 @@ function procedureItemTransformer(value) {
 // Initializes the active section (used to highlight the current sidebar link).
 const activeSectionId = ref(visibleSections.value[0]?.id ?? '')
 
-let observer = null
 const isAutoScrolling = ref(false)
 let anchorEls = []
 let rafId = 0

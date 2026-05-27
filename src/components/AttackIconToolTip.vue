@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip v-if="items.some((o) => 'ATT&CK-reference' in o)">
+  <v-tooltip v-if="items.some((o) => 'attack-reference' in o)">
     <template #activator="{ props }">
       <v-icon size="small" v-bind="props"> mdi-information-outline </v-icon>
     </template>

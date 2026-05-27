@@ -4,7 +4,6 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://vitejs.dev/config/
@@ -16,13 +15,8 @@ export default defineConfig(({ mode }) => {
     // Exposed to the rest of the app as import.meta.env.BASE_URL
     // https://vitejs.dev/guide/env-and-mode#env-variables
     base: env.VITE_BASE_URL,
-    optimizeDeps: {
-      esbuildOptions: {
-        target: "esnext",
-      },
-    },
     build: {
-      target: "esnext",
+      target: 'esnext',
     },
     plugins: [
       vueJsx(),
@@ -36,7 +30,6 @@ export default defineConfig(({ mode }) => {
         }
       }),
       vuetify(),
-      // Resolve Buffer is not defined for @mdit-vue-plugin-frontmatter
       nodePolyfills(),
     ],
     resolve: {

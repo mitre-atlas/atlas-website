@@ -1,6 +1,6 @@
 ---
-title: Case Study Terminology
-weight: 2
+title: Case Studies
+weight: 3
 ---
 
 ###### Incident Date

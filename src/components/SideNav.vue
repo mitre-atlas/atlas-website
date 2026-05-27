@@ -11,10 +11,14 @@
       density="compact"
       style="width: 310px"
     >
-      <v-list-group v-for="(tacticObjects, matrixID, i) in data" :key="i" :value="title">
+      <v-list-group
+        v-for="(tacticObjects, matrixID, i) in data"
+        :key="i"
+        :value="`matrix:${matrixID}`"
+      >
         <template v-slot:activator="{ props }">
           <v-list-item v-bind="props">
-            <span @click="$router.push(`/matrices/${matrixID}`)" class="link">
+            <span @click="$router.push(getMatrixRoute(matrixID))" class="link">
               {{ matrixID }}
             </span>
           </v-list-item>
@@ -49,7 +53,7 @@
               </v-list-item>
             </template>
             <div v-for="(technique, i) in tactic.techniques" :key="i">
-              <v-list-item :to="technique.route">
+              <v-list-item :to="technique.route" :value="`technique:${tactic.id}:${technique.id}`">
                 <div class="ml-13">
                   {{ technique.name }}
                 </div>
@@ -58,6 +62,7 @@
                 v-for="(subtechnique, subIndex) in technique.subtechniques"
                 :key="subIndex"
                 :to="subtechnique.route"
+                :value="`subtechnique:${tactic.id}:${technique.id}:${subtechnique.id}`"
               >
                 <div class="ml-16">
                   {{ subtechnique.name }}
@@ -81,6 +86,7 @@ import { useMain } from '@/stores/main'
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDisplay } from 'vuetify'
+import { getStoreObjectCollectionKey, isMatrixTypeKey } from '@/assets/objectTypes.js'
 
 const { mdAndDown } = useDisplay()
 
@@ -88,28 +94,80 @@ const route = useRoute()
 
 const mainStore = useMain()
 
+const currentVersion = computed(() => {
+  return typeof route.params.version === 'string' ? route.params.version : ''
+})
+
+function getMatrixRoute(matrixID) {
+  return currentVersion.value
+    ? `/v/${encodeURIComponent(currentVersion.value)}/matrices/${matrixID}`
+    : `/matrices/${matrixID}`
+}
+
 const title = computed(() => {
-  const parts = route.path.split('/')
-  return parts.filter((part) => part.length > 0)[0]
+  const section = route.meta?.section
+  if (typeof section === 'string' && section.length > 0) {
+    if (section === 'data') {
+      const objectTypePlural = route.params.objectTypePlural
+      return typeof objectTypePlural === 'string' ? objectTypePlural : ''
+    }
+
+    if (section === 'studies' || section === 'matrices') {
+      return section
+    }
+  }
+
+  const objectTypePlural = route.params.objectTypePlural
+  if (typeof objectTypePlural === 'string' && objectTypePlural.length > 0) {
+    return objectTypePlural
+  }
+
+  return ''
 })
 
 const data = computed(() => {
+  const matrixId = mainStore.getFirstMatrixId
   if (title.value === 'tactics' || title.value === 'techniques') {
     return mainStore.$state.data.objects.tactics
   }
   if (title.value === 'studies') {
-    return mainStore.$state.data.objects['case-studies']
+    const studies = mainStore.$state.data.objects[getStoreObjectCollectionKey('studies')] || []
+    return [...studies].sort((a, b) =>
+      b.id.localeCompare(a.id)
+    )
   }
   if (title.value === 'mitigations') {
-    return mainStore.$state.data.objects.mitigations.ATLAS
+    return mainStore.$state.data.objects.mitigations[matrixId]
   }
   return mainStore.$state.data.matrices
 })
 
-const open = ref([title.value])
+const allMatrixOpenKeys = computed(() => {
+  if (!isMatrixTypeKey(title.value) || title.value === 'mitigations') {
+    return [title.value]
+  }
+  return Object.keys(data.value || {}).map((matrixId) => `matrix:${matrixId}`)
+})
 
-watch(title, (newVal) => {
-  open.value = [newVal]
+const allTechniqueTacticNames = computed(() => {
+  if (title.value !== 'techniques') {
+    return []
+  }
+
+  const names = new Set()
+  Object.values(data.value || {}).forEach((tactics) => {
+    tactics.forEach((tactic) => {
+      names.add(tactic.name)
+    })
+  })
+
+  return Array.from(names)
+})
+
+const open = ref(allMatrixOpenKeys.value)
+
+watch([title, data], () => {
+  open.value = allMatrixOpenKeys.value
 })
 
 if (mdAndDown.value) {
@@ -137,23 +195,40 @@ const techniqueID = computed(() => {
   return null
 })
 
-watch(techniqueID, (newVal) => {
-  if (title.value === 'techniques') {
-    expandedTactics.value = []
-    data.value.ATLAS.forEach((tactic) => {
-      tactic.techniques.forEach((technique) => {
-        if (newVal === technique.id) {
-          expandedTactics.value.push(tactic.name)
+const tacticNamesByTechniqueId = computed(() => {
+  const matrixId = mainStore.getFirstMatrixId
+  const matrixTactics = data.value?.[matrixId] || []
+  const lookup = new Map()
+
+  matrixTactics.forEach((tactic) => {
+    tactic.techniques.forEach((technique) => {
+      if (!lookup.has(technique.id)) {
+        lookup.set(technique.id, new Set())
+      }
+      lookup.get(technique.id).add(tactic.name)
+
+      ;(technique.subtechniques || []).forEach((subtechnique) => {
+        if (!lookup.has(subtechnique.id)) {
+          lookup.set(subtechnique.id, new Set())
         }
-        if (technique.subtechniques) {
-          technique.subtechniques.forEach((subtechnique) => {
-            if (subtechnique.id === newVal) {
-              expandedTactics.value.push(tactic.name)
-            }
-          })
-        }
+        lookup.get(subtechnique.id).add(tactic.name)
       })
     })
+  })
+
+  return lookup
+})
+
+watch(techniqueID, (newVal) => {
+  if (title.value === 'techniques') {
+    const tacticNames = tacticNamesByTechniqueId.value.get(newVal)
+    expandedTactics.value = tacticNames ? Array.from(tacticNames) : allTechniqueTacticNames.value
+  }
+})
+
+watch([title, data], () => {
+  if (title.value === 'techniques' && !techniqueID.value) {
+    expandedTactics.value = allTechniqueTacticNames.value
   }
 })
 </script>

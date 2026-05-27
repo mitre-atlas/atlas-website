@@ -2,14 +2,19 @@ import { defineStore } from 'pinia'
 
 import yaml from 'js-yaml'
 
-import { dataObjectToPluralTitle, dataObjectToRoute } from '@/assets/dataHelpers.js'
+import { dataObjectToRoute } from '@/assets/dataHelpers.js'
+import {
+  ATLAS_DATA_VERSION,
+  assertApiModeVersionConfigured,
+  isApiMode
+} from '@/config/env'
 import { collectUniqueArrayValues, getPathWithBase } from '@/assets/tools'
 
 /**
  * Keys that will not be considered as properties or references to other data objects
  * @type {string[]}
  */
-const DEFAULT_DATA_OBJECT_KEYS = ['id', 'object-type', 'name', 'description']
+const DEFAULT_DATA_OBJECT_KEYS = ['id', 'object-type', 'name', 'description', 'attack-reference']
 
 /**
  * Keys added as part of the nuxtServerInit ingest for website use.
@@ -28,12 +33,24 @@ export const EXTRA_ADDED_WEBSITE_KEYS = ['route', 'label', 'columnNames']
  * @private
  */
 const deepCopyDefault = (obj, extraKeys) => {
-  let keysToKeep = DEFAULT_DATA_OBJECT_KEYS + EXTRA_ADDED_WEBSITE_KEYS
+  let keysToKeep = [...DEFAULT_DATA_OBJECT_KEYS, ...EXTRA_ADDED_WEBSITE_KEYS]
   if (typeof extraKeys !== 'undefined') {
     // Add specified keys if present
-    keysToKeep = keysToKeep + extraKeys
+    keysToKeep = keysToKeep.concat(extraKeys)
   }
   return JSON.parse(JSON.stringify(obj, keysToKeep))
+}
+
+function isValidAtlasData(data) {
+  if (!data || typeof data !== 'object') return false
+  const matrixId = data?.matrix?.id
+  const collectionId = data?.collection?.id
+  return typeof matrixId === 'string' && matrixId.length > 0 && typeof collectionId === 'string'
+}
+
+function looksLikeHtml(text) {
+  const value = String(text || '').trim().toLowerCase()
+  return value.startsWith('<!doctype html') || value.startsWith('<html')
 }
 
 export const useMain = defineStore('main', {
@@ -43,25 +60,22 @@ export const useMain = defineStore('main', {
      * @type {Object}
      * @alias state: data
      */
-    data: {},
+    data: {
+      objects: {},
+      matrices: [],
+      allDataObjects: [],
+      objectsById: {},
+      relationshipIndex: {
+        outgoingBySourceId: {},
+        incomingByTargetId: {}
+      }
+    },
     /**
      * Whether to show the navigation drawer on pages
      * @type {boolean}
      * @alias state: doShowNavDrawer
      */
     doShowNavDrawer: true,
-    /**
-     * Items that populate the navigation drawer
-     * @type {object|object[]} items - An object { title: string, data: data objects } specifying the navigation drawer title, or an array of data objects whose title is inferred from the type
-     * @alias state: navDrawerItems
-     */
-    navDrawerItems: [],
-    /**
-     * Title for the navigation drawer
-     * @type {String}
-     * @alias state: navDrawerTitle
-     */
-    navDrawerTitle: 'Placeholder Title',
     /**
      * Whether to show the annoucement banner on pages
      */
@@ -75,7 +89,14 @@ export const useMain = defineStore('main', {
      */
     pageNotFoundDisplaying: false,
     categoryValues: [],
-    mlLifecycleValues: []
+    mlLifecycleValues: [],
+    relatedObjectsCache: {},
+    dataLoadError: '',
+    preferredVersion: '',
+    currentRouteVersion: '',
+    latestKnownVersion: '',
+    latestVersionLoadError: '',
+    manifestEntries: []
   }),
   // other options...
   getters: {
@@ -89,13 +110,13 @@ export const useMain = defineStore('main', {
      * Get a single array of all objects
      * @returns {object[]}
      */
-    getDataObjects: (state) => state.data.allDataObjects,
+    getDataObjects: (state) => state.data?.allDataObjects || [],
 
     /**
      * Get array containing the names of all the object types
      * @returns {string[]}
      */
-    getDataObjectTypes: (state) => Object.keys(state.data.objects),
+    getDataObjectTypes: (state) => Object.keys(state.data?.objects || {}),
 
     /**
      * Returns data objects under the provided object type, either as an object of { matrixId: [objs] }
@@ -109,14 +130,20 @@ export const useMain = defineStore('main', {
      * @alias mapGetters: getDataObjectsByType
      */
     getDataObjectsByType: (state) => (objType, matrixId, returnObject) => {
+      const objects = state.data?.objects || {}
+
       // Returns a list of data objects under the provided object type
       // or an empty Array if not found
       // Ex. in rendering the studies page when there is no case-studies key in the data
-      const content = state.data.objects[objType]
+      const content = objects[objType]
 
       if (typeof returnObject !== 'undefined' && returnObject) {
         // Return the object with keys of matrix ID and values of data objects
-        return content
+        return content || {}
+      }
+
+      if (!content) {
+        return []
       }
 
       if (typeof matrixId === 'undefined') {
@@ -127,8 +154,17 @@ export const useMain = defineStore('main', {
         // Otherwise this is an object keyed by matrix ID,
         // and the ID is is not specified
         // Return the all matrices' objects of this type
-        return Object.values(content).flat()
+        if (typeof content === 'object') {
+          return Object.values(content).flat()
+        }
+
+        return []
       }
+
+      if (typeof content !== 'object') {
+        return []
+      }
+
       // Otherwise access the matrix's objects by ID
       return content[matrixId] ?? []
     },
@@ -143,7 +179,7 @@ export const useMain = defineStore('main', {
      * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
      * @returns {object[]} Array of data objects matching the parameters
      */
-    getDataObjectsByTypeKeyValue: function (state) {
+    getDataObjectsByTypeKeyValue: function () {
       return function (objType, key, value, matrixId) {
         // Retrieves a list of data objects
         const objs = this.getDataObjectsByType(objType, matrixId)
@@ -163,33 +199,13 @@ export const useMain = defineStore('main', {
      * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
      * @returns {object[]} Array of data objects matching the parameters
      */
-    getDataObjectsByTypeKeyValueDeepCopyDefault: function (state) {
+    getDataObjectsByTypeKeyValueDeepCopyDefault: function () {
       return function (objType, key, value, matrixId) {
         // Retrieves a deep copy of a list of data objects, keeping only default data keys
         let objs = this.getDataObjectsByTypeKeyValue(objType, key, value, matrixId)
         // Deep copy only the default data keys, i.e. id, name, route for linking
-        objs = objs.map((obj) => deepCopyDefault(obj))
+        objs = objs.map((obj) => deepCopyDefault(obj, [key]))
         return objs
-      }
-    },
-
-    /**
-     * Retrieves an array of data objects of a specific type, optionally that belong to a specific matrix,
-     * that contain the specified value in the array under the given key.
-     *
-     * @param {string} objType - Value of the data object's `object-type` field
-     * @param {string} key - Data object key field with which to match
-     * @param {string} value - Value of the data object key field with which to match
-     * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
-     * @returns {object[]} Array of data objects matching the parameters
-     * @alias mapGetters: getDataObjectsByTypeKeyContainingValue
-     */
-    getDataObjectsByTypeKeyContainingValue: function (state) {
-      return function (objType, key, value, matrixId) {
-        // Retrieves a list of data objects
-        const objs = this.getDataObjectsByType(objType, matrixId)
-        // Return the data objects whose key includes the provided value argument
-        return objs.filter((obj) => key in obj && obj[key].includes(value))
       }
     },
 
@@ -205,10 +221,9 @@ export const useMain = defineStore('main', {
      * @param {string[]} values - Array of values of the data object nested key field with which to match
      * @param {string} [matrixId] - The key for the matrix under the `matrices` ATLAS Data object
      * @returns {object[]} Array of data objects matching the parameters
-     * @alias mapGetters: getDataObjectsByTypeKeyContainingValue
      */
 
-    getDataObjectsFilteredbyNestedKeyValue: function (state) {
+    getDataObjectsFilteredbyNestedKeyValue: function () {
       return function (objType, key, nested_key, values, matrixId) {
         const objs = this.getDataObjectsByType(objType, matrixId)
         return objs
@@ -224,6 +239,57 @@ export const useMain = defineStore('main', {
     },
 
     /**
+     * Returns case-study procedure technique options for a selected tactic.
+     * Output is flattened as parent technique followed by its subtechniques,
+     * with unique IDs for safe v-autocomplete item-value usage.
+     *
+     * @param {string} tacticId - Selected tactic id
+     * @returns {object[]} Technique and subtechnique options
+     */
+    getProcedureTechniqueOptionsByTactic: function () {
+      return function (tacticId) {
+        if (!tacticId) {
+          return []
+        }
+
+        const tactic = this.getDataObjectById(tacticId)
+        if (!tactic || !Array.isArray(tactic.techniques)) {
+          return []
+        }
+
+        const options = []
+        const seenIds = new Set()
+
+        tactic.techniques.forEach((technique) => {
+          if (!technique?.id || seenIds.has(technique.id)) {
+            return
+          }
+
+          seenIds.add(technique.id)
+          options.push(technique)
+
+          const subtechniques = Array.isArray(technique.subtechniques)
+            ? technique.subtechniques
+            : []
+
+          subtechniques.forEach((subtechnique) => {
+            if (!subtechnique?.id || seenIds.has(subtechnique.id)) {
+              return
+            }
+
+            seenIds.add(subtechnique.id)
+            options.push({
+              ...subtechnique,
+              'subtechnique-of': technique.id
+            })
+          })
+        })
+
+        return options
+      }
+    },
+
+    /**
      * Returns an object with key/object-type to array of objects referenced by this object.
      * Re-keys specific items including "subtechnique-of" for title display purposes.
      *
@@ -232,88 +298,35 @@ export const useMain = defineStore('main', {
      */
     getReferencedDataObjects: function (state) {
       return function (argObj) {
-        // Returns an object with key/object-type to array of objects referenced by this object
-
-        // Get object keys that may be references, i.e. are not default
-        const dataKeys = Object.keys(argObj).filter((value) => {
-          // Handle tactics having techniques attached, or techniques having subtechniques attached,
-          // from the matrix hierarchy building in nuxtServerInit, as the link already exists in the opposite direction
-          if (
-            (argObj['object-type'] === 'tactic' && value === 'techniques') ||
-            (argObj['object-type'] === 'technique' && value === 'subtechniques') ||
-            // A technique's tactics will be found by the referencing side
-            // Also to avoid rendering array of tactics as tags
-            (argObj['object-type'] === 'technique' && value === 'tactics')
-          ) {
-            return false
-          }
-          // Returns true if this key value should be considered a possible ID reference or property
-          return !(DEFAULT_DATA_OBJECT_KEYS + EXTRA_ADDED_WEBSITE_KEYS).includes(value)
-        })
-
-        // IDs of objects directly referenced by this page's object
         const referencedObjects = {}
-        dataKeys.forEach((key) => {
-          const value = argObj[key]
-          // Note that array of data object IDs are handled by getDataObjectsReferencing
-          if (Array.isArray(value) && typeof value[0] === 'object' && 'id' in value[0]) {
-            // List of data objects for tabular format
+        const outgoing = state.data.relationshipIndex?.outgoingBySourceId?.[argObj.id] || {}
 
-            // Pull out the list of field names other than 'id' to be column names
-            let columnNames = Object.keys(value[0])
-            columnNames = columnNames.filter((name) => name !== 'id')
-
-            // Flatten into an array of data objects augmented with tabular data and column names
-            const objs = value
-              .map((v) => {
-                // Get data object by ID
-                const obj = this.getDataObjectByIdDeepCopyDefault(v['id'])
-                // Combine it with the tabular data
-                const augmentedObj = Object.assign(obj, v)
-                // Add the tabular data key names as column names
-                augmentedObj['columnNames'] = columnNames
-                return augmentedObj
-              })
-              .flat()
-
-            // Assign to related objects
-            referencedObjects[key] = objs
-          } else {
-            // Single object referenced by ID
-            const refObj = this.getDataObjectByIdDeepCopyDefault(value)
-            if (refObj) {
-              // Create a single-element Array
-              referencedObjects[key] = [refObj]
-            } else if (
-              // The value is a non-empty string, i.e. a declared property
-              (typeof value === 'string' && /[^\s]/.test(value)) ||
-              // The value is a string array, i.e. tags
-              (Array.isArray(value) && value.every((v) => typeof v === 'string'))
-            ) {
-              // Add the key and value as-is
-              referencedObjects[key] = value
-            }
+        if (outgoing.achieves?.length) {
+          const tacticObjs = outgoing.achieves
+            .map((rel) => this.getDataObjectByIdDeepCopyDefault(rel.target))
+            .filter(Boolean)
+          if (tacticObjs.length > 0) {
+            referencedObjects.tactics = tacticObjs
           }
-        })
-
-        // Handle subtechnique-of title
-        if ('subtechnique-of' in referencedObjects) {
-          // Access parent technique object from the array under the `subtechnique-of` key
-          const parentTechniqueId = referencedObjects['subtechnique-of'][0]['id']
-          // Access full object, including the tactics key
-          const parentTechnique = this.getDataObjectById(parentTechniqueId)
-
-          // Add the parent technique's tactic(s) to the subtechnique's related objects
-          referencedObjects['tactics'] = parentTechnique.tactics.map((id) =>
-            this.getDataObjectByIdDeepCopyDefault(id)
-          )
-
-          // Re-key the parent technique object under the desired display label,
-          // which expects an array
-          referencedObjects['parent-technique'] = [parentTechnique]
-          // Remove the re-labeled key-value pair
-          delete referencedObjects['subtechnique-of']
         }
+
+        if (outgoing.specializes?.length) {
+          const parentTechniqueId = outgoing.specializes[0].target
+          const parentTechnique = this.getDataObjectById(parentTechniqueId)
+          if (parentTechnique) {
+            referencedObjects['parent-technique'] = [parentTechnique]
+            referencedObjects.tactics = (parentTechnique.tactics || [])
+              .map((id) => this.getDataObjectByIdDeepCopyDefault(id))
+              .filter(Boolean)
+          }
+        }
+
+        if (outgoing.mitigates?.length) {
+          referencedObjects.technique = outgoing.mitigates
+            .map((rel) => this.getDataObjectByIdDeepCopyDefault(rel.target))
+            .filter(Boolean)
+        }
+
         return referencedObjects
       }
     },
@@ -328,38 +341,12 @@ export const useMain = defineStore('main', {
      */
     getDataObjectsReferencing: function (state) {
       return function (argObj) {
-        // Return an object with key/object-type to array of deep-copied objects that reference this object
-
         const id = argObj.id
-
-        // Find objects that reference this object's ID
-        let objects = this.getDataObjects.filter((obj) => {
-          // Disregard the argObj itself
-          if (obj.id === id) {
-            return false
-          }
-          // Otherwise examine the object's values
-          // Can be primitives or arrays of objects
-          const objValues = Object.values(obj).flat()
-          // Take
-          const isRef = objValues.some((val) => {
-            if (typeof val === 'string') {
-              // argObj ID is referenced directly or in a nested array
-              // ex. tactic ID in a technique's tactics array
-              return val === id
-            } else if (typeof val === 'object') {
-              // argObj ID is referenced in a nested object
-              // ex. procedure step technique, or a mitigation technique use id
-              return Object.values(val).includes(id)
-            } else {
-              // This is not a reference to an object ID
-              return false
-            }
-          })
-          return isRef
-        })
-        // Make a deep copy of each object, with only default keys, i.e. id, name, route for linking
-        objects = objects.map((obj) => deepCopyDefault(obj))
+        const incoming = state.data.relationshipIndex?.incomingByTargetId?.[id] || []
+        const sourceIdSet = new Set(incoming.map((rel) => rel.source).filter((sourceId) => sourceId !== id))
+        let objects = Array.from(sourceIdSet)
+          .map((sourceId) => this.getDataObjectByIdDeepCopyDefault(sourceId, ['subtechnique-of']))
+          .filter(Boolean)
 
         // Other subtechniques
         if (argObj['object-type'] === 'technique' && 'subtechnique-of' in argObj) {
@@ -414,11 +401,6 @@ export const useMain = defineStore('main', {
           delete results['technique']
         }
 
-        // Adding ATT&CK object to relatedObjects for DataSidebar rendering
-        if ('ATT&CK-reference' in argObj) {
-          results['ATT&CK-reference'] = argObj['ATT&CK-reference']
-        }
-
         return results
       }
     },
@@ -429,19 +411,42 @@ export const useMain = defineStore('main', {
      */
     getRelatedDataObjects: function (state) {
       return function (argObj) {
+        if (argObj?.id && state.relatedObjectsCache[argObj.id]) {
+          return state.relatedObjectsCache[argObj.id]
+        }
+
         // Returns an object of key/object-type to array of data objects related to this object
         const relatedObjs = {
           ...this.getReferencedDataObjects(argObj),
           ...this.getDataObjectsReferencing(argObj)
         }
 
+        const nonEmptyRelatedObjs = Object.entries(relatedObjs).reduce((acc, [key, value]) => {
+          if (value === undefined || value === null) {
+            return acc
+          }
+
+          if (Array.isArray(value) && value.length === 0) {
+            return acc
+          }
+
+          acc[key] = value
+          return acc
+        }, {})
+
         // Sort object keys in alphabetical order for display
-        return Object.keys(relatedObjs)
+        const result = Object.keys(nonEmptyRelatedObjs)
           .sort()
           .reduce((acc, key) => {
-            acc[key] = relatedObjs[key]
+            acc[key] = nonEmptyRelatedObjs[key]
             return acc
           }, {})
+
+        if (argObj?.id) {
+          state.relatedObjectsCache[argObj.id] = result
+        }
+
+        return result
       }
     },
 
@@ -453,8 +458,13 @@ export const useMain = defineStore('main', {
      */
     getDataObjectById: function (state) {
       return function (value) {
+        const objectById = state.data.objectsById?.[value]
+        if (objectById) {
+          return objectById
+        }
         // Returns the data object with the corresponding ID
-        if (this.getDataObjects) return this.getDataObjects.find((obj) => obj['id'] === value)
+        const allDataObjects = this.getDataObjects || []
+        return allDataObjects.find((obj) => obj['id'] === value)
       }
     },
 
@@ -463,13 +473,13 @@ export const useMain = defineStore('main', {
      * @param {string} value - Data object ID
      * @returns {object} Matching data object
      */
-    getDataObjectByIdDeepCopyDefault: function (state) {
-      return function (value) {
+    getDataObjectByIdDeepCopyDefault: function () {
+      return function (value, extraKeys) {
         // Returns a deep copy of the the data object with the corresponding ID, with only default data keys present
         let obj = this.getDataObjectById(value)
         // Deep copy, only keeping default keys, i.e. id, name, route, for linking
         if (obj) {
-          obj = deepCopyDefault(obj)
+          obj = deepCopyDefault(obj, extraKeys)
         }
         return obj
       }
@@ -480,16 +490,14 @@ export const useMain = defineStore('main', {
      * @returns {string} matrix ID
      * @alias mapGetters: getFirstMatrixId
      */
-    getFirstMatrixId: (state) => {
-      return state.data.matrices[0].id
-    },
+    getFirstMatrixId: (state) => state.data.matrices?.[0]?.id || '',
 
     /**
      * Retrieves an array of matrix IDs
      * @returns {string[]} matrix IDs
      */
     getMatrixIds: (state) => {
-      return state.data.matrices.map((obj) => obj.id)
+      return (state.data?.matrices || []).map((obj) => obj.id)
     },
 
     /**
@@ -499,7 +507,7 @@ export const useMain = defineStore('main', {
      * @alias mapGetters: getMatrixByID
      */
     getMatrixByID: (state) => (value) => {
-      return state.data.matrices.find((obj) => obj['id'] === value)
+      return (state.data?.matrices || []).find((obj) => obj['id'] === value)
     },
     /**
      * Retrieves whether the annoucement banner should be displayed
@@ -517,7 +525,7 @@ export const useMain = defineStore('main', {
      * @returns {object|null} The subtechnique's parent object, or null
      * @alias mapGetters: subtechnique/getParent
      */
-    getParent: function (state) {
+    getParent: function () {
       return function (subtechnique) {
         if ('subtechnique-of' in subtechnique) {
           const parentTechniqueId = subtechnique['subtechnique-of']
@@ -527,9 +535,9 @@ export const useMain = defineStore('main', {
       }
     },
 
-    getAllCategoryValues: (state) => state.categoryValues,
+    getActiveNavigationVersion: (state) => state.currentRouteVersion || state.preferredVersion,
 
-    getAllMlLifecycleValues: (state) => state.mlLifecycleValues
+    getCanonicalLatestVersion: (state) => ATLAS_DATA_VERSION || state.latestKnownVersion || ''
 
   },
   actions: {
@@ -555,34 +563,10 @@ export const useMain = defineStore('main', {
       }
     },
     /**
-     * Sets the navigation drawer items
-     * @param {object|object[]} items - An object { title: string, data: data objects } specifying the navigation drawer title, or an array of data objects whose title is inferred from the type
-     * @alias mapMutations: SET_NAV_DRAWER_ITEMS
-     */
-    SET_NAV_DRAWER_ITEMS(items) {
-      if (Array.isArray(items) && items.length > 0 && 'object-type' in items[0]) {
-        // Payload is an array of data objects
-        this.navDrawerItems = [...items]
-        // Plural object type with spaces instead of dashes, if any
-        this.navDrawerTitle = dataObjectToPluralTitle(items[0])
-      } else if (
-        typeof items === 'object' &&
-        items !== null &&
-        'data' in items &&
-        'title' in items
-      ) {
-        // Payload is an object { data, title }
-        this.navDrawerItems = [...items.data]
-        this.navDrawerTitle = items.title
-      } else {
-        console.error('Unexpected payload for SET_NAV_DRAWER_ITEMS', items)
-      }
-    },
-    /**
      * Disables the visiblity of the annoucement banner
      * @alias mapMutations: DISMISS_ANNOUCEMENT_BANNER
      */
-    DISMISS_ANNOUCEMENT_BANNER(state) {
+    DISMISS_ANNOUCEMENT_BANNER() {
       // Set visibility to false
       this.doShowAnnoucementBanner = false
     },
@@ -602,14 +586,123 @@ export const useMain = defineStore('main', {
       this.mlLifecycleValues = [...payload]
     },
 
+    SET_PREFERRED_VERSION(version) {
+      const normalizedVersion = typeof version === 'string' ? version.trim() : ''
+      this.preferredVersion = normalizedVersion
+      if (typeof window !== 'undefined') {
+        if (normalizedVersion) {
+          window.sessionStorage.setItem('atlas-preferred-version', normalizedVersion)
+        } else {
+          window.sessionStorage.removeItem('atlas-preferred-version')
+        }
+      }
+    },
+
+    LOAD_PREFERRED_VERSION() {
+      if (typeof window === 'undefined') {
+        return ''
+      }
+
+      const storedVersion = window.sessionStorage.getItem('atlas-preferred-version') || ''
+      this.preferredVersion = storedVersion
+      return storedVersion
+    },
+
+    SYNC_ROUTE_VERSION(routeLike) {
+      const nextVersion =
+        typeof routeLike?.params?.version === 'string' ? routeLike.params.version : ''
+      this.currentRouteVersion = nextVersion
+      return nextVersion
+    },
+
+    async LOAD_LATEST_KNOWN_VERSION() {
+      this.latestVersionLoadError = ''
+
+      if (ATLAS_DATA_VERSION) {
+        this.latestKnownVersion = ATLAS_DATA_VERSION
+        return this.latestKnownVersion
+      }
+
+      return this.LOAD_MANIFEST()
+        .then((entries) => {
+          const latestRelease = String(entries?.[0]?.release || '').trim()
+          if (!latestRelease) {
+            throw new Error('manifest.yaml is missing the latest release')
+          }
+          this.latestKnownVersion = latestRelease
+          return latestRelease
+        })
+        .catch((error) => {
+          this.latestVersionLoadError = error.message
+          throw error
+        })
+    },
+
+    async LOAD_MANIFEST() {
+      if (Array.isArray(this.manifestEntries) && this.manifestEntries.length > 0) {
+        return this.manifestEntries
+      }
+
+      return fetch(getPathWithBase('/atlas-data/dist/manifest.yaml'))
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Unable to load manifest.yaml (${response.status})`)
+          }
+          return response.text()
+        })
+        .then((text) => {
+          if (looksLikeHtml(text)) {
+            throw new Error('manifest.yaml was not found (received HTML fallback)')
+          }
+          const parsed = yaml.load(text)
+          if (!Array.isArray(parsed)) {
+            throw new Error('manifest.yaml has invalid format')
+          }
+          this.manifestEntries = parsed
+          return parsed
+        })
+    },
+
+    resolveManifestYamlPath(releaseVersion) {
+      const manifestVersion = String(releaseVersion || '').trim()
+      const entries = Array.isArray(this.manifestEntries) ? this.manifestEntries : []
+
+      let manifestEntry = null
+      if (manifestVersion) {
+        manifestEntry = entries.find((entry) => String(entry?.release || '').trim() === manifestVersion)
+      } else {
+        const pinned = String(ATLAS_DATA_VERSION || '').trim()
+        if (pinned) {
+          manifestEntry = entries.find((entry) => String(entry?.release || '').trim() === pinned)
+        }
+        if (!manifestEntry) {
+          manifestEntry = entries[0] || null
+        }
+      }
+
+      if (!manifestEntry) {
+        return null
+      }
+
+      const versions = Array.isArray(manifestEntry.versions) ? manifestEntry.versions : []
+      const v6Entry = versions.find((versionEntry) =>
+        String(versionEntry?.path || '').trim().startsWith('v6/')
+      )
+      const path = String(v6Entry?.path || '').trim()
+      if (!path) {
+        return null
+      }
+
+      return {
+        release: String(manifestEntry.release || '').trim(),
+        path: `/atlas-data/dist/${path}`
+      }
+    },
+
     // Convert all date strings in a JS object to JavaScript Date objects
     convertDatesToJS(data) {
       // The following field names are expected by the website to be dates
-      const dateFieldNames = [
-        'created_date',
-        'modified_date',
-        'incident-date'
-      ]
+      const dateFieldNames = ['created-date', 'modified-date', 'date']
 
       // Recursively look for the specified fields to cast their values as Dates
       if (Array.isArray(data)) {
@@ -631,39 +724,96 @@ export const useMain = defineStore('main', {
     /**
      * Helper function to fetch YAML file
      */
-    async fetchYaml() {
-      return fetch(getPathWithBase('/atlas-data/dist/ATLAS.yaml'))
-        .then((response) => response.text())
-        .then((text) => yaml.load(text))
+    async fetchYaml(version) {
+      return this.LOAD_MANIFEST()
+        .then(() => {
+          const resolved = this.resolveManifestYamlPath(version)
+          if (!resolved?.path) {
+            const requestedVersion = version || ATLAS_DATA_VERSION || 'latest'
+            throw new Error(`No v6 manifest entry found for version "${requestedVersion}"`)
+          }
+
+          return {
+            yamlPath: resolved.path,
+            requestedVersion: resolved.release || version || ATLAS_DATA_VERSION || 'latest'
+          }
+        })
+        .then(({ yamlPath, requestedVersion }) =>
+          fetch(getPathWithBase(yamlPath)).then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `Unable to load ATLAS YAML for version "${requestedVersion}" (${response.status})`
+              )
+            }
+            return response.text()
+          })
+        )
+        .then((text) => {
+          if (looksLikeHtml(text)) {
+            const requestedVersion = version || ATLAS_DATA_VERSION || 'latest'
+            throw new Error(
+              `ATLAS YAML for version "${requestedVersion}" was not found (received HTML fallback)`
+            )
+          }
+
+          const parsed = yaml.load(text)
+          if (!isValidAtlasData(parsed)) {
+            const requestedVersion = version || ATLAS_DATA_VERSION || 'latest'
+            throw new Error(`ATLAS YAML for version "${requestedVersion}" has invalid format`)
+          }
+
+          return parsed
+        })
     },
 
     /**
      * Fetches ATLAS data either from API or YAML file
      */
-    async fetchData() {
+    async fetchData(version) {
       // Fetch from the API if its URL exists
-      if (import.meta.env.VITE_API_URL) {
-        return fetch('/api/atlas-yaml/json')
+      if (isApiMode()) {
+        const resolvedVersion = version || ATLAS_DATA_VERSION
+        const isVersionedRoute = Boolean(version)
+        return Promise.resolve()
+          .then(() => {
+            if (!resolvedVersion) {
+              assertApiModeVersionConfigured()
+            }
+            return fetch(`/api/versions/${encodeURIComponent(resolvedVersion)}/data`)
+          })
           .then((response) => {
             if (!response.ok) {
               throw new Error(
                 `There was an issue with fetching from the API. Error: ${response.status}`
               )
             }
-            return response.json()
+            const contentType = response.headers.get('content-type') || ''
+            if (contentType.includes('json')) {
+              return response.json()
+            }
+
+            return response.text().then((text) => yaml.load(text))
           })
           .then((data) => {
+            if (!isValidAtlasData(data)) {
+              throw new Error('ATLAS API response has invalid format')
+            }
             return this.convertDatesToJS(data)
           })
           .catch((error) => {
-            console.log(error)
-            console.log('Loading site using ATLAS.yaml instead')
-            return this.fetchYaml()
+            if (isVersionedRoute) {
+              throw new Error(
+                `Unable to load ATLAS data for version "${version}" from API: ${error.message}`
+              )
+            }
+            console.warn(error)
+            console.warn('Loading site using ATLAS.yaml instead')
+            return this.fetchYaml(version)
           })
 
         // Fetch from the files if there is no API URL or if the API fetch failed
       } else {
-        return this.fetchYaml()
+        return this.fetchYaml(version)
       }
     },
     
@@ -671,141 +821,208 @@ export const useMain = defineStore('main', {
     /**
      * Takes ATLAS JSON data and properly processes and sets it in the store
      */
-    processData(data) {
-      // Collect top-level data objects under the key 'objects'
-      const { id, name, version, matrices, ...objects } = data
-      const result = { id, name, version, matrices, objects }
+    processData(data, version) {
+      this.relatedObjectsCache = {}
 
-      // Hold on to all data objects, in a list-of-lists
-      // Starting with the top-level objects
-      let allDataObjects = Object.values(objects).flat()
+      const matrix = data.matrix
+      const matrixId = matrix.id
+      const objectTypePluralValues = new Set(['tactics', 'techniques', 'mitigations', 'case-studies'])
 
-      // Add the route to each top-level object
-      allDataObjects.forEach((dataObj) => {
-        // Add a property for each data object's internal route
-        dataObj.route = dataObjectToRoute(dataObj)
-        if ('object-type' in dataObj && dataObj['object-type'] == 'case-study') {
-          dataObj.columnNames = ['summary']
+      const tactics = Object.values(data.tactics || {})
+      const techniques = Object.values(data.techniques || {})
+      const mitigations = Object.values(data.mitigations || {})
+      const caseStudies = Object.values(data['case-studies'] || {})
+
+      const objectsById = {}
+      const allDataObjects = tactics.concat(techniques, mitigations, caseStudies)
+      allDataObjects.forEach((obj) => {
+        obj.route = dataObjectToRoute(obj, version)
+        objectsById[obj.id] = obj
+      })
+
+      const relationships = data.relationships || {}
+      const relationshipIndex = {
+        outgoingBySourceId: {},
+        incomingByTargetId: {}
+      }
+
+      // Build mappings from relationship graph
+      techniques.forEach((technique) => {
+        technique.tactics = []
+      })
+
+      Object.entries(relationships).forEach(([sourceId, rels]) => {
+        relationshipIndex.outgoingBySourceId[sourceId] = rels
+        Object.values(rels).forEach((relsByType) => {
+          relsByType.forEach((rel) => {
+            if (!relationshipIndex.incomingByTargetId[rel.target]) {
+              relationshipIndex.incomingByTargetId[rel.target] = []
+            }
+            relationshipIndex.incomingByTargetId[rel.target].push(rel)
+          })
+        })
+
+        if (rels.achieves) {
+          rels.achieves.forEach((rel) => {
+            if (objectsById[sourceId] && objectsById[sourceId]['object-type'] === 'technique') {
+              objectsById[sourceId].tactics.push(rel.target)
+            }
+          })
+        }
+
+        if (rels.specializes && rels.specializes.length > 0 && objectsById[sourceId]) {
+          objectsById[sourceId]['subtechnique-of'] = rels.specializes[0].target
+        }
+
+        if (rels.mitigates && objectsById[sourceId]) {
+          objectsById[sourceId].mitigates = rels.mitigates.map((rel) => ({
+            technique: rel.target,
+            description: rel.description || ''
+          }))
+        }
+
+        if (rels.employs && objectsById[sourceId]) {
+          const steps = rels.employs
+            .map((rel, index) => ({
+              step: rel['step-id'] || `S${String(index).padStart(2, '0')}`,
+              leadsTo: rel['leads-to'] || [],
+              tactic: rel.tactic,
+              technique: rel.target,
+              description: rel.description || ''
+            }))
+            .sort((a, b) => a.step.localeCompare(b.step))
+            .map(({ tactic, technique, description }) => ({ tactic, technique, description }))
+
+          objectsById[sourceId].attack_chain = steps
+          objectsById[sourceId].columnNames = ['description']
         }
       })
 
-      // Pluralized last word of object-type values, which serve as route names
-      const objectTypePluralValues = new Set()
+      const parentTechniques = techniques.filter(
+        (t) => Array.isArray(t.tactics) && t.tactics.length > 0 && !('subtechnique-of' in t)
+      )
+      const subtechniques = techniques.filter((t) => 'subtechnique-of' in t)
 
-      // Build matrix-like structure under each data object type
-      matrices.forEach((matrix, i) => {
-        // Collect data objects within each matrix
-        const { id, name, ...matrix_objs } = matrix
+      const toTechniqueLink = (technique) => ({
+        id: technique.id,
+        'object-type': technique['object-type'],
+        name: technique.name,
+        description: technique.description,
+        route: technique.route,
+        label: technique.label,
+        maturity: technique.maturity,
+        platforms: technique.platforms || [],
+        ...('attack-reference' in technique
+          ? { 'attack-reference': technique['attack-reference'] }
+          : {})
+      })
 
-        let allMatrixObjs = Object.values(matrix_objs).flat()
-        // Add the route to each matrix object
-        allMatrixObjs.forEach((dataObj) => {
-          // Add a property for each data object's internal route
-          dataObj.route = dataObjectToRoute(dataObj)
-
-          // Add label field
-          if (dataObj['object-type'] === 'technique') {
-            if ('subtechnique-of' in dataObj) {
-              const parentName = matrix_objs.techniques.find(
-                (p) => p['id'] === dataObj['subtechnique-of']
-              ).name
-              dataObj.label = `${parentName}: ${dataObj.name}`
-            } else {
-              dataObj.label = dataObj.name
-            }
-          }
-        })
-
-        // Create a populated tree of tactics > techniques > subtechniques in the current data
-
-        // Split techniques into top-level parents, and subtechniques; add labels
-        const parentTechniques = matrix_objs.techniques.filter((t) => 'tactics' in t)
-        const subtechniques = matrix_objs.techniques.filter((t) => 'subtechnique-of' in t)
-
-        // Add subtechniques to top-level techniques
-        const populatedTechniques = parentTechniques.map((t) => {
-          // Check if any subtechniques reference this technique
-          if (subtechniques.some((s) => s['subtechnique-of'] === t.id)) {
-            // Add associated subtechniques to this technique, deep-copying and limited to default keys for linking
-            const associatedObjs = subtechniques.filter((s) => s['subtechnique-of'] === t.id)
-            t.subtechniques = associatedObjs.map((obj) => deepCopyDefault(obj))
-          }
-          return t
-        })
-
-        // Add techniques to tactics
-        matrix_objs.tactics.map((t) => {
-          // Add techniques that reference this tactic, , deep-copying and limited to default keys for linking, as well as the subtechniques link
-          const associatedObjs = populatedTechniques.filter((pt) => pt.tactics.includes(t.id))
-          t.techniques = associatedObjs.map((obj) => deepCopyDefault(obj, ['subtechniques']))
-          t.techniques = t.techniques.sort((a, b) => (a.name < b.name ? -1 : 1));  
-          return t
-        })
-
-        // Iterate over objects and add them to the result
-        for (const [key, dataObjs] of Object.entries(matrix_objs)) {
-          // Add objects from this matrix into the result
-          if (key in objects) {
-            // Add to the existing object keyed by the matrix ID
-            objects[key][id] = dataObjs
-          } else {
-            // Otherwise initialize it
-            objects[key] = {
-              [id]: dataObjs
-            }
-
-            // Add to the list of accepted _objectTypeValues
-            const objectTypePlural = dataObjectToPluralTitle(key, true)
-            objectTypePluralValues.add(objectTypePlural)
-          }
-
-          // Collect each matrix's objects for later operations
-          allDataObjects = allDataObjects.concat(dataObjs)
-
-          // Remove this key and values from the result's matrix,
-          // to reduce data duplciationg. Leaving ID and name
-          delete result.matrices[i][key]
-          result.matrices[i]['route'] = `/matrices/${id}`
+      techniques.forEach((technique) => {
+        if ('subtechnique-of' in technique) {
+          const parent = objectsById[technique['subtechnique-of']]
+          technique.label = parent ? `${parent.name}: ${technique.name}` : technique.name
+        } else {
+          technique.label = technique.name
         }
       })
 
-      // Commit the array of accepted _objectTypePlural values
+      const subtechniquesByParentId = subtechniques.reduce((acc, subtechnique) => {
+        const parentId = subtechnique['subtechnique-of']
+        if (!acc[parentId]) {
+          acc[parentId] = []
+        }
+        acc[parentId].push(toTechniqueLink(subtechnique))
+        return acc
+      }, {})
+
+      parentTechniques.forEach((parentTechnique) => {
+        const specializedTechniques = subtechniquesByParentId[parentTechnique.id] || []
+        if (specializedTechniques.length > 0) {
+          parentTechnique.subtechniques = specializedTechniques
+        } else {
+          delete parentTechnique.subtechniques
+        }
+      })
+
+      const parentTechniquesByTacticId = parentTechniques.reduce((acc, technique) => {
+        technique.tactics.forEach((tacticId) => {
+          if (!acc[tacticId]) {
+            acc[tacticId] = []
+          }
+          acc[tacticId].push(technique)
+        })
+        return acc
+      }, {})
+
+      const tacticsForMatrix = tactics.map((tactic) => {
+        const associated = parentTechniquesByTacticId[tactic.id] || []
+        tactic.techniques = associated.map((technique) => ({
+          ...toTechniqueLink(technique),
+          subtechniques: technique.subtechniques || []
+        }))
+        tactic.techniques = tactic.techniques.sort((a, b) => (a.name < b.name ? -1 : 1))
+        return tactic
+      })
+
+      const sequenceRels = relationships[matrixId]?.sequences || []
+      const tacticSortOrder = new Map(sequenceRels.map((rel, index) => [rel.target, index]))
+      tacticsForMatrix.sort((a, b) => {
+        const ai = tacticSortOrder.has(a.id) ? tacticSortOrder.get(a.id) : Number.MAX_SAFE_INTEGER
+        const bi = tacticSortOrder.has(b.id) ? tacticSortOrder.get(b.id) : Number.MAX_SAFE_INTEGER
+        return ai - bi
+      })
+
+      const result = {
+        id: data.collection.id,
+        name: data.collection.name,
+        version: data.collection.version,
+          matrices: [
+            {
+              ...matrix,
+              route: version
+                ? `/v/${encodeURIComponent(version)}/matrices/${matrix.id}`
+                : `/matrices/${matrix.id}`
+            }
+          ],
+        objects: {
+          tactics: { [matrixId]: tacticsForMatrix },
+          techniques: { [matrixId]: techniques },
+          mitigations: { [matrixId]: mitigations },
+          'case-studies': caseStudies
+        },
+        objectsById,
+        relationshipIndex,
+        allDataObjects
+      }
+
       this.SET_OBJECT_TYPE_PLURAL_VALUES(Array.from(objectTypePluralValues))
 
-      // Add all data objects to the store to facilitate finding by ID
-      result.allDataObjects = allDataObjects
-
-      // Commit data to the store, in preparation for using getters below
-      this.SET_ATLAS_DATA(result)
-
-      // Link each data object to related objects
-      allDataObjects.forEach((dataObj) => {
-        // Add a property for the data object's internal route
-        dataObj.route = dataObjectToRoute(dataObj)
-
-        // Apply to all objects but case studies, which have their own template
-        if (dataObj['object-type'] != 'case-study') {
-          // Add a property with other data objects referenced by this one or that reference this one
-          dataObj.relatedObjects = this.getRelatedDataObjects(dataObj)
-        }
-      })
-
-      const categoryValues = collectUniqueArrayValues(allDataObjects, 'category')
-      const mlLifecycleValues = collectUniqueArrayValues(allDataObjects, 'ml-lifecycle')
-
+      const categoryValues = collectUniqueArrayValues(allDataObjects, 'categories')
+      const mlLifecycleValues = collectUniqueArrayValues(allDataObjects, 'lifecycle-phases')
       this.SET_CATEGORY_VALUES(categoryValues)
       this.SET_ML_LIFECYCLE_VALUES(mlLifecycleValues)
-
-      // Commit the fully populated data
       this.SET_ATLAS_DATA(result)
     },
 
     /**
      * Loads in ATLAS data. Automatically called upon start
      */
-    async loadData() {
-      // Retrieve the threat matrix JSON data, then process and populate store upon start
-      await this.fetchData().then((jsonData) => this.processData(jsonData))
+    async loadData(version = '') {
+      this.dataLoadError = ''
+
+      try {
+        // Retrieve the threat matrix JSON data, then process and populate store upon start
+        await this.fetchData(version).then((jsonData) => {
+          if (!isValidAtlasData(jsonData)) {
+            throw new Error('ATLAS data payload is invalid')
+          }
+          this.processData(jsonData, version)
+        })
+      } catch (error) {
+        const requestedVersion = version || 'latest'
+        this.dataLoadError = `Unable to load ATLAS data for version "${requestedVersion}": ${error.message}`
+        throw error
+      }
     }
   }
 })

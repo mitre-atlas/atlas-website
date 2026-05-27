@@ -2,7 +2,7 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p>
-      The {{ VITE_MITRE_TITLE }} Knowledge Graph provides an interactive way to explore information
+      The {{ MITRE_TITLE }} Knowledge Graph provides an interactive way to explore information
       found within the ATLAS Threat Matrix. Each node represents an ATLAS entity and each edge
       represents a relationship between them.
     </p>
@@ -35,7 +35,7 @@
       </ul>
     </div>
 
-    <iframe :src="`${VITE_KNOWLEDGE_GRAPH_URL}`" width="100%" height="750" frameborder="0">
+    <iframe :src="`${KNOWLEDGE_GRAPH_URL}`" width="100%" height="750" frameborder="0">
     </iframe>
   </div>
 </template>
@@ -43,9 +43,7 @@
 <script setup>
 import { ref } from 'vue'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
+import { KNOWLEDGE_GRAPH_URL, MITRE_TITLE, SHORT_NAME } from '@/config/env'
 
-const { VITE_MITRE_TITLE, VITE_SHORT_NAME, VITE_KNOWLEDGE_GRAPH_URL } = import.meta.env
-const title = ref(VITE_SHORT_NAME + ' Knowledge Graph')
-
-const loading = ref(true)
+const title = ref(SHORT_NAME + ' Knowledge Graph')
 </script>

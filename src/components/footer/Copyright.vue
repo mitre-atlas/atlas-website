@@ -13,7 +13,7 @@
         |
         <router-link to="/terms">Terms of Use</router-link>
 
-        <span v-if="VITE_OSANO_SCRIPT">
+        <span v-if="OSANO_SCRIPT">
           |
           <a href="#" onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
             >Manage Cookies</a
@@ -21,7 +21,7 @@
         </span>
       </div>
       <!-- <v-btn
-        v-if="VITE_OSANO_SCRIPT"
+        v-if="OSANO_SCRIPT"
         class="mt-6"
         variant="outlined"
         onclick="Osano.cm.showDrawer('osano-cm-dom-info-dialog-open')"
@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-const { VITE_OSANO_SCRIPT } = import.meta.env
+import { OSANO_SCRIPT } from '@/config/env'
 </script>
 
 <style>

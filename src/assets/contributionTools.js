@@ -4,46 +4,16 @@
 import { validate } from 'jsonschema'
 import { dump } from 'js-yaml'
 import { contributionSchema as schema } from './schemas.js'
-
-const typeInfo = {
-  tactics: {
-    title: 'Tactic',
-    pluralTitle: 'Tactics',
-    objectType: 'tactic',
-    definitionKey: 'tactic',
-  },
-  techniques: {
-    title: 'Technique',
-    pluralTitle: 'Techniques',
-    objectType: 'technique',
-    definitionKey: 'technique',
-  },
-  mitigations: {
-    title: 'Mitigation',
-    pluralTitle: 'Mitigations',
-    objectType: 'mitigation',
-    definitionKey: 'mitigation',
-  },
-  studies: {
-    title: 'Case Study',
-    pluralTitle: 'Case Studies',
-    objectType: 'case-study',
-    definitionKey: 'case_study',
-  },
-  other: {
-    title: 'General Contribution',
-    pluralTitle: 'General Contributions',
-    objectType: 'other',
-    definitionKey: 'other',
-  },
-}
-
-const typeOptions = Object.entries(typeInfo).map(([value, { title }]) => ({
-  value,
-  title,
-}))
-
-const matrixTypeOptions = typeOptions.filter(({ value }) => value !== 'other')
+import {
+  getDefinitionKeyFromObjectType,
+  getObjectTypeFromTypeKey,
+  getObjectTypeOptions,
+  getTypeKeyFromObjectType,
+  getTypeLabel,
+  isKnownTypeKey
+} from './objectTypes.js'
+const typeOptions = getObjectTypeOptions(true)
+const matrixTypeOptions = getObjectTypeOptions(false)
 
 const matrixAssociations = {
   tactics: ['techniques'],
@@ -60,18 +30,6 @@ export const caseStudyConsiderations = [
   'The attack is against a production / commercial AI system. The attack can be on AIaaS or AI systems embedded in clients / at the edge or conducted through red team exercises.',
 ]
 
-const typeToObject = Object.fromEntries(
-  Object.entries(typeInfo).map(([typeKey, { objectType }]) => [typeKey, objectType])
-)
-
-const objectToType = Object.fromEntries(
-  Object.entries(typeInfo).map(([typeKey, { objectType }]) => [objectType, typeKey])
-)
-
-const objectToDef = Object.fromEntries(
-  Object.values(typeInfo).map(({ objectType, definitionKey }) => [objectType, definitionKey])
-)
-
 /**
  * Returns Vuetify-ready contribution type select options.
  *
@@ -83,7 +41,7 @@ export function getContributionTypeOptions(includeOther = true) {
 }
 
 export function isContributionTypeKey(typeKey) {
-  return Object.prototype.hasOwnProperty.call(typeInfo, typeKey)
+  return isKnownTypeKey(typeKey)
 }
 
 export function getMatrixAssociations(typeKey = '') {
@@ -99,21 +57,11 @@ export function getMatrixAssociations(typeKey = '') {
  * @returns {string}
  */
 export function contributionTypeWordFromKey(typeKey = '', lowercase = false, plural = false) {
-  let label = typeInfo[typeKey]?.title
-
-  if (plural) {
-    label = typeInfo[typeKey]?.pluralTitle
-  }
-
-  if (lowercase) {
-    return (label ?? '').toLowerCase()
-  }
-
-  return label ?? ''
+  return getTypeLabel(typeKey, lowercase, plural)
 }
 
 export function contributionObjectTypeFromKey(typeKey = '') {
-  return typeToObject[typeKey] ?? ''
+  return getObjectTypeFromTypeKey(typeKey)
 }
 
 function getPath(source, path = []) {
@@ -175,7 +123,7 @@ function matrixAssociationErrors(contributionObj) {
   for (const submission of ensureArray(payload?.submissions)) {
     if (!isObject(submission) || isObject(submission.study)) continue
 
-    const typeKey = objectToType[submission?.['object-type']]
+    const typeKey = getTypeKeyFromObjectType(submission?.['object-type'])
     const allowedKeys = matrixAssociations[typeKey]
     if (!allowedKeys) continue
 
@@ -239,7 +187,7 @@ function mapDraftItemToInlineObject(draftItem, typeKey) {
   const sanitizedDraftItem = trimStringValues(draftItem)
   const references = mapDraftItemToReference(sanitizedDraftItem)
   const submission = {
-    'object-type': typeToObject[typeKey],
+    'object-type': getObjectTypeFromTypeKey(typeKey),
     name: sanitizedDraftItem?.name ?? '',
     description: sanitizedDraftItem?.summary ?? '',
   }
@@ -663,7 +611,7 @@ function fieldForPath(path = [], error = {}, sourceMap = []) {
 
 function buildContribution(draft, typeKey) {
   const sanitizedDraft = trimStringValues(draft)
-  const objectType = typeToObject[typeKey] || typeKey
+  const objectType = getObjectTypeFromTypeKey(typeKey) || typeKey
   const transformer = toContribution[objectType]
   const ctx = new TransformCtx(objectType)
 
@@ -711,7 +659,7 @@ function normalizedSchema() {
       }
     }
     return clone
-  } catch (e) {
+  } catch {
     return schema
   }
 }
@@ -724,7 +672,7 @@ function errorMessages(errors) {
 }
 
 function definitionFor(objectType, definitions) {
-  const definitionKey = objectToDef[objectType]
+  const definitionKey = getDefinitionKeyFromObjectType(objectType)
   if (!definitionKey) return null
 
   return definitions?.[definitionKey] ?? null
@@ -960,7 +908,7 @@ export function mapContributionToDraft(contributionObj) {
  */
 export function getContributionTypeKey(contributionObj) {
   const { root } = unwrapRoot(contributionObj)
-  return objectToType[root?.['object-type']] ?? null
+  return getTypeKeyFromObjectType(root?.['object-type']) ?? null
 }
 
 /**

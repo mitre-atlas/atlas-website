@@ -4,6 +4,9 @@
       <div class="text-h1 font-weight-bold">404</div>
 
       <div class="text-h2 text-grey">Oops. Nothing here...</div>
+      <div v-if="mainStore.dataLoadError" class="text-body-1 text-grey-darken-1 mt-2">
+        {{ mainStore.dataLoadError }}
+      </div>
 
       <v-btn
         class="mt-5"
@@ -11,7 +14,7 @@
         text-color="blue"
         elevated
         outlined
-        to="/"
+        :to="homeRoute"
         label="Go Home"
         >Navigate Home</v-btn
       >
@@ -20,10 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useMain } from '@/stores/main'
 
 const mainStore = useMain()
+
+const homeRoute = computed(() => {
+  return '/'
+})
 
 onMounted(() => {
   mainStore.$state.pageNotFoundDisplaying = true

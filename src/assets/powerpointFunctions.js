@@ -82,9 +82,8 @@ export function makePPT(study, filename) {
  */
 function titleSlide(ppt, yaml) {
   let textLabel = 'ATLAS Case Study'
-  if (yaml['case-study-type']) {
-    const type = yaml['case-study-type']
-    textLabel += ' - ' + type.slice(0, 1).toUpperCase() + type.slice(1, type.length)
+  if (yaml.type) {
+    textLabel += ' - ' + yaml.type
   }
   ppt.defineSlideMaster({
     title: 'Title',
@@ -293,8 +292,8 @@ function detailSlide(ppt, yaml) {
 
   ppt
     .addSlide({ masterName: 'Summary' })
-    .addText('Summary', { placeholder: 'title' })
-    .addText(yaml.summary, { placeholder: 'content' })
+    .addText('Description', { placeholder: 'title' })
+    .addText(yaml.description, { placeholder: 'content' })
 }
 
 /**
@@ -364,9 +363,9 @@ function procedureSlide(ppt, yaml) {
     ]
   ]
 
-  for (let i = 0; i < yaml.procedure.length; i++) {
-    const description = yaml.procedure[i].description
-    const techniqueInfo = yaml.procedure[i].techniqueObject
+  for (let i = 0; i < yaml.attack_chain.length; i++) {
+    const description = yaml.attack_chain[i].description
+    const techniqueInfo = yaml.attack_chain[i].techniqueObject
 
     const row = [
       { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },

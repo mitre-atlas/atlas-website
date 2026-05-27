@@ -87,6 +87,9 @@
   font-size: 12px;
   font-weight: normal;
   vertical-align: super;
+  display: inline-block;
+  margin-left: 1px;
+  white-space: nowrap;
 }
 .matrix.side .tactic.name,
 .matrix.side .tactic.count {
@@ -304,7 +307,8 @@
 }
 
 .matrix-text {
-  width: 100%;
+  flex: 1 1 auto;
+  width: auto;
   font-size: 2rem;
   text-align: center;
   padding: 1rem 0;
@@ -313,12 +317,15 @@
 .matrix-controls-group {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 20px;
 }
 
 .matrix-filter {
   justify-content: end;
-  margin-right: 30px;
+  margin-right: 0;
   margin-bottom: 6px;
 }
 
@@ -333,6 +340,25 @@
 .fieldset-legend {
   margin-left: 15px;
   padding: 0px 2px 0px 2px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.legend-with-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-info-icon {
+  color: #0d2f4f;
+  opacity: 0.8;
+}
+
+::v-deep(.matrix-filter-tooltip) {
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: normal;
 }
 
 .subtechniques-toggle .v-btn {
@@ -346,6 +372,24 @@
   padding: 0 5px 0 5px;
 }
 
+.matrix-filter .platform-filter-select {
+  width: 360px;
+  min-width: 320px;
+}
+
+.matrix-filter .platform-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 320px;
+  max-width: 520px;
+  padding: 2px 4px 4px;
+}
+
+.matrix-filter .platform-chip {
+  cursor: pointer;
+}
+
 ::v-deep(.slider-width .v-slider-track) {
   --v-slider-track-size: 4px !important;
 }
@@ -354,14 +398,9 @@
   --v-slider-thumb-size: 16px !important;
 }
 
-::v-deep(.slider-width .v-slider-thumb__label) {
-  min-width: 200px !important;
-  height: 100px !important;
-}
-
 ::v-deep(.v-slider-track__tick-label) {
-  font-size: 12px;
-  font-weight: 200;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /* RIGHT MOST TICK*/

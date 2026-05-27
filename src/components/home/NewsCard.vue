@@ -1,6 +1,6 @@
 <template>
   <v-card class="d-flex flex-column fill-height" :max-width="mdAndUp ? '400px' : ''">
-    <a :href="url" target="_blank">
+    <a :href="url" target="_blank" rel="noreferrer">
       <v-img :src="imageUrl" cover style="height: 200px" />
     </a>
     <v-card-title>
@@ -9,7 +9,9 @@
       </div>
     </v-card-title>
     <v-card-subtitle> {{ formattedDate }} - {{ subtitle }} </v-card-subtitle>
-    <v-card-text v-html="md.render(description)"></v-card-text>
+    <v-card-text>
+      <div v-html="md.render(description)" />
+    </v-card-text>
     <div>
       <v-btn
         v-if="url"
@@ -17,6 +19,7 @@
         color="lightNavy"
         :href="url"
         target="_blank"
+        rel="noreferrer"
         append-icon="mdi-chevron-right"
         class="justify-start ms-4 mb-2"
       >
@@ -48,12 +51,15 @@ const { imageSrc, title, subtitle, description, url, date } = defineProps({
     default: null
   },
   date: {
-    type: Date
+    type: [Date, String]
   }
 })
 
 const formattedDate = computed(() => {
-  return date.toLocaleDateString('default', {
+  if (!date) return ''
+  const parsedDate = date instanceof Date ? date : new Date(date)
+  if (Number.isNaN(parsedDate.getTime())) return String(date)
+  return parsedDate.toLocaleDateString('default', {
     timeZone: 'UTC',
     year: 'numeric',
     month: 'long',

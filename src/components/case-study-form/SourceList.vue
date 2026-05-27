@@ -32,7 +32,7 @@
             :disabled="getReferenceDisplayText(source, referenceDisplayMaxChars) === getReferenceDisplayText(source)"
           >
             <template #activator="{ props }">
-              <a v-bind="props" :href="source.url" target="_blank">
+              <a v-bind="props" :href="source.url" target="_blank" rel="noreferrer">
                 {{ getReferenceDisplayText(source, referenceDisplayMaxChars) }}
               </a>
             </template>

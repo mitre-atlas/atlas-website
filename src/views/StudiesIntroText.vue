@@ -7,7 +7,7 @@
     with little oversight, and have little to no logging and alerting attached to their use.
   </p>
   <p>
-    {{ VITE_MITRE_TITLE }} case studies are selected because of the impact to production AI systems.
+    {{ MITRE_TITLE }} case studies are selected because of the impact to production AI systems.
     Each demonstrates one of the following characteristics:
   </p>
   <ol class="pl-4 pb-4" style="line-height: 2.5">
@@ -30,17 +30,32 @@
   </ol>
   <p>
     View a heat map of techniques used in these case studies on the
-    <a target="_blank" :href="frequencyNavigatorUrl">ATLAS Navigator</a>.
+    <a target="_blank" rel="noreferrer" :href="frequencyNavigatorUrl">ATLAS Navigator</a>.
   </p>
 </template>
 
 <script setup>
-const { VITE_MITRE_TITLE } = import.meta.env
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useMain } from '@/stores/main'
+import { MITRE_TITLE } from '@/config/env'
 import { constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
+
+const route = useRoute()
+const mainStore = useMain()
+
+const artifactVersion = computed(() => {
+  const routeVersion = typeof route.params.version === 'string' ? route.params.version : ''
+  return routeVersion || String(mainStore.getDataAttribute('version') || '')
+})
+
 // Construct link to open the case study frequency Navigator layer on the ATLAS Navigator
-const frequencyLayerGitHubUrl = constructNavigatorLayerGitHubUrl(
-  'atlas_case_study_frequency',
-  'dist/default-navigator-layers'
+const frequencyLayerGitHubUrl = computed(() =>
+  constructNavigatorLayerGitHubUrl(
+    'atlas_case_study_frequency',
+    'dist/default-navigator-layers',
+    artifactVersion.value
+  )
 )
-const frequencyNavigatorUrl = constructNavigatorUrlToLayer(frequencyLayerGitHubUrl)
+const frequencyNavigatorUrl = computed(() => constructNavigatorUrlToLayer(frequencyLayerGitHubUrl.value))
 </script>

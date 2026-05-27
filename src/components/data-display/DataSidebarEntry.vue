@@ -1,9 +1,22 @@
 <template>
   <div :class="isVisible ? 'pb-4' : ''">
-    <span v-if="doShowKey" class="font-weight-bold">{{ key }}: </span>
+    <span v-if="doShowKey" class="font-weight-bold d-inline-flex align-center mr-1">
+      <v-tooltip
+        v-if="tooltipText"
+        location="top"
+        content-class="data-sidebar-tooltip"
+        max-width="260"
+      >
+        <template #activator="{ props }">
+          <v-icon v-bind="props" size="small" class="mr-1">mdi-information-outline</v-icon>
+        </template>
+        <span>{{ tooltipText }}</span>
+      </v-tooltip>
+      {{ key }}:
+    </span>
 
     <!-- Link to ATT&CK -->
-    <a v-if="relatedObjs['url']" :href="relatedObjs.url" target="_blank">
+    <a v-if="isUrlObject" :href="relatedObjs.url" target="_blank" rel="noreferrer">
       {{ relatedObjs.id }}
       <v-icon x-small> mdi-open-in-new </v-icon>
     </a>
@@ -11,6 +24,11 @@
     <!-- Display numbers as-is -->
     <span v-else-if="isValueNumber">
       {{ value }}
+    </span>
+
+    <!-- Display enum-like strings as single badges with value-level tooltips -->
+    <span v-else-if="enumTagGroup">
+      <Tag :tags="[String(value)]" :term-group="enumTagGroup" />
     </span>
 
     <!-- Display strings with first letter capitilized -->
@@ -37,7 +55,7 @@
 
     <span v-else-if="isStringArray">
       <!-- Sort in alphabetical order -->
-      <Tag :tags="value.sort()" />
+      <Tag :tags="sortedStringArray" :term-group="termGroup" />
     </span>
 
     <!-- Otherwise, is tabular format - do not render as data side entry but rather in page contents -->
@@ -59,6 +77,11 @@ import {
   isDataObjectArray,
   isJavascriptObject
 } from '@/assets/dataHelpers.js'
+import {
+  getAtlasGroupDescription,
+  getAtlasGroupLabel,
+  isAtlasTermGroupKey
+} from '@/config/atlasTermCatalog'
 
 import { computed } from 'vue'
 
@@ -83,10 +106,10 @@ const maxNumDisplay = 6
  * Whether to display this piece of data in the sidebar.
  * Used to apply bottom padding to the container div if so
  */
-let isVisible = computed(() => {
+const isVisible = computed(() => {
   // Same conditions as if-else statements in template
   return (
-    objectType === 'ATT&CK-reference' ||
+    objectType === 'attack-reference' ||
     isValueNumber.value ||
     isValueString.value ||
     isThisObjectArray.value ||
@@ -98,16 +121,16 @@ let isVisible = computed(() => {
  * Whether to show indivdual values or summarize counts
  * @type {Boolean}
  */
-let doShowDataObjLinks = computed(() => {
+const doShowDataObjLinks = computed(() => {
   // Display items if the number of data objects fall below the defined threshold
-  return isThisObjectArray.value && relatedObjs.length <= maxNumDisplay
+  return isThisObjectArray.value && Array.isArray(relatedObjs) && relatedObjs.length <= maxNumDisplay
 })
 
 /**
  * The key to display as a title
  * @type {String}
  */
-let key = computed(() => {
+const key = computed(() => {
   // Header
   const plural = dataObjectToPluralTitle(objectType)
   const pluralTitle = capitalizeSidebar(plural, ' ')
@@ -116,14 +139,29 @@ let key = computed(() => {
     // Summarize count
 
     return `Number of ${pluralTitle}`
-  } else if (isThisObjectArray.value && relatedObjs.length > 1) {
+  } else if (isThisObjectArray.value && Array.isArray(relatedObjs) && relatedObjs.length > 1) {
     // Multiple data objects
     return pluralTitle
   }
 
   // String property or singular item in list (if key happens to be singular)
+  // Use centralized label when available; otherwise capitalize the key text.
+  const groupLabel = getAtlasGroupLabel(String(objectType))
+  if (groupLabel) {
+    return groupLabel
+  }
+
   // Capitalize the space-separated title, no auto-pluralization
   return capitalizeSidebar(objectType, '-')
+})
+
+const tooltipText = computed(() => {
+  return getAtlasGroupDescription(String(objectType))
+})
+
+const termGroup = computed(() => {
+  const group = String(objectType)
+  return isAtlasTermGroupKey(group) ? group : ''
 })
 
 /**
@@ -144,7 +182,7 @@ const value = computed(() => {
  * Whether the value is a number
  * @type {Boolean}
  */
-let isValueNumber = computed(() => {
+const isValueNumber = computed(() => {
   const t = typeof value.value
   return t === 'number'
 })
@@ -153,9 +191,25 @@ let isValueNumber = computed(() => {
  * Whether the value is a string
  * @type {Boolean}
  */
-let isValueString = computed(() => {
+const isValueString = computed(() => {
   const t = typeof value.value
   return t === 'string'
+})
+
+const enumTagGroup = computed(() => {
+  if (!isValueString.value) {
+    return ''
+  }
+
+  if (objectType === 'maturity') {
+    return 'maturity'
+  }
+
+  if (objectType === 'type') {
+    return 'case-study-type'
+  }
+
+  return ''
 })
 
 /**
@@ -163,16 +217,20 @@ let isValueString = computed(() => {
  * @type {String}
  */
 
-let capitilizedValueString = computed(() => {
+const capitilizedValueString = computed(() => {
   const valueString = value.value
   return valueString.charAt(0).toUpperCase() + valueString.slice(1)
+})
+
+const isUrlObject = computed(() => {
+  return isJavascriptObject(relatedObjs) && typeof relatedObjs.url === 'string'
 })
 
 /**
  * Whether the relatedObjs is an array of data objects
  * @type {Boolean}
  */
-let isThisObjectArray = computed(() => {
+const isThisObjectArray = computed(() => {
   return isDataObjectArray(relatedObjs)
 })
 
@@ -180,25 +238,42 @@ let isThisObjectArray = computed(() => {
  * Whether the relatedObjs is an array of strings
  * @type {Boolean}
  */
-let isStringArray = computed(() => {
+const isStringArray = computed(() => {
   return Array.isArray(relatedObjs) && relatedObjs.every((o) => typeof o === 'string')
+})
+
+const sortedStringArray = computed(() => {
+  if (!isStringArray.value) {
+    return []
+  }
+  return [...value.value].sort((a, b) => a.localeCompare(b))
 })
 
 /**
  * Whether to display the key label
  * @type {Boolean}
  */
-let doShowKey = computed(() => {
+const doShowKey = computed(() => {
+  const firstItem = Array.isArray(relatedObjs) ? relatedObjs[0] : undefined
   return (
     // Same conditions as the template rendering,
     // i.e. render key if value will also render
-    objectType === 'ATT&CK-reference' ||
+    objectType === 'attack-reference' ||
     isValueNumber.value ||
     isValueString.value ||
     isThisObjectArray.value ||
     isStringArray.value ||
     // Don't render mitigation uses
-    (isJavascriptObject(relatedObjs[0]) && !('use' in relatedObjs[0]))
+    (isJavascriptObject(firstItem) && !('use' in firstItem))
   )
 })
 </script>
+
+<style scoped>
+::v-deep(.data-sidebar-tooltip) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.35;
+}
+</style>

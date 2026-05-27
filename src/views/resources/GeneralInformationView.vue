@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageSectionTitle :pageTitle="title" />
-    <p class="text-h5 my-5">Current {{ VITE_SHORT_NAME }} Version</p>
+    <p class="text-h5 my-5">Current {{ SHORT_NAME }} Version</p>
     <v-chip
       variant="flat"
       prepend-icon="mdi-code-tags"
@@ -15,13 +15,18 @@
       prepend-icon="mdi-database"
       label
       color="primary"
-      :text="`Data v${dataVersion}`"
+      :text="`Data v${artifactVersion || 'N/A'}`"
     />
     <v-list-item
       :title="getLatestUpdateDate()"
       subtitle="View details and prior versions on the Updates page"
       class="mt-5"
       to="/resources/updates"
+    />
+    <v-list-item
+      title="ATLAS Versions"
+      subtitle="Browse available release versions and data files"
+      to="/resources/versions"
     />
     <p class="text-h5 mt-10">Accessing ATLAS Data</p>
     <div class="px-4">
@@ -33,22 +38,21 @@
             :subtitle="item.subtitle"
             :href="item.url"
             target="_blank"
+            rel="noreferrer"
           ></v-list-item>
 
-          <v-list-group value="excelGroup" v-if="item.type === 'group'">
+          <v-list-group :value="item.groupValue" v-if="item.type === 'group'">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" :title="item.title" :subtitle="item.subtitle" />
             </template>
             <v-list v-for="(subitem, i) in item.subitems" :key="i">
-              <v-list-item
-                v-if="subitem.type === 'subHeader'"
-                v-html="subitem.subHeader"
-                class="text-grey"
-              />
+              <v-list-item v-if="subitem.type === 'subHeader'" class="text-grey">
+                <div v-html="subitem.subHeader" />
+              </v-list-item>
               <v-list-item v-if="subitem.type === 'link'" class="ml-10">
-                <a :href="subitem.url" download>{{
-                  subitem.url.substring(subitem.url.lastIndexOf('/') + 1)
-                }}</a>
+                <a :href="subitem.url" :download="subitem.downloadName || true">
+                  {{ subitem.displayName || subitem.url.substring(subitem.url.lastIndexOf('/') + 1) }}
+                </a>
               </v-list-item>
             </v-list>
           </v-list-group>
@@ -70,7 +74,9 @@
           :href="repo.url"
           target="_blank"
         >
-          <v-list-item-subtitle v-html="md.render(repo.description)" />
+          <v-list-item-subtitle>
+            <div v-html="md.render(repo.description)" />
+          </v-list-item-subtitle>
         </v-list-item>
       </div>
     </v-list>
@@ -79,8 +85,10 @@
 
     <v-list lines="two">
       <div v-for="site in otherSites" :key="site.name">
-        <v-list-item :title="site.name" :href="site.url" target="_blank">
-          <v-list-item-subtitle v-html="md.render(site.description)"></v-list-item-subtitle>
+        <v-list-item :title="site.name" :href="site.url" target="_blank" rel="noreferrer">
+          <v-list-item-subtitle>
+            <div v-html="md.render(site.description)" />
+          </v-list-item-subtitle>
         </v-list-item>
       </div>
     </v-list>
@@ -88,39 +96,57 @@
 </template>
 
 <script setup>
-const { VITE_MITRE_TITLE, VITE_SHORT_NAME } = import.meta.env
-import { getPathWithBase } from '@/assets/tools.js'
+import { ATLAS_DATA_GITHUB_URL, SHORT_NAME } from '@/config/env'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { version } from '/package.json'
 import { useMain } from '@/stores/main'
-import { getLatestUpdateDate } from '@/assets/tools.js'
+import { constructReleaseArtifactUrl, getLatestUpdateDate } from '@/assets/tools.js'
 
 const title = ref('General Information')
 
 const md = inject('markdownit')
-
 const mainStore = useMain()
+const artifactVersion = computed(() => {
+  return String(mainStore.getCanonicalLatestVersion || '').trim()
+})
 
-const dataVersion = mainStore.getDataAttribute('version')
+function releaseAssetUrl(filename) {
+  return constructReleaseArtifactUrl(filename, artifactVersion.value)
+}
 
 const open = ref(['excelGroup'])
 
-const items = ref([
+const items = computed(() => [
   {
     type: 'link',
     title: 'As YAML',
     subtitle: 'Source data files for editing and parsing',
-    url: 'https://github.com/mitre-atlas/atlas-data'
-  },
-  {
-    type: 'link',
-    title: 'As STIX',
-    subtitle: 'STIX 2.1 (.json) files, either ATLAS standalone or ATLAS + ATT&CK Enterprise',
-    url: 'https://github.com/mitre-atlas/atlas-navigator-data'
+    url: ATLAS_DATA_GITHUB_URL
   },
   {
     type: 'group',
+    groupValue: 'stixGroup',
+    title: 'As STIX',
+    subtitle: 'STIX 2.1 (.json) files, either ATLAS standalone or ATLAS + ATT&CK Enterprise',
+    subitems: [
+      {
+        type: 'link',
+        url: releaseAssetUrl('stix-atlas.json'),
+        displayName: 'stix-atlas.json',
+        downloadName: 'stix-atlas.json'
+      },
+      {
+        type: 'link',
+        url: releaseAssetUrl('stix-atlas-attack-enterprise.json'),
+        displayName: 'stix-atlas-attack-enterprise.json',
+        downloadName: 'stix-atlas-attack-enterprise.json'
+      }
+    ]
+  },
+  {
+    type: 'group',
+    groupValue: 'excelGroup',
     title: 'As Excel',
     subtitle: 'Excel (.xslx) files, built from the ATLAS STIX data using ATT&CK tools',
     subitems: [
@@ -133,23 +159,33 @@ const items = ref([
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-matrices.xlsx'
+        url: releaseAssetUrl('excel-atlas-matrices.xlsx'),
+        displayName: 'atlas-matrices.xlsx',
+        downloadName: 'atlas-matrices.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-mitigations.xlsx'
+        url: releaseAssetUrl('excel-atlas-mitigations.xlsx'),
+        displayName: 'atlas-mitigations.xlsx',
+        downloadName: 'atlas-mitigations.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-tactics.xlsx'
+        url: releaseAssetUrl('excel-atlas-tactics.xlsx'),
+        displayName: 'atlas-tactics.xlsx',
+        downloadName: 'atlas-tactics.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas-techniques.xlsx'
+        url: releaseAssetUrl('excel-atlas-techniques.xlsx'),
+        displayName: 'atlas-techniques.xlsx',
+        downloadName: 'atlas-techniques.xlsx'
       },
       {
         type: 'link',
-        url: 'https://github.com/mitre-atlas/atlas-website/raw/main/public/excel-files/atlas.xlsx'
+        url: releaseAssetUrl('excel-atlas.xlsx'),
+        displayName: 'atlas.xlsx',
+        downloadName: 'atlas.xlsx'
       }
     ]
   }
@@ -173,7 +209,7 @@ const repositories = {
       name: 'ATLAS Data',
       description:
         'Source data for ATLAS tactics, techniques, and case studies, along with scripts and documentation.',
-      url: 'https://github.com/mitre-atlas/atlas-data'
+      url: ATLAS_DATA_GITHUB_URL
     },
     {
       name: 'ATLAS Navigator Data',

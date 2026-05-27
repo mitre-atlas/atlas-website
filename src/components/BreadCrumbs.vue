@@ -17,10 +17,15 @@
 import { useRoute } from 'vue-router'
 import { reactive, computed, watch } from 'vue'
 import { useMain } from '@/stores/main'
+import { isDataRouteTypeKey } from '@/assets/objectTypes.js'
 
 const route = useRoute()
 
 const mainStore = useMain()
+
+const routeVersion = computed(() => {
+  return typeof route.params.version === 'string' ? route.params.version : ''
+})
 
 const items = reactive([
   {
@@ -30,8 +35,20 @@ const items = reactive([
   }
 ])
 
+const currentVersion = computed(() => {
+  return mainStore.getActiveNavigationVersion
+})
+
+function withVersion(path) {
+  return currentVersion.value ? `/v/${encodeURIComponent(currentVersion.value)}${path}` : path
+}
+
 const path = computed(() => {
-  return route.path.split('/').slice(1)
+  const parts = route.path.split('/').slice(1)
+  if (parts[0] === 'v' && parts[1]) {
+    return parts.slice(2)
+  }
+  return parts
 })
 
 const pageNotFound = computed(() => {
@@ -47,24 +64,35 @@ watch(pageNotFound, () => {
   }
 })
 
-const dataTypes = ['tactics', 'techniques', 'mitigations', 'studies']
-
 watch(
   path,
   () => {
+    items[0].to = withVersion('/')
+    const version = routeVersion.value
+    const section = path.value[0] || ''
+    const isDataType = isDataRouteTypeKey(section)
+
     items.splice(1)
 
+    if (version) {
+      items.push({
+        title: `Version ${version}`,
+        disabled: false,
+        to: withVersion('/')
+      })
+    }
+
     items.push({
-      title: path.value[0],
-      disabled: path.value.length === 1 || path.value[0] === 'matrices' ? true : false,
-      to: dataTypes.includes(path.value[0]) ? `/${path.value[0]}` : '/resources/info'
+      title: section,
+      disabled: path.value.length === 1 || section === 'matrices' ? true : false,
+      to: isDataType ? withVersion(`/${section}`) : '/resources/info'
     })
 
     let breadItem = {}
     if (path.value.length >= 2) {
       if (path.value[0] === 'matrices') {
         breadItem = mainStore.getMatrixByID(route.params.id)
-      } else if (!dataTypes.includes(path.value[0])) {
+      } else if (!isDataType) {
         breadItem = {
           name: path.value[1],
           route: path.value[1] === 'updates' ? '/resources/updates' : ''

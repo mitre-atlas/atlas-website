@@ -2,23 +2,23 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p>
-      The {{ VITE_MITRE_TITLE }} version of the ATT&CK Navigator displays
-      {{ VITE_SHORT_NAME }} techniques alongside ATT&CK Enterprise techniques and allows users to
+      The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays
+      {{ SHORT_NAME }} techniques alongside ATT&CK Enterprise techniques and allows users to
       create and view complex visualizations. In addition to the matrix, the Navigator also shows a
-      frequency heat map of techniques used in {{ VITE_SHORT_NAME }} case studies. View the
-      {{ VITE_SHORT_NAME }} Navigator below or at
-      <a :href="VITE_NAVIGATOR_URL" target="_blank"
-        >{{ VITE_NAVIGATOR_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
+      frequency heat map of techniques used in {{ SHORT_NAME }} case studies. View the
+      {{ SHORT_NAME }} Navigator below or at
+      <a :href="NAVIGATOR_URL" target="_blank" rel="noreferrer"
+        >{{ NAVIGATOR_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
       >.
     </p>
 
     <p class="pt-5 mb-10">
       For more information on the standard ATT&CK Navigator and how to use it, visit the
-      <a target="_blank" href="https://github.com/mitre-attack/attack-navigator"
+      <a target="_blank" rel="noreferrer" href="https://github.com/mitre-attack/attack-navigator"
         >project's GitHub page here</a
       >
       as well as watch a short
-      <a target="_blank" href="https://www.youtube.com/watch?v=pcclNdwG8Vs."
+      <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=pcclNdwG8Vs."
         >demo video on YouTube</a
       >.
     </p>
@@ -35,7 +35,7 @@
     </div>
     <iframe
       v-show="!loading"
-      :src="`${VITE_NAVIGATOR_URL}`"
+      :src="`${NAVIGATOR_URL}`"
       width="90%"
       height="700px"
       frameBorder="0"
@@ -47,9 +47,9 @@
 <script setup>
 import { ref } from 'vue'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
+import { MITRE_TITLE, NAVIGATOR_URL, SHORT_NAME } from '@/config/env'
 
-const { VITE_MITRE_TITLE, VITE_SHORT_NAME, VITE_NAVIGATOR_URL } = import.meta.env
-const title = ref(VITE_SHORT_NAME + ' Navigator')
+const title = ref(SHORT_NAME + ' Navigator')
 
 const loading = ref(true)
 </script>

@@ -23,7 +23,6 @@
 
 <script setup>
 import { downloadStudyFile } from '@/assets/tools.js'
-import { makePPT } from '@/assets/powerpointFunctions.js'
 import { useMain } from '@/stores/main'
 
 const mainStore = useMain()
@@ -50,13 +49,14 @@ const options = [
 ]
 
 async function downloadPPT() {
-  for (const procedure of study.procedure) {
+  const { makePPT } = await import('@/assets/powerpointFunctions.js')
+  for (const procedure of study.attack_chain) {
     const technique = await mainStore.getDataObjectById(procedure.technique)
     procedure.techniqueObject = technique
   }
   makePPT(study)
   // delete techniqueObjects, which are only needed in makePPT
-  study.procedure.forEach((procedure) => {
+  study.attack_chain.forEach((procedure) => {
     delete procedure.techniqueObject
   })
 }

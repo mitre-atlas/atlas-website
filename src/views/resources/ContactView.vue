@@ -52,8 +52,7 @@
 <script setup>
 import ContactCard from '@/components/ContactCard.vue'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
-
-const { VITE_CONTACT_EMAIL } = import.meta.env
+import { CONTACT_EMAIL } from '@/config/env'
 import { ref, computed } from 'vue'
 import { useDisplay } from 'vuetify'
 
@@ -67,9 +66,9 @@ const contacts = [
   {
     icon: 'mdi-email',
     color: 'indigo-darken-2',
-    title: `Email ${VITE_CONTACT_EMAIL}`,
+    title: `Email ${CONTACT_EMAIL}`,
     text: 'Contact us for private discussions and organization involvement',
-    link: `mailto:${VITE_CONTACT_EMAIL}`
+    link: `mailto:${CONTACT_EMAIL}`
   },
   {
     icon: 'mdi-linkedin',

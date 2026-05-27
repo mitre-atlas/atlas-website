@@ -1,14 +1,14 @@
 <template>
   <div :class="computedClass">
     <v-tooltip top>
-      <template #activator="{ on, attrs }">
-        <router-link :to="`/techniques/${props.technique.id}`">
+      <template #activator>
+        <router-link :to="props.technique.route || `/techniques/${props.technique.id}`">
           {{
             props.technique.name.substr(0, props.technique.name.length - techniqueLastWord.length)
           }}
           <div style="white-space: nowrap">
             {{ techniqueLastWord }}
-            <span v-if="'ATT&CK-reference' in props.technique" class="attack-and">&</span>
+            <span v-if="'attack-reference' in props.technique" class="attack-and">&</span>
           </div>
         </router-link>
       </template>

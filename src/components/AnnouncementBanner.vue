@@ -1,6 +1,7 @@
 <template>
   <v-alert
     v-if="showBanner"
+    @click:close="dismissAnnoucementBanner"
     closable
     icon="mdi-clipboard-check-outline"
     color="white"

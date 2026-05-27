@@ -4,6 +4,7 @@
  */
 
 import pluralize from 'pluralize'
+import { getObjectTypeRoutePlural, getObjectTypeFromTypeKey, normalizeTypeKey } from './objectTypes.js'
 
 /**
  * Pluralizes a data object type.  For use constructing page titles and object routes.
@@ -67,6 +68,12 @@ export function dataObjectToPluralTitle(objectType, returnLastWordOnly = false) 
  * @returns {string} A singularization of the string
  */
 export function stringToSingular(pluralString) {
+  const normalized = normalizeTypeKey(pluralString)
+  const mappedObjectType = getObjectTypeFromTypeKey(normalized)
+  if (mappedObjectType) {
+    return mappedObjectType
+  }
+
   // Replace any dashes with spaces, i.e. case-studies > case studies
   const tokens = pluralString.split('-')
   // Singularize the last word
@@ -99,11 +106,17 @@ export function stringToSingular(pluralString) {
  * @param {object} obj - Data object
  * @returns {string} Route portion of the URL to the data object
  */
-export function dataObjectToRoute(obj) {
+export function dataObjectToRoute(obj, version = '') {
+  const versionPrefix = version ? `/v/${encodeURIComponent(version)}` : ''
+  const mappedPluralRoute = getObjectTypeRoutePlural(obj['object-type'])
+  if (mappedPluralRoute) {
+    return `${versionPrefix}/${mappedPluralRoute}/${obj.id}`
+  }
+
   // Construct each route as a pluralization of the object type (last word) and the object ID
   // i.e. studies for case-study, techniques for technique
   const pluralLastWordOfObjectType = dataObjectToPluralTitle(obj, true)
-  return `/${pluralLastWordOfObjectType}/${obj.id}`
+  return `${versionPrefix}/${pluralLastWordOfObjectType}/${obj.id}`
 }
 
 export function isJavascriptObject(value) {

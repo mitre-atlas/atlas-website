@@ -12,7 +12,7 @@
       </template>
       <!-- Use InfoTable if there's columnNames -->
       <InfoTable
-        v-if="'columnNames' in items[0] && items[0]['object-type'] != 'case-study'"
+        v-if="hasTabularItems"
         class="mx-8"
         :items="items"
         :itemType="itemType"
@@ -57,6 +57,15 @@ const title = computed(() => {
   }
   return dataObjectToPluralTitle(itemType).replace('_', ' ')
 })
+
+const hasTabularItems = computed(() => {
+  if (!Array.isArray(items) || items.length === 0) {
+    return false
+  }
+
+  return 'columnNames' in items[0] && items[0]['object-type'] !== 'case-study'
+})
+
 const titleGroup = ref([title.value])
 if (title.value === 'subtechniques' || title.value == 'other subtechniques') {
   titleGroup.value = []

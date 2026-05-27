@@ -1,19 +1,21 @@
 <template>
   <tr class="technique-row">
     <td>
-      <table v-if="'subtechniques' in technique" class="supertechnique">
-        <tr>
-          <td class="technique">
-            <attack-technique-cell :technique="technique" :is-supertechnique="true" />
-          </td>
-        </tr>
+      <table v-if="hasSubtechniques" class="supertechnique">
+        <tbody>
+          <tr>
+            <td class="technique">
+              <attack-technique-cell :technique="technique" :is-supertechnique="true" />
+            </td>
+          </tr>
+        </tbody>
       </table>
 
       <attack-technique-cell v-else :technique="technique" />
     </td>
 
     <td
-      v-if="'subtechniques' in technique"
+      v-if="hasSubtechniques"
       class="sidebar"
       @click="doShowSubtechniques = !doShowSubtechniques"
     >
@@ -32,8 +34,8 @@
 
     <td class="subtechniques-td">
       <div
-        v-for="(subtechnique, k) in technique.subtechniques"
-        :key="k"
+        v-for="(subtechnique, k) in technique.subtechniques || []"
+        :key="subtechnique.id || k"
         :class="`subtechniques subtechniques-container ${toggleShow}`"
       >
         <div class="subtechnique">
@@ -61,18 +63,27 @@ const props = defineProps({
    * When true, expands all subtechniques; when false, collapses them
    * @type {Boolean}
    */
-  expandAll: Boolean
+  expandAll: Boolean,
+  /**
+   * Increments when filters change so the current global expansion mode is re-applied
+   * even when expandAll itself did not change.
+   * @type {Number}
+   */
+  expandAllRevision: Number
 })
 
 const doShowSubtechniques = ref(false)
 
+const hasSubtechniques = computed(() => {
+  return Array.isArray(props.technique?.subtechniques) && props.technique.subtechniques.length > 0
+})
+
 watch(
-  () => props.expandAll,
-  (newVal) => {
-    if (newVal !== undefined) {
-      doShowSubtechniques.value = newVal
-    }
-  }
+  [() => props.expandAll, () => props.expandAllRevision],
+  ([newVal]) => {
+    doShowSubtechniques.value = newVal
+  },
+  { immediate: true }
 )
 
 /**

@@ -2,51 +2,22 @@
   <v-card flat class="mt-0">
     <v-card-text class="text-body-2">
       <p><span class="font-weight-bold">ID:</span> {{ dataObject.id }}</p>
-      <div v-if="dataObject['object-type'] != 'technique'">
-        <div v-for="(relatedObjs, objectType) in dataObject.relatedObjects" :key="objectType">
-          <template v-if="String(objectType) === 'maturity'">
-            <v-tooltip bottom>
-              <template #activator="{ props }">
-                <span v-bind="props">
-                  <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
-                </span>
-              </template>
-              <span>{{ getTooltipText(relatedObjs) }}</span>
-            </v-tooltip>
-          </template>
-          <template v-else>
-            <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
-          </template>
-        </div>
-      </div>
-      <div v-else>
-        <div v-for="(relatedObjs, objectType) in orderedRelatedObjs">
-          <template v-if="String(objectType) === 'maturity'">
-            <v-tooltip bottom>
-              <template #activator="{ props }">
-                <span v-bind="props">
-                  <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
-                </span>
-              </template>
-              <span>{{ getTooltipText(relatedObjs) }}</span>
-            </v-tooltip>
-          </template>
-          <template v-else>
-            <data-sidebar-entry
-              :object-type="objectType"
-              :related-objs="relatedObjs"
-              v-if="relatedObjs != undefined"
-            />
-          </template>
+      <div>
+        <div v-for="(relatedObjs, objectType) in sidebarFields" :key="objectType">
+          <data-sidebar-entry :object-type="objectType" :related-objs="relatedObjs" />
         </div>
       </div>
       <div class="pb-4">
         <span class="font-weight-bold">Created:</span>
-        {{ formatDate(dataObject.created_date) }}
+        {{ formatDate(dataObject['created-date']) }}
       </div>
       <div>
         <span class="font-weight-bold">Last Modified:</span>
-        {{ formatDate(dataObject.modified_date) }}
+        {{ formatDate(dataObject['modified-date']) }}
+      </div>
+      <div v-if="sidebarVersionLink" class="pt-4">
+        <v-divider class="mb-3" />
+        <router-link :to="sidebarVersionLink.to">{{ sidebarVersionLink.label }}</router-link>
       </div>
     </v-card-text>
   </v-card>
@@ -55,11 +26,25 @@
 <script setup lang="ts">
 import DataSidebarEntry from '@/components/data-display/DataSidebarEntry.vue'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { getAtlasTermDescription } from '@/config/atlasTermCatalog'
+import { formatCaseStudyIncidentDate } from '@/assets/tools.js'
+import { useMain } from '@/stores/main'
 
 const { dataObject } = defineProps(['dataObject'])
+const route = useRoute()
+const mainStore = useMain()
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
+function formatDate(dateInput: string | Date | undefined): string {
+  if (!dateInput) {
+    return ''
+  }
+
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput)
+  if (Number.isNaN(date.getTime())) {
+    return ''
+  }
+
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -69,52 +54,116 @@ function formatDate(dateString: string): string {
   return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
 
-function getTooltipText(relatedObjs: any): string {
-  if (relatedObjs === 'feasible') {
-    return 'The technique has been shown to work in a research or academic setting'
-  }
-  if (relatedObjs === 'demonstrated') {
-    return 'The technique has been shown to be effective in a red team exercise or demonstration on a realistic AI-enabled system.'
-  }
-  if (relatedObjs === 'realized') {
-    return 'The technique has been used by a threat actor in a real-world incident targeting an AI-enabled systems.'
-  }
-  return ``
-}
-
 const getNumMitigations = () => {
-  if ('mitigations' in dataObject.relatedObjects) {
-    return dataObject.relatedObjects['mitigations'].length
-  } else if ('mitigation' in dataObject.relatedObjects) {
-    return dataObject.relatedObjects['mitigation'].length
+  const related = dataObject.relatedObjects || {}
+  if ('mitigations' in related) {
+    return related['mitigations'].length
+  } else if ('mitigation' in related) {
+    return related['mitigation'].length
   }
   return 0
 }
 
-console.log(dataObject.relatedObjects)
+const sidebarFields = computed(() => {
+  const related = dataObject.relatedObjects || {}
+  const ordered: Record<string, unknown> = {}
 
-const orderedRelatedObjs = computed(() => ({
-  'ATT&CK-reference':
-    'ATT&CK-reference' in dataObject.relatedObjects
-      ? dataObject.relatedObjects['ATT&CK-reference']
-      : undefined,
-  subtechniques:
-    'subtechniques' in dataObject.relatedObjects
-      ? dataObject.relatedObjects['subtechniques']
-      : undefined,
-  'subtechnique-of':
-    'parent-technique' in dataObject.relatedObjects
-      ? dataObject.relatedObjects['parent-technique']
-      : undefined,
-  'other-subtechniques':
-    'other subtechniques' in dataObject.relatedObjects
-      ? dataObject.relatedObjects['other subtechniques']
-      : undefined,
-  tactic: 'tactic' in dataObject.relatedObjects ? dataObject.relatedObjects['tactic'] : undefined,
-  maturity:
-    'maturity' in dataObject.relatedObjects ? dataObject.relatedObjects['maturity'] : undefined,
-  'number-of-case-studies':
-    'case-study' in dataObject.relatedObjects ? dataObject.relatedObjects['case-study'].length : 0,
-  'number-of-mitigations': getNumMitigations()
-}))
+  const setIfPresent = (key: string, value: unknown) => {
+    if (value === undefined || value === null) return
+    if (Array.isArray(value) && value.length === 0) return
+    ordered[key] = value
+  }
+
+  setIfPresent('attack-reference', dataObject['attack-reference'])
+  setIfPresent('subtechnique-of', related['parent-technique'])
+  setIfPresent('tactics', related['tactics'])
+
+  if (
+    typeof dataObject.maturity === 'string' &&
+    getAtlasTermDescription('maturity', dataObject.maturity)
+  ) {
+    setIfPresent('maturity', dataObject.maturity)
+  }
+
+  if (Array.isArray(dataObject.platforms)) {
+    const validPlatforms = dataObject.platforms.filter(
+      (platform: unknown) =>
+        typeof platform === 'string' && getAtlasTermDescription('platforms', platform)
+    )
+    setIfPresent('platforms', validPlatforms.length > 0 ? validPlatforms : ['None'])
+  }
+
+  setIfPresent('categories', dataObject.categories)
+  setIfPresent('lifecycle-phases', dataObject['lifecycle-phases'])
+
+  if (Array.isArray(related['case-study'])) {
+    setIfPresent('number-of-case-studies', related['case-study'].length)
+  }
+
+  if (dataObject['object-type'] == 'technique') {
+    const mitigationCount = getNumMitigations()
+    setIfPresent('number-of-mitigations', mitigationCount)
+  }
+
+  if (dataObject['object-type'] === 'mitigation' && Array.isArray(related['technique'])) {
+    setIfPresent('number-of-techniques', related['technique'].length)
+  }
+
+  if (dataObject['object-type'] === 'case-study') {
+    setIfPresent('type', dataObject.type)
+    setIfPresent('date', formatCaseStudyIncidentDate(dataObject))
+    setIfPresent('reporter', dataObject.reporter)
+    setIfPresent('actor', dataObject.actor)
+    setIfPresent('target', dataObject.target)
+  }
+
+  Object.entries(related).forEach(([key, value]) => {
+    if (key === 'parent-technique' || key === 'subtechniques' || key === 'other subtechniques') return
+    if (
+      (dataObject['object-type'] === 'technique' &&
+        (key === 'case-study' || key === 'mitigation' || key === 'mitigations')) ||
+      (dataObject['object-type'] === 'mitigation' && key === 'technique')
+    ) {
+      return
+    }
+    if (!(key in ordered)) {
+      setIfPresent(key, value)
+    }
+  })
+
+  return ordered
+})
+
+const sidebarVersionLink = computed(() => {
+  const routePath = String(route.path || '')
+  const routeQuery = route.query
+  const routeHash = route.hash
+  const routeVersion = typeof route.params.version === 'string' ? route.params.version : ''
+
+  if (routeVersion) {
+    const unversionedPath = routePath.replace(/^\/v\/[^/]+/, '') || '/'
+    return {
+      label: 'Latest Version',
+      to: {
+        path: unversionedPath,
+        query: routeQuery,
+        hash: routeHash
+      }
+    }
+  }
+
+  const currentDataVersion = String(mainStore.getDataAttribute('version') || '').trim()
+  if (!currentDataVersion) {
+    return null
+  }
+
+  return {
+    label: `Version Permalink (v${currentDataVersion})`,
+    to: {
+      path: `/v/${encodeURIComponent(currentDataVersion)}${routePath}`,
+      query: routeQuery,
+      hash: routeHash
+    }
+  }
+})
 </script>

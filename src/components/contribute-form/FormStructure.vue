@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <v-defaults-provider :defaults="formFieldDefaults">
     <v-form ref="formRef" v-model="isVuetifyFormValid" validate-on="input">
@@ -173,6 +174,7 @@
           :label="associationLabel(section.associatedType)"
           :hint="associationHint(section.associatedType)"
           v-model="draft[section.associatedType]" :show-validation="showValidation"
+          :error-messages="getFieldErrors(section.associatedType)"
           :new-item-errors="getAssociatedDraftItemErrors(section.associatedType)" />
         <div v-if="associatedTechniqueUseItems.length" class="mt-4">
           <div v-for="technique in associatedTechniqueUseItems" :key="technique.id" class="mb-5">
@@ -318,13 +320,13 @@
 
 <script setup>
 import { useMain } from "@/stores/main"
-import { computed, nextTick, ref, watch } from 'vue';
-import AssociatedTypeSelector from "./AssociatedTypeSelector.vue";
-import AddReferences from "./AddReferences.vue";
-import { storeToRefs } from "pinia";
-import AddProcedure from "../case-study-form/AddProcedure.vue";
-import EditableProcedureTimeline from "../case-study-form/EditableProcedureTimeline.vue";
-import { truncateText, validateUrl } from "@/assets/tools";
+import { computed, nextTick, ref, watch } from 'vue'
+import AssociatedTypeSelector from "./AssociatedTypeSelector.vue"
+import AddReferences from "./AddReferences.vue"
+import { storeToRefs } from "pinia"
+import AddProcedure from "../case-study-form/AddProcedure.vue"
+import EditableProcedureTimeline from "../case-study-form/EditableProcedureTimeline.vue"
+import { truncateText, validateUrl } from "@/assets/tools"
 import {
   contributionObjectTypeFromKey,
   contributionTypeWordFromKey,
@@ -332,16 +334,16 @@ import {
   mapContributionToDraft,
   mapDraftToContribution,
   validateContributionDraftDetailed,
-} from "@/assets/contributionTools.js";
+} from "@/assets/contributionTools.js"
 
-const main = useMain();
+const main = useMain()
 
 const props = defineProps({
   action: { type: String, required: true }, // "add" | "edit"
   type: { type: String, required: true },
   sections: { type: Object, required: true },
   editTarget: { type: Object, required: false, default: null },
-});
+})
 
 const showThanks = ref(false)
 const showValidation = ref(false)
@@ -368,8 +370,8 @@ const formFieldDefaults = {
   VMessages: { transition: false },
 }
 
-const typeWord = computed(() => contributionTypeWordFromKey(props.type));
-const typeWordLower = computed(() => contributionTypeWordFromKey(props.type, true));
+const typeWord = computed(() => contributionTypeWordFromKey(props.type))
+const typeWordLower = computed(() => contributionTypeWordFromKey(props.type, true))
 const isEditAction = computed(() => props.action === 'edit')
 const detailNameHint = computed(() => isEditAction.value ? `Revised ${typeWordLower.value} name` : undefined)
 const detailDescriptionHint = computed(() =>
@@ -394,7 +396,7 @@ const additionalInfoErrorMessages = computed(() => {
 
   return getFieldErrors('additionalInfo')
 })
-const { categoryValues, mlLifecycleValues } = storeToRefs(main);
+const { categoryValues, mlLifecycleValues } = storeToRefs(main)
 
 // --- draft model ---
 function emptyTechnique() {
@@ -484,7 +486,7 @@ function handleFileNameInput(value) {
 const csTypes = [{ title: 'Exercise', value: 'exercise' }, { title: 'Incident', value: 'incident' }]
 
 // Populate the prompting arrays for month and year
-const csYears = Array.from({ length: 31 }, (_, i) => new Date().getFullYear() - i);
+const csYears = Array.from({ length: 31 }, (_, i) => new Date().getFullYear() - i)
 const csMonths = [{ title: 'January', value: 1 }, { title: 'February', value: 2 }, { title: 'March', value: 3 }, { title: 'April', value: 4 }, { title: 'May', value: 5 }, { title: 'June', value: 6 }, { title: 'July', value: 7 }, { title: 'August', value: 8 }, { title: 'September', value: 9 }, { title: 'October', value: 10 }, { title: 'November', value: 11 }, { title: 'December', value: 12 }]
 
 const draft = ref(createEmptyDraft(props.type))
@@ -729,14 +731,14 @@ async function scrollToSectionAfterProcedureLayoutChange() {
 }
 
 const contributionSummaryBlocks = computed(() => {
-  const relevantSections = props.sections[props.type] ?? [];
-  const d = draft.value; // keep this inside computed
+  const relevantSections = props.sections[props.type] ?? []
+  const d = draft.value // keep this inside computed
 
   const blocks = []
 
   for (const section of relevantSections) {
     if (section.transformer) {
-      const result = section.transformer(section, d, typeWord.value);
+      const result = section.transformer(section, d, typeWord.value)
       if (result && (result.title || result.body)) {
         blocks.push({
           id: section.id,
@@ -747,7 +749,7 @@ const contributionSummaryBlocks = computed(() => {
     }
 
     if (section.removalTransformer) {
-      const result = section.removalTransformer(section, d, typeWord.value);
+      const result = section.removalTransformer(section, d, typeWord.value)
       if (result && (result.title || result.body)) {
         blocks.push({
           id: `${section.id}-removals`,
@@ -768,7 +770,7 @@ const contributionSummaryBlocks = computed(() => {
   }
 
   return blocks
-});
+})
 
 const hasDraftValidationErrors = computed(() => {
   const hasFieldErrors = Object.values(validationState.value.fieldErrors).some((messages) => messages.length > 0)
@@ -1153,9 +1155,9 @@ async function createContributionFile() {
   await nextTick()
   await formRef.value?.validate?.()
 
-  const obj = mapDraftToContribution(draft.value, props.type);
-  const name = filenameWithoutYamlExtension((draft.value.fileName || draft.value.name || '').trim());
-  downloadContributionFile(obj, name);
+  const obj = mapDraftToContribution(draft.value, props.type)
+  const name = filenameWithoutYamlExtension((draft.value.fileName || draft.value.name || '').trim())
+  downloadContributionFile(obj, name)
   hasDownloadedSinceLastChange.value = true
 }
 

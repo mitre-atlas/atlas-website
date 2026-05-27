@@ -40,11 +40,9 @@
             </v-icon>
           </div>
         </template>
-        <v-card-text
-          v-if="procedure.description"
-          class="flex-grow-0 py-1"
-          v-html="md.renderInline(procedure.description)"
-        />
+        <v-card-text v-if="procedure.description" class="flex-grow-0 py-1">
+          <div v-html="md.renderInline(procedure.description)" />
+        </v-card-text>
         <v-card-actions class="py-1">
           <v-spacer />
           <v-icon icon="mdi-pencil" color="#2D4863" class="opacity-100 mr-5" @click="editIndex = i" />

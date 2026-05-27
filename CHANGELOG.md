@@ -1,5 +1,16 @@
 # ATLAS Website Changelog
 
+## [5.0.0]() (2026-05-27)
+
+- Updated the site to support the ATLAS v6 data format
+- Added filter for technique platforms to the ATLAS matrix view
+- Added support for browsing old versions of the ATLAS data and the ability to permalink to a specific version
+- Added a "Version History" page that includes links to historical versions of the ATLAS data
+- Updated styling of ATLAS object properties sidebar and improved consistency across pages
+- Updated display of references for all ATLAS objects
+- Centralized property definitions in a single location
+- Updated ATLAS data to [version 2026.05](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.05-2026-05-27)
+
 ## [4.14.0]() (2026-05-05)
 
 - Added new contribute page with links to new contribution forms

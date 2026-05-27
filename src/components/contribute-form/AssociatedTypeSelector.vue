@@ -1,15 +1,22 @@
 <template>
     <v-autocomplete prepend-inner-icon="mdi-magnify" v-model="autocompleteModel" v-model:menu="menu"
         :label="requiredLabelIf(selectorLabel, props.required)" :required="props.required"
-        :error="showRequiredError" @update:focused="handleFocused"
+        :error="showRequiredError || hasExternalErrors" @update:focused="handleFocused"
         :items="existingDataObjects" chips
         :item-title="itemTitle" item-value="id" :multiple="props.multiple" clearable persistent-hint
         :hint="selectorHint" autocomplete="off">
 
         <template v-if="props.allowNew" #prepend-item>
             <v-list-item
-                style="color: rgb(var(--v-theme-darkInfo)); border-bottom: 2px solid rgb(var(--v-theme-darkInfo)); font-weight: 900;"
-                :title="`Add New ${typeWord}`" @mousedown.stop.prevent @click.stop.prevent="clickNewItem" />
+                :style="{
+                    color: 'rgb(var(--v-theme-darkInfo))',
+                    borderBottom: '2px solid rgb(var(--v-theme-darkInfo))',
+                    fontWeight: 900
+                }"
+                :title="`Add New ${typeWord}`"
+                @mousedown.stop.prevent
+                @click.stop.prevent="clickNewItem"
+            />
         </template>
         <template #item="{ props: itemProps, item }">
             <v-list-item v-bind="itemProps">
@@ -44,6 +51,9 @@
             </div>
         </template>
     </v-autocomplete>
+    <div v-if="hasExternalErrors" class="text-error text-caption mt-n4 mb-4" role="alert">
+        <div v-for="message in props.errorMessages" :key="message">{{ message }}</div>
+    </div>
 
     <div v-if="props.allowNew && showNewItemForm" class="pl-6 mt-4">
         <h3 class="form-title mb-6">New Associated {{ typeWord }}</h3>
@@ -73,7 +83,9 @@
             v-model:description="newDraftItem.referenceDescription"
             v-model:link="newDraftItem.referenceLink"
             :description-label="`New Associated ${typeWord} Reference Description`"
-            :description-hint="`Brief description of the reference and its relevance to the ${typeWordLower} (optional)`"
+            :description-hint="
+                `Brief description of the reference and its relevance to the ${typeWordLower} (optional)`
+            "
             description-class="mb-5"
             :link-label="`New Associated ${typeWord} Reference Link`"
             link-class="mb-5"
@@ -99,6 +111,7 @@ const props = defineProps({
     hint: { type: String, required: false, default: '' },
     allowNew: { type: Boolean, required: false, default: true },
     newItemErrors: { type: Object, required: false, default: null },
+    errorMessages: { type: Array, required: false, default: () => [] },
 
     // Optional override: if provided (even as []), it will be used instead of the store results
     items: { type: Array, required: false },
@@ -132,7 +145,7 @@ const existingDataObjects = computed(() => {
     const source =
         props.items !== undefined
             ? (props.items ?? [])
-            : mainStore.getDataObjectsByType(props.type, 'ATLAS')
+            : mainStore.getDataObjectsByType(props.type, mainStore.getFirstMatrixId)
 
     if (props.type === 'techniques') {
         return source.map(techniqueOption).sort((a, b) =>
@@ -249,6 +262,7 @@ function showNewItemFieldError(field) {
 const showRequiredError = computed(
     () => props.required && isBlank(model.value) && (isTouched.value || props.showValidation)
 )
+const hasExternalErrors = computed(() => props.errorMessages.length > 0 && props.showValidation)
 
 function handleFocused(focused) {
     if (!focused) isTouched.value = true
@@ -310,7 +324,7 @@ const autocompleteModel = computed({
     get() {
         if (props.multiple) {
             const current = Array.isArray(model.value) ? model.value : []
-            const selected = sortAutocompleteValues(current.filter(v => !isDraftSelection(v)))
+            const selected = sortAutocompleteValues(current.filter((v) => !isDraftSelection(v)))
             const draftItem = getDraftItemFromModel(model.value)
             return draftItem ? [draftItem, ...selected] : selected
         }
@@ -324,7 +338,7 @@ const autocompleteModel = computed({
     set(val) {
         if (props.multiple) {
             const values = Array.isArray(val) ? val : []
-            const selected = sortAutocompleteValues(values.filter(v => !isDraftSelection(v)))
+            const selected = sortAutocompleteValues(values.filter((v) => !isDraftSelection(v)))
             showNewItemForm.value = values.some(isDraftSelection)
             const draftItem = getDraftItemFromModel(model.value) ?? createNewDraftItem()
             model.value = showNewItemForm.value ? [draftItem, ...selected] : [...selected]
@@ -360,7 +374,7 @@ function clickNewItem() {
 function toggleNewItemInclusion() {
     if (props.multiple) {
         const current = Array.isArray(model.value) ? model.value : []
-        const withoutDraft = current.filter(v => !isDraftSelection(v))
+        const withoutDraft = current.filter((v) => !isDraftSelection(v))
         const draftItem = getDraftItemFromModel(model.value) ?? createNewDraftItem()
         model.value = showNewItemForm.value ? [draftItem, ...withoutDraft] : withoutDraft
         return

@@ -3,6 +3,7 @@
     class="pa-4 d-flex flex-column fill-height rounded-lg"
     :href="item.link"
     target="_blank"
+    rel="noreferrer"
     dark
     variant="flat"
     color="grey-lighten-4"
@@ -15,7 +16,7 @@
       </div>
 
       <div>
-        <v-card-title class="text-h6 pt-0 text-wrap" v-text="item.title"> </v-card-title>
+        <v-card-title class="text-h6 pt-0 text-wrap">{{ item.title }}</v-card-title>
         <v-card-subtitle class="text-wrap">
           {{ item.text }}
         </v-card-subtitle>

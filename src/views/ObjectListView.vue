@@ -5,7 +5,7 @@
     <StudiesIntroText v-if="objectTypePlural === 'studies'" />
 
     <p class="my-6">
-      The table below lists {{ objectTypePlural }} from {{ VITE_MITRE_TITLE }}. Scroll through the
+      The table below lists {{ objectTypePlural }} from {{ MITRE_TITLE }}. Scroll through the
       table or use the filter to narrow down the information.
     </p>
 
@@ -30,16 +30,23 @@ import jsyaml from 'js-yaml'
 import StudiesIntroText from './StudiesIntroText.vue'
 
 import { getPathWithBase, capitalize } from '@/assets/tools.js'
+import { MITRE_TITLE } from '@/config/env'
+import {
+  getStoreObjectCollectionKey,
+  getTypeLabel,
+  normalizeTypeKey,
+  isKnownTypeKey
+} from '@/assets/objectTypes.js'
 
 const mainStore = useMain()
 
 const route = useRoute()
 
-let { objectTypePlural } = route.params
-const { VITE_MITRE_TITLE } = import.meta.env
+const rawObjectTypePlural = String(route.params.objectTypePlural || '')
+const objectTypePlural = normalizeTypeKey(rawObjectTypePlural)
 
-let introText = ref('')
-const title = ref(capitalize(objectTypePlural === 'studies' ? 'Case Studies' : objectTypePlural))
+const introText = ref('')
+const title = ref(capitalize(getTypeLabel(objectTypePlural, false, true) || objectTypePlural))
 
 if (objectTypePlural !== 'studies') {
   fetch(getPathWithBase('/content/data-list-page-intros.yaml'))
@@ -56,22 +63,14 @@ if (objectTypePlural !== 'studies') {
     })
 }
 
-// String representing the correct name in the url for case studies
-const case_studies_name = 'studies'
-
-let isObjectTypeValid = computed(() => {
-  if (objectTypePlural == case_studies_name) {
-    objectTypePlural = case_studies_name
+const isObjectTypeValid = computed(() => {
+  if (isKnownTypeKey(objectTypePlural)) {
     return true
   }
   return mainStore.getDataObjectTypes.includes(objectTypePlural)
 })
 
 const tableItems = computed(() => {
-  // Get case study objects if needed (store has it with the hyphen)
-  if (objectTypePlural == 'studies') {
-    return mainStore.getDataObjectsByType('case-studies')
-  }
-  return mainStore.getDataObjectsByType(objectTypePlural)
+  return mainStore.getDataObjectsByType(getStoreObjectCollectionKey(objectTypePlural))
 })
 </script>

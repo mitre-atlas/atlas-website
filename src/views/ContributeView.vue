@@ -8,7 +8,7 @@
             <v-row>
                 <v-col cols="12" sm="8">
                     <p>
-                        {{ VITE_MITRE_TITLE }} is a continuously growing and evolving knowledge base of how AI systems
+                        {{ MITRE_TITLE }} is a continuously growing and evolving knowledge base of how AI systems
                         can
                         be attacked. Its strength comes in large part from the community that fuels it, and that’s where
                         you
@@ -27,11 +27,13 @@
         </v-container>
         <v-container style="margin-top: 50px;">
             <v-row justify="center">
-                <v-col v-for="type in contributeTypes" cols="12" sm="6" lg="3" xl="2">
+                <v-col v-for="type in contributeTypes" :key="type.name" cols="12" sm="6" lg="3" xl="2">
                     <v-card class="fill-height d-flex flex-column bg-lightNavy rounded-lg py-2">
                         <v-card-title class="text-center" style="font-size: 30px;">{{ type.name }}</v-card-title>
                         <div class="horizontal-divider"></div>
-                        <v-card-text class="flex-grow-1 text-center pt-10" v-html="type.text" />
+                        <v-card-text class="flex-grow-1 text-center pt-10">
+                            <div v-html="type.text" />
+                        </v-card-text>
                         <v-card-actions class="justify-space-evenly">
                             <VAtlasBtnPrimary class="ma-auto" :to="type.action" append-icon="mdi-chevron-right">
                                 Contribute a {{ type.actionWord }}
@@ -61,7 +63,7 @@
         <v-container>
             <div class="text-h4 my-3 text-mediumNavy">Benefits of Contributing</div>
             <v-row justify="space-evenly" class="mt-sm-16 mt-8">
-                <v-col v-for="type in benefitTypes" class="text-center" cols="12" sm="4" md="3" xl="2">
+                <v-col v-for="type in benefitTypes" :key="type.name" class="text-center" cols="12" sm="4" md="3" xl="2">
                     <v-img :src="getIconPath(type.name)" max-height="100px"></v-img>
                     <div class="text-info text-h6 mt-8">{{ type.name }}</div>
                     <p>{{ type.text }}</p>
@@ -84,9 +86,8 @@
     </div>
 </template>
 <script setup>
-import ContributorsListView from '@/views/resources/ContributorsListView.vue';
-
-const { VITE_MITRE_TITLE } = import.meta.env
+import ContributorsListView from '@/views/resources/ContributorsListView.vue'
+import { MITRE_TITLE } from '@/config/env'
 
 const contributeTypes = [
     {

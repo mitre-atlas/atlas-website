@@ -3,7 +3,7 @@
     v-model="selected"
     clearable
     chips
-    :label="`Filter by ${filterType === 'category' ? 'category' : 'ML lifecycle stage'}`"
+    :label="`Filter by ${filterType === 'categories' ? 'category' : 'lifecycle phase'}`"
     :items="options"
     multiple
     @update:modelValue="onDropdownChange"
@@ -30,11 +30,11 @@ const { categories, stages } = defineProps([
 const emit = defineEmits(['updateFilters'])
 
 const filterType = computed(() => {
-  if (categories) return 'category'
-  return 'ML-lifecycle'
+  if (categories) return 'categories'
+  return 'lifecycle-phases'
 })
 
-let options = reactive(categories ? categories : stages)
+const options = reactive(categories ? categories : stages)
 
 const selected = ref([])
 

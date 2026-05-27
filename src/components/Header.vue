@@ -3,10 +3,20 @@
     <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
 
     <h1 class="pa-3">
-      <router-link to="/">
+      <router-link :to="homeRoute">
         <img src="../assets/graphics/MITRE_ATLAS_light.svg" width="200" contain />
       </router-link>
     </h1>
+
+    <v-chip
+      v-if="showVersionIndicator"
+      size="small"
+      color="white"
+      variant="outlined"
+      class="mr-2"
+    >
+      Version: {{ activeVersion }}
+    </v-chip>
 
     <v-spacer />
     <template v-if="mdAndUp">
@@ -36,10 +46,11 @@
           v-else-if="link.name === 'Contribute'"
           :to="link.to"
           class="my-auto ml-3 mr-5"
-          v-text="link.name"
           stacked
-        />
-        <v-btn v-else :to="link.to" class="text-capitalize" v-text="link.name" stacked />
+        >
+          {{ link.name }}
+        </VAtlasBtnPrimary>
+        <v-btn v-else :to="link.to" class="text-capitalize" stacked>{{ link.name }}</v-btn>
       </v-toolbar-items>
     </template>
     <v-toolbar-items v-if="smAndDown">
@@ -58,8 +69,9 @@
                 :to="childLink.to"
                 :href="childLink.href"
                 class="px-6 text-button text-capitalize"
-                v-text="childLink.name"
-              />
+              >
+                {{ childLink.name }}
+              </v-list-item>
             </div>
             <v-list-item
               v-else
@@ -67,8 +79,9 @@
               text
               exact
               class="px-6 text-button text-capitalize"
-              v-text="link.name"
-            />
+            >
+              {{ link.name }}
+            </v-list-item>
           </div>
         </v-list>
       </v-menu>
@@ -83,36 +96,68 @@
 
 import { useMain } from '@/stores/main'
 import { dataObjectToPluralTitle } from '@/assets/dataHelpers.js'
+import { getStoreObjectCollectionKey } from '@/assets/objectTypes.js'
 import { useDisplay } from 'vuetify'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import { getPathWithBase } from '@/assets/tools'
 
 const route = useRoute()
 const mainStore = useMain()
 const { mdAndUp, smAndDown } = useDisplay() // Used for breakpoints
+
+const activeVersion = computed(() => mainStore.getActiveNavigationVersion)
+
+const showVersionIndicator = computed(() => {
+  const section = route.meta?.section
+  const hideSections = new Set(['resources', 'contribute', 'tools'])
+  return Boolean(activeVersion.value) && !hideSections.has(section)
+})
+
+function withVersion(name, params = {}) {
+  if (activeVersion.value) {
+    return { name, params: { ...params, version: activeVersion.value } }
+  }
+  return { name, params }
+}
 
 /**
  * Matrices link in navbar
  * @returns {Array}
  */
 const linksBeginning = computed(() => {
+  const matrixId = mainStore.getFirstMatrixId
+  const matrixRoute = matrixId
+    ? withVersion(activeVersion.value ? 'VersionedMatrix' : 'Matrix', {
+        id: matrixId
+      })
+    : { name: 'Home' }
+
   return [
     {
       name: 'Matrix',
-      to: `/matrices/${mainStore.getFirstMatrixId}`
+      to: matrixRoute
     }
   ]
+})
+
+const homeRoute = computed(() => {
+  if (activeVersion.value) {
+    return { name: 'VersionedHome', params: { version: activeVersion.value } }
+  }
+  return { name: 'Home' }
 })
 
 /**
  * Array of objects of the dropdown menus in the navigation bar
  * @type {Array}
  */
-const linksEnding = [
+const linksEnding = computed(() => [
   {
     name: 'Case Studies',
-    to: '/studies'
+      to: withVersion(
+        activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList',
+        { objectTypePlural: 'studies' }
+      )
   },
   {
     name: 'Tools',
@@ -120,15 +165,15 @@ const linksEnding = [
     links: [
       {
         name: 'ATLAS Navigator',
-        to: '/navigator'
+        to: { name: 'Navigator' }
       },
       {
         name: 'ATLAS Knowledge Graph',
-        to: '/knowledge-graph'
+        to: { name: 'KnowledgeGraph' }
       },
       {
         name: 'ATLAS in Attack Flow',
-        to: '/attack-flow'
+        to: { name: 'AttackFlow' }
       }
     ]
   },
@@ -138,19 +183,23 @@ const linksEnding = [
     links: [
       {
         name: 'General information',
-        to: '/resources/info'
+        to: { name: 'GeneralInformation' }
       },
       {
         name: 'Updates',
         to: '/resources/updates'
       },
       {
+        name: 'Version History',
+        to: { name: 'AtlasVersions' }
+      },
+      {
         name: 'Contact Us',
-        to: '/resources/contact'
+        to: { name: 'Contact' }
       },
       {
         name: 'AI Security 101',
-        to: '/resources/ai-security-101'
+        to: { name: 'AiSecurity101' }
       },
       {
         name: 'Glossary',
@@ -160,9 +209,9 @@ const linksEnding = [
   },
   {
     name: 'Contribute',
-    to: '/contribute'
+    to: { name: 'Contribute' }
   }
-]
+])
 
 /**
  * Add the Header names and links
@@ -172,24 +221,31 @@ const linksModded = computed(() => {
   // Add data object links
   const dataKeys = mainStore.getDataObjectTypes
   // Do not generate a route for case studies, which has its own defined templates
-  const dynamicDataKeys = dataKeys.filter((k) => k !== 'case-studies')
+  const studiesCollectionKey = getStoreObjectCollectionKey('studies')
+  const dynamicDataKeys = dataKeys.filter((k) => k !== studiesCollectionKey)
   const dataLinks = dynamicDataKeys.map((objectType) => {
     return {
       name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
-      to: `/${dataObjectToPluralTitle(objectType, true)}` // Last word of the above
+      to: withVersion(
+        activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList',
+        { objectTypePlural: dataObjectToPluralTitle(objectType, true) }
+      )
     }
   })
 
   // Sandwich data links between beginning and end links
-  return linksBeginning.value.concat(dataLinks).concat(linksEnding)
+  return linksBeginning.value.concat(dataLinks).concat(linksEnding.value)
 })
 
+const routeMeta = computed(() => route.meta || {})
+
 const doesPageHaveSideNav = computed(() => {
-  return (
-    route.params.objectTypePlural ||
-    (route.params.objectTypePlural && route.params.id) ||
-    (route.path.startsWith('/studies') && route.path !== '/studies/create')
-  )
+  const metaValue = routeMeta.value.showSideNav
+  if (typeof metaValue === 'boolean') {
+    return metaValue
+  }
+
+  return false
 })
 
 function toggle() {

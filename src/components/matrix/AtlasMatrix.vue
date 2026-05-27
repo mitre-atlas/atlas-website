@@ -5,7 +5,21 @@
       <div class="matrix-controls-group">
         <div class="matrix-filter">
           <Fieldset class="fieldset-border">
-            <legend class="fieldset-legend">Subtechniques</legend>
+            <legend class="fieldset-legend">
+              <span class="legend-with-info">
+                <v-tooltip
+                  :text="subtechniquesTooltip"
+                  location="top"
+                  content-class="matrix-filter-tooltip"
+                  max-width="260"
+                >
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+                Subtechniques
+              </span>
+            </legend>
             <v-btn-toggle
               v-model="expandAllIndex"
               mandatory
@@ -20,24 +34,89 @@
         </div>
         <div class="matrix-filter">
           <Fieldset class="fieldset-border">
-            <legend class="fieldset-legend">Filter by Maturity</legend>
-            <v-slider
-              v-model="selectedCategoryIndex"
-              :max="2"
-              :ticks="maturity_types"
-              show-ticks="always"
-              tick-size="3"
-              step="1"
-              class="slider-width"
-              thumb-label
-              thumb-color="#1976d2"
-              track-color="#ccc"
-              track-fill-color="#1976d2"
+            <legend class="fieldset-legend">
+              <span class="legend-with-info">
+                <v-tooltip
+                  :text="getAtlasGroupDescription('platforms')"
+                  location="top"
+                  content-class="matrix-filter-tooltip"
+                  max-width="260"
+                >
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+                Filter by Platforms
+              </span>
+            </legend>
+            <div class="platform-chip-group" role="group" aria-label="Filter techniques by platform">
+              <v-tooltip
+                v-for="platform in platformOptions"
+                :key="platform"
+                :text="getAtlasTermDescription('platforms', platform)"
+                location="top"
+                content-class="matrix-filter-tooltip"
+                max-width="260"
+              >
+                <template #activator="{ props }">
+                  <v-chip
+                    v-bind="props"
+                    :variant="isPlatformSelected(platform) ? 'flat' : 'outlined'"
+                    color="navy"
+                    class="platform-chip"
+                    @click="togglePlatform(platform)"
+                  >
+                    <v-icon
+                      :icon="isPlatformSelected(platform) ? 'mdi-check' : 'mdi-close'"
+                      size="small"
+                      start
+                    />
+                    {{ platform }}
+                  </v-chip>
+                </template>
+              </v-tooltip>
+            </div>
+          </Fieldset>
+        </div>
+        <div class="matrix-filter">
+          <Fieldset class="fieldset-border">
+            <legend class="fieldset-legend">
+              <span class="legend-with-info">
+                <v-tooltip
+                  :text="getAtlasGroupDescription('maturity')"
+                  location="top"
+                  content-class="matrix-filter-tooltip"
+                  max-width="260"
+                >
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+                Filter by Maturity
+              </span>
+            </legend>
+            <v-tooltip
+              :text="maturityLevelDescriptions[selectedCategoryIndex]"
+              location="top"
+              content-class="matrix-filter-tooltip"
+              max-width="260"
             >
-              <template v-slot:thumb-label="{ selectedCategory }">
-                {{ maturity_types_info[selectedCategoryIndex] }}
+              <template #activator="{ props }">
+                <v-slider
+                  v-bind="props"
+                  v-model="selectedCategoryIndex"
+                  :max="maturityLevels.length - 1"
+                  :ticks="maturityTicks"
+                  show-ticks="always"
+                  tick-size="3"
+                  step="1"
+                  class="slider-width"
+                  thumb-color="navy"
+                  track-color="#ccc"
+                  track-fill-color="navy"
+                />
               </template>
-            </v-slider>
+            </v-tooltip>
           </Fieldset>
         </div>
       </div>
@@ -45,71 +124,140 @@
     <MatrixAttackStyle
       :tactics="tactics"
       :expand-all="expandAll"
+      :expand-all-revision="expandAllRevision"
       style="overflow: auto"
     ></MatrixAttackStyle>
     <div class="text-right mt-2">
       <span class="attack-and">&amp;</span>&nbsp;indicates a tactic or technique is adapted from
-      <a href="https://attack.mitre.org/" target="_blank" >MITRE ATT&CK®</a >
+      <a href="https://attack.mitre.org/" target="_blank" rel="noreferrer" >MITRE ATT&CK®</a >
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useMain } from '@/stores/main'
 import MatrixAttackStyle from './MatrixAttackStyle.vue'
-import { constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
+import {
+  getAtlasTermValues,
+  getAtlasTermDescription,
+  getAtlasGroupDescription
+} from '@/config/atlasTermCatalog'
 
 const mainStore = useMain()
 
-//TODO- track this constant and connect with data
-const maturity_types = {
-  0: 'Feasible',
-  1: 'Demonstrated',
-  2: 'Realized'
-}
-
-const maturity_types_info = [
-  'The technique has been shown to work in a research or academic setting',
-  'The technique has been shown to be effective in a red team exercise or demonstration on a realistic AI-enabled system.',
-  'The technique has been used by a threat actor in a real-world incident targeting an AI-enabled systems.'
-]
+const maturityLevels = getAtlasTermValues('maturity')
+const maturityTicks = Object.fromEntries(maturityLevels.map((value, index) => [index, value]))
+const maturityLevelDescriptions = maturityLevels.map((value) =>
+  getAtlasTermDescription('maturity', value)
+)
+const knownPlatforms = getAtlasTermValues('platforms')
+const knownPlatformSet = new Set(knownPlatforms)
+const subtechniquesTooltip =
+  'Expand or collapse subtechnique rows beneath each parent technique in the matrix.'
 
 const selectedCategoryIndex = ref(0)
 const expandAllIndex = ref('1')
+const selectedPlatforms = ref([])
+const hasInitializedPlatforms = ref(false)
+const expandAllRevision = ref(0)
 
 const expandAll = computed(() => expandAllIndex.value === '0')
 
-const selectedCategory = computed(() => maturity_types[selectedCategoryIndex.value])
+const selectedCategory = computed(() => maturityLevels[selectedCategoryIndex.value])
 
-const tactics = computed(() => {
-  if (selectedCategory.value == 'Feasible') {
-    return mainStore.getDataObjectsByType('tactics', 'ATLAS')
-  } else if (selectedCategory.value == 'Demonstrated') {
-    return mainStore.getDataObjectsFilteredbyNestedKeyValue(
-      'tactics',
-      'techniques',
-      'maturity',
-      ['demonstrated', 'realized'],
-      'ATLAS'
-    )
-  } else if (selectedCategory.value == 'Realized') {
-    return mainStore.getDataObjectsFilteredbyNestedKeyValue(
-      'tactics',
-      'techniques',
-      'maturity',
-      ['realized'],
-      'ATLAS'
-    )
-  }
+const matrixId = computed(() => mainStore.getFirstMatrixId)
+
+const platformOptions = computed(() => {
+  return [...knownPlatforms]
 })
 
-// Construct link to open the case study frequency Navigator layer on the ATLAS Navigator
-const matrixLayerGitHubUrl = constructNavigatorLayerGitHubUrl(
-  'atlas_layer_matrix',
-  'dist/default-navigator-layers'
+watch(
+  platformOptions,
+  (options) => {
+    if (!hasInitializedPlatforms.value && options.length > 0) {
+      selectedPlatforms.value = [...options]
+      hasInitializedPlatforms.value = true
+    }
+  },
+  { immediate: true }
 )
-const matrixNavigatorUrl = constructNavigatorUrlToLayer(matrixLayerGitHubUrl)
+
+watch([selectedCategoryIndex, selectedPlatforms], () => {
+  expandAllRevision.value += 1
+})
+
+const shouldShowTechniqueForPlatforms = (technique) => {
+  const techniquePlatforms = (technique.platforms || []).filter((platform) =>
+    knownPlatformSet.has(platform)
+  )
+  if (techniquePlatforms.length === 0) {
+    return true
+  }
+
+  return selectedPlatforms.value.some((platform) => techniquePlatforms.includes(platform))
+}
+
+const isPlatformSelected = (platform) => selectedPlatforms.value.includes(platform)
+
+const togglePlatform = (platform) => {
+  if (isPlatformSelected(platform)) {
+    if (selectedPlatforms.value.length <= 1) {
+      return
+    }
+    selectedPlatforms.value = selectedPlatforms.value.filter((value) => value !== platform)
+    return
+  }
+
+  selectedPlatforms.value = [...selectedPlatforms.value, platform].sort((a, b) =>
+    a.localeCompare(b)
+  )
+}
+
+const tactics = computed(() => {
+  const filterByPlatforms = (tacticList) => {
+    return tacticList
+      .map((tactic) => {
+        const techniques = tactic.techniques
+          .map((technique) => {
+            const subtechniques = (technique.subtechniques || []).filter(shouldShowTechniqueForPlatforms)
+            return { ...technique, subtechniques }
+          })
+          .filter((technique) => {
+            return shouldShowTechniqueForPlatforms(technique) || technique.subtechniques.length > 0
+          })
+        return { ...tactic, techniques }
+      })
+      .filter((tactic) => tactic.techniques.length > 0)
+  }
+
+  if (selectedCategory.value === 'Feasible') {
+    return filterByPlatforms(mainStore.getDataObjectsByType('tactics', matrixId.value))
+  } else if (selectedCategory.value === 'Demonstrated') {
+    return filterByPlatforms(
+      mainStore.getDataObjectsFilteredbyNestedKeyValue(
+      'tactics',
+      'techniques',
+      'maturity',
+      ['Demonstrated', 'Realized'],
+      matrixId.value
+    )
+    )
+  } else if (selectedCategory.value === 'Realized') {
+    return filterByPlatforms(
+      mainStore.getDataObjectsFilteredbyNestedKeyValue(
+      'tactics',
+      'techniques',
+      'maturity',
+      ['Realized'],
+      matrixId.value
+      )
+    )
+  }
+
+  return []
+})
+
 </script>
 
 <style scoped src="@/assets/matrix.css"></style>

@@ -4,20 +4,20 @@
     <table class="matrix side">
       <thead>
         <tr>
-          <td v-for="(tactic, i) in tactics" :key="i" class="tactic name">
-            <router-link :to="`/tactics/${tactic.id}`">
+          <td v-for="(tactic, i) in tactics" :key="tactic.id || i" class="tactic name">
+            <router-link :to="tactic.route || `/tactics/${tactic.id}`">
               {{ tactic.name.substr(0, tactic.name.length - tacticLastWord(tactic.name).length) }}
             </router-link>
             <div style="white-space: nowrap">
-              <router-link :to="`/tactics/${tactic.id}`">
+              <router-link :to="tactic.route || `/tactics/${tactic.id}`">
                 {{ tacticLastWord(tactic.name) }}
               </router-link>
-              <span v-if="'ATT&CK-reference' in tactic" class="attack-and">&</span>
+              <span v-if="'attack-reference' in tactic" class="attack-and">&</span>
             </div>
           </td>
         </tr>
         <tr>
-          <td v-for="(tactic, i) in tactics" :key="i" class="tactic count">
+          <td v-for="(tactic, i) in tactics" :key="tactic.id || i" class="tactic count">
             {{
               tactic.techniques.length +
               ' ' +
@@ -28,10 +28,14 @@
       </thead>
       <tbody>
         <tr>
-          <td v-for="(tactic, i) in tactics" :key="i" class="tactic">
+          <td v-for="(tactic, i) in tactics" :key="tactic.id || i" class="tactic">
             <table class="techniques-table">
-              <tbody v-for="(technique, j) in tactic.techniques" :key="j">
-                <attack-technique-row :technique="technique" :expand-all="expandAll" />
+              <tbody v-for="(technique, j) in tactic.techniques" :key="technique.id || j">
+                <attack-technique-row
+                  :technique="technique"
+                  :expand-all="expandAll"
+                  :expand-all-revision="expandAllRevision"
+                />
               </tbody>
             </table>
           </td>
@@ -48,7 +52,7 @@
 import { lastWord } from '@/assets/tools.js'
 import AttackTechniqueRow from '@/components/matrix/AttackTechniqueRow.vue'
 
-const props = defineProps({
+defineProps({
   /**
    * List of tactics to create columns for the matrix
    * @type {Object}
@@ -58,7 +62,13 @@ const props = defineProps({
    * When true, expands all subtechniques; when false, collapses them
    * @type {Boolean}
    */
-  expandAll: Boolean
+  expandAll: Boolean,
+  /**
+   * Increments when filters change so rows re-apply the current global expansion mode
+   * even when expandAll itself did not change.
+   * @type {Number}
+   */
+  expandAllRevision: Number
 })
 
 const tacticLastWord = (tactic_name) => {

@@ -3,13 +3,14 @@
  * @module tools
  */
 
-import path from 'path'
 import { dump } from 'js-yaml'
-import { validate } from 'jsonschema'
 import jsyaml from 'js-yaml'
+import { ATLAS_DATA_GITHUB_URL, NAVIGATOR_LAYER_GITHUB_URL, NAVIGATOR_URL } from '@/config/env'
 
 import { caseStudySchema as schema } from './schemas.js'
 import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
+
+const ATLAS_DATA_RELEASE_BASE_URL = `${ATLAS_DATA_GITHUB_URL}/releases/download`
 
 /**
  * Capitalizes the first letter of the provided string.
@@ -54,9 +55,104 @@ export function truncateText(value, max) {
   return text
 }
 
+export function getFirstParagraph(text) {
+  if (typeof text !== 'string') {
+    return ''
+  }
+
+  return text.trim().split(/\n\n+/)[0]?.trim() || ''
+}
+
 export function getReferenceDisplayText(reference, max) {
   const text = reference?.title?.trim() || reference?.url?.trim() || 'Untitled reference'
   return truncateText(text, max)
+}
+
+function normalizeReferenceId(value) {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/**
+ * Converts custom inline citations in the form [[reference-id]] into numbered markdown links
+ * and returns cited references in first-use order.
+ *
+ * Supports fallback numeric IDs, ex. [[1]] maps to references[0].
+ *
+ * @param {string} description
+ * @param {Array<{id?: string, title?: string, url?: string}>} references
+ * @returns {{ description: string, citedReferences: object[], orderedReferences: object[], missingReferenceIds: string[] }}
+ */
+export function resolveDescriptionCitations(description, references = []) {
+  const text = typeof description === 'string' ? description : ''
+  const refs = Array.isArray(references) ? references : []
+
+  const refsById = new Map()
+  refs.forEach((reference, index) => {
+    const normalizedId = normalizeReferenceId(reference?.id)
+    if (normalizedId && !refsById.has(normalizedId)) {
+      refsById.set(normalizedId, { reference, index })
+    }
+  })
+
+  const citationNumberByReferenceIndex = new Map()
+  const citedReferences = []
+  const missingReferenceIds = new Set()
+
+  const output = text.replace(/\[\[([^\]]+)\]\]/g, (match, rawId) => {
+    const tokenId = normalizeReferenceId(rawId)
+    let resolved = refsById.get(tokenId)
+
+    if (!resolved && /^\d+$/.test(tokenId)) {
+      const index = Number(tokenId) - 1
+      if (index >= 0 && index < refs.length) {
+        resolved = { reference: refs[index], index }
+      }
+    }
+
+    if (!resolved) {
+      missingReferenceIds.add(String(rawId).trim())
+      return match
+    }
+
+    const refIndex = resolved.index
+    const reference = resolved.reference
+    if (!citationNumberByReferenceIndex.has(refIndex)) {
+      citationNumberByReferenceIndex.set(refIndex, citedReferences.length + 1)
+      citedReferences.push(reference)
+    }
+
+    const citationNumber = citationNumberByReferenceIndex.get(refIndex)
+    const url = typeof reference?.url === 'string' ? reference.url.trim() : ''
+
+    if (!url) {
+      return `<sup>[${citationNumber}]</sup>`
+    }
+
+    const escapedUrl = escapeHtml(url)
+    return `<sup><a href="${escapedUrl}" target="_blank" rel="noopener noreferrer">[${citationNumber}]</a></sup>`
+  })
+
+  const citedReferenceIndexes = new Set(citationNumberByReferenceIndex.keys())
+  const uncitedReferences = refs.filter((_, index) => !citedReferenceIndexes.has(index))
+  const orderedReferences = citedReferences.concat(uncitedReferences)
+
+  return {
+    description: output,
+    citedReferences,
+    orderedReferences,
+    missingReferenceIds: Array.from(missingReferenceIds)
+  }
 }
 
 export function collectUniqueArrayValues(objs, key) {
@@ -95,61 +191,6 @@ export function generateID(template = 'xxxx-xxxx-xxxx') {
 }
 
 /**
- * Internal holder for deprecation error messages.
- */
-const depArray = []
-/**
- * Adds an error message if case study contains deprecated fields as labeled in the schema.
- * @see {@link https://github.com/tdegrunt/jsonschema#pre-property-validation-hook}
- */
-function preValidateProperty(object, key, schema, options, ctx) {
-  if (schema.deprecated && key in object) {
-    depArray.push('Deprecation Error: ' + schema.depMessage)
-  }
-}
-
-/**
- * Converts `jsonschema` validation result errors to strings for display.
- * Used by {@link validFormatYAML}
- * @see {@link https://github.com/tdegrunt/jsonschema#results} for ValidatorResult and ValidationError docs
- * @param {ValidationError[]} errors - Array of `jsonschema` library ValidationError objects from the ValidationResult
- * @returns {string[]}
- */
-function getErrorList(errors) {
-  const errorArrayLength = errors.length
-  // let errorMessages = 'File Errors: '
-  const errorListSimplified = []
-  // Iterates through error list to populate a new list that only contains user friendly (more readable) error messages
-  for (let i = 0; i < errorArrayLength; i++) {
-    if (!errors[i].stack.includes('subschema') && !errors[i].stack.includes('constant: null')) {
-      errorListSimplified.push('File Error: ' + errors[i].stack)
-    }
-  }
-  return errorListSimplified
-}
-
-/**
- * Verifies if user uploaded case study yaml file is in correct format for use in case builder
- * @param {object} yamlObj - Object read from uploaded case study YAML file
- * @returns {(string[]|string)}} Array of error strings for display or empty string @todo Check on this
- */
-export function validFormatYAML(yamlObj) {
-  depArray.length = 0
-  const validObj = validate(yamlObj, schema, { nestedErrors: true, preValidateProperty })
-  // If yaml file format is valid
-  if (validObj.valid) {
-    if (depArray.length !== 0) {
-      return depArray
-    }
-    return ''
-  }
-  // Else output error messages for user to correct formatting
-  return depArray.length !== 0
-    ? getErrorList(validObj.errors).concat(depArray)
-    : getErrorList(validObj.errors)
-}
-
-/**
  * Verifies if user uploaded case study yaml file is up to date schema version
  * @param {object} yamlObj - Object read from uploaded case study YAML file
  * @returns {boolean}
@@ -179,28 +220,50 @@ export function isSchemaOutdated(yamlObj) {
  * @returns {string} Long-form representation of the incident date
  */
 export function formatCaseStudyIncidentDate(caseStudy) {
-  // Returns a string date in locale format
+  const date = caseStudy.date
+  const dateGranularity = caseStudy['date-granularity']
 
-  const date = caseStudy['incident-date']
-  const dateGranularity = caseStudy['incident-date-granularity']
-
-  let dateOptions = null
-
-  if (dateGranularity === 'YEAR') {
-    dateOptions = { timeZone: 'UTC', year: 'numeric' }
-  } else if (dateGranularity === 'MONTH') {
-    dateOptions = { timeZone: 'UTC', year: 'numeric', month: 'long' }
-  } else if (dateGranularity === undefined || dateGranularity === 'DATE') {
-    // If dateGranularity is DATE, or there is no date granularity
-    dateOptions = {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }
+  if (!date) {
+    return ''
   }
 
-  return date.toLocaleDateString('default', dateOptions)
+  if (date instanceof Date) {
+    const dateOptions =
+      dateGranularity === 'Year'
+        ? { timeZone: 'UTC', year: 'numeric' }
+        : dateGranularity === 'Month'
+          ? { timeZone: 'UTC', year: 'numeric', month: 'long' }
+          : { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+    return date.toLocaleDateString('default', dateOptions)
+  }
+
+  const rawDate = String(date)
+
+  if (dateGranularity === 'Year') {
+    return rawDate.slice(0, 4)
+  }
+
+  const parts = rawDate.split('-')
+  const year = Number(parts[0])
+  const month = Number(parts[1] || 1)
+  const day = Number(parts[2] || 1)
+
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) {
+    return rawDate
+  }
+
+  const parsedDate = new Date(Date.UTC(year, month - 1, day))
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return rawDate
+  }
+
+  const dateOptions =
+    dateGranularity === 'Month'
+      ? { timeZone: 'UTC', year: 'numeric', month: 'long' }
+      : { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }
+
+  return parsedDate.toLocaleDateString('default', dateOptions)
 }
 
 /**
@@ -249,7 +312,7 @@ export function downloadStudyFile(study, filename) {
  * For use serving files on GitHub.
  * @param {string} url
  */
-export function downloadUrlAsFile(url) {
+export function downloadUrlAsFile(url, downloadName) {
   // Downloads a file located at url
   // Parameter url is a string
   const xhr = new XMLHttpRequest()
@@ -259,7 +322,7 @@ export function downloadUrlAsFile(url) {
     a.href = window.URL.createObjectURL(xhr.response) // xhr.response is a blob
     const urlSegments = url.split('/')
     const basename = urlSegments[urlSegments.length - 1]
-    a.download = basename
+    a.download = downloadName || basename
     a.style.display = 'none'
     document.body.appendChild(a)
     a.click()
@@ -278,36 +341,6 @@ export function openNewTab(url) {
 }
 
 /**
- * Creates and sets metadata for case studies built by the website.
- * @param {object} studyData - Case study object from the builder
- * @param {string} studySchemaVersion - Numeric string for the case study file version from nuxt.config.js
- */
-export function setMetaData(studyData, studySchemaVersion) {
-  // Initialize meta key if not exists
-  studyData.meta = studyData.meta || {}
-  const nowDate = new Date().toISOString()
-
-  // Only set the date-created once upon study creation
-  studyData.meta['date-created'] = studyData.meta['date-created']
-    ? new Date(studyData.meta['date-created'])
-    : nowDate
-
-  // Always update date-updated
-  studyData.meta['date-updated'] = nowDate
-  // Set UUID
-  studyData.meta.uuid = studyData.meta.uuid ?? generateID()
-  // Set case study file version
-  studyData.meta.version = studySchemaVersion
-  // Reset the reporter if is exercise
-  // TODO is this needed?
-  if (studyData.study['case-study-type'] === 'exercise') {
-    studyData.study.reporter = ''
-  }
-
-  return studyData.meta
-}
-
-/**
  * Constructs the link to a specified Navigator layer file.
  *
  * @param {string} filename JSON filename, without the extension
@@ -315,12 +348,23 @@ export function setMetaData(studyData, studySchemaVersion) {
  */
 export function constructNavigatorLayerGitHubUrl(
   filename,
-  directory = 'dist/case-study-navigator-layers'
+  directory = 'dist/case-study-navigator-layers',
+  version = ''
 ) {
-  // Env var containing the first part of a raw GitHub link pointing to Navigator layers on the main branch
-  const navigatorLayerGitHubUrl = import.meta.env.VITE_NAVIGATOR_LAYER_GITHUB_URL
+  if (version) {
+    return constructReleaseArtifactUrl(`navigator-${filename}.json`, version)
+  }
   // Construct the full URL to the layer file
-  return `${navigatorLayerGitHubUrl}/${directory}/${filename}.json`
+  return `${NAVIGATOR_LAYER_GITHUB_URL}/${directory}/${filename}.json`
+}
+
+export function constructReleaseArtifactUrl(filename, version) {
+  const normalizedVersion = String(version || '').trim()
+  const normalizedFilename = String(filename || '').trim()
+  if (!normalizedVersion || !normalizedFilename) {
+    return ''
+  }
+  return `${ATLAS_DATA_RELEASE_BASE_URL}/v${encodeURIComponent(normalizedVersion)}/${normalizedFilename}`
 }
 
 /**
@@ -329,9 +373,8 @@ export function constructNavigatorLayerGitHubUrl(
  * @param {string} layerGitHubUrl
  */
 export function constructNavigatorUrlToLayer(layerGitHubUrl) {
-  const navigatorUrl = import.meta.env.VITE_NAVIGATOR_URL
   // Construct the full URL to open the layer file on the Navigator
-  return `${navigatorUrl}/#layerURL=${layerGitHubUrl}`
+  return `${NAVIGATOR_URL}/#layerURL=${layerGitHubUrl}`
 }
 
 /**
@@ -340,8 +383,10 @@ export function constructNavigatorUrlToLayer(layerGitHubUrl) {
  * @param {string} pathString
  */
 export function getPathWithBase(pathString) {
-  // BASE_URL defaults to `/`, uses path.join to construct valid paths
-  return path.join(import.meta.env.BASE_URL, pathString)
+  const base = String(import.meta.env.BASE_URL || '/')
+  const normalizedBase = base.endsWith('/') ? base : `${base}/`
+  const normalizedPath = String(pathString || '').replace(/^\/+/, '')
+  return `${normalizedBase}${normalizedPath}`
 }
 
 /**
@@ -351,9 +396,9 @@ export function getPathWithBase(pathString) {
  */
 export function getLatestUpdateDate() {
   const modules = import.meta.glob('@/../public/content/update-files/*.md')
-  const updateFilepaths = Object.keys(modules)
+  const updateFilepaths = Object.keys(modules).sort((a, b) => a.localeCompare(b))
   // Filepaths are named with numeric YEAR-MONTH.md, so the last one is the most recent
-  const latestFilepath = updateFilepaths.pop(-1)
+  const latestFilepath = updateFilepaths.pop()
 
   // Return the YEAR-MONTH portion of the filepath
   const startIndex = latestFilepath.lastIndexOf('/') + 1
