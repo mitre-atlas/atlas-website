@@ -1,4 +1,4 @@
-#### May 2026
+var e=`#### May 2026
 
 Starting with this release, there is a split in versioning between the ATLAS Knowledge Base content and the ATLAS Data Format. Monthly ATLAS content releases will follow a YYYY.MM.N versioning scheme with the version stored in the Collection object. ATLAS data format changes will follow semantic versioning. Previously, changes to either content or format were conflated in a single SemVer version.
 
@@ -62,3 +62,4 @@ The ATLAS knowledge base is built from community contributions. We want to ackno
 ##### Data v5.6.1
 
 Minor fixes to contribution schemas.
+`;export{e as t};
