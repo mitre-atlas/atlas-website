@@ -252,6 +252,19 @@ class CaseStudyFields(AtlasObjectFields):
     date: date
     date_granularity: DateGranularity
 
+    @field_validator("reporter", mode="before")
+    @classmethod
+    def normalize_blank_reporter(cls, value: str | None) -> str | None:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
+
+    @model_validator(mode="after")
+    def validate_reporter_for_type(self) -> Self:
+        if self.type == CaseStudyType.EXERCISE and self.reporter is not None:
+            raise ValueError("Exercise case studies must not have a reporter")
+        return self
+
     @field_validator("date", mode="before")
     @classmethod
     def normalize_partial_date(cls, value: date | str) -> date:

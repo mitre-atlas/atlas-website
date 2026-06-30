@@ -1080,6 +1080,7 @@ class TestCaseStudies:
             f"/{ATLAS_DATA_VERSION}/case-studies/{case_study_id}",
             json=case_study_payload(
                 type="Exercise",
+                reporter=None,
                 attack_chain=[
                     dict(
                         technique=child_id,
@@ -1141,6 +1142,7 @@ class TestCaseStudies:
             json=case_study_payload(
                 name="Exercise CS",
                 type="Exercise",
+                reporter=None,
                 attack_chain=[
                     dict(
                         technique=child_b,

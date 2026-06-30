@@ -32,6 +32,7 @@ from atlas.enums import AtlasRelationshipType
         ("description", properties.StringProperty()),
         ("external_references", properties.ListProperty(ExternalReference)),
         ("x_mitre_shortname", properties.StringProperty()),
+        ("x_mitre_domains", properties.ListProperty(properties.StringProperty())),
     ],
 )
 class AttackTactic:
@@ -245,6 +246,7 @@ class AtlasToStix:
                 description=t.description,
                 external_references=refs,
                 x_mitre_shortname=_slug(t.name),
+                x_mitre_domains=["ATLAS"],
                 created=_ts(t.created_date),
                 modified=_ts(t.modified_date),
             )
@@ -268,7 +270,8 @@ class AtlasToStix:
                 "kill_chain_phases": self._kill_chain_for_technique(t.id),
                 "external_references": refs,
                 "allow_custom": True,
-                "x_mitre_platforms": ["ATLAS"],
+                "x_mitre_platforms": [platform.value for platform in t.platforms],
+                "x_mitre_domains": ["ATLAS"],
                 "created": _ts(t.created_date),
                 "modified": _ts(t.modified_date),
             }
@@ -289,6 +292,8 @@ class AtlasToStix:
                 name=m.name,
                 description=m.description,
                 external_references=refs,
+                allow_custom=True,
+                x_mitre_domains=["ATLAS"],
                 created=_ts(m.created_date),
                 modified=_ts(m.modified_date),
             )
