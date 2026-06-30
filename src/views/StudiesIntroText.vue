@@ -7,8 +7,8 @@
     with little oversight, and have little to no logging and alerting attached to their use.
   </p>
   <p>
-    {{ MITRE_TITLE }} case studies are selected because of the impact to production AI systems.
-    Each demonstrates one of the following characteristics:
+    {{ MITRE_TITLE }} case studies are selected because of the impact to production AI systems. Each
+    demonstrates one of the following characteristics:
   </p>
   <ol class="pl-4 pb-4" style="line-height: 2.5">
     <li>
@@ -57,5 +57,7 @@ const frequencyLayerGitHubUrl = computed(() =>
     artifactVersion.value
   )
 )
-const frequencyNavigatorUrl = computed(() => constructNavigatorUrlToLayer(frequencyLayerGitHubUrl.value))
+const frequencyNavigatorUrl = computed(() =>
+  constructNavigatorUrlToLayer(frequencyLayerGitHubUrl.value)
+)
 </script>

@@ -13,8 +13,8 @@ import '@/assets/global.css'
 export default {
   name: 'App',
   components: {
-    Layout
-  }
+    Layout,
+  },
 }
 </script>
 

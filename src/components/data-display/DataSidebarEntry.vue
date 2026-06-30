@@ -75,12 +75,12 @@ import Tag from '@/components/data-display/Tag.vue'
 import {
   dataObjectToPluralTitle,
   isDataObjectArray,
-  isJavascriptObject
+  isJavascriptObject,
 } from '@/assets/dataHelpers.js'
 import {
   getAtlasGroupDescription,
   getAtlasGroupLabel,
-  isAtlasTermGroupKey
+  isAtlasTermGroupKey,
 } from '@/config/atlasTermCatalog'
 
 import { computed } from 'vue'
@@ -96,7 +96,7 @@ const { objectType, relatedObjs } = defineProps([
    * or primitive values
    * @type {Object[] or string}
    */
-  'relatedObjs'
+  'relatedObjs',
 ])
 
 // Threshold for how many individual values to display before summarizing counts
@@ -123,7 +123,9 @@ const isVisible = computed(() => {
  */
 const doShowDataObjLinks = computed(() => {
   // Display items if the number of data objects fall below the defined threshold
-  return isThisObjectArray.value && Array.isArray(relatedObjs) && relatedObjs.length <= maxNumDisplay
+  return (
+    isThisObjectArray.value && Array.isArray(relatedObjs) && relatedObjs.length <= maxNumDisplay
+  )
 })
 
 /**

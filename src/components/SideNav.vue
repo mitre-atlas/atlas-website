@@ -132,9 +132,7 @@ const data = computed(() => {
   }
   if (title.value === 'studies') {
     const studies = mainStore.$state.data.objects[getStoreObjectCollectionKey('studies')] || []
-    return [...studies].sort((a, b) =>
-      b.id.localeCompare(a.id)
-    )
+    return [...studies].sort((a, b) => b.id.localeCompare(a.id))
   }
   if (title.value === 'mitigations') {
     return mainStore.$state.data.objects.mitigations[matrixId]
@@ -183,7 +181,7 @@ const doShowNavDrawer = computed({
   // setter
   set(value) {
     mainStore.TOGGLE_NAV_DRAWER(value)
-  }
+  },
 })
 
 const expandedTactics = ref([])
@@ -206,7 +204,6 @@ const tacticNamesByTechniqueId = computed(() => {
         lookup.set(technique.id, new Set())
       }
       lookup.get(technique.id).add(tactic.name)
-
       ;(technique.subtechniques || []).forEach((subtechnique) => {
         if (!lookup.has(subtechnique.id)) {
           lookup.set(subtechnique.id, new Set())

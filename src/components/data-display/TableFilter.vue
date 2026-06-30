@@ -25,7 +25,7 @@ const { categories, stages } = defineProps([
    * Array of ML lifecycle stages
    * @type {Array}
    */
-  'stages'
+  'stages',
 ])
 const emit = defineEmits(['updateFilters'])
 

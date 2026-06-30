@@ -3,23 +3,39 @@
     <v-card variant="flat">
       <div class="py-6">
         <div class="mb-6">
-          <associated-type-selector type="tactics" v-model="procedureStep.tactic" :multiple="false" required
+          <associated-type-selector
+            type="tactics"
+            v-model="procedureStep.tactic"
+            :multiple="false"
+            required
             label="Case Study Procedure Step Tactic"
             :hint="associatedTacticHint"
             :show-validation="formSubmitted || props.showValidation"
-            :new-item-errors="tacticNewItemErrors" />
+            :new-item-errors="tacticNewItemErrors"
+          />
         </div>
         <div class="mb-6">
-          <associated-type-selector type="techniques" v-model="procedureStep.technique" :multiple="false"
+          <associated-type-selector
+            type="techniques"
+            v-model="procedureStep.technique"
+            :multiple="false"
             :items="procedureTechniqueItems"
-            required label="Case Study Procedure Step Technique"
+            required
+            label="Case Study Procedure Step Technique"
             :hint="associatedTechniqueHint"
             :show-validation="formSubmitted || props.showValidation"
-            :new-item-errors="techniqueNewItemErrors" />
+            :new-item-errors="techniqueNewItemErrors"
+          />
         </div>
-        <v-textarea label="Case Study Procedure Step Summary *"
-          hint="Description of the procedure step" variant="outlined" v-model.trim="procedureStep.description" required
-          :error="showDescriptionRequiredError" @update:focused="handleDescriptionFocused" />
+        <v-textarea
+          label="Case Study Procedure Step Summary *"
+          hint="Description of the procedure step"
+          variant="outlined"
+          v-model.trim="procedureStep.description"
+          required
+          :error="showDescriptionRequiredError"
+          @update:focused="handleDescriptionFocused"
+        />
       </div>
       <v-card-actions>
         <v-spacer />
@@ -27,10 +43,23 @@
           <v-btn @click="$emit('cancel')">Cancel</v-btn>
           <v-btn type="submit" color="green" @click="addProcedureStep()">Save</v-btn>
         </template>
-        <v-btn v-else type="submit" variant="flat" icon="mdi-plus" rounded="lg" density="comfortable" color="info"
-          :disabled="isAddDisabled" @click="addProcedureStep()" />
+        <v-btn
+          v-else
+          type="submit"
+          variant="flat"
+          icon="mdi-plus"
+          rounded="lg"
+          density="comfortable"
+          color="info"
+          :disabled="isAddDisabled"
+          @click="addProcedureStep()"
+        />
       </v-card-actions>
-      <v-alert v-if="formSubmitted && isProcedureFormValid === false" icon="mdi-alert" color="red-lighten-4">
+      <v-alert
+        v-if="formSubmitted && isProcedureFormValid === false"
+        icon="mdi-alert"
+        color="red-lighten-4"
+      >
         Please fill out all required fields.
       </v-alert>
     </v-card>
@@ -85,8 +114,10 @@ const mainStore = useMain()
 const formSubmitted = ref(false)
 const procedureForm = ref(null)
 const descriptionTouched = ref(false)
-const associatedTacticHint = 'Select an ATLAS tactic, OR to suggest a new tactic, click the “Add New Tactic” button in the dropdown menu'
-const associatedTechniqueHint = 'Select an ATLAS technique, OR to suggest a new technique, click the “Add New Technique” button in the dropdown menu'
+const associatedTacticHint =
+  'Select an ATLAS tactic, OR to suggest a new tactic, click the “Add New Tactic” button in the dropdown menu'
+const associatedTechniqueHint =
+  'Select an ATLAS technique, OR to suggest a new technique, click the “Add New Technique” button in the dropdown menu'
 const isProcedureFormValid = computed(() => {
   if (!formSubmitted.value) return true
   return isProcedureStepValid.value
@@ -98,7 +129,8 @@ const procedureStep = computed(() => {
 })
 
 const showDescriptionRequiredError = computed(
-  () => !procedureStep.value.description?.trim() &&
+  () =>
+    !procedureStep.value.description?.trim() &&
     (descriptionTouched.value || formSubmitted.value || props.showValidation)
 )
 
@@ -121,7 +153,9 @@ const isProcedureStepValid = computed(() => {
 const isAddDisabled = computed(() => !hasProcedureContent.value || !isProcedureStepValid.value)
 
 const tacticNewItemErrors = computed(() => getProcedureAssociatedErrors(procedureStep.value.tactic))
-const techniqueNewItemErrors = computed(() => getProcedureAssociatedErrors(procedureStep.value.technique))
+const techniqueNewItemErrors = computed(() =>
+  getProcedureAssociatedErrors(procedureStep.value.technique)
+)
 
 const procedureTechniqueItems = computed(() => {
   if (!procedureStep.value.tactic) return []
@@ -145,9 +179,7 @@ function isProcedureAssociatedValueValid(value) {
   if (!isDraftItem(value)) return true
 
   return Boolean(
-    value.name?.trim() &&
-    value.summary?.trim() &&
-    validateUrl(value.referenceLink) === true
+    value.name?.trim() && value.summary?.trim() && validateUrl(value.referenceLink) === true
   )
 }
 
@@ -177,7 +209,7 @@ watch(
 const emit = defineEmits(['submitProcedureStep', 'cancel', 'updateShowAddNewStep', 'update'])
 
 defineExpose({
-  addProcedureStep
+  addProcedureStep,
 })
 
 async function addProcedureStep() {

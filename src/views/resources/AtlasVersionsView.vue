@@ -1,16 +1,24 @@
 <template>
   <div>
     <PageSectionTitle pageTitle="ATLAS Versions" />
-    <p class="mb-4">Available ATLAS releases with website snapshots, release notes, and source YAML files.</p>
+    <p class="mb-4">
+      Available ATLAS releases with website snapshots, release notes, and source YAML files.
+    </p>
 
     <v-alert v-if="errorMessage" type="warning" variant="tonal" class="mb-4">
       {{ errorMessage }}
     </v-alert>
 
     <div class="d-flex flex-wrap ga-3 mb-4">
-      <v-chip color="primary" prepend-icon="mdi-tag">Current release: v{{ latestRelease || 'N/A' }}</v-chip>
-      <v-chip color="secondary" prepend-icon="mdi-history">Total releases: {{ versionRows.length }}</v-chip>
-      <v-chip v-if="latestLegacy" color="blue-grey" prepend-icon="mdi-archive">Latest legacy: {{ latestLegacy }}</v-chip>
+      <v-chip color="primary" prepend-icon="mdi-tag"
+        >Current release: v{{ latestRelease || 'N/A' }}</v-chip
+      >
+      <v-chip color="secondary" prepend-icon="mdi-history"
+        >Total releases: {{ versionRows.length }}</v-chip
+      >
+      <v-chip v-if="latestLegacy" color="blue-grey" prepend-icon="mdi-archive"
+        >Latest legacy: {{ latestLegacy }}</v-chip
+      >
     </div>
 
     <v-alert v-if="versionRows.length === 0" type="info" variant="tonal" class="mb-4">
@@ -64,12 +72,7 @@
         <v-card-item>
           <div class="d-flex align-center flex-wrap ga-2 mb-2">
             <div class="text-h6 font-weight-bold">v{{ entry.version }}</div>
-            <v-chip
-              v-if="entry.legacyVersion"
-              size="x-small"
-              color="blue-grey"
-              variant="tonal"
-            >
+            <v-chip v-if="entry.legacyVersion" size="x-small" color="blue-grey" variant="tonal">
               legacy {{ entry.legacyVersion }}
             </v-chip>
           </div>
@@ -134,7 +137,7 @@ function formatReleaseDate(value) {
       timeZone: 'UTC',
       month: 'long',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     })
   }
 
@@ -149,7 +152,7 @@ function formatReleaseDate(value) {
       timeZone: 'UTC',
       month: 'long',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     })
   }
 
@@ -184,12 +187,12 @@ const versionRows = computed(() => {
           : '',
         websiteUrl: getPathWithBase(`/v/${encodedVersion}`),
         yamlUrl: yamlPath ? `${ATLAS_DATA_GITHUB_URL}/blob/main/dist/${yamlPath}` : '',
-        yamlName
+        yamlName,
       }
     })
     .sort((a, b) =>
-    a.releaseDateRaw < b.releaseDateRaw ? 1 : a.releaseDateRaw > b.releaseDateRaw ? -1 : 0
-  )
+      a.releaseDateRaw < b.releaseDateRaw ? 1 : a.releaseDateRaw > b.releaseDateRaw ? -1 : 0
+    )
 })
 
 const latestRow = computed(() => {

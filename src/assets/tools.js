@@ -48,7 +48,9 @@ export function lastWord(str) {
 }
 
 export function truncateText(value, max) {
-  const text = String(value ?? '').trim().replace(/\s+/g, ' ')
+  const text = String(value ?? '')
+    .trim()
+    .replace(/\s+/g, ' ')
   if (typeof max === 'number' && text.length > max) {
     return text.slice(0, max) + '…'
   }
@@ -151,7 +153,7 @@ export function resolveDescriptionCitations(description, references = []) {
     description: output,
     citedReferences,
     orderedReferences,
-    missingReferenceIds: Array.from(missingReferenceIds)
+    missingReferenceIds: Array.from(missingReferenceIds),
   }
 }
 

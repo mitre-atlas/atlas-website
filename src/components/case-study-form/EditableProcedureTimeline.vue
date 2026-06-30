@@ -45,10 +45,20 @@
         </v-card-text>
         <v-card-actions class="py-1">
           <v-spacer />
-          <v-icon icon="mdi-pencil" color="#2D4863" class="opacity-100 mr-5" @click="editIndex = i" />
+          <v-icon
+            icon="mdi-pencil"
+            color="#2D4863"
+            class="opacity-100 mr-5"
+            @click="editIndex = i"
+          />
           <v-dialog width="500">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" icon="mdi-delete-outline" color="#2D4863" class="opacity-100" />
+              <v-icon
+                v-bind="props"
+                icon="mdi-delete-outline"
+                color="#2D4863"
+                class="opacity-100"
+              />
             </template>
             <template v-slot:default="{ isActive }">
               <v-card>

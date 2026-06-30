@@ -32,20 +32,20 @@ const { study } = defineProps([
    * Data object type (e.g. tactics)
    * @type {Object}
    */
-  'study'
+  'study',
 ])
 
 const options = [
   {
     title: 'PowerPoint (.pptx)',
     icon: 'mdi-file-powerpoint-box-outline',
-    function: () => downloadPPT()
+    function: () => downloadPPT(),
   },
   {
     title: 'Raw data (.yaml)',
     icon: 'mdi-file',
-    function: () => downloadStudyFile({ study: study }, study.id)
-  }
+    function: () => downloadStudyFile({ study: study }, study.id),
+  },
 ]
 
 async function downloadPPT() {

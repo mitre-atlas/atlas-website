@@ -48,16 +48,16 @@ import { computed } from 'vue'
 const props = defineProps({
   subtechniques: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   otherSubtechniques: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   currentTechnique: {
     type: Object,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
 
 const hasSubtechniques = computed(() => {

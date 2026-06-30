@@ -57,7 +57,7 @@ const props = defineProps([
    * @todo LW Revisit the hyphen-delimited title idea
    * @type {String}
    */
-  'itemType'
+  'itemType',
 ])
 
 /**

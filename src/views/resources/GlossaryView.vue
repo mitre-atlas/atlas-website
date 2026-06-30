@@ -26,7 +26,7 @@ const glossarySections = reactive([])
 const modules = import.meta.glob('@/../public/content/glossary-files/*.md', {
   query: '?raw',
   import: 'default',
-  eager: true
+  eager: true,
 })
 
 // Convert Markdown to HTML
@@ -38,7 +38,7 @@ Object.values(modules).map((m) => {
 
   const data = {
     frontmatter: container.frontmatter,
-    content: mdAsHtml
+    content: mdAsHtml,
   }
 
   glossarySections.push(data)

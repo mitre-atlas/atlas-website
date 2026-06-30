@@ -49,6 +49,9 @@ data:
       - Therese Nkeng
       - Nicholas Hayes
       - Jessica Manzione
+      - David Benjamin Gomez
+      - Zerlyne Nandwani-Simons
+      - Mariama Barry
 
   - organization: Intel
     contributors:
@@ -138,6 +141,9 @@ data:
       - Asaf Harari
       - Idan Hen
       - Simone Curzi
+      - Amit Eliahu
+      - Dor Edry
+      - Uri Oren
 
   - organization: Bosch
     contributors:
@@ -338,3 +344,12 @@ data:
     - Riley Kidd
     - Luke lynch
     - David Lalezari
+
+  - organization: Skyld
+    contributors:
+    - Victor Guyomard
+
+  - organization: Stifel
+    contributors:
+    - Sean Gallagher
+    - Don Le

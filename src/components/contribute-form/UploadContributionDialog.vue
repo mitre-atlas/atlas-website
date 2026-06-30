@@ -1,8 +1,5 @@
 <template>
-  <v-dialog
-    v-model="showDialog"
-    max-width="520"
-  >
+  <v-dialog v-model="showDialog" max-width="520">
     <v-card class="pa-6 text-mediumNavy">
       <div class="d-flex justify-end mb-2">
         <v-btn
@@ -17,9 +14,8 @@
       <v-card-text class="text-center text-body-1 pa-0 mb-8">
         <p class="mb-4">
           Upload a .yaml or .yml file created by this website to view or edit your existing
-          {{ typeWordLower }}.
-
-          Uploading a file will <b>overwrite any existing progress</b> in the contribution form.
+          {{ typeWordLower }}. Uploading a file will <b>overwrite any existing progress</b> in the
+          contribution form.
         </p>
       </v-card-text>
       <v-form ref="form" v-model="isFormValid">
@@ -119,10 +115,9 @@ const typeRule = (val) => {
 }
 
 function isEmptyYamlDocument(value) {
-  return value == null || (
-    typeof value === 'object' &&
-    !Array.isArray(value) &&
-    Object.keys(value).length === 0
+  return (
+    value == null ||
+    (typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0)
   )
 }
 

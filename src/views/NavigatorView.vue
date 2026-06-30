@@ -2,11 +2,11 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p>
-      The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays
-      {{ SHORT_NAME }} techniques alongside ATT&CK Enterprise techniques and allows users to
-      create and view complex visualizations. In addition to the matrix, the Navigator also shows a
-      frequency heat map of techniques used in {{ SHORT_NAME }} case studies. View the
-      {{ SHORT_NAME }} Navigator below or at
+      The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays {{ SHORT_NAME }} techniques
+      alongside ATT&CK Enterprise techniques and allows users to create and view complex
+      visualizations. In addition to the matrix, the Navigator also shows a frequency heat map of
+      techniques used in {{ SHORT_NAME }} case studies. View the {{ SHORT_NAME }} Navigator below or
+      at
       <a :href="NAVIGATOR_URL" target="_blank" rel="noreferrer"
         >{{ NAVIGATOR_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
       >.

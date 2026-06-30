@@ -30,7 +30,7 @@
 import { useMain } from '@/stores/main'
 import markdownit from 'markdown-it'
 const md = markdownit({
-  html: true
+  html: true,
 })
 const mainStore = useMain()
 
@@ -39,7 +39,7 @@ const { study } = defineProps([
    * Data object type (e.g. tactics)
    * @type {Object}
    */
-  'study'
+  'study',
 ])
 
 function getTechniqueLabel(technique) {

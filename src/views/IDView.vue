@@ -94,7 +94,7 @@ const dataObjectWithRelations = computed(() => {
 
   return {
     ...dataObject.value,
-    relatedObjects: mainStore.getRelatedDataObjects(dataObject.value)
+    relatedObjects: mainStore.getRelatedDataObjects(dataObject.value),
   }
 })
 
@@ -138,8 +138,9 @@ const mappedMitigations = computed(() => {
     description:
       mainStore
         .getDataObjectById(item.id)
-        ?.mitigates?.find((rel) => rel.technique === dataObject.value.id)?.description || item.description,
-    columnNames: ['description']
+        ?.mitigates?.find((rel) => rel.technique === dataObject.value.id)?.description ||
+      item.description,
+    columnNames: ['description'],
   }))
 })
 
@@ -164,7 +165,7 @@ const mitigationTechniques = computed(() => {
         ...('attack-reference' in technique
           ? { 'attack-reference': technique['attack-reference'] }
           : {}),
-        columnNames: ['description']
+        columnNames: ['description'],
       }
     })
     .filter(Boolean)
@@ -178,7 +179,10 @@ const procedureExamples = computed(() => {
   }
 
   const tacticLookup = new Map(
-    (relatedObjects.value.tactic || relatedObjects.value.tactics || []).map((tactic) => [tactic.id, tactic])
+    (relatedObjects.value.tactic || relatedObjects.value.tactics || []).map((tactic) => [
+      tactic.id,
+      tactic,
+    ])
   )
 
   const procedureExamplesList = []
@@ -201,13 +205,13 @@ const procedureExamples = computed(() => {
           actor: caseStudy.actor,
           tactic: {
             name: tactic.name,
-            route: tactic.route
+            route: tactic.route,
           },
           description: step.description,
           'object-type': 'procedure_examples',
           label: caseStudy.name,
           columnNames: ['actor', 'tactic', 'description'],
-          route: caseStudy.route
+          route: caseStudy.route,
         })
       }
     })
@@ -223,7 +227,7 @@ const tacticTechniquesTableRows = computed(() => {
 
   return relatedObjects.value.technique.map((technique) => ({
     ...technique,
-    columnNames: ['description']
+    columnNames: ['description'],
   }))
 })
 
@@ -234,7 +238,7 @@ const filteredRelatedObjects = computed(() => {
     'subtechniques',
     'other subtechniques',
     'case-study',
-    'parent-technique'
+    'parent-technique',
   ])
 
   const merged = {
@@ -242,7 +246,7 @@ const filteredRelatedObjects = computed(() => {
     ...(tacticTechniquesTableRows.value ? { technique: tacticTechniquesTableRows.value } : {}),
     ...(mappedMitigations.value ? { mitigation: mappedMitigations.value } : {}),
     ...(mitigationTechniques.value ? { technique: mitigationTechniques.value } : {}),
-    ...(procedureExamples.value ? { procedure_examples: procedureExamples.value } : {})
+    ...(procedureExamples.value ? { procedure_examples: procedureExamples.value } : {}),
   }
 
   return Object.fromEntries(Object.entries(merged).filter(([key]) => !ignore.has(key)))

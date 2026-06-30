@@ -39,7 +39,7 @@ const { tags, termGroup } = defineProps([
   /**
    * Optional centralized term definition group key
    */
-  'termGroup'
+  'termGroup',
 ])
 
 const terms = ref([])

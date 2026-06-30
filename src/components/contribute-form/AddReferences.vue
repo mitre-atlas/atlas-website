@@ -1,6 +1,11 @@
 <template>
-    <SourceList :sources="displayReferences" :type="type" @delete="deleteSource" @updateSource="updateSource" />
-    <AddSource ref="addFormRef" v-model="sourceDraft" @submit="startNextReference" :type="type" />
+  <SourceList
+    :sources="displayReferences"
+    :type="type"
+    @delete="deleteSource"
+    @updateSource="updateSource"
+  />
+  <AddSource ref="addFormRef" v-model="sourceDraft" @submit="startNextReference" :type="type" />
 </template>
 
 <script setup lang="ts">
@@ -13,53 +18,60 @@ import { isUrlValid } from '@/assets/tools'
 const references = defineModel<Reference[]>({ required: true })
 const addFormRef = ref<{ resetForm?: () => void; focusFirst?: () => void } | null>(null)
 const sourceDraft = ref<Reference>(createEmptyReference())
-const displayReferences = computed(() => references.value.filter((source) => source !== sourceDraft.value))
+const displayReferences = computed(() =>
+  references.value.filter((source) => source !== sourceDraft.value)
+)
 
-withDefaults(defineProps<{
-  type?: string;
-}>(), {
-  type: ''
-})
+withDefaults(
+  defineProps<{
+    type?: string
+  }>(),
+  {
+    type: '',
+  }
+)
 
 function createEmptyReference(): Reference {
-    return {
-        title: '',
-        url: ''
-    }
+  return {
+    title: '',
+    url: '',
+  }
 }
 
 function hasReferenceContent(source: Reference) {
-    return !!source.title?.trim() || !!source.url?.trim()
+  return !!source.title?.trim() || !!source.url?.trim()
 }
 
 watch(sourceDraft, syncSourceDraft, { deep: true })
 
 function syncSourceDraft(source: Reference) {
-    const draftIndex = references.value.indexOf(source)
+  const draftIndex = references.value.indexOf(source)
 
-    if (hasReferenceContent(source)) {
-        if (draftIndex === -1) references.value.push(source)
-        return
-    }
+  if (hasReferenceContent(source)) {
+    if (draftIndex === -1) references.value.push(source)
+    return
+  }
 
-    if (draftIndex !== -1) references.value.splice(draftIndex, 1)
+  if (draftIndex !== -1) references.value.splice(draftIndex, 1)
 }
 
 function startNextReference() {
-    if (!hasReferenceContent(sourceDraft.value) || (!!sourceDraft.value.url && !isUrlValid(sourceDraft.value.url))) {
-        return
-    }
+  if (
+    !hasReferenceContent(sourceDraft.value) ||
+    (!!sourceDraft.value.url && !isUrlValid(sourceDraft.value.url))
+  ) {
+    return
+  }
 
-    sourceDraft.value = createEmptyReference()
-    nextTick(() => addFormRef.value?.focusFirst?.())
+  sourceDraft.value = createEmptyReference()
+  nextTick(() => addFormRef.value?.focusFirst?.())
 }
 
 function deleteSource(index: number) {
-    references.value.splice(index, 1)
+  references.value.splice(index, 1)
 }
 
 function updateSource(source: Reference, sourceIndex: number) {
-    references.value[sourceIndex] = source
+  references.value[sourceIndex] = source
 }
-
 </script>

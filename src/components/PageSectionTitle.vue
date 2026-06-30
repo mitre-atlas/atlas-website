@@ -10,11 +10,11 @@ import { useHead } from '@unhead/vue'
 const { pageTitle } = defineProps({
   pageTitle: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 useHead({
-  title: pageTitle
+  title: pageTitle,
 })
 </script>

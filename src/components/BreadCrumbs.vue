@@ -1,9 +1,5 @@
 <template>
-  <v-breadcrumbs
-    :items="items"
-    color="blue"
-    class="mt-7 text-capitalize pl-0 text-body-2"
-  >
+  <v-breadcrumbs :items="items" color="blue" class="mt-7 text-capitalize pl-0 text-body-2">
     <template v-slot:divider>
       <v-icon icon="mdi-chevron-right" size="x-small" />
     </template>
@@ -31,8 +27,8 @@ const items = reactive([
   {
     title: 'Home',
     disabled: false,
-    to: '/'
-  }
+    to: '/',
+  },
 ])
 
 const currentVersion = computed(() => {
@@ -59,7 +55,7 @@ watch(pageNotFound, () => {
   if (pageNotFound.value) {
     items.push({
       title: 'Page not found',
-      disabled: true
+      disabled: true,
     })
   }
 })
@@ -78,14 +74,14 @@ watch(
       items.push({
         title: `Version ${version}`,
         disabled: false,
-        to: withVersion('/')
+        to: withVersion('/'),
       })
     }
 
     items.push({
       title: section,
       disabled: path.value.length === 1 || section === 'matrices' ? true : false,
-      to: isDataType ? withVersion(`/${section}`) : '/resources/info'
+      to: isDataType ? withVersion(`/${section}`) : '/resources/info',
     })
 
     let breadItem = {}
@@ -95,7 +91,7 @@ watch(
       } else if (!isDataType) {
         breadItem = {
           name: path.value[1],
-          route: path.value[1] === 'updates' ? '/resources/updates' : ''
+          route: path.value[1] === 'updates' ? '/resources/updates' : '',
         }
       } else if (path.value[0] === 'studies' && path.value[1] === 'create') {
         breadItem = { name: 'Create' }
@@ -107,21 +103,21 @@ watch(
         items.push({
           title: parentTechnique.name,
           disabled: false,
-          to: parentTechnique?.route || ''
+          to: parentTechnique?.route || '',
         })
       }
       if (breadItem?.name) {
         items.push({
           title: breadItem.name,
           disabled: true,
-          to: breadItem?.route || ''
+          to: breadItem?.route || '',
         })
       }
     }
     if (path.value.length === 3) {
       items.push({
         title: path.value[2],
-        disabled: true
+        disabled: true,
       })
     }
   },

@@ -49,7 +49,7 @@ function formatDate(dateInput: string | Date | undefined): string {
     year: 'numeric',
     month: 'long',
     day: '2-digit',
-    timeZone: 'UTC'
+    timeZone: 'UTC',
   }
   return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
@@ -118,7 +118,8 @@ const sidebarFields = computed(() => {
   }
 
   Object.entries(related).forEach(([key, value]) => {
-    if (key === 'parent-technique' || key === 'subtechniques' || key === 'other subtechniques') return
+    if (key === 'parent-technique' || key === 'subtechniques' || key === 'other subtechniques')
+      return
     if (
       (dataObject['object-type'] === 'technique' &&
         (key === 'case-study' || key === 'mitigation' || key === 'mitigations')) ||
@@ -147,8 +148,8 @@ const sidebarVersionLink = computed(() => {
       to: {
         path: unversionedPath,
         query: routeQuery,
-        hash: routeHash
-      }
+        hash: routeHash,
+      },
     }
   }
 
@@ -162,8 +163,8 @@ const sidebarVersionLink = computed(() => {
     to: {
       path: `/v/${encodeURIComponent(currentDataVersion)}${routePath}`,
       query: routeQuery,
-      hash: routeHash
-    }
+      hash: routeHash,
+    },
   }
 })
 </script>

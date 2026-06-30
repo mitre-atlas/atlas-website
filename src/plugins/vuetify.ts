@@ -32,8 +32,8 @@ const mainTheme = {
     backgroundBlue: '#edf6fa',
     darkGray: '#7E8284',
     silver: '#D4D4D3',
-    lightSilver: '#F1F3F4'
-  }
+    lightSilver: '#F1F3F4',
+  },
 }
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -57,10 +57,10 @@ export default createVuetify({
   theme: {
     defaultTheme: 'mainTheme',
     themes: {
-      mainTheme
-    }
+      mainTheme,
+    },
   },
   display: {
-    mobileBreakpoint: 'sm'
-  }
+    mobileBreakpoint: 'sm',
+  },
 })

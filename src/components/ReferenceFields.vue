@@ -30,23 +30,26 @@ const emit = defineEmits<{
   (e: 'linkFocused', focused: boolean): void
 }>()
 
-withDefaults(defineProps<{
-  descriptionLabel?: string
-  linkLabel?: string
-  descriptionHint?: string
-  linkHint?: string
-  descriptionClass?: string
-  linkClass?: string
-  linkError?: boolean
-}>(), {
-  descriptionLabel: 'Reference Description',
-  linkLabel: 'Reference Link',
-  descriptionHint: '',
-  linkHint: 'URL for the reference (optional)',
-  descriptionClass: '',
-  linkClass: '',
-  linkError: false
-})
+withDefaults(
+  defineProps<{
+    descriptionLabel?: string
+    linkLabel?: string
+    descriptionHint?: string
+    linkHint?: string
+    descriptionClass?: string
+    linkClass?: string
+    linkError?: boolean
+  }>(),
+  {
+    descriptionLabel: 'Reference Description',
+    linkLabel: 'Reference Link',
+    descriptionHint: '',
+    linkHint: 'URL for the reference (optional)',
+    descriptionClass: '',
+    linkClass: '',
+    linkError: false,
+  }
+)
 
 const descriptionModel = defineModel<string>('description', { default: '' })
 const linkModel = defineModel<string>('link', { default: '' })

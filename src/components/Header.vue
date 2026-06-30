@@ -8,13 +8,7 @@
       </router-link>
     </h1>
 
-    <v-chip
-      v-if="showVersionIndicator"
-      size="small"
-      color="white"
-      variant="outlined"
-      class="mr-2"
-    >
+    <v-chip v-if="showVersionIndicator" size="small" color="white" variant="outlined" class="mr-2">
       Version: {{ activeVersion }}
     </v-chip>
 
@@ -73,13 +67,7 @@
                 {{ childLink.name }}
               </v-list-item>
             </div>
-            <v-list-item
-              v-else
-              :to="link.to"
-              text
-              exact
-              class="px-6 text-button text-capitalize"
-            >
+            <v-list-item v-else :to="link.to" text exact class="px-6 text-button text-capitalize">
               {{ link.name }}
             </v-list-item>
           </div>
@@ -128,15 +116,15 @@ const linksBeginning = computed(() => {
   const matrixId = mainStore.getFirstMatrixId
   const matrixRoute = matrixId
     ? withVersion(activeVersion.value ? 'VersionedMatrix' : 'Matrix', {
-        id: matrixId
+        id: matrixId,
       })
     : { name: 'Home' }
 
   return [
     {
       name: 'Matrix',
-      to: matrixRoute
-    }
+      to: matrixRoute,
+    },
   ]
 })
 
@@ -154,10 +142,9 @@ const homeRoute = computed(() => {
 const linksEnding = computed(() => [
   {
     name: 'Case Studies',
-      to: withVersion(
-        activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList',
-        { objectTypePlural: 'studies' }
-      )
+    to: withVersion(activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList', {
+      objectTypePlural: 'studies',
+    }),
   },
   {
     name: 'Tools',
@@ -165,17 +152,21 @@ const linksEnding = computed(() => [
     links: [
       {
         name: 'ATLAS Navigator',
-        to: { name: 'Navigator' }
+        to: { name: 'Navigator' },
       },
       {
         name: 'ATLAS Knowledge Graph',
-        to: { name: 'KnowledgeGraph' }
+        to: { name: 'KnowledgeGraph' },
+      },
+      {
+        name: 'ATLAS Knowledge Base Agent',
+        to: { name: 'Agent' },
       },
       {
         name: 'ATLAS in Attack Flow',
-        to: { name: 'AttackFlow' }
-      }
-    ]
+        to: { name: 'AttackFlow' },
+      },
+    ],
   },
   {
     name: 'Resources',
@@ -183,34 +174,34 @@ const linksEnding = computed(() => [
     links: [
       {
         name: 'General information',
-        to: { name: 'GeneralInformation' }
+        to: { name: 'GeneralInformation' },
       },
       {
         name: 'Updates',
-        to: '/resources/updates'
+        to: '/resources/updates',
       },
       {
         name: 'Version History',
-        to: { name: 'AtlasVersions' }
+        to: { name: 'AtlasVersions' },
       },
       {
         name: 'Contact Us',
-        to: { name: 'Contact' }
+        to: { name: 'Contact' },
       },
       {
         name: 'AI Security 101',
-        to: { name: 'AiSecurity101' }
+        to: { name: 'AiSecurity101' },
       },
       {
         name: 'Glossary',
-        to: { name: 'Glossary' }
-      }
-    ]
+        to: { name: 'Glossary' },
+      },
+    ],
   },
   {
     name: 'Contribute',
-    to: { name: 'Contribute' }
-  }
+    to: { name: 'Contribute' },
+  },
 ])
 
 /**
@@ -226,10 +217,9 @@ const linksModded = computed(() => {
   const dataLinks = dynamicDataKeys.map((objectType) => {
     return {
       name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
-      to: withVersion(
-        activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList',
-        { objectTypePlural: dataObjectToPluralTitle(objectType, true) }
-      )
+      to: withVersion(activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList', {
+        objectTypePlural: dataObjectToPluralTitle(objectType, true),
+      }),
     }
   })
 

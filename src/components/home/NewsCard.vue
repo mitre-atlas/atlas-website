@@ -41,18 +41,18 @@ const titleTextSize = computed(() => (mdAndUp.value ? 'h4' : 'h6'))
 const { imageSrc, title, subtitle, description, url, date } = defineProps({
   imageSrc: {
     type: String,
-    default: 'network.jpeg'
+    default: 'network.jpeg',
   },
   title: String,
   subtitle: String,
   description: String,
   url: {
     type: String,
-    default: null
+    default: null,
   },
   date: {
-    type: [Date, String]
-  }
+    type: [Date, String],
+  },
 })
 
 const formattedDate = computed(() => {
@@ -63,7 +63,7 @@ const formattedDate = computed(() => {
     timeZone: 'UTC',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 })
 

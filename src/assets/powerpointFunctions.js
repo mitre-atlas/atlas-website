@@ -27,10 +27,10 @@ export function makePPT(study, filename) {
             fontFace: 'Arial',
             fontSize: 24,
             color: '0D2F4F',
-            isTextBox: true
+            isTextBox: true,
           },
-          text: 'Title'
-        }
+          text: 'Title',
+        },
       },
       {
         image: {
@@ -38,8 +38,8 @@ export function makePPT(study, filename) {
           y: '93%',
           w: 1.2,
           h: 0.18,
-          data: MITRE_ATLAS_TM_LOGO()
-        }
+          data: MITRE_ATLAS_TM_LOGO(),
+        },
       },
 
       {
@@ -51,12 +51,12 @@ export function makePPT(study, filename) {
             align: 'center',
             fontFace: 'Arial',
             fontSize: 8,
-            color: '0D2F4F'
-          }
-        }
-      }
+            color: '0D2F4F',
+          },
+        },
+      },
     ],
-    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' },
   })
 
   titleSlide(ppt, study)
@@ -95,8 +95,8 @@ function titleSlide(ppt, yaml) {
           y: '15%',
           w: 1.5,
           h: 0.22,
-          data: MITRE_ATLAS_TM_LOGO()
-        }
+          data: MITRE_ATLAS_TM_LOGO(),
+        },
       },
       {
         placeholder: {
@@ -111,10 +111,10 @@ function titleSlide(ppt, yaml) {
             fontFace: 'Arial',
             fontSize: 36,
             color: '0D2F4F',
-            isTextBox: true
+            isTextBox: true,
           },
-          text: 'Title'
-        }
+          text: 'Title',
+        },
       },
       {
         text: {
@@ -126,9 +126,9 @@ function titleSlide(ppt, yaml) {
             fontFace: 'Arial',
             fontSize: 14,
             color: '0D2F4F',
-            isTextBox: true
-          }
-        }
+            isTextBox: true,
+          },
+        },
       },
 
       {
@@ -142,10 +142,10 @@ function titleSlide(ppt, yaml) {
             fontFace: 'Arial',
             fontSize: 14,
             color: '0D2F4F',
-            isTextBox: true
+            isTextBox: true,
           },
-          text: 'Incident Date'
-        }
+          text: 'Incident Date',
+        },
       },
       {
         placeholder: {
@@ -158,12 +158,12 @@ function titleSlide(ppt, yaml) {
             fontFace: 'Arial',
             fontSize: 14,
             color: '0D2F4F',
-            isTextBox: true
+            isTextBox: true,
           },
-          text: 'Target | Actor | Reporter'
-        }
-      }
-    ]
+          text: 'Target | Actor | Reporter',
+        },
+      },
+    ],
   })
 
   // Convert incident date to a locale date string,
@@ -182,35 +182,35 @@ function titleSlide(ppt, yaml) {
     .addText(
       [
         {
-          text: 'Actor: '
+          text: 'Actor: ',
         },
         {
           text: yaml.actor ? yaml.actor : 'Unknown',
           options: {
-            bold: true
-          }
+            bold: true,
+          },
         },
         {
-          text: ' | Target: '
+          text: ' | Target: ',
         },
         {
           text: yaml.target ? yaml.target : 'Unknown',
           options: {
-            bold: true
-          }
+            bold: true,
+          },
         },
         {
-          text: yaml.reporter ? ' | Reporter: ' : ''
+          text: yaml.reporter ? ' | Reporter: ' : '',
         },
         {
           text: yaml.reporter ? yaml.reporter : '',
           options: {
-            bold: true
-          }
-        }
+            bold: true,
+          },
+        },
       ],
       {
-        placeholder: 'involved'
+        placeholder: 'involved',
       }
     )
     .addText(formattedDate, { placeholder: 'incidentDate' })
@@ -239,10 +239,10 @@ function detailSlide(ppt, yaml) {
             fontFace: 'Arial',
             fontSize: 24,
             color: '0D2F4F',
-            isTextBox: true
+            isTextBox: true,
           },
-          text: 'Title'
-        }
+          text: 'Title',
+        },
       },
       {
         placeholder: {
@@ -258,10 +258,10 @@ function detailSlide(ppt, yaml) {
             fontSize: 12,
             color: '0D2F4F',
             isTextBox: true,
-            lineSpacingMultiple: 1.15
+            lineSpacingMultiple: 1.15,
           },
-          text: 'Content'
-        }
+          text: 'Content',
+        },
       },
       {
         image: {
@@ -269,8 +269,8 @@ function detailSlide(ppt, yaml) {
           y: '93%',
           w: 1.2,
           h: 0.18,
-          data: MITRE_ATLAS_TM_LOGO()
-        }
+          data: MITRE_ATLAS_TM_LOGO(),
+        },
       },
 
       {
@@ -282,12 +282,12 @@ function detailSlide(ppt, yaml) {
             align: 'center',
             fontFace: 'Arial',
             fontSize: 8,
-            color: '0D2F4F'
-          }
-        }
-      }
+            color: '0D2F4F',
+          },
+        },
+      },
     ],
-    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' },
   })
 
   ppt
@@ -335,8 +335,8 @@ function procedureSlide(ppt, yaml) {
           align: 'center',
           bold: true,
           fontFace: 'Arial',
-          fontSize: 10
-        }
+          fontSize: 10,
+        },
       },
       {
         text: 'Technique',
@@ -346,8 +346,8 @@ function procedureSlide(ppt, yaml) {
           align: 'center',
           bold: true,
           fontFace: 'Arial',
-          fontSize: 10
-        }
+          fontSize: 10,
+        },
       },
       {
         text: 'Description',
@@ -357,10 +357,10 @@ function procedureSlide(ppt, yaml) {
           align: 'center',
           bold: true,
           fontFace: 'Arial',
-          fontSize: 10
-        }
-      }
-    ]
+          fontSize: 10,
+        },
+      },
+    ],
   ]
 
   for (let i = 0; i < yaml.attack_chain.length; i++) {
@@ -370,7 +370,7 @@ function procedureSlide(ppt, yaml) {
     const row = [
       { text: i + 1, options: { fontFace: 'Arial', fontSize: 10, align: 'center' } },
       linkText(techniqueInfo.label, getUrlFromInfoObject(techniqueInfo)),
-      { text: description, options: { fontFace: 'Arial', fontSize: 10 } }
+      { text: description, options: { fontFace: 'Arial', fontSize: 10 } },
     ]
     rows.push(row)
   }
@@ -385,8 +385,8 @@ function procedureSlide(ppt, yaml) {
           y: '93%',
           w: 1.2,
           h: 0.18,
-          data: MITRE_ATLAS_TM_LOGO()
-        }
+          data: MITRE_ATLAS_TM_LOGO(),
+        },
       },
 
       {
@@ -398,12 +398,12 @@ function procedureSlide(ppt, yaml) {
             align: 'center',
             fontFace: 'Arial',
             fontSize: 8,
-            color: '0D2F4F'
-          }
-        }
-      }
+            color: '0D2F4F',
+          },
+        },
+      },
     ],
-    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' }
+    slideNumber: { x: '95%', y: '93%', fontFace: 'Arial', fontSize: 8, color: '0D2F4F' },
   })
   const slide = ppt.addSlide({ masterName: 'Procedure' })
   slide.addText('Procedure', {
@@ -416,7 +416,7 @@ function procedureSlide(ppt, yaml) {
     fontFace: 'Arial',
     fontSize: 24,
     color: '0D2F4F',
-    isTextBox: true
+    isTextBox: true,
   })
   // the latest pptxgenjs errors here, need to revert to 3.7.1 to work. Issue below:
   // https://github.com/gitbrent/PptxGenJS/issues/1005
@@ -432,7 +432,7 @@ function procedureSlide(ppt, yaml) {
     newSlideStartY: 0.4,
     // verbose: true,
     border: { color: 'D4D4D3' },
-    margin: 10
+    margin: 10,
   })
 }
 
@@ -462,8 +462,8 @@ function referenceSlide(ppt, yaml) {
           fontSize: 12,
           bullet: { type: 'number' },
           paraSpaceAfter: 10,
-          breakLine: true
-        }
+          breakLine: true,
+        },
       })
     } else if (hasText) {
       texts.push({
@@ -474,8 +474,8 @@ function referenceSlide(ppt, yaml) {
           fontSize: 12,
           bullet: { type: 'number' },
           paraSpaceAfter: 10,
-          breakLine: true
-        }
+          breakLine: true,
+        },
       })
     } else if (hasUrl) {
       texts.push({
@@ -487,8 +487,8 @@ function referenceSlide(ppt, yaml) {
           fontSize: 12,
           bullet: { type: 'number' },
           paraSpaceAfter: 10,
-          breakLine: true
-        }
+          breakLine: true,
+        },
       })
     }
 

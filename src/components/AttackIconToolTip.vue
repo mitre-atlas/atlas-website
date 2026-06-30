@@ -16,7 +16,7 @@ const { items } = defineProps([
    * Data object type (e.g. tactics)
    * @type {String}
    */
-  'items'
+  'items',
 ])
 </script>
 

@@ -3,32 +3,32 @@ const OBJECT_TYPE_INFO = {
     title: 'Tactic',
     pluralTitle: 'Tactics',
     objectType: 'tactic',
-    definitionKey: 'tactic'
+    definitionKey: 'tactic',
   },
   techniques: {
     title: 'Technique',
     pluralTitle: 'Techniques',
     objectType: 'technique',
-    definitionKey: 'technique'
+    definitionKey: 'technique',
   },
   mitigations: {
     title: 'Mitigation',
     pluralTitle: 'Mitigations',
     objectType: 'mitigation',
-    definitionKey: 'mitigation'
+    definitionKey: 'mitigation',
   },
   studies: {
     title: 'Case Study',
     pluralTitle: 'Case Studies',
     objectType: 'case-study',
-    definitionKey: 'case_study'
+    definitionKey: 'case_study',
   },
   other: {
     title: 'General Contribution',
     pluralTitle: 'General Contributions',
     objectType: 'other',
-    definitionKey: 'other'
-  }
+    definitionKey: 'other',
+  },
 }
 
 const TYPE_KEY_BY_OBJECT_TYPE = Object.fromEntries(
@@ -36,15 +36,18 @@ const TYPE_KEY_BY_OBJECT_TYPE = Object.fromEntries(
 )
 
 const DEFINITION_KEY_BY_OBJECT_TYPE = Object.fromEntries(
-  Object.values(OBJECT_TYPE_INFO).map(({ objectType, definitionKey }) => [objectType, definitionKey])
+  Object.values(OBJECT_TYPE_INFO).map(({ objectType, definitionKey }) => [
+    objectType,
+    definitionKey,
+  ])
 )
 
 const TYPE_KEY_ALIASES = {
-  'case-studies': 'studies'
+  'case-studies': 'studies',
 }
 
 const STORE_OBJECT_COLLECTION_KEYS = {
-  studies: 'case-studies'
+  studies: 'case-studies',
 }
 
 export const MATRIX_TYPE_KEYS = ['tactics', 'techniques', 'mitigations']

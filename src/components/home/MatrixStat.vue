@@ -15,8 +15,8 @@ const { value, label, color } = defineProps({
   label: String,
   color: {
     type: String,
-    default: 'lightBlue'
-  }
+    default: 'lightBlue',
+  },
 })
 
 const statColor = color

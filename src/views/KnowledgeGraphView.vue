@@ -2,9 +2,9 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p>
-      The {{ MITRE_TITLE }} Knowledge Graph provides an interactive way to explore information
-      found within the ATLAS Threat Matrix. Each node represents an ATLAS entity and each edge
-      represents a relationship between them.
+      The {{ MITRE_TITLE }} Knowledge Graph provides an interactive way to explore information found
+      within the ATLAS Threat Matrix. Each node represents an ATLAS entity and each edge represents
+      a relationship between them.
     </p>
 
     <div>
@@ -33,10 +33,12 @@
           </ul>
         </li>
       </ul>
+
+      <br />
+      <a :href="`${KNOWLEDGE_GRAPH_URL}`">Explore the ATLAS Knowledge Graph -></a>
     </div>
 
-    <iframe :src="`${KNOWLEDGE_GRAPH_URL}`" width="100%" height="750" frameborder="0">
-    </iframe>
+    <iframe :src="`${KNOWLEDGE_GRAPH_URL}`" width="85%" height="750" frameborder="0"> </iframe>
   </div>
 </template>
 

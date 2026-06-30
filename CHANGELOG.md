@@ -1,5 +1,10 @@
 # ATLAS Website Changelog
 
+## [5.1.0]() (2026-06-30)
+
+- Added page for ATLAS Knowledge Base Agent
+- Updated ATLAS data to [version 2026.06](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.06-2026-06-30)
+
 ## [5.0.0]() (2026-05-27)
 
 - Updated the site to support the ATLAS v6 data format

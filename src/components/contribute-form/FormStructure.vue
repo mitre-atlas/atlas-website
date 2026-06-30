@@ -2,285 +2,505 @@
 <template>
   <v-defaults-provider :defaults="formFieldDefaults">
     <v-form ref="formRef" v-model="isVuetifyFormValid" validate-on="input">
-    <div
-      v-for="section in props.sections[props.type]"
-      :key="section.id"
-      class="section-container large-floating-labels"
-      :class="{ 'save-send-section': section.id === 'save-send' }"
-    >
-      <h3 class="section-header section-anchor" :id="section.id" v-if="props.type !== 'other'">{{ section.title }}</h3>
+      <div
+        v-for="section in props.sections[props.type]"
+        :key="section.id"
+        class="section-container large-floating-labels"
+        :class="{ 'save-send-section': section.id === 'save-send' }"
+      >
+        <h3 class="section-header section-anchor" :id="section.id" v-if="props.type !== 'other'">
+          {{ section.title }}
+        </h3>
 
-      <!-- Contact Details Section -->
-      <div v-if="section.id === 'contact-details'" class="section-fields">
-        <p>Please enter contact information. All fields in this section are required.</p>
-        <v-text-field v-model.trim="draft.contactName" :label="requiredLabel('Contact Name(s)')" required
-          v-bind="requiredFieldProps('contactName')"
-          :error-messages="shouldShowFieldErrors('contactName') ? getFieldErrors('contactName') : []"
-          hint="First and Last Name(s) for all relevant individuals, groups, or organizations"></v-text-field>
-        <v-text-field v-model.trim="draft.contactEmails" :label="requiredLabel('Contact Email(s)')" required
-          v-bind="requiredFieldProps('contactEmails')" :rules="[emailRule]"
-          :error-messages="shouldShowFieldErrors('contactEmails') ? getFieldErrors('contactEmails') : []"
-          hint="Email Address(es) for all relevant individuals, groups, or organizations"></v-text-field>
-      </div>
-
-      <!-- Contribution Type Details Sections -->
-      <div v-if="section.id === 'tactic-details'" class="section-fields">
-        <p>{{ detailSectionIntro('Please enter tactic information. All fields in this section are required.') }}</p>
-        <v-text-field v-model.trim="draft.name" required :label="detailFieldLabel('Name')"
-          v-bind="requiredFieldProps('name')"
-          :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
-          :hint="detailNameHint"></v-text-field>
-        <v-textarea v-model.trim="draft.description" :label="detailFieldLabel('Summary')" required
-          v-bind="requiredFieldProps('description')"
-          :error-messages="shouldShowFieldErrors('description') ? getFieldErrors('description') : []"
-          :hint="detailDescriptionHint"></v-textarea>
-      </div>
-
-      <div v-if="section.id === 'technique-details'" class="section-fields">
-        <p>{{ detailSectionIntro('Please enter technique information. All fields in this section are required.') }}</p>
-        <v-text-field v-model.trim="draft.name" required :label="detailFieldLabel('Name')"
-          v-bind="requiredFieldProps('name')"
-          :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
-          :hint="detailNameHint"></v-text-field>
-        <v-textarea v-model.trim="draft.description" :label="detailFieldLabel('Summary')" required
-          v-bind="requiredFieldProps('description')"
-          :error-messages="shouldShowFieldErrors('description') ? getFieldErrors('description') : []"
-          :hint="detailDescriptionHint"></v-textarea>
-      </div>
-
-      <div v-if="section.id === 'mitigation-details'" class="section-fields">
-        <p>{{ detailSectionIntro('Please enter mitigation information. All fields in this section are required.') }}</p>
-        <v-text-field v-model.trim="draft.name" required :label="detailFieldLabel('Name')"
-          v-bind="requiredFieldProps('name')"
-          :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
-          :hint="detailNameHint"></v-text-field>
-        <v-select v-model="draft.mitigationCategory" :label="requiredLabel('Mitigation Category')" required :items="categoryValues"
-          v-bind="requiredFieldProps('mitigationCategory')"
-          :error-messages="shouldShowFieldErrors('mitigationCategory') ? getFieldErrors('mitigationCategory') : []"
-          hint="Select a mitigation category">
-          <template #details>
-            <div class="text-right flex-shrink-0 ms-4 me-n4">
-              <router-link :to="{ name: 'Glossary', hash: '#mitigation-categories' }" target="_blank" class="text-info">
-                View ATLAS Mitigation Categories
-                <v-icon icon="mdi-open-in-new" size="small"></v-icon>
-              </router-link>
-            </div>
-          </template>
-        </v-select>
-        <v-textarea v-model.trim="draft.description" :label="detailFieldLabel('Summary')" required
-          v-bind="requiredFieldProps('description')"
-          :error-messages="shouldShowFieldErrors('description') ? getFieldErrors('description') : []"
-          :hint="detailDescriptionHint"></v-textarea>
-        <v-select v-model="draft.mlLifecyclePhases" :items="mlLifecycleValues" required
-          v-bind="requiredFieldProps('mlLifecyclePhases')"
-          :error-messages="shouldShowFieldErrors('mlLifecyclePhases') ? getFieldErrors('mlLifecyclePhases') : []"
-          :label="requiredLabel('Mitigation Lifecycle Phase(s)')" multiple clearable
-          hint="Select all applicable ML Lifecycle phases">
-          <template #details>
-            <div class="text-right flex-shrink-0 ms-4 me-n4">
-              <router-link :to="{ name: 'Glossary', hash: '#what-are-the-ml-lifecycle-stages' }" target="_blank" class="text-info">
-                View ATLAS ML Lifecycle Stages
-                <v-icon icon="mdi-open-in-new" size="small"></v-icon>
-              </router-link>
-            </div>
-          </template>
-        </v-select>
-      </div>
-
-      <div v-if="section.id === 'study-details'" class="section-fields">
-        <p>{{ detailSectionIntro('Please enter case study information. All fields in this section except Case Study Month and Day are required.') }}</p>
-        <v-text-field v-model.trim="draft.name" :label="detailFieldLabel('Name')" required
-          v-bind="requiredFieldProps('name')"
-          :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
-          :hint="detailNameHint" />
-        <v-select v-model="draft.csType" :label="requiredLabel('Case Study Type')" required :items="csTypes"
-          v-bind="requiredFieldProps('csType')"
-          :error-messages="shouldShowFieldErrors('csType') ? getFieldErrors('csType') : []"
-          hint="Select a case study type: an Exercise is an operation performed by a red team to identify vulnerabilities, while an Incident is a real-world event" />
-        <v-text-field v-if="draft.csType === 'incident'" v-model.trim="draft.csReporter"
-          :label="requiredLabel('Case Study Reporter')" required v-bind="requiredFieldProps('csReporter')"
-          :error-messages="shouldShowFieldErrors('csReporter') ? getFieldErrors('csReporter') : []"
-          hint="The individual or group that first reported the incident" />
-        <v-text-field v-model.trim="draft.csActor" :label="requiredLabel('Case Study Actor')" required
-          v-bind="requiredFieldProps('csActor')"
-          :error-messages="shouldShowFieldErrors('csActor') ? getFieldErrors('csActor') : []"
-          hint="The individual or group that performed this operation" />
-        <v-text-field v-model.trim="draft.csTarget" :label="requiredLabel('Case Study Target')" required
-          v-bind="requiredFieldProps('csTarget')"
-          :error-messages="shouldShowFieldErrors('csTarget') ? getFieldErrors('csTarget') : []"
-          hint="The victim or organization targeted by the Actor" />
-        <div>
-          <v-row class="mt-1">
-            <v-col cols="12" sm="4">
-              <v-select v-model="draft.csYear" :items="csYears"
-                :label="requiredLabel('Case Study Year')" required v-bind="requiredFieldProps('csYear')"
-                :error-messages="shouldShowFieldErrors('csYear') ? getFieldErrors('csYear') : []"
-                hint="Year in which the exercise or incident occurred (required)" />
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-select v-model="draft.csMonth" :items="csMonths" item-title="title" item-value="value"
-                :label="requiredLabelIf('Case Study Month', draft.csDay)"
-                :required="!isBlank(draft.csDay)"
-                v-bind="requiredFieldProps('csMonth', !isBlank(draft.csDay))"
-                :error-messages="shouldShowFieldErrors('csMonth') || !isBlank(draft.csDay) ? getFieldErrors('csMonth') : []"
-                hint="Month (optional)" />
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-text-field v-model.trim="draft.csDay" type="number" min="1" max="31"
-                label="Case Study Day"
-                :error-messages="shouldShowFieldErrors('csDay') ? getFieldErrors('csDay') : []"
-                hint="Day (optional)" />
-            </v-col>
-          </v-row>
+        <!-- Contact Details Section -->
+        <div v-if="section.id === 'contact-details'" class="section-fields">
+          <p>Please enter contact information. All fields in this section are required.</p>
+          <v-text-field
+            v-model.trim="draft.contactName"
+            :label="requiredLabel('Contact Name(s)')"
+            required
+            v-bind="requiredFieldProps('contactName')"
+            :error-messages="
+              shouldShowFieldErrors('contactName') ? getFieldErrors('contactName') : []
+            "
+            hint="First and Last Name(s) for all relevant individuals, groups, or organizations"
+          ></v-text-field>
+          <v-text-field
+            v-model.trim="draft.contactEmails"
+            :label="requiredLabel('Contact Email(s)')"
+            required
+            v-bind="requiredFieldProps('contactEmails')"
+            :rules="[emailRule]"
+            :error-messages="
+              shouldShowFieldErrors('contactEmails') ? getFieldErrors('contactEmails') : []
+            "
+            hint="Email Address(es) for all relevant individuals, groups, or organizations"
+          ></v-text-field>
         </div>
-        <v-textarea v-model.trim="draft.description" :label="detailFieldLabel('Summary')" required
-          v-bind="requiredFieldProps('description')"
-          :error-messages="shouldShowFieldErrors('description') ? getFieldErrors('description') : []"
-          :hint="detailDescriptionHint" />
-      </div>
 
-      <div v-if="section.id === 'procedure'" class="section-fields">
-        <p>
-          Please enter at least one procedure step for the case study. All fields for the procedure step are required.
-        </p>
-        <p><b>To add more than one procedure step, click the “+” button.</b></p>
-        <EditableProcedureTimeline v-if="displayProcedures.length > 0" v-model="displayProcedures"
-          @delete-procedure="handleProcedureDelete" @update-procedure="handleProcedureUpdate" />
-        <AddProcedure :key="procedureDraftKey" ref="procedureForm" v-model="procedureDraft"
-          @submitProcedureStep="startNextProcedureStep" :show-validation="showProcedureDraftValidation" />
-      </div>
-
-      <!-- Associated Type Sections -->
-      <div v-if="section.associatedType" class="section-fields">
-        <p v-if="isEditAction">
-          To suggest a <b>new association of an existing ATLAS
-          {{ contributionTypeWordFromKey(section.associatedType, true) }}</b> for the selected
-          {{ contributionTypeWordFromKey(type, true) }}, please select an existing
-          {{ contributionTypeWordFromKey(section.associatedType, true) }}(s) from the options below.
-        </p>
-        <p v-if="isEditAction">
-          To suggest a <b>brand new associated {{ contributionTypeWordFromKey(section.associatedType, true) }}</b>
-          for the selected {{ contributionTypeWordFromKey(type, true) }}, click “Add New
-          {{ contributionTypeWordFromKey(section.associatedType) }}” in the dropdown menu and enter the required
-          information.
-        </p>
-        <p v-else>
-          Please indicate any existing ATLAS {{ contributionTypeWordFromKey(section.associatedType, true, true) }}
-          that may be associated with this {{ contributionTypeWordFromKey(type, true) }}. To suggest a new associated
-          {{ contributionTypeWordFromKey(section.associatedType, true) }}, click “Add New
-          {{ contributionTypeWordFromKey(section.associatedType) }}” in the dropdown menu.
-        </p>
-        <AssociatedTypeSelector :type="section.associatedType" :parent-type="props.type"
-          :label="associationLabel(section.associatedType)"
-          :hint="associationHint(section.associatedType)"
-          v-model="draft[section.associatedType]" :show-validation="showValidation"
-          :error-messages="getFieldErrors(section.associatedType)"
-          :new-item-errors="getAssociatedDraftItemErrors(section.associatedType)" />
-        <div v-if="associatedTechniqueUseItems.length" class="mt-4">
-          <div v-for="technique in associatedTechniqueUseItems" :key="technique.id" class="mb-5">
-            <div class="text-subtitle-2 mb-1">{{ technique.label }}</div>
-            <v-text-field v-model.trim="draft.techniqueUses[technique.id]"
-              :label="requiredLabel('Associated Technique Use')" required
-              v-bind="requiredTechniqueUseProps(technique.id)"
-              :hint="`How this mitigation applies to ${technique.label}`" />
-          </div>
-        </div>
-        <template v-if="props.action === 'edit'">
+        <!-- Contribution Type Details Sections -->
+        <div v-if="section.id === 'tactic-details'" class="section-fields">
           <p>
-            Alternatively, if existing {{ contributionTypeWordFromKey(section.associatedType, true, true) }}
-            <b>should not</b> be associated with the selected {{ contributionTypeWordFromKey(type, true) }},
-            please select the existing ATLAS {{ contributionTypeWordFromKey(section.associatedType, true) }}
-            associations for suggested removal.
+            {{
+              detailSectionIntro(
+                'Please enter tactic information. All fields in this section are required.'
+              )
+            }}
           </p>
-          <AssociatedTypeSelector :type="section.associatedType" :parent-type="props.type"
-            v-model="draft.associationRemovals[section.associatedType]"
-            :items="getAssociationRemovalItems(section.associatedType)"
-            :label="associationRemovalLabel(section.associatedType)"
-            :hint="associationRemovalHint(section.associatedType)"
-            :allow-new="false" :show-validation="showValidation" />
-        </template>
-      </div>
-
-      <!-- References Section -->
-      <div v-if="section.id === 'references'" class="section-fields">
-        <p>Please add any references relevant to the {{ contributionTypeWordFromKey(type, true) }}, such as articles, sources, etc. All
-          fields in this section are optional.</p>
-        <p><b>To add more than one reference, click the “+” button.</b></p>
-        <AddReferences :type="type" v-model="draft.references" />
-      </div>
-
-      <!-- Save & Send Section -->
-      <div v-if="section.id === 'save-send'">
-        <p v-if="props.action === 'edit'">Before sending your suggested edits, briefly explain why each change is needed. Your rationale helps the MITRE ATLAS™ team evaluate the edits and make approval decisions.</p>
-        <p v-else>Please feel free to add any additional comments or details about your contribution.</p>
-        <v-textarea v-model.trim="draft.additionalInfo" :label="additionalInfoLabel"
-          :required="isEditAction" v-bind="additionalInfoFieldProps"
-          :error-messages="additionalInfoErrorMessages"
-          :hint="additionalInfoHint"
-          class="mt-4 mb-8"></v-textarea>
-
-        <!-- Contribution List Section -->
-        <h3 class="mb-3">Contribution List</h3>
-        <p>Please review the following elements of your contribution for accuracy:</p>
-        <div class="contribution-list" aria-label="Contribution summary">
-          <div v-for="block in contributionSummaryBlocks" :key="block.id" class="contribution-list-block">
-            <div v-if="block.title" class="contribution-list-title">{{ block.title }}</div>
-            <div v-if="block.body" class="contribution-list-body">{{ block.body }}</div>
-          </div>
+          <v-text-field
+            v-model.trim="draft.name"
+            required
+            :label="detailFieldLabel('Name')"
+            v-bind="requiredFieldProps('name')"
+            :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
+            :hint="detailNameHint"
+          ></v-text-field>
+          <v-textarea
+            v-model.trim="draft.description"
+            :label="detailFieldLabel('Summary')"
+            required
+            v-bind="requiredFieldProps('description')"
+            :error-messages="
+              shouldShowFieldErrors('description') ? getFieldErrors('description') : []
+            "
+            :hint="detailDescriptionHint"
+          ></v-textarea>
         </div>
 
-        <!-- File Creation Section -->
-        <p class="mt-3">Please create and save a .yaml file of your contribution.</p>
-        <v-text-field v-model.trim="draft.fileName" label="File Name" @update:model-value="handleFileNameInput"></v-text-field>
-        <VAtlasBtnSecondary class="mb-2" @click="createContributionFile">Create File</VAtlasBtnSecondary>
-        <v-alert v-if="props.type !== 'other' && showEndOfFormValidationError" type="error" density="compact" class="mb-4">
-          {{ formValidationErrorMessage }}
-        </v-alert>
+        <div v-if="section.id === 'technique-details'" class="section-fields">
+          <p>
+            {{
+              detailSectionIntro(
+                'Please enter technique information. All fields in this section are required.'
+              )
+            }}
+          </p>
+          <v-text-field
+            v-model.trim="draft.name"
+            required
+            :label="detailFieldLabel('Name')"
+            v-bind="requiredFieldProps('name')"
+            :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
+            :hint="detailNameHint"
+          ></v-text-field>
+          <v-textarea
+            v-model.trim="draft.description"
+            :label="detailFieldLabel('Summary')"
+            required
+            v-bind="requiredFieldProps('description')"
+            :error-messages="
+              shouldShowFieldErrors('description') ? getFieldErrors('description') : []
+            "
+            :hint="detailDescriptionHint"
+          ></v-textarea>
+        </div>
 
+        <div v-if="section.id === 'mitigation-details'" class="section-fields">
+          <p>
+            {{
+              detailSectionIntro(
+                'Please enter mitigation information. All fields in this section are required.'
+              )
+            }}
+          </p>
+          <v-text-field
+            v-model.trim="draft.name"
+            required
+            :label="detailFieldLabel('Name')"
+            v-bind="requiredFieldProps('name')"
+            :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
+            :hint="detailNameHint"
+          ></v-text-field>
+          <v-select
+            v-model="draft.mitigationCategory"
+            :label="requiredLabel('Mitigation Category')"
+            required
+            :items="categoryValues"
+            v-bind="requiredFieldProps('mitigationCategory')"
+            :error-messages="
+              shouldShowFieldErrors('mitigationCategory')
+                ? getFieldErrors('mitigationCategory')
+                : []
+            "
+            hint="Select a mitigation category"
+          >
+            <template #details>
+              <div class="text-right flex-shrink-0 ms-4 me-n4">
+                <router-link
+                  :to="{ name: 'Glossary', hash: '#mitigation-categories' }"
+                  target="_blank"
+                  class="text-info"
+                >
+                  View ATLAS Mitigation Categories
+                  <v-icon icon="mdi-open-in-new" size="small"></v-icon>
+                </router-link>
+              </div>
+            </template>
+          </v-select>
+          <v-textarea
+            v-model.trim="draft.description"
+            :label="detailFieldLabel('Summary')"
+            required
+            v-bind="requiredFieldProps('description')"
+            :error-messages="
+              shouldShowFieldErrors('description') ? getFieldErrors('description') : []
+            "
+            :hint="detailDescriptionHint"
+          ></v-textarea>
+          <v-select
+            v-model="draft.mlLifecyclePhases"
+            :items="mlLifecycleValues"
+            required
+            v-bind="requiredFieldProps('mlLifecyclePhases')"
+            :error-messages="
+              shouldShowFieldErrors('mlLifecyclePhases') ? getFieldErrors('mlLifecyclePhases') : []
+            "
+            :label="requiredLabel('Mitigation Lifecycle Phase(s)')"
+            multiple
+            clearable
+            hint="Select all applicable ML Lifecycle phases"
+          >
+            <template #details>
+              <div class="text-right flex-shrink-0 ms-4 me-n4">
+                <router-link
+                  :to="{ name: 'Glossary', hash: '#what-are-the-ml-lifecycle-stages' }"
+                  target="_blank"
+                  class="text-info"
+                >
+                  View ATLAS ML Lifecycle Stages
+                  <v-icon icon="mdi-open-in-new" size="small"></v-icon>
+                </router-link>
+              </div>
+            </template>
+          </v-select>
+        </div>
+
+        <div v-if="section.id === 'study-details'" class="section-fields">
+          <p>
+            {{
+              detailSectionIntro(
+                'Please enter case study information. All fields in this section except Case Study Month and Day are required.'
+              )
+            }}
+          </p>
+          <v-text-field
+            v-model.trim="draft.name"
+            :label="detailFieldLabel('Name')"
+            required
+            v-bind="requiredFieldProps('name')"
+            :error-messages="shouldShowFieldErrors('name') ? getFieldErrors('name') : []"
+            :hint="detailNameHint"
+          />
+          <v-select
+            v-model="draft.csType"
+            :label="requiredLabel('Case Study Type')"
+            required
+            :items="csTypes"
+            v-bind="requiredFieldProps('csType')"
+            :error-messages="shouldShowFieldErrors('csType') ? getFieldErrors('csType') : []"
+            hint="Select a case study type: an Exercise is an operation performed by a red team to identify vulnerabilities, while an Incident is a real-world event"
+          />
+          <v-text-field
+            v-if="draft.csType === 'incident'"
+            v-model.trim="draft.csReporter"
+            :label="requiredLabel('Case Study Reporter')"
+            required
+            v-bind="requiredFieldProps('csReporter')"
+            :error-messages="
+              shouldShowFieldErrors('csReporter') ? getFieldErrors('csReporter') : []
+            "
+            hint="The individual or group that first reported the incident"
+          />
+          <v-text-field
+            v-model.trim="draft.csActor"
+            :label="requiredLabel('Case Study Actor')"
+            required
+            v-bind="requiredFieldProps('csActor')"
+            :error-messages="shouldShowFieldErrors('csActor') ? getFieldErrors('csActor') : []"
+            hint="The individual or group that performed this operation"
+          />
+          <v-text-field
+            v-model.trim="draft.csTarget"
+            :label="requiredLabel('Case Study Target')"
+            required
+            v-bind="requiredFieldProps('csTarget')"
+            :error-messages="shouldShowFieldErrors('csTarget') ? getFieldErrors('csTarget') : []"
+            hint="The victim or organization targeted by the Actor"
+          />
+          <div>
+            <v-row class="mt-1">
+              <v-col cols="12" sm="4">
+                <v-select
+                  v-model="draft.csYear"
+                  :items="csYears"
+                  :label="requiredLabel('Case Study Year')"
+                  required
+                  v-bind="requiredFieldProps('csYear')"
+                  :error-messages="shouldShowFieldErrors('csYear') ? getFieldErrors('csYear') : []"
+                  hint="Year in which the exercise or incident occurred (required)"
+                />
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-select
+                  v-model="draft.csMonth"
+                  :items="csMonths"
+                  item-title="title"
+                  item-value="value"
+                  :label="requiredLabelIf('Case Study Month', draft.csDay)"
+                  :required="!isBlank(draft.csDay)"
+                  v-bind="requiredFieldProps('csMonth', !isBlank(draft.csDay))"
+                  :error-messages="
+                    shouldShowFieldErrors('csMonth') || !isBlank(draft.csDay)
+                      ? getFieldErrors('csMonth')
+                      : []
+                  "
+                  hint="Month (optional)"
+                />
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  v-model.trim="draft.csDay"
+                  type="number"
+                  min="1"
+                  max="31"
+                  label="Case Study Day"
+                  :error-messages="shouldShowFieldErrors('csDay') ? getFieldErrors('csDay') : []"
+                  hint="Day (optional)"
+                />
+              </v-col>
+            </v-row>
+          </div>
+          <v-textarea
+            v-model.trim="draft.description"
+            :label="detailFieldLabel('Summary')"
+            required
+            v-bind="requiredFieldProps('description')"
+            :error-messages="
+              shouldShowFieldErrors('description') ? getFieldErrors('description') : []
+            "
+            :hint="detailDescriptionHint"
+          />
+        </div>
+
+        <div v-if="section.id === 'procedure'" class="section-fields">
+          <p>
+            Please enter at least one procedure step for the case study. All fields for the
+            procedure step are required.
+          </p>
+          <p><b>To add more than one procedure step, click the “+” button.</b></p>
+          <EditableProcedureTimeline
+            v-if="displayProcedures.length > 0"
+            v-model="displayProcedures"
+            @delete-procedure="handleProcedureDelete"
+            @update-procedure="handleProcedureUpdate"
+          />
+          <AddProcedure
+            :key="procedureDraftKey"
+            ref="procedureForm"
+            v-model="procedureDraft"
+            @submitProcedureStep="startNextProcedureStep"
+            :show-validation="showProcedureDraftValidation"
+          />
+        </div>
+
+        <!-- Associated Type Sections -->
+        <div v-if="section.associatedType" class="section-fields">
+          <p v-if="isEditAction">
+            To suggest a
+            <b
+              >new association of an existing ATLAS
+              {{ contributionTypeWordFromKey(section.associatedType, true) }}</b
+            >
+            for the selected {{ contributionTypeWordFromKey(type, true) }}, please select an
+            existing {{ contributionTypeWordFromKey(section.associatedType, true) }}(s) from the
+            options below.
+          </p>
+          <p v-if="isEditAction">
+            To suggest a
+            <b
+              >brand new associated
+              {{ contributionTypeWordFromKey(section.associatedType, true) }}</b
+            >
+            for the selected {{ contributionTypeWordFromKey(type, true) }}, click “Add New
+            {{ contributionTypeWordFromKey(section.associatedType) }}” in the dropdown menu and
+            enter the required information.
+          </p>
+          <p v-else>
+            Please indicate any existing ATLAS
+            {{ contributionTypeWordFromKey(section.associatedType, true, true) }} that may be
+            associated with this {{ contributionTypeWordFromKey(type, true) }}. To suggest a new
+            associated {{ contributionTypeWordFromKey(section.associatedType, true) }}, click “Add
+            New {{ contributionTypeWordFromKey(section.associatedType) }}” in the dropdown menu.
+          </p>
+          <AssociatedTypeSelector
+            :type="section.associatedType"
+            :parent-type="props.type"
+            :label="associationLabel(section.associatedType)"
+            :hint="associationHint(section.associatedType)"
+            v-model="draft[section.associatedType]"
+            :show-validation="showValidation"
+            :error-messages="getFieldErrors(section.associatedType)"
+            :new-item-errors="getAssociatedDraftItemErrors(section.associatedType)"
+          />
+          <div v-if="associatedTechniqueUseItems.length" class="mt-4">
+            <div v-for="technique in associatedTechniqueUseItems" :key="technique.id" class="mb-5">
+              <div class="text-subtitle-2 mb-1">{{ technique.label }}</div>
+              <v-text-field
+                v-model.trim="draft.techniqueUses[technique.id]"
+                :label="requiredLabel('Associated Technique Use')"
+                required
+                v-bind="requiredTechniqueUseProps(technique.id)"
+                :hint="`How this mitigation applies to ${technique.label}`"
+              />
+            </div>
+          </div>
+          <template v-if="props.action === 'edit'">
+            <p>
+              Alternatively, if existing
+              {{ contributionTypeWordFromKey(section.associatedType, true, true) }}
+              <b>should not</b> be associated with the selected
+              {{ contributionTypeWordFromKey(type, true) }}, please select the existing ATLAS
+              {{ contributionTypeWordFromKey(section.associatedType, true) }}
+              associations for suggested removal.
+            </p>
+            <AssociatedTypeSelector
+              :type="section.associatedType"
+              :parent-type="props.type"
+              v-model="draft.associationRemovals[section.associatedType]"
+              :items="getAssociationRemovalItems(section.associatedType)"
+              :label="associationRemovalLabel(section.associatedType)"
+              :hint="associationRemovalHint(section.associatedType)"
+              :allow-new="false"
+              :show-validation="showValidation"
+            />
+          </template>
+        </div>
+
+        <!-- References Section -->
+        <div v-if="section.id === 'references'" class="section-fields">
+          <p>
+            Please add any references relevant to the {{ contributionTypeWordFromKey(type, true) }},
+            such as articles, sources, etc. All fields in this section are optional.
+          </p>
+          <p><b>To add more than one reference, click the “+” button.</b></p>
+          <AddReferences :type="type" v-model="draft.references" />
+        </div>
+
+        <!-- Save & Send Section -->
+        <div v-if="section.id === 'save-send'">
+          <p v-if="props.action === 'edit'">
+            Before sending your suggested edits, briefly explain why each change is needed. Your
+            rationale helps the MITRE ATLAS™ team evaluate the edits and make approval decisions.
+          </p>
+          <p v-else>
+            Please feel free to add any additional comments or details about your contribution.
+          </p>
+          <v-textarea
+            v-model.trim="draft.additionalInfo"
+            :label="additionalInfoLabel"
+            :required="isEditAction"
+            v-bind="additionalInfoFieldProps"
+            :error-messages="additionalInfoErrorMessages"
+            :hint="additionalInfoHint"
+            class="mt-4 mb-8"
+          ></v-textarea>
+
+          <!-- Contribution List Section -->
+          <h3 class="mb-3">Contribution List</h3>
+          <p>Please review the following elements of your contribution for accuracy:</p>
+          <div class="contribution-list" aria-label="Contribution summary">
+            <div
+              v-for="block in contributionSummaryBlocks"
+              :key="block.id"
+              class="contribution-list-block"
+            >
+              <div v-if="block.title" class="contribution-list-title">{{ block.title }}</div>
+              <div v-if="block.body" class="contribution-list-body">{{ block.body }}</div>
+            </div>
+          </div>
+
+          <!-- File Creation Section -->
+          <p class="mt-3">Please create and save a .yaml file of your contribution.</p>
+          <v-text-field
+            v-model.trim="draft.fileName"
+            label="File Name"
+            @update:model-value="handleFileNameInput"
+          ></v-text-field>
+          <VAtlasBtnSecondary class="mb-2" @click="createContributionFile"
+            >Create File</VAtlasBtnSecondary
+          >
+          <v-alert
+            v-if="props.type !== 'other' && showEndOfFormValidationError"
+            type="error"
+            density="compact"
+            class="mb-4"
+          >
+            {{ formValidationErrorMessage }}
+          </v-alert>
+        </div>
+
+        <!-- General Contribution section, significantly different from the other types, uses no other sections -->
+        <div v-if="section.id === 'other'" class="section-fields">
+          <v-textarea
+            v-model.trim="draft.description"
+            :label="requiredLabel('Contribution Description')"
+            required
+            v-bind="requiredFieldProps('description')"
+            :error-messages="
+              shouldShowFieldErrors('description') ? getFieldErrors('description') : []
+            "
+            hint="Enter any general thoughts, concerns, or information you would like to contribute"
+          />
+          <p class="pt-8">
+            If you would like to receive follow-up from the MITRE ATLAS™ team, please enter your
+            contact information.
+          </p>
+          <v-text-field
+            v-model.trim="draft.contactName"
+            :label="requiredLabelIf('Contact Name(s)', draft.contactEmails)"
+            :required="!!draft.contactEmails"
+            v-bind="requiredFieldProps('contactName', !isBlank(draft.contactEmails))"
+            :error-messages="
+              shouldShowFieldErrors('contactName') ? getFieldErrors('contactName') : []
+            "
+            hint="First and Last Name(s) for all relevant individuals, groups, or organizations"
+          ></v-text-field>
+          <v-text-field
+            v-model.trim="draft.contactEmails"
+            :label="requiredLabelIf('Contact Email(s)', draft.contactName)"
+            :required="!!draft.contactName"
+            v-bind="requiredFieldProps('contactEmails', !isBlank(draft.contactName))"
+            :rules="[emailRule]"
+            :error-messages="
+              shouldShowFieldErrors('contactEmails') ? getFieldErrors('contactEmails') : []
+            "
+            hint="Email Address(es) for all relevant individuals, groups, or organizations"
+          ></v-text-field>
+        </div>
       </div>
 
-      <!-- General Contribution section, significantly different from the other types, uses no other sections -->
-      <div v-if="section.id === 'other'" class="section-fields">
-        <v-textarea v-model.trim="draft.description" :label="requiredLabel('Contribution Description')" required
-          v-bind="requiredFieldProps('description')"
-          :error-messages="shouldShowFieldErrors('description') ? getFieldErrors('description') : []"
-          hint="Enter any general thoughts, concerns, or information you would like to contribute" />
-        <p class="pt-8">If you would like to receive follow-up from the MITRE ATLAS™ team, please enter your contact
-          information.</p>
-        <v-text-field v-model.trim="draft.contactName" :label="requiredLabelIf('Contact Name(s)', draft.contactEmails)"
-          :required="!!draft.contactEmails" v-bind="requiredFieldProps('contactName', !isBlank(draft.contactEmails))"
-          :error-messages="shouldShowFieldErrors('contactName') ? getFieldErrors('contactName') : []"
-          hint="First and Last Name(s) for all relevant individuals, groups, or organizations"></v-text-field>
-        <v-text-field v-model.trim="draft.contactEmails" :label="requiredLabelIf('Contact Email(s)', draft.contactName)"
-          :required="!!draft.contactName" v-bind="requiredFieldProps('contactEmails', !isBlank(draft.contactName))"
-          :rules="[emailRule]"
-          :error-messages="shouldShowFieldErrors('contactEmails') ? getFieldErrors('contactEmails') : []"
-          hint="Email Address(es) for all relevant individuals, groups, or organizations"></v-text-field>
+      <div v-if="!showThanks" class="submission-actions">
+        <p v-if="props.type === 'other'" class="my-16">
+          Please click “Send Your Contribution” to email your contribution to the
+          <a href="mailto:atlas@mitre.org" title="atlas@mitre.org">MITRE ATLAS™ team</a>.
+        </p>
+        <p v-else class="mt-2 mb-10">
+          Once your file is saved, please click “Send Your Contribution” to email your file to the
+          <a href="mailto:atlas@mitre.org" title="atlas@mitre.org">MITRE ATLAS™ team</a>.
+          <b>Please include your file as an attachment in the email.</b>
+        </p>
+        <div class="text-right">
+          <VAtlasBtnSecondary size="large" class="mr-6" @click="showCancelDialog = true"
+            >Cancel</VAtlasBtnSecondary
+          >
+          <VAtlasBtnPrimary size="large" :disabled="!canSendCurrentDraft" @click="sendContribution"
+            >Send Your Contribution</VAtlasBtnPrimary
+          >
+        </div>
       </div>
-    </div>
-
-    <div v-if="!showThanks" class="submission-actions">
-      <p v-if="props.type === 'other'" class="my-16">Please click “Send Your Contribution” to email your contribution to the 
-        <a href='mailto:atlas@mitre.org' title="atlas@mitre.org">MITRE ATLAS™ team</a>.
-      </p>
-      <p v-else class="mt-2 mb-10">
-        Once your file is saved, please click “Send Your Contribution” to email your file to the 
-        <a href='mailto:atlas@mitre.org' title="atlas@mitre.org">MITRE ATLAS™ team</a>.
-        <b>Please include your file as an attachment in the email.</b>
-      </p>
-      <div class="text-right">
-        <VAtlasBtnSecondary size="large" class="mr-6" @click="showCancelDialog = true">Cancel</VAtlasBtnSecondary>
-        <VAtlasBtnPrimary size="large"
-          :disabled="!canSendCurrentDraft"
-          @click="sendContribution">Send Your Contribution</VAtlasBtnPrimary>
-      </div>
-    </div>
     </v-form>
 
-    <v-dialog
-      v-model="showCancelDialog"
-      max-width="520"
-    >
+    <v-dialog v-model="showCancelDialog" max-width="520">
       <v-card class="pa-6 text-mediumNavy">
         <div class="d-flex justify-end mb-2">
           <v-btn
@@ -310,23 +530,34 @@
     <!-- Thank You Message -->
     <div class="text-center mt-12" v-if="showThanks">
       <h2 class="mb-12 text-info">Thank you for your contribution!</h2>
-      <p class="mt-9">You will receive a confirmation email shortly confirming receipt of your contribution.</p>
-      <p class="mt-9">Need to resend your contribution? <a :href="contributionMailtoHref()">Send your contribution again</a></p>
-      <p class="mt-9">The MITRE ATLAS™ team will review your submission and reach out with any additional follow-on actions.</p>
-      <p class="mt-9">If you have any questions, please contact <a href='mailto:atlas@mitre.org'>atlas@mitre.org</a>.</p>
+      <p class="mt-9">
+        You will receive a confirmation email shortly confirming receipt of your contribution.
+      </p>
+      <p class="mt-9">
+        Need to resend your contribution?
+        <a :href="contributionMailtoHref()">Send your contribution again</a>
+      </p>
+      <p class="mt-9">
+        The MITRE ATLAS™ team will review your submission and reach out with any additional
+        follow-on actions.
+      </p>
+      <p class="mt-9">
+        If you have any questions, please contact
+        <a href="mailto:atlas@mitre.org">atlas@mitre.org</a>.
+      </p>
     </div>
   </v-defaults-provider>
 </template>
 
 <script setup>
-import { useMain } from "@/stores/main"
+import { useMain } from '@/stores/main'
 import { computed, nextTick, ref, watch } from 'vue'
-import AssociatedTypeSelector from "./AssociatedTypeSelector.vue"
-import AddReferences from "./AddReferences.vue"
-import { storeToRefs } from "pinia"
-import AddProcedure from "../case-study-form/AddProcedure.vue"
-import EditableProcedureTimeline from "../case-study-form/EditableProcedureTimeline.vue"
-import { truncateText, validateUrl } from "@/assets/tools"
+import AssociatedTypeSelector from './AssociatedTypeSelector.vue'
+import AddReferences from './AddReferences.vue'
+import { storeToRefs } from 'pinia'
+import AddProcedure from '../case-study-form/AddProcedure.vue'
+import EditableProcedureTimeline from '../case-study-form/EditableProcedureTimeline.vue'
+import { truncateText, validateUrl } from '@/assets/tools'
 import {
   contributionObjectTypeFromKey,
   contributionTypeWordFromKey,
@@ -334,7 +565,7 @@ import {
   mapContributionToDraft,
   mapDraftToContribution,
   validateContributionDraftDetailed,
-} from "@/assets/contributionTools.js"
+} from '@/assets/contributionTools.js'
 
 const main = useMain()
 
@@ -347,7 +578,8 @@ const props = defineProps({
 
 const showThanks = ref(false)
 const showValidation = ref(false)
-const formValidationErrorMessage = 'It looks like your file might be missing some required information. Before sending your file, please take a moment to review and ensure all required fields have been entered.'
+const formValidationErrorMessage =
+  'It looks like your file might be missing some required information. Before sending your file, please take a moment to review and ensure all required fields have been entered.'
 const touchedRequiredFields = ref(new Set())
 const formRef = ref(null)
 const isVuetifyFormValid = ref(null)
@@ -373,7 +605,9 @@ const formFieldDefaults = {
 const typeWord = computed(() => contributionTypeWordFromKey(props.type))
 const typeWordLower = computed(() => contributionTypeWordFromKey(props.type, true))
 const isEditAction = computed(() => props.action === 'edit')
-const detailNameHint = computed(() => isEditAction.value ? `Revised ${typeWordLower.value} name` : undefined)
+const detailNameHint = computed(() =>
+  isEditAction.value ? `Revised ${typeWordLower.value} name` : undefined
+)
 const detailDescriptionHint = computed(() =>
   isEditAction.value
     ? `Revised description of the ${typeWordLower.value}`
@@ -401,33 +635,32 @@ const { categoryValues, mlLifecycleValues } = storeToRefs(main)
 // --- draft model ---
 function emptyTechnique() {
   return {
-    id: "",
-    "object-type": "technique",
-    contactName: "",
-    contactEmails: "",
-    name: "",
+    id: '',
+    'object-type': 'technique',
+    contactName: '',
+    contactEmails: '',
+    name: '',
     mitigationCategory: null,
     mlLifecyclePhases: [],
-    description: "",
+    description: '',
     tactics: [],
     mitigations: [],
     techniques: [],
     techniqueUses: {},
     associationRemovals: {},
     references: [],
-    additionalInfo: "",
-    fileName: "",
+    additionalInfo: '',
+    fileName: '',
     maturity: undefined,
     // Case Study specific properties
     csType: null,
-    csActor: "",
-    csTarget: "",
-    csReporter: "",
+    csActor: '',
+    csTarget: '',
+    csReporter: '',
     csYear: null,
     csMonth: null,
     csDay: null,
-    csProcedures: []
-
+    csProcedures: [],
   }
 }
 
@@ -473,21 +706,40 @@ function buildDefaultFileName(name = '', typeKey = props.type) {
   }
 
   const sanitizedName = sanitizeFilenameSegment(name) || 'contribution'
-  const sanitizedType = sanitizeFilenameSegment(contributionTypeWordFromKey(typeKey)) || 'contribution'
+  const sanitizedType =
+    sanitizeFilenameSegment(contributionTypeWordFromKey(typeKey)) || 'contribution'
   return `${sanitizedName}-${sanitizedType}.yaml`
 }
 
 const defaultFileName = computed(() => buildDefaultFileName(draft.value.name, props.type))
 
 function handleFileNameInput(value) {
-  fileNameTouched.value = filenameWithoutYamlExtension(value || '') !== filenameWithoutYamlExtension(defaultFileName.value)
+  fileNameTouched.value =
+    filenameWithoutYamlExtension(value || '') !==
+    filenameWithoutYamlExtension(defaultFileName.value)
 }
 
-const csTypes = [{ title: 'Exercise', value: 'exercise' }, { title: 'Incident', value: 'incident' }]
+const csTypes = [
+  { title: 'Exercise', value: 'exercise' },
+  { title: 'Incident', value: 'incident' },
+]
 
 // Populate the prompting arrays for month and year
 const csYears = Array.from({ length: 31 }, (_, i) => new Date().getFullYear() - i)
-const csMonths = [{ title: 'January', value: 1 }, { title: 'February', value: 2 }, { title: 'March', value: 3 }, { title: 'April', value: 4 }, { title: 'May', value: 5 }, { title: 'June', value: 6 }, { title: 'July', value: 7 }, { title: 'August', value: 8 }, { title: 'September', value: 9 }, { title: 'October', value: 10 }, { title: 'November', value: 11 }, { title: 'December', value: 12 }]
+const csMonths = [
+  { title: 'January', value: 1 },
+  { title: 'February', value: 2 },
+  { title: 'March', value: 3 },
+  { title: 'April', value: 4 },
+  { title: 'May', value: 5 },
+  { title: 'June', value: 6 },
+  { title: 'July', value: 7 },
+  { title: 'August', value: 8 },
+  { title: 'September', value: 9 },
+  { title: 'October', value: 10 },
+  { title: 'November', value: 11 },
+  { title: 'December', value: 12 },
+]
 
 const draft = ref(createEmptyDraft(props.type))
 const mainFormBaseline = ref(contributionDraftSnapshot(draft.value))
@@ -586,25 +838,25 @@ function requiredTechniqueUseProps(id) {
   const field = techniqueUseField(id)
 
   return {
-    error: isBlank(draft.value.techniqueUses?.[id]) &&
+    error:
+      isBlank(draft.value.techniqueUses?.[id]) &&
       (showValidation.value || touchedRequiredFields.value.has(field)),
     'onUpdate:focused': (focused) => {
       if (!focused) markRequiredFieldTouched(field)
-    }
+    },
   }
 }
 
 function setAssociationRemovalItemsFromDraft(sourceDraft) {
   const removalItems = {}
-  const associatedSections = props.sections[props.type]?.filter((section) => section.associatedType) ?? []
+  const associatedSections =
+    props.sections[props.type]?.filter((section) => section.associatedType) ?? []
 
   for (const section of associatedSections) {
-    const ids = (sourceDraft[section.associatedType] ?? [])
-      .map(associationValueId)
-      .filter(Boolean)
+    const ids = (sourceDraft[section.associatedType] ?? []).map(associationValueId).filter(Boolean)
 
-    removalItems[section.associatedType] = ids.map((id) =>
-      main.getDataObjectById(id) ?? { id, name: id }
+    removalItems[section.associatedType] = ids.map(
+      (id) => main.getDataObjectById(id) ?? { id, name: id }
     )
   }
 
@@ -630,32 +882,47 @@ async function loadEditTargetDraft(target) {
   await nextTick()
 }
 
-watch(() => props.type, () => {
-  resetDraftForType()
-})
-
-watch(() => props.editTarget, async (target) => {
-  if (props.action !== 'edit') return
-
-  if (!target) {
+watch(
+  () => props.type,
+  () => {
     resetDraftForType()
-    return
   }
+)
 
-  await loadEditTargetDraft(target)
-}, { immediate: true })
+watch(
+  () => props.editTarget,
+  async (target) => {
+    if (props.action !== 'edit') return
 
-watch(() => draft.value.name, () => {
-  if (!fileNameTouched.value) {
-    draft.value.fileName = defaultFileName.value
-  }
-}, { immediate: true })
+    if (!target) {
+      resetDraftForType()
+      return
+    }
 
-watch(draft, () => {
-  if (props.type !== 'other') {
-    hasDownloadedSinceLastChange.value = false
-  }
-}, { deep: true })
+    await loadEditTargetDraft(target)
+  },
+  { immediate: true }
+)
+
+watch(
+  () => draft.value.name,
+  () => {
+    if (!fileNameTouched.value) {
+      draft.value.fileName = defaultFileName.value
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  draft,
+  () => {
+    if (props.type !== 'other') {
+      hasDownloadedSinceLastChange.value = false
+    }
+  },
+  { deep: true }
+)
 
 watch(procedureDraft, syncProcedureDraft, { deep: true })
 
@@ -670,7 +937,7 @@ const displayProcedures = computed({
     }
 
     draft.value.csProcedures = procedures
-  }
+  },
 })
 
 const showProcedureDraftValidation = computed(() => {
@@ -695,11 +962,7 @@ function resetProcedureDraft() {
 }
 
 function hasProcedureContent(procedure) {
-  return Boolean(
-    procedure?.tactic ||
-    procedure?.technique ||
-    procedure?.description?.trim()
-  )
+  return Boolean(procedure?.tactic || procedure?.technique || procedure?.description?.trim())
 }
 
 function syncProcedureDraft(procedure) {
@@ -773,17 +1036,19 @@ const contributionSummaryBlocks = computed(() => {
 })
 
 const hasDraftValidationErrors = computed(() => {
-  const hasFieldErrors = Object.values(validationState.value.fieldErrors).some((messages) => messages.length > 0)
+  const hasFieldErrors = Object.values(validationState.value.fieldErrors).some(
+    (messages) => messages.length > 0
+  )
   const hasSummaryErrors = validationState.value.summaryErrors.length > 0
   return hasFieldErrors || hasSummaryErrors
 })
 
-const isCurrentDraftValid = computed(() =>
-  isVuetifyFormValid.value !== false && !hasDraftValidationErrors.value
+const isCurrentDraftValid = computed(
+  () => isVuetifyFormValid.value !== false && !hasDraftValidationErrors.value
 )
 
-const canSendCurrentDraft = computed(() =>
-  isCurrentDraftValid.value && (props.type === 'other' || hasDownloadedSinceLastChange.value)
+const canSendCurrentDraft = computed(
+  () => isCurrentDraftValid.value && (props.type === 'other' || hasDownloadedSinceLastChange.value)
 )
 
 function contributionEmailSubject() {
@@ -816,9 +1081,11 @@ Regards,
 }
 
 function contributionMailtoHref() {
-  return `mailto:${contributionEmailAddress}?` +
+  return (
+    `mailto:${contributionEmailAddress}?` +
     `subject=${mailtoEncode(contributionEmailSubject())}&` +
     `body=${mailtoEncode(contributionEmailBody())}`
+  )
 }
 
 function mailtoEncode(value) {
@@ -827,7 +1094,9 @@ function mailtoEncode(value) {
 }
 
 function emailYamlFilename() {
-  const filename = filenameWithoutYamlExtension((draft.value.fileName || draft.value.name || 'contribution').trim())
+  const filename = filenameWithoutYamlExtension(
+    (draft.value.fileName || draft.value.name || 'contribution').trim()
+  )
   return `${filename || 'contribution'}.yaml`
 }
 
@@ -861,11 +1130,13 @@ function requiredFieldProps(field, required = true) {
   const isRequired = isFieldRequired(field, required)
 
   return {
-    error: isRequired && isBlank(draft.value[field]) &&
+    error:
+      isRequired &&
+      isBlank(draft.value[field]) &&
       (showValidation.value || touchedRequiredFields.value.has(field)),
     'onUpdate:focused': (focused) => {
       if (!focused) markRequiredFieldTouched(field)
-    }
+    },
   }
 }
 
@@ -887,12 +1158,12 @@ const hasDraftContent = computed(() =>
   Object.entries(draft.value).some(([field, value]) => isDraftContentValue(field, value))
 )
 
-const hasUserModifiedMainForm = computed(() =>
-  contributionDraftSnapshot(draft.value) !== mainFormBaseline.value
+const hasUserModifiedMainForm = computed(
+  () => contributionDraftSnapshot(draft.value) !== mainFormBaseline.value
 )
 
-const showEndOfFormValidationError = computed(() =>
-  !showThanks.value && hasUserModifiedMainForm.value && !isCurrentDraftValid.value
+const showEndOfFormValidationError = computed(
+  () => !showThanks.value && hasUserModifiedMainForm.value && !isCurrentDraftValid.value
 )
 
 function emailRule(value) {
@@ -932,12 +1203,14 @@ const validationState = computed(() => {
         return
       }
 
-      if (!isBlank(draft.value.csYear) && !isBlank(draft.value.csMonth) && day > daysInMonth(year, month)) {
+      if (
+        !isBlank(draft.value.csYear) &&
+        !isBlank(draft.value.csMonth) &&
+        day > daysInMonth(year, month)
+      ) {
         pushError(fieldErrors, 'csDay', 'Day must be valid for the selected month and year.')
       }
     }
-
-
   }
 
   try {
@@ -950,10 +1223,13 @@ const validationState = computed(() => {
       }
     }
   } catch (error) {
-    const reason = error instanceof Error && error.message
-      ? error.message
-      : 'an unexpected validation error occurred'
-    summaryErrors.push(`Validation failed while preparing your contribution for schema checks: ${reason}.`)
+    const reason =
+      error instanceof Error && error.message
+        ? error.message
+        : 'an unexpected validation error occurred'
+    summaryErrors.push(
+      `Validation failed while preparing your contribution for schema checks: ${reason}.`
+    )
   }
 
   return { fieldErrors, summaryErrors }
@@ -963,8 +1239,18 @@ function addRequiredFieldErrors(fieldErrors) {
   if (props.type === 'other') {
     addRequiredFieldError(fieldErrors, 'description', 'Contribution description')
     // For General Contributions, contact name and contact email are mutually required.
-    addRequiredFieldError(fieldErrors, 'contactName', 'Contact name', !isBlank(draft.value.contactEmails))
-    addRequiredFieldError(fieldErrors, 'contactEmails', 'Contact email', !isBlank(draft.value.contactName))
+    addRequiredFieldError(
+      fieldErrors,
+      'contactName',
+      'Contact name',
+      !isBlank(draft.value.contactEmails)
+    )
+    addRequiredFieldError(
+      fieldErrors,
+      'contactEmails',
+      'Contact email',
+      !isBlank(draft.value.contactName)
+    )
     return
   }
 
@@ -986,15 +1272,15 @@ function addRequiredFieldErrors(fieldErrors) {
     techniques: [],
     mitigations: [
       ['mitigationCategory', 'Mitigation category'],
-      ['mlLifecyclePhases', 'At least one mitigation lifecycle phase']
+      ['mlLifecyclePhases', 'At least one mitigation lifecycle phase'],
     ],
     studies: [
       ['csType', 'Case study type'],
       ['csActor', 'Case study actor'],
       ['csTarget', 'Case study target'],
       ['csReporter', 'Case study reporter', draft.value.csType === 'incident'],
-      ['csProcedures', 'At least one procedure step']
-    ]
+      ['csProcedures', 'At least one procedure step'],
+    ],
   }
 
   for (const [field, label, shouldRequire = true] of requiredFieldsByType[props.type] || []) {
@@ -1021,13 +1307,7 @@ function addProcedureStepErrors(fieldErrors) {
   }
 }
 
-function addRequiredFieldError(
-  fieldErrors,
-  field,
-  label,
-  shouldRequire = true,
-  message = ''
-) {
+function addRequiredFieldError(fieldErrors, field, label, shouldRequire = true, message = '') {
   if (shouldRequire && isBlank(draft.value[field])) {
     pushError(fieldErrors, field, message || `${label} is required.`)
   }
@@ -1059,7 +1339,8 @@ function addMitigationTechniqueUseErrors(fieldErrors) {
 }
 
 function addAssociatedDraftItemErrors(fieldErrors) {
-  const associatedSections = props.sections[props.type]?.filter((section) => section.associatedType) ?? []
+  const associatedSections =
+    props.sections[props.type]?.filter((section) => section.associatedType) ?? []
 
   for (const section of associatedSections) {
     const associatedType = section.associatedType
@@ -1082,7 +1363,10 @@ function addAssociatedDraftItemErrors(fieldErrors) {
         `New associated ${typeWord} summary is required.`
       )
     }
-    if (shouldRequireAssociatedTechniqueUse(associatedType) && draftItems.some((item) => isBlank(item.use))) {
+    if (
+      shouldRequireAssociatedTechniqueUse(associatedType) &&
+      draftItems.some((item) => isBlank(item.use))
+    ) {
       pushError(
         fieldErrors,
         associatedDraftItemField(associatedType, 'use'),
@@ -1093,7 +1377,11 @@ function addAssociatedDraftItemErrors(fieldErrors) {
       const referenceLinkError = draftItems
         .map((item) => validateUrl(item.referenceLink))
         .find((result) => result !== true)
-      pushError(fieldErrors, associatedDraftItemField(associatedType, 'referenceLink'), referenceLinkError)
+      pushError(
+        fieldErrors,
+        associatedDraftItemField(associatedType, 'referenceLink'),
+        referenceLinkError
+      )
     }
   }
 }
@@ -1119,7 +1407,8 @@ function getAssociatedDraftItemErrors(associatedType) {
   for (const field of fields) {
     if (field === 'referenceLink' && !showValidation.value && isBlank(item.referenceLink)) continue
 
-    const fieldErrors = validationState.value.fieldErrors[associatedDraftItemField(associatedType, field)] || []
+    const fieldErrors =
+      validationState.value.fieldErrors[associatedDraftItemField(associatedType, field)] || []
     if (fieldErrors.length) errors[field] = fieldErrors
   }
 
@@ -1201,11 +1490,10 @@ defineExpose({
   loadContributionDraft,
   isFormDirty: () => hasDraftContent.value,
 })
-
 </script>
 
 <style scoped>
-.section-fields>* {
+.section-fields > * {
   margin: 16px 0;
 }
 
@@ -1227,11 +1515,10 @@ defineExpose({
 a {
   color: rgb(var(--v-theme-info));
 }
-
 </style>
 <style>
 .contribution-list {
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
   border: 1px solid rgb(var(--v-theme-info));
   border-radius: 4px;
   color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));

@@ -6,7 +6,11 @@
       <v-col>
         <v-expansion-panels>
           <v-expansion-panel v-for="(item, i) in contributorsA" :key="i" :title="item.organization">
-            <v-expansion-panel-text v-for="(name, i) in item.contributors" :key="i" class="text-caption">
+            <v-expansion-panel-text
+              v-for="(name, i) in item.contributors"
+              :key="i"
+              class="text-caption"
+            >
               {{ name }}
             </v-expansion-panel-text>
           </v-expansion-panel>
@@ -15,7 +19,11 @@
       <v-col>
         <v-expansion-panels>
           <v-expansion-panel v-for="(item, i) in contributorsB" :key="i" :title="item.organization">
-            <v-expansion-panel-text v-for="(name, i) in item.contributors" :key="i" class="text-caption">
+            <v-expansion-panel-text
+              v-for="(name, i) in item.contributors"
+              :key="i"
+              class="text-caption"
+            >
               {{ name }}
             </v-expansion-panel-text>
           </v-expansion-panel>
@@ -25,7 +33,11 @@
     <v-row v-else>
       <v-expansion-panels>
         <v-expansion-panel v-for="(item, i) in contributors" :key="i" :title="item.organization">
-          <v-expansion-panel-text v-for="(name, i) in item.contributors" :key="i" class="text-caption">
+          <v-expansion-panel-text
+            v-for="(name, i) in item.contributors"
+            :key="i"
+            class="text-caption"
+          >
             {{ name }}
           </v-expansion-panel-text>
         </v-expansion-panel>

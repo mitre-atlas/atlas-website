@@ -28,7 +28,7 @@ const updates = reactive([])
 const modules = import.meta.glob('@/../public/content/update-files/*.md', {
   query: '?raw',
   import: 'default',
-  eager: true
+  eager: true,
 })
 
 // Regular expression to match the YYYY-MM date pattern in the filename

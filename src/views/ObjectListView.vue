@@ -5,8 +5,8 @@
     <StudiesIntroText v-if="objectTypePlural === 'studies'" />
 
     <p class="my-6">
-      The table below lists {{ objectTypePlural }} from {{ MITRE_TITLE }}. Scroll through the
-      table or use the filter to narrow down the information.
+      The table below lists {{ objectTypePlural }} from {{ MITRE_TITLE }}. Scroll through the table
+      or use the filter to narrow down the information.
     </p>
 
     <InfoTable :items="tableItems"></InfoTable>
@@ -35,7 +35,7 @@ import {
   getStoreObjectCollectionKey,
   getTypeLabel,
   normalizeTypeKey,
-  isKnownTypeKey
+  isKnownTypeKey,
 } from '@/assets/objectTypes.js'
 
 const mainStore = useMain()

@@ -34,7 +34,7 @@ const props = defineProps({
    * Determines if the technique has subtechniques
    * @type {Boolean}
    */
-  isSupertechnique: Boolean
+  isSupertechnique: Boolean,
 })
 
 const computedClass = computed(() => {

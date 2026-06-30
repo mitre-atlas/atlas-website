@@ -3,11 +3,7 @@ import { defineStore } from 'pinia'
 import yaml from 'js-yaml'
 
 import { dataObjectToRoute } from '@/assets/dataHelpers.js'
-import {
-  ATLAS_DATA_VERSION,
-  assertApiModeVersionConfigured,
-  isApiMode
-} from '@/config/env'
+import { ATLAS_DATA_VERSION, assertApiModeVersionConfigured, isApiMode } from '@/config/env'
 import { collectUniqueArrayValues, getPathWithBase } from '@/assets/tools'
 
 /**
@@ -49,7 +45,9 @@ function isValidAtlasData(data) {
 }
 
 function looksLikeHtml(text) {
-  const value = String(text || '').trim().toLowerCase()
+  const value = String(text || '')
+    .trim()
+    .toLowerCase()
   return value.startsWith('<!doctype html') || value.startsWith('<html')
 }
 
@@ -67,8 +65,8 @@ export const useMain = defineStore('main', {
       objectsById: {},
       relationshipIndex: {
         outgoingBySourceId: {},
-        incomingByTargetId: {}
-      }
+        incomingByTargetId: {},
+      },
     },
     /**
      * Whether to show the navigation drawer on pages
@@ -96,7 +94,7 @@ export const useMain = defineStore('main', {
     currentRouteVersion: '',
     latestKnownVersion: '',
     latestVersionLoadError: '',
-    manifestEntries: []
+    manifestEntries: [],
   }),
   // other options...
   getters: {
@@ -280,7 +278,7 @@ export const useMain = defineStore('main', {
             seenIds.add(subtechnique.id)
             options.push({
               ...subtechnique,
-              'subtechnique-of': technique.id
+              'subtechnique-of': technique.id,
             })
           })
         })
@@ -343,7 +341,9 @@ export const useMain = defineStore('main', {
       return function (argObj) {
         const id = argObj.id
         const incoming = state.data.relationshipIndex?.incomingByTargetId?.[id] || []
-        const sourceIdSet = new Set(incoming.map((rel) => rel.source).filter((sourceId) => sourceId !== id))
+        const sourceIdSet = new Set(
+          incoming.map((rel) => rel.source).filter((sourceId) => sourceId !== id)
+        )
         let objects = Array.from(sourceIdSet)
           .map((sourceId) => this.getDataObjectByIdDeepCopyDefault(sourceId, ['subtechnique-of']))
           .filter(Boolean)
@@ -418,7 +418,7 @@ export const useMain = defineStore('main', {
         // Returns an object of key/object-type to array of data objects related to this object
         const relatedObjs = {
           ...this.getReferencedDataObjects(argObj),
-          ...this.getDataObjectsReferencing(argObj)
+          ...this.getDataObjectsReferencing(argObj),
         }
 
         const nonEmptyRelatedObjs = Object.entries(relatedObjs).reduce((acc, [key, value]) => {
@@ -537,8 +537,7 @@ export const useMain = defineStore('main', {
 
     getActiveNavigationVersion: (state) => state.currentRouteVersion || state.preferredVersion,
 
-    getCanonicalLatestVersion: (state) => ATLAS_DATA_VERSION || state.latestKnownVersion || ''
-
+    getCanonicalLatestVersion: (state) => ATLAS_DATA_VERSION || state.latestKnownVersion || '',
   },
   actions: {
     /**
@@ -669,7 +668,9 @@ export const useMain = defineStore('main', {
 
       let manifestEntry = null
       if (manifestVersion) {
-        manifestEntry = entries.find((entry) => String(entry?.release || '').trim() === manifestVersion)
+        manifestEntry = entries.find(
+          (entry) => String(entry?.release || '').trim() === manifestVersion
+        )
       } else {
         const pinned = String(ATLAS_DATA_VERSION || '').trim()
         if (pinned) {
@@ -686,7 +687,9 @@ export const useMain = defineStore('main', {
 
       const versions = Array.isArray(manifestEntry.versions) ? manifestEntry.versions : []
       const v6Entry = versions.find((versionEntry) =>
-        String(versionEntry?.path || '').trim().startsWith('v6/')
+        String(versionEntry?.path || '')
+          .trim()
+          .startsWith('v6/')
       )
       const path = String(v6Entry?.path || '').trim()
       if (!path) {
@@ -695,7 +698,7 @@ export const useMain = defineStore('main', {
 
       return {
         release: String(manifestEntry.release || '').trim(),
-        path: `/atlas-data/dist/${path}`
+        path: `/atlas-data/dist/${path}`,
       }
     },
 
@@ -735,7 +738,7 @@ export const useMain = defineStore('main', {
 
           return {
             yamlPath: resolved.path,
-            requestedVersion: resolved.release || version || ATLAS_DATA_VERSION || 'latest'
+            requestedVersion: resolved.release || version || ATLAS_DATA_VERSION || 'latest',
           }
         })
         .then(({ yamlPath, requestedVersion }) =>
@@ -816,7 +819,6 @@ export const useMain = defineStore('main', {
         return this.fetchYaml(version)
       }
     },
-    
 
     /**
      * Takes ATLAS JSON data and properly processes and sets it in the store
@@ -826,7 +828,12 @@ export const useMain = defineStore('main', {
 
       const matrix = data.matrix
       const matrixId = matrix.id
-      const objectTypePluralValues = new Set(['tactics', 'techniques', 'mitigations', 'case-studies'])
+      const objectTypePluralValues = new Set([
+        'tactics',
+        'techniques',
+        'mitigations',
+        'case-studies',
+      ])
 
       const tactics = Object.values(data.tactics || {})
       const techniques = Object.values(data.techniques || {})
@@ -843,7 +850,7 @@ export const useMain = defineStore('main', {
       const relationships = data.relationships || {}
       const relationshipIndex = {
         outgoingBySourceId: {},
-        incomingByTargetId: {}
+        incomingByTargetId: {},
       }
 
       // Build mappings from relationship graph
@@ -877,7 +884,7 @@ export const useMain = defineStore('main', {
         if (rels.mitigates && objectsById[sourceId]) {
           objectsById[sourceId].mitigates = rels.mitigates.map((rel) => ({
             technique: rel.target,
-            description: rel.description || ''
+            description: rel.description || '',
           }))
         }
 
@@ -888,7 +895,7 @@ export const useMain = defineStore('main', {
               leadsTo: rel['leads-to'] || [],
               tactic: rel.tactic,
               technique: rel.target,
-              description: rel.description || ''
+              description: rel.description || '',
             }))
             .sort((a, b) => a.step.localeCompare(b.step))
             .map(({ tactic, technique, description }) => ({ tactic, technique, description }))
@@ -914,7 +921,7 @@ export const useMain = defineStore('main', {
         platforms: technique.platforms || [],
         ...('attack-reference' in technique
           ? { 'attack-reference': technique['attack-reference'] }
-          : {})
+          : {}),
       })
 
       techniques.forEach((technique) => {
@@ -958,7 +965,7 @@ export const useMain = defineStore('main', {
         const associated = parentTechniquesByTacticId[tactic.id] || []
         tactic.techniques = associated.map((technique) => ({
           ...toTechniqueLink(technique),
-          subtechniques: technique.subtechniques || []
+          subtechniques: technique.subtechniques || [],
         }))
         tactic.techniques = tactic.techniques.sort((a, b) => (a.name < b.name ? -1 : 1))
         return tactic
@@ -976,23 +983,23 @@ export const useMain = defineStore('main', {
         id: data.collection.id,
         name: data.collection.name,
         version: data.collection.version,
-          matrices: [
-            {
-              ...matrix,
-              route: version
-                ? `/v/${encodeURIComponent(version)}/matrices/${matrix.id}`
-                : `/matrices/${matrix.id}`
-            }
-          ],
+        matrices: [
+          {
+            ...matrix,
+            route: version
+              ? `/v/${encodeURIComponent(version)}/matrices/${matrix.id}`
+              : `/matrices/${matrix.id}`,
+          },
+        ],
         objects: {
           tactics: { [matrixId]: tacticsForMatrix },
           techniques: { [matrixId]: techniques },
           mitigations: { [matrixId]: mitigations },
-          'case-studies': caseStudies
+          'case-studies': caseStudies,
         },
         objectsById,
         relationshipIndex,
-        allDataObjects
+        allDataObjects,
       }
 
       this.SET_OBJECT_TYPE_PLURAL_VALUES(Array.from(objectTypePluralValues))
@@ -1023,6 +1030,6 @@ export const useMain = defineStore('main', {
         this.dataLoadError = `Unable to load ATLAS data for version "${requestedVersion}": ${error.message}`
         throw error
       }
-    }
-  }
+    },
+  },
 })

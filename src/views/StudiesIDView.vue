@@ -61,10 +61,7 @@ import { useMain } from '@/stores/main'
 import { useRoute } from 'vue-router'
 import { computed, inject } from 'vue'
 import ErrorNotFoundView from './ErrorNotFoundView.vue'
-import {
-  getReferenceDisplayText,
-  resolveDescriptionCitations
-} from '@/assets/tools.js'
+import { getReferenceDisplayText, resolveDescriptionCitations } from '@/assets/tools.js'
 import ProcedureTimeline from '@/components/ProcedureTimeline.vue'
 import DownloadDataDropdown from '@/components/DownloadDataDropdown.vue'
 import DataSidebar from '@/components/data-display/DataSidebar.vue'
@@ -96,7 +93,7 @@ const studyWithRelations = computed(() => {
 
   return {
     ...study.value,
-    relatedObjects: filteredRelatedObjects
+    relatedObjects: filteredRelatedObjects,
   }
 })
 
@@ -112,7 +109,7 @@ const orderedReferences = computed(() => resolvedDescription.value.orderedRefere
 
 const title = computed(() => study.value.name)
 useHead({
-  title
+  title,
 })
 
 // Hide layer dropdowns for selected case studies until data is published

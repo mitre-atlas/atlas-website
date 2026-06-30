@@ -108,12 +108,12 @@ const { items, itemType } = defineProps([
    * Data object type or a hyphen-delimited title
    * @type {String}
    */
-  'itemType'
+  'itemType',
 ])
 
 const filters = reactive({
   categories: [],
-  'lifecycle-phases': []
+  'lifecycle-phases': [],
 })
 
 const hasItems = computed(() => Array.isArray(items) && items.length > 0)
@@ -144,10 +144,7 @@ const filteredItems = computed(() => {
 
 const shouldUseFirstParagraphDescriptions = computed(() => {
   const routeType = typeof objectTypePlural === 'string' ? objectTypePlural : ''
-  return (
-    isDataRouteTypeKey(routeType) ||
-    (routeType === 'tactics' && itemType === 'technique')
-  )
+  return isDataRouteTypeKey(routeType) || (routeType === 'tactics' && itemType === 'technique')
 })
 
 const displayItems = computed(() => {
@@ -166,7 +163,7 @@ const displayItems = computed(() => {
 
     return {
       ...item,
-      description: getFirstParagraph(item.description)
+      description: getFirstParagraph(item.description),
     }
   })
 })
@@ -210,13 +207,13 @@ const stages = computed(() => {
 const headers = computed(() => {
   const output = [
     { title: 'ID', key: 'id', align: mdAndUp.value ? 'start' : ' d-none' },
-    { title: 'Name', key: 'name', align: 'start' }
+    { title: 'Name', key: 'name', align: 'start' },
   ]
   const col3 = customTableCol.value.map((columnName) => {
     return {
       value: columnName,
       title: capitalize(columnName),
-      sortable: false
+      sortable: false,
     }
   })
   return output.concat(col3)

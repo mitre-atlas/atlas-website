@@ -8,7 +8,7 @@ import { inject } from 'vue'
 const md = inject('markdownit')
 
 const { date } = defineProps({
-  date: String
+  date: String,
 })
 
 // Get the contents of the specified update file

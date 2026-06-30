@@ -55,7 +55,7 @@ const matrixRoute = computed(() => {
 const matrixStats = store.getDataObjectTypes.map((objType) => {
   return {
     label: objType.replace('-', ' '),
-    value: store.getDataObjectsByType(objType).length
+    value: store.getDataObjectsByType(objType).length,
   }
 })
 
@@ -70,7 +70,7 @@ const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 .hero-image {
   background:
     /* L to R */
-    linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 50%, rgba(var(--v-theme-navy), 0.50)),
+    linear-gradient(90deg, rgba(var(--v-theme-navy), 0.85) 50%, rgba(var(--v-theme-navy), 0.5)),
     /*Top to Bottom, to align hero top color to app bar*/
     linear-gradient(rgba(var(--v-theme-navy), 0.9), rgba(var(--v-theme-navy), 0.1) 15%),
     url('@/assets/GettyImages-1178228880-small.jpg');

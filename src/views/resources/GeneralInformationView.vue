@@ -51,7 +51,9 @@
               </v-list-item>
               <v-list-item v-if="subitem.type === 'link'" class="ml-10">
                 <a :href="subitem.url" :download="subitem.downloadName || true">
-                  {{ subitem.displayName || subitem.url.substring(subitem.url.lastIndexOf('/') + 1) }}
+                  {{
+                    subitem.displayName || subitem.url.substring(subitem.url.lastIndexOf('/') + 1)
+                  }}
                 </a>
               </v-list-item>
             </v-list>
@@ -122,7 +124,7 @@ const items = computed(() => [
     type: 'link',
     title: 'As YAML',
     subtitle: 'Source data files for editing and parsing',
-    url: ATLAS_DATA_GITHUB_URL
+    url: ATLAS_DATA_GITHUB_URL,
   },
   {
     type: 'group',
@@ -134,15 +136,15 @@ const items = computed(() => [
         type: 'link',
         url: releaseAssetUrl('stix-atlas.json'),
         displayName: 'stix-atlas.json',
-        downloadName: 'stix-atlas.json'
+        downloadName: 'stix-atlas.json',
       },
       {
         type: 'link',
         url: releaseAssetUrl('stix-atlas-attack-enterprise.json'),
         displayName: 'stix-atlas-attack-enterprise.json',
-        downloadName: 'stix-atlas-attack-enterprise.json'
-      }
-    ]
+        downloadName: 'stix-atlas-attack-enterprise.json',
+      },
+    ],
   },
   {
     type: 'group',
@@ -155,40 +157,40 @@ const items = computed(() => [
         subHeader:
           'Click on a file below to download.' +
           '<a href="https://github.com/mitre-atlas/atlas-navigator-data#export-to-excel" target="_blank">' +
-          '&nbsp;See this README for more information.</a>'
+          '&nbsp;See this README for more information.</a>',
       },
       {
         type: 'link',
         url: releaseAssetUrl('excel-atlas-matrices.xlsx'),
         displayName: 'atlas-matrices.xlsx',
-        downloadName: 'atlas-matrices.xlsx'
+        downloadName: 'atlas-matrices.xlsx',
       },
       {
         type: 'link',
         url: releaseAssetUrl('excel-atlas-mitigations.xlsx'),
         displayName: 'atlas-mitigations.xlsx',
-        downloadName: 'atlas-mitigations.xlsx'
+        downloadName: 'atlas-mitigations.xlsx',
       },
       {
         type: 'link',
         url: releaseAssetUrl('excel-atlas-tactics.xlsx'),
         displayName: 'atlas-tactics.xlsx',
-        downloadName: 'atlas-tactics.xlsx'
+        downloadName: 'atlas-tactics.xlsx',
       },
       {
         type: 'link',
         url: releaseAssetUrl('excel-atlas-techniques.xlsx'),
         displayName: 'atlas-techniques.xlsx',
-        downloadName: 'atlas-techniques.xlsx'
+        downloadName: 'atlas-techniques.xlsx',
       },
       {
         type: 'link',
         url: releaseAssetUrl('excel-atlas.xlsx'),
         displayName: 'atlas.xlsx',
-        downloadName: 'atlas.xlsx'
-      }
-    ]
-  }
+        downloadName: 'atlas.xlsx',
+      },
+    ],
+  },
 ])
 
 const repositories = {
@@ -196,54 +198,54 @@ const repositories = {
     {
       name: 'ATLAS Website',
       description: 'Static files for this atlas.mitre.org website.',
-      url: 'https://github.com/mitre-atlas/atlas-website'
+      url: 'https://github.com/mitre-atlas/atlas-website',
     },
     {
       name: 'ATLAS Navigator',
       description: 'ATLAS Navigator web app - a fork of the MITRE ATT&CK&reg; Navigator.',
-      url: 'https://github.com/mitre-atlas/atlas-navigator/tree/atlas'
-    }
+      url: 'https://github.com/mitre-atlas/atlas-navigator/tree/atlas',
+    },
   ],
   data: [
     {
       name: 'ATLAS Data',
       description:
         'Source data for ATLAS tactics, techniques, and case studies, along with scripts and documentation.',
-      url: ATLAS_DATA_GITHUB_URL
+      url: ATLAS_DATA_GITHUB_URL,
     },
     {
       name: 'ATLAS Navigator Data',
       description:
         'Scripts and outputs for ATLAS data in STIX JSON and ATT&CK Navigator layer formats.',
-      url: 'https://github.com/mitre-atlas/atlas-navigator-data'
-    }
+      url: 'https://github.com/mitre-atlas/atlas-navigator-data',
+    },
   ],
   tools: [
     {
       name: 'Almanac',
       description:
         '[CALDERA](https://caldera.mitre.org/) adversary emulation platform plugin for exploring ATLAS using the ATLAS Navigator - a fork of the ATT&CK [Compass](https://caldera.readthedocs.io/en/latest/Plugin-library.html#compass) plugin.',
-      url: 'https://github.com/mitre-atlas/almanac'
+      url: 'https://github.com/mitre-atlas/almanac',
     },
     {
       name: 'Arsenal',
       description:
         'The Arsenal plugin will help store and create adversarial TTPs defined in ATLAS to interface with [CALDERA](https://caldera.mitre.org/). ',
-      url: 'https://github.com/mitre-atlas/arsenal'
-    }
-  ]
+      url: 'https://github.com/mitre-atlas/arsenal',
+    },
+  ],
 }
 
 const otherSites = [
   {
     name: 'AI Incident Sharing',
     description: 'Submit & received anonymized community AI incident data',
-    url: 'https://ai-incidents.mitre.org'
+    url: 'https://ai-incidents.mitre.org',
   },
   {
     name: 'AI Risk Database',
     description: 'Explore AI supply chain risk with the AI Risk Database',
-    url: 'https://ai-risk.mitre.org'
-  }
+    url: 'https://ai-risk.mitre.org',
+  },
 ]
 </script>

@@ -11,12 +11,7 @@
         </v-row>
       </template>
       <!-- Use InfoTable if there's columnNames -->
-      <InfoTable
-        v-if="hasTabularItems"
-        class="mx-8"
-        :items="items"
-        :itemType="itemType"
-      />
+      <InfoTable v-if="hasTabularItems" class="mx-8" :items="items" :itemType="itemType" />
       <related-objs-list
         v-else
         :parent-object="parentObject"
@@ -48,7 +43,7 @@ const { parentObject, items, itemType } = defineProps([
    * Data object type or a hyphen-delimited title
    * @type {String}
    */
-  'itemType'
+  'itemType',
 ])
 const title = computed(() => {
   if (Array.isArray(items) && items.length === 1) {

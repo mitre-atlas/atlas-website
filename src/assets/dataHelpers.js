@@ -4,7 +4,11 @@
  */
 
 import pluralize from 'pluralize'
-import { getObjectTypeRoutePlural, getObjectTypeFromTypeKey, normalizeTypeKey } from './objectTypes.js'
+import {
+  getObjectTypeRoutePlural,
+  getObjectTypeFromTypeKey,
+  normalizeTypeKey,
+} from './objectTypes.js'
 
 /**
  * Pluralizes a data object type.  For use constructing page titles and object routes.

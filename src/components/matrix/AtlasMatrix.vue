@@ -14,7 +14,9 @@
                   max-width="260"
                 >
                   <template #activator="{ props }">
-                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                    <v-icon v-bind="props" size="small" class="legend-info-icon"
+                      >mdi-information-outline</v-icon
+                    >
                   </template>
                 </v-tooltip>
                 Subtechniques
@@ -43,13 +45,19 @@
                   max-width="260"
                 >
                   <template #activator="{ props }">
-                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                    <v-icon v-bind="props" size="small" class="legend-info-icon"
+                      >mdi-information-outline</v-icon
+                    >
                   </template>
                 </v-tooltip>
                 Filter by Platforms
               </span>
             </legend>
-            <div class="platform-chip-group" role="group" aria-label="Filter techniques by platform">
+            <div
+              class="platform-chip-group"
+              role="group"
+              aria-label="Filter techniques by platform"
+            >
               <v-tooltip
                 v-for="platform in platformOptions"
                 :key="platform"
@@ -89,7 +97,9 @@
                   max-width="260"
                 >
                   <template #activator="{ props }">
-                    <v-icon v-bind="props" size="small" class="legend-info-icon">mdi-information-outline</v-icon>
+                    <v-icon v-bind="props" size="small" class="legend-info-icon"
+                      >mdi-information-outline</v-icon
+                    >
                   </template>
                 </v-tooltip>
                 Filter by Maturity
@@ -129,7 +139,7 @@
     ></MatrixAttackStyle>
     <div class="text-right mt-2">
       <span class="attack-and">&amp;</span>&nbsp;indicates a tactic or technique is adapted from
-      <a href="https://attack.mitre.org/" target="_blank" rel="noreferrer" >MITRE ATT&CK®</a >
+      <a href="https://attack.mitre.org/" target="_blank" rel="noreferrer">MITRE ATT&CK®</a>
     </div>
   </div>
 </template>
@@ -141,7 +151,7 @@ import MatrixAttackStyle from './MatrixAttackStyle.vue'
 import {
   getAtlasTermValues,
   getAtlasTermDescription,
-  getAtlasGroupDescription
+  getAtlasGroupDescription,
 } from '@/config/atlasTermCatalog'
 
 const mainStore = useMain()
@@ -220,7 +230,9 @@ const tactics = computed(() => {
       .map((tactic) => {
         const techniques = tactic.techniques
           .map((technique) => {
-            const subtechniques = (technique.subtechniques || []).filter(shouldShowTechniqueForPlatforms)
+            const subtechniques = (technique.subtechniques || []).filter(
+              shouldShowTechniqueForPlatforms
+            )
             return { ...technique, subtechniques }
           })
           .filter((technique) => {
@@ -236,28 +248,27 @@ const tactics = computed(() => {
   } else if (selectedCategory.value === 'Demonstrated') {
     return filterByPlatforms(
       mainStore.getDataObjectsFilteredbyNestedKeyValue(
-      'tactics',
-      'techniques',
-      'maturity',
-      ['Demonstrated', 'Realized'],
-      matrixId.value
-    )
+        'tactics',
+        'techniques',
+        'maturity',
+        ['Demonstrated', 'Realized'],
+        matrixId.value
+      )
     )
   } else if (selectedCategory.value === 'Realized') {
     return filterByPlatforms(
       mainStore.getDataObjectsFilteredbyNestedKeyValue(
-      'tactics',
-      'techniques',
-      'maturity',
-      ['Realized'],
-      matrixId.value
+        'tactics',
+        'techniques',
+        'maturity',
+        ['Realized'],
+        matrixId.value
       )
     )
   }
 
   return []
 })
-
 </script>
 
 <style scoped src="@/assets/matrix.css"></style>

@@ -5,7 +5,7 @@ import { ANALYTICS_ID, hasAnalytics } from '@/config/env'
 export async function insertAnalytics(app: App<Element>) {
   if (hasAnalytics()) {
     app.use(VueGtag, {
-      config: { id: ANALYTICS_ID }
+      config: { id: ANALYTICS_ID },
     })
   }
 }

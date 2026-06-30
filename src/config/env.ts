@@ -11,7 +11,9 @@ export const ANALYTICS_ID = readEnvValue(import.meta.env.VITE_ANALYTICS_ID)
 export const OSANO_SCRIPT = readEnvValue(import.meta.env.VITE_OSANO_SCRIPT)
 export const API_URL = readEnvValue(import.meta.env.VITE_API_URL)
 export const ATLAS_DATA_VERSION = readEnvValue(import.meta.env.VITE_ATLAS_DATA_VERSION)
-export const NAVIGATOR_LAYER_GITHUB_URL = readEnvValue(import.meta.env.VITE_NAVIGATOR_LAYER_GITHUB_URL)
+export const NAVIGATOR_LAYER_GITHUB_URL = readEnvValue(
+  import.meta.env.VITE_NAVIGATOR_LAYER_GITHUB_URL
+)
 export const ATLAS_DATA_GITHUB_URL =
   readEnvValue(import.meta.env.VITE_ATLAS_DATA_GITHUB_URL) ||
   'https://github.com/mitre-atlas/atlas-data'

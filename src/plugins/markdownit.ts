@@ -7,15 +7,16 @@ import type { App } from 'vue'
 // Initialize Markdown-it with settings and plugins
 const markdownit = new MarkdownIt({
   html: true,
-  linkify: true
+  linkify: true,
 })
   .use(MarkdownItAnchor, {
-      slugify: (s) => s
+    slugify: (s) =>
+      s
         .toLowerCase()
         // keep only letters, numbers, _ and -
         .replace(/[^a-z0-9_\s-]/g, '')
         .trim()
-        .replace(/\s+/g, '-')
+        .replace(/\s+/g, '-'),
   })
   .use(frontmatterPlugin)
   .use(tocPlugin, { level: [4, 5] })
@@ -78,5 +79,5 @@ export default {
     //  import { inject } from 'vue'
     //  const md = inject('markdownit')
     app.provide('markdownit', markdownit)
-  }
+  },
 }

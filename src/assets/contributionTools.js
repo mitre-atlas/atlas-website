@@ -10,7 +10,7 @@ import {
   getObjectTypeOptions,
   getTypeKeyFromObjectType,
   getTypeLabel,
-  isKnownTypeKey
+  isKnownTypeKey,
 } from './objectTypes.js'
 const typeOptions = getObjectTypeOptions(true)
 const matrixTypeOptions = getObjectTypeOptions(false)
@@ -168,10 +168,7 @@ function mapRefs(references = []) {
 }
 
 function mapDraftItemToReference(draftItem = {}) {
-  if (
-    isEmpty(draftItem?.referenceDescription) &&
-    isEmpty(draftItem?.referenceLink)
-  ) {
+  if (isEmpty(draftItem?.referenceDescription) && isEmpty(draftItem?.referenceLink)) {
     return []
   }
 
@@ -251,7 +248,9 @@ function mapAssociationToDraft(value) {
 }
 
 function mapAssociationsToDraft(values = []) {
-  return ensureArray(values).map(mapAssociationToDraft).filter((value) => value !== null)
+  return ensureArray(values)
+    .map(mapAssociationToDraft)
+    .filter((value) => value !== null)
 }
 
 function mapAssociationToContribution(value, typeKey, associationUse) {
@@ -373,8 +372,8 @@ function mapMatrixDraft(draft, ctx, config) {
         if (useDraftKey) {
           const id = associationValueId(value)
           associationUse = isDraftItem(value)
-            ? value.use ?? ''
-            : draft[useDraftKey]?.[id] ?? value?.use ?? ''
+            ? (value.use ?? '')
+            : (draft[useDraftKey]?.[id] ?? value?.use ?? '')
         }
 
         return mapAssociationToContribution(value, typeKey, associationUse)

@@ -37,15 +37,18 @@ const emit = defineEmits<{
   (e: 'submit'): void
 }>()
 
-const props = withDefaults(defineProps<{
-  /** Index of source being edited */
-  editIndex?: number
+const props = withDefaults(
+  defineProps<{
+    /** Index of source being edited */
+    editIndex?: number
 
-  /** Parent type of object to which this resources will belong */
-  type?: string
-}>(), {
-  type: ''
-})
+    /** Parent type of object to which this resources will belong */
+    type?: string
+  }>(),
+  {
+    type: '',
+  }
+)
 
 const source = defineModel<Reference>({ required: true })
 const typeWord = computed(() => contributionTypeWordFromKey(props.type, true))
@@ -75,7 +78,7 @@ async function handleAdd() {
 function resetForm() {
   source.value = {
     title: '',
-    url: ''
+    url: '',
   }
   formRef.value?.resetValidation()
 }

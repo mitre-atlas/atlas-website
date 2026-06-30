@@ -2,11 +2,7 @@
   <v-list v-if="sources.length" variant="flat">
     <div v-for="(source, i) in sources" :key="i">
       <div v-if="i === editIndex" v-click-outside="closeEdit">
-        <AddSource
-          v-model="editSourceDraft"
-          :editIndex="editIndex"
-          :type="type"
-        />
+        <AddSource v-model="editSourceDraft" :editIndex="editIndex" :type="type" />
       </div>
       <v-list-item v-else :key="i" :clickable="false" :ripple="false">
         {{ i + 1 }}.
@@ -15,7 +11,10 @@
           <v-tooltip
             :text="getReferenceDisplayText(source)"
             location="top"
-            :disabled="getReferenceDisplayText(source, referenceDisplayMaxChars) === getReferenceDisplayText(source)"
+            :disabled="
+              getReferenceDisplayText(source, referenceDisplayMaxChars) ===
+              getReferenceDisplayText(source)
+            "
           >
             <template #activator="{ props }">
               <span v-bind="props">
@@ -29,7 +28,10 @@
           <v-tooltip
             :text="getReferenceDisplayText(source)"
             location="top"
-            :disabled="getReferenceDisplayText(source, referenceDisplayMaxChars) === getReferenceDisplayText(source)"
+            :disabled="
+              getReferenceDisplayText(source, referenceDisplayMaxChars) ===
+              getReferenceDisplayText(source)
+            "
           >
             <template #activator="{ props }">
               <a v-bind="props" :href="source.url" target="_blank" rel="noreferrer">
@@ -49,7 +51,12 @@
           />
           <v-dialog width="500">
             <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" icon="mdi-delete-outline" color="#2D4863" class="opacity-100" />
+              <v-icon
+                v-bind="props"
+                icon="mdi-delete-outline"
+                color="#2D4863"
+                class="opacity-100"
+              />
             </template>
             <template v-slot:default="{ isActive }">
               <v-card>
@@ -90,21 +97,25 @@ const { sources, type } = defineProps<{
 const editIndex = ref<number | null>(null)
 const editSourceDraft = ref<Reference>({
   title: '',
-  url: ''
+  url: '',
 })
 
-watch(editSourceDraft, (source) => {
-  if (editIndex.value === null) return
+watch(
+  editSourceDraft,
+  (source) => {
+    if (editIndex.value === null) return
 
-  if (!hasReferenceContent(source)) {
-    const deleteIndex = editIndex.value
-    editIndex.value = null
-    emit('delete', deleteIndex)
-    return
-  }
+    if (!hasReferenceContent(source)) {
+      const deleteIndex = editIndex.value
+      editIndex.value = null
+      emit('delete', deleteIndex)
+      return
+    }
 
-  emit('updateSource', { ...source }, editIndex.value)
-}, { deep: true })
+    emit('updateSource', { ...source }, editIndex.value)
+  },
+  { deep: true }
+)
 
 function hasReferenceContent(source: Reference) {
   return !!source.title?.trim() || !!source.url?.trim()
@@ -119,7 +130,7 @@ function startEdit(index: number, source: Reference) {
   editIndex.value = null
   editSourceDraft.value = {
     title: source.title ?? '',
-    url: source.url ?? ''
+    url: source.url ?? '',
   }
   editIndex.value = index
 }

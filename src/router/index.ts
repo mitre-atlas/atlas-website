@@ -10,9 +10,9 @@ const routes = [
       section: 'home',
       fullWidth: true,
       showSideNav: false,
-      showBreadcrumbs: false
+      showBreadcrumbs: false,
     },
-    component: () => import('@/views/Home.vue')
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/v/:version',
@@ -21,9 +21,9 @@ const routes = [
       section: 'home',
       fullWidth: true,
       showSideNav: false,
-      showBreadcrumbs: false
+      showBreadcrumbs: false,
     },
-    component: () => import('@/views/Home.vue')
+    component: () => import('@/views/Home.vue'),
   },
   {
     path: '/terms',
@@ -32,9 +32,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/TermsView.vue')
+    component: () => import('../views/TermsView.vue'),
   },
   {
     path: '/resources/faq',
@@ -42,9 +42,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    redirect: '/resources/glossary'
+    redirect: '/resources/glossary',
   },
   {
     path: '/resources/glossary',
@@ -53,9 +53,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/GlossaryView.vue')
+    component: () => import('../views/resources/GlossaryView.vue'),
   },
   {
     path: '/resources/ai-security-101',
@@ -64,14 +64,14 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/AiSecurity101View.vue')
+    component: () => import('../views/resources/AiSecurity101View.vue'),
   },
   // Redirects the old 101 URL to the new one
   {
     path: '/resources/adversarial-ml-101',
-    redirect: '/resources/ai-security-101'
+    redirect: '/resources/ai-security-101',
   },
   {
     path: '/resources/ai-security-autonomous-systems',
@@ -80,9 +80,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/AiSecurityAutonomousSystems.vue')
+    component: () => import('../views/resources/AiSecurityAutonomousSystems.vue'),
   },
   {
     path: '/resources/safe-ai',
@@ -91,9 +91,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/SafeAIView.vue')
+    component: () => import('../views/resources/SafeAIView.vue'),
   },
   {
     path: '/resources/info',
@@ -102,9 +102,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/GeneralInformationView.vue')
+    component: () => import('../views/resources/GeneralInformationView.vue'),
   },
   {
     path: '/resources/versions',
@@ -113,9 +113,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/AtlasVersionsView.vue')
+    component: () => import('../views/resources/AtlasVersionsView.vue'),
   },
   {
     path: '/resources/contact',
@@ -123,9 +123,9 @@ const routes = [
     meta: {
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/ContactView.vue')
+    component: () => import('../views/resources/ContactView.vue'),
   },
   {
     path: '/contribute',
@@ -134,9 +134,9 @@ const routes = [
       section: 'contribute',
       fullWidth: true,
       showSideNav: false,
-      showBreadcrumbs: false
+      showBreadcrumbs: false,
     },
-    component: () => import('../views/ContributeView.vue')
+    component: () => import('../views/ContributeView.vue'),
   },
   {
     path: '/contribute/submit',
@@ -145,14 +145,14 @@ const routes = [
       section: 'contribute',
       fullWidth: true,
       showSideNav: false,
-      showBreadcrumbs: false
+      showBreadcrumbs: false,
     },
-    component: () => import('../views/ContributeFormView.vue')
+    component: () => import('../views/ContributeFormView.vue'),
   },
   {
     // When a user visits the updates index page, redirect to the most recent update
     path: '/resources/updates',
-    redirect: `/resources/updates/${getLatestUpdateDate()}`
+    redirect: `/resources/updates/${getLatestUpdateDate()}`,
   },
   {
     path: '/resources/updates/:date',
@@ -161,9 +161,9 @@ const routes = [
       section: 'resources',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/resources/UpdatesListView.vue')
+    component: () => import('../views/resources/UpdatesListView.vue'),
   },
   {
     path: '/:objectTypePlural(tactics|techniques|mitigations|studies)',
@@ -172,9 +172,9 @@ const routes = [
       section: 'data',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/ObjectListView.vue')
+    component: () => import('../views/ObjectListView.vue'),
   },
   {
     path: '/v/:version/:objectTypePlural(tactics|techniques|mitigations|studies)',
@@ -183,9 +183,9 @@ const routes = [
       section: 'data',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/ObjectListView.vue')
+    component: () => import('../views/ObjectListView.vue'),
   },
   {
     path: '/:objectTypePlural(tactics|techniques|mitigations|studies)/:id',
@@ -194,9 +194,9 @@ const routes = [
       section: 'data',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/IDView.vue')
+    component: () => import('../views/IDView.vue'),
   },
   {
     path: '/v/:version/:objectTypePlural(tactics|techniques|mitigations|studies)/:id',
@@ -205,9 +205,9 @@ const routes = [
       section: 'data',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/IDView.vue')
+    component: () => import('../views/IDView.vue'),
   },
   {
     path: '/studies/:id',
@@ -216,9 +216,9 @@ const routes = [
       section: 'studies',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/StudiesIDView.vue')
+    component: () => import('../views/StudiesIDView.vue'),
   },
   {
     path: '/v/:version/studies/:id',
@@ -227,9 +227,9 @@ const routes = [
       section: 'studies',
       fullWidth: false,
       showSideNav: true,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/StudiesIDView.vue')
+    component: () => import('../views/StudiesIDView.vue'),
   },
   {
     path: '/navigator',
@@ -238,20 +238,9 @@ const routes = [
       section: 'tools',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/NavigatorView.vue')
-  },
-  {
-    path: '/v/:version/navigator',
-    name: 'VersionedNavigator',
-    meta: {
-      section: 'tools',
-      fullWidth: false,
-      showSideNav: false,
-      showBreadcrumbs: true
-    },
-    component: () => import('../views/NavigatorView.vue')
+    component: () => import('../views/NavigatorView.vue'),
   },
   {
     path: '/knowledge-graph',
@@ -260,20 +249,20 @@ const routes = [
       section: 'tools',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/KnowledgeGraphView.vue')
+    component: () => import('../views/KnowledgeGraphView.vue'),
   },
   {
-    path: '/v/:version/knowledge-graph',
-    name: 'VersionedKnowledgeGraph',
+    path: '/agent',
+    name: 'Agent',
     meta: {
       section: 'tools',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/KnowledgeGraphView.vue')
+    component: () => import('../views/AgentView.vue'),
   },
   {
     path: '/attack-flow',
@@ -282,20 +271,9 @@ const routes = [
       section: 'tools',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/AttackFlow.vue')
-  },
-  {
-    path: '/v/:version/attack-flow',
-    name: 'VersionedAttackFlow',
-    meta: {
-      section: 'tools',
-      fullWidth: false,
-      showSideNav: false,
-      showBreadcrumbs: true
-    },
-    component: () => import('../views/AttackFlow.vue')
+    component: () => import('../views/AttackFlow.vue'),
   },
   {
     path: '/matrices/:id',
@@ -304,9 +282,9 @@ const routes = [
       section: 'matrices',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('@/views/MatrixView.vue')
+    component: () => import('@/views/MatrixView.vue'),
   },
   {
     path: '/v/:version/matrices/:id',
@@ -315,9 +293,9 @@ const routes = [
       section: 'matrices',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('@/views/MatrixView.vue')
+    component: () => import('@/views/MatrixView.vue'),
   },
   {
     path: '/v/:version/:catchAll(.*)*',
@@ -326,9 +304,9 @@ const routes = [
       section: 'error',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/ErrorNotFoundView.vue')
+    component: () => import('../views/ErrorNotFoundView.vue'),
   },
   {
     path: '/:catchAll(.*)*',
@@ -337,10 +315,10 @@ const routes = [
       section: 'error',
       fullWidth: false,
       showSideNav: false,
-      showBreadcrumbs: true
+      showBreadcrumbs: true,
     },
-    component: () => import('../views/ErrorNotFoundView.vue')
-  }
+    component: () => import('../views/ErrorNotFoundView.vue'),
+  },
 ]
 
 const router = createRouter({
@@ -366,7 +344,7 @@ const router = createRouter({
     }
     // always scroll to top
     return { top: 0 }
-  }
+  },
 })
 
 export default router

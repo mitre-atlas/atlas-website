@@ -68,7 +68,7 @@ defineProps({
    * even when expandAll itself did not change.
    * @type {Number}
    */
-  expandAllRevision: Number
+  expandAllRevision: Number,
 })
 
 const tacticLastWord = (tactic_name) => {

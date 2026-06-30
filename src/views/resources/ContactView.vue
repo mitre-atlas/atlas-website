@@ -68,15 +68,15 @@ const contacts = [
     color: 'indigo-darken-2',
     title: `Email ${CONTACT_EMAIL}`,
     text: 'Contact us for private discussions and organization involvement',
-    link: `mailto:${CONTACT_EMAIL}`
+    link: `mailto:${CONTACT_EMAIL}`,
   },
   {
     icon: 'mdi-linkedin',
     color: '#0077B5',
     title: 'ATLAS on LinkedIn',
     text: 'Follow us on LinkedIn',
-    link: 'https://www.linkedin.com/showcase/mitre-atlas/'
-  }
+    link: 'https://www.linkedin.com/showcase/mitre-atlas/',
+  },
 ]
 const engages = [
   {
@@ -84,22 +84,22 @@ const engages = [
     color: 'yellow-darken-3',
     title: 'Contribute',
     text: 'Find out how to contribute to the ATLAS framework',
-    link: '/contribute'
+    link: '/contribute',
   },
   {
     icon: 'mdi-github',
     color: '#6e5494',
     title: 'mitre-atlas GitHub',
     text: 'See data and tools at the mitre-atlas GitHub group',
-    link: 'https://github.com/mitre-atlas'
+    link: 'https://github.com/mitre-atlas',
   },
   {
     icon: 'mdi-youtube',
     color: 'red-darken-2',
     title: 'ATLAS Video Playlist',
     text: 'View demos and walkthroughs on YouTube',
-    link: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu'
-  }
+    link: 'https://youtube.com/playlist?list=PLkTApXQou_8J6-t2_7QTTVDLBQlKFXPOu',
+  },
 ]
 
 const allItems = computed(() => {

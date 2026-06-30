@@ -62,18 +62,18 @@ const quickLinks = [
   {
     icon: 'mdi-database',
     title: 'ATLAS Data',
-    link: '/resources/info'
+    link: '/resources/info',
   },
   {
     icon: 'mdi-school',
     title: 'AI Security 101',
-    link: '/resources/ai-security-101'
+    link: '/resources/ai-security-101',
   },
   {
     icon: 'mdi-help-circle',
     title: 'ATLAS Glossary',
-    link: { name: 'Glossary' }
-  }
+    link: { name: 'Glossary' },
+  },
 ]
 </script>
 

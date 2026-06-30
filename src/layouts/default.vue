@@ -34,8 +34,7 @@ import { useHead } from '@unhead/vue'
 
 // Set the page/tab title to ${title} | ${MITRE_TITLE} using page title from each individual view if it is given
 useHead({
-  titleTemplate: (pageTitle) =>
-    pageTitle ? `${pageTitle} | ${MITRE_TITLE}` : MITRE_TITLE
+  titleTemplate: (pageTitle) => (pageTitle ? `${pageTitle} | ${MITRE_TITLE}` : MITRE_TITLE),
 })
 
 const route = useRoute()
