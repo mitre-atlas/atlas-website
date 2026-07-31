@@ -1,0 +1,90 @@
+{
+    "versions": {
+        "layer": "4.3",
+        "navigator": "4.6.4"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0061"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.06"
+        }
+    ],
+    "name": "AI in the Middle: Web-Based AI Services as C2 Relays",
+    "description": "Check Point Research demonstrated an \"AI in the Middle\" attack in which malware can abuse web-based AI assistants with anonymous or unauthenticated browsing and URL-fetch capabilities as a covert command-and-control channel. The proof of concept used public AI web interfaces, including Grok and Microsoft Copilot, to cause the AI service to fetch attacker-controlled URLs, relay victim data in outbound requests, and return attacker-supplied commands through normal AI assistant responses.\n\nBecause the implant communicated with trusted AI service domains over ordinary HTTPS web traffic, the activity could blend into expected enterprise AI usage and evade controls focused on suspicious infrastructure, unusual protocols, API keys, service accounts, or revocable credentials. The lack of required authentication for some web-fetch workflows also made it harder for defenders to disable the channel by rotating API keys, suspending accounts, or revoking tokens. The researchers recommended stronger authentication and access controls for AI web-fetch features, along with improved visibility into AI-initiated network requests and AI assistant interactions.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0095",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0008.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0008",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0079",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0047",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0065",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0068",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0037",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0114",
+            "showSubtechniques": false,
+            "tactic": "command-and-control",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0086",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0050",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

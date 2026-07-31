@@ -1,0 +1,54 @@
+{
+    "versions": {
+        "layer": "4.3",
+        "navigator": "4.6.4"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0009"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.06"
+        }
+    ],
+    "name": "Tay Poisoning",
+    "description": "Microsoft created Tay, a Twitter chatbot designed to engage and entertain users.\nWhile previous chatbots used pre-programmed scripts\nto respond to prompts, Tay's machine learning capabilities allowed it to be\ndirectly influenced by its conversations.\n\nA coordinated attack encouraged malicious users to tweet abusive and offensive language at Tay,\nwhich eventually led to Tay generating similarly inflammatory content towards other users.\n\nMicrosoft decommissioned Tay within 24 hours of its launch and issued a public apology\nwith lessons learned from the bot's failure.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0047",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0010.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0010",
+            "showSubtechniques": true,
+            "tactic": "initial-access"
+        },
+        {
+            "techniqueID": "AML.T0020",
+            "showSubtechniques": false,
+            "tactic": "persistence",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0031",
+            "showSubtechniques": false,
+            "tactic": "impact",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

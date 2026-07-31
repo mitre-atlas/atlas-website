@@ -64,6 +64,7 @@ jobs:
           gh release upload "${{ steps.tag.outputs.value }}" \
             dist/stix-atlas.json \
             dist/stix-atlas-realized.json \
+            dist/stix-atlas-attack-enterprise.json \
             dist/stix-atlas-realized-attack-enterprise.json \
             --repo "${{ github.repository }}" \
             --clobber

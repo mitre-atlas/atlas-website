@@ -11,11 +11,26 @@ import yaml
 
 from atlas import schemas
 from atlas.constants import ATLAS_MATRIX_ID
-from atlas.enums import AtlasRelationshipType
+from atlas.enums import AtlasRelationshipType, DateGranularity
 
 
 def _format_date(dt: date) -> str:
     return dt.strftime("%d %B %Y")
+
+
+def _format_case_study_date(dt: date, granularity: DateGranularity) -> str:
+    if granularity == DateGranularity.YEAR:
+        return dt.strftime("%Y")
+    if granularity == DateGranularity.MONTH:
+        return dt.strftime("%Y-%m")
+    return dt.strftime("%Y-%m-%d")
+
+
+def _format_references(references: list[schemas.Reference]) -> str:
+    return "; ".join(
+        f"{ref.id}: {ref.title} ({ref.url})"
+        for ref in sorted(references, key=lambda x: x.id)
+    )
 
 
 def _stix_id(stix_type: str, obj_uuid: str) -> str:
@@ -164,6 +179,72 @@ def _build_mitigation_dataframes(
             ["source ID", "target ID"]
         )
     return mitigations_df, techniques_addressed_df
+
+
+def _build_case_study_dataframes(
+    atlas_data: schemas.AtlasExport,
+    atlas_url: str,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    case_study_rows = []
+    techniques_used_rows = []
+
+    tactic_name_by_id = {
+        tactic.id: tactic.name for tactic in atlas_data.tactics.values()
+    }
+
+    for case_study in sorted(atlas_data.case_studies.values(), key=lambda x: x.id):
+        case_study_rows.append(
+            {
+                "ID": case_study.id,
+                "STIX ID": _stix_id("campaign", case_study.uuid),
+                "name": case_study.name,
+                "description": case_study.description,
+                "url": _atlas_object_url(atlas_url, case_study.id),
+                "created": _format_date(case_study.created_date),
+                "last modified": _format_date(case_study.modified_date),
+                "type": case_study.type.value,
+                "actor": case_study.actor,
+                "target": case_study.target,
+                "reporter": case_study.reporter or "",
+                "date": _format_case_study_date(
+                    case_study.date, case_study.date_granularity
+                ),
+                "date granularity": case_study.date_granularity.value,
+                "references": _format_references(case_study.references),
+            }
+        )
+
+        employs = atlas_data.relationships.get(case_study.id, {}).get(
+            AtlasRelationshipType.EMPLOYS, []
+        )
+        for rel in sorted(employs, key=lambda x: (x.position or 0, x.step_id or "")):
+            technique = atlas_data.techniques.get(rel.target)
+            techniques_used_rows.append(
+                {
+                    "case study ID": case_study.id,
+                    "case study name": case_study.name,
+                    "step ID": rel.step_id or "",
+                    "source type": "case-study",
+                    "source ID": case_study.id,
+                    "source name": case_study.name,
+                    "target technique ID": rel.target,
+                    "target technique name": technique.name if technique else "",
+                    "tactic ID": rel.tactic or "",
+                    "tactic name": tactic_name_by_id.get(rel.tactic, "")
+                    if rel.tactic
+                    else "",
+                    "description": rel.description or "",
+                    "leads to": ", ".join(rel.leads_to or []),
+                }
+            )
+
+    case_studies_df = pd.DataFrame(case_study_rows)
+    techniques_used_df = pd.DataFrame(techniques_used_rows)
+    if not techniques_used_df.empty:
+        techniques_used_df = techniques_used_df.sort_values(
+            ["case study ID", "step ID", "target technique ID"]
+        )
+    return case_studies_df, techniques_used_df
 
 
 def _build_matrix_df(atlas_data: schemas.AtlasExport) -> pd.DataFrame:
@@ -343,6 +424,9 @@ def export_to_excel(
     mitigations_df, techniques_addressed_df = _build_mitigation_dataframes(
         atlas_data, atlas_url
     )
+    case_studies_df, techniques_used_df = _build_case_study_dataframes(
+        atlas_data, atlas_url
+    )
     matrix_df = _build_matrix_df(atlas_data)
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -352,6 +436,7 @@ def export_to_excel(
         "techniques": output_dir / f"{prefix}-techniques.xlsx",
         "tactics": output_dir / f"{prefix}-tactics.xlsx",
         "mitigations": output_dir / f"{prefix}-mitigations.xlsx",
+        "case_studies": output_dir / f"{prefix}-case-studies.xlsx",
         "matrices": output_dir / f"{prefix}-matrices.xlsx",
     }
 
@@ -361,6 +446,7 @@ def export_to_excel(
             ("techniques", techniques_df),
             ("tactics", tactics_df),
             ("mitigations", mitigations_df),
+            ("case studies", case_studies_df),
             ("matrix", matrix_df),
         ],
     )
@@ -371,6 +457,13 @@ def export_to_excel(
         [
             ("mitigations", mitigations_df),
             ("techniques addressed", techniques_addressed_df),
+        ],
+    )
+    _write_workbook(
+        outputs["case_studies"],
+        [
+            ("case studies", case_studies_df),
+            ("techniques used", techniques_used_df),
         ],
     )
     _write_workbook(outputs["matrices"], [("matrix", matrix_df)])

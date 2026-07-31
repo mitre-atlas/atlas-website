@@ -5,7 +5,7 @@ collection:
   references: []
   created-date: '2020-10-23'
   modified-date: '2026-05-27'
-  version: '2026.06'
+  version: '2026.07'
   id: ATLAS-collection
   uuid: 7a735cfc-0469-5d8b-b11f-d014be33394e
   object-type: collection
@@ -237,8 +237,8 @@ tactics:
 
 
       Collection consists of techniques adversaries may use to gather information
-      and the sources information is collected from that are relevant to following
-      through on the adversary''s objectives.
+      and identify sources from which relevant information can be collected to further
+      their objectives.
 
       Frequently, the next goal after collecting data is to steal (exfiltrate) the
       AI artifacts, or use the collected information to stage future operations.
@@ -322,7 +322,8 @@ tactics:
 
       - user account with admin-like access
 
-      - user accounts with access to specific system or perform specific function
+      - user accounts with access to a specific system or permission to perform a
+      specific function
 
 
       These techniques often overlap with Persistence techniques, as OS features that
@@ -411,7 +412,7 @@ techniques:
       Knowledge of this underlying architecture allows the adversary to craft more
       realistic proxy models ([Create Proxy AI Model](/techniques/AML.T0005)).
 
-      An adversary can search these resources for publications for authors employed
+      An adversary can search these resources for publications by authors employed
       at the victim organization.
 
 
@@ -462,13 +463,16 @@ techniques:
       Pre-print repositories also serve as a central location to share papers that
       have been accepted to journals.
 
-      Searching pre-print repositories  provide adversaries with a relatively up-to-date
+      Searching pre-print repositories  provides adversaries with a relatively up-to-date
       view of what researchers in the victim organization are working on.'
     references: []
     created-date: '2021-05-13'
     modified-date: '2026-05-27'
     platforms:
     - Enterprise
+    attack-reference:
+      id: T1596
+      url: https://attack.mitre.org/techniques/T1596/
     id: AML.T0000.001
     maturity: Demonstrated
     uuid: 02ea7626-0eec-5a4b-98ff-b3f21733b783
@@ -479,7 +483,7 @@ techniques:
       often have blogs that highlight their use of artificial intelligence and its
       application to the organization''s unique problems.
 
-      Individual researchers also frequently document their work in blogposts.
+      Individual researchers also frequently document their work in blog posts.
 
       An adversary may search for posts made by the target victim organization or
       its employees.
@@ -499,6 +503,9 @@ techniques:
     modified-date: '2026-05-27'
     platforms:
     - Enterprise
+    attack-reference:
+      id: T1596
+      url: https://attack.mitre.org/techniques/T1596/
     id: AML.T0000.002
     maturity: Feasible
     uuid: 88a794e9-fa8c-5185-a677-bf476cd8890b
@@ -550,8 +557,8 @@ techniques:
       be used to directly [Craft Adversarial Data](/techniques/AML.T0043).
 
       Acquiring some artifacts requires registration (providing user details such
-      email/name), AWS keys, or written requests, and may require the adversary to
-      [Establish Accounts](/techniques/AML.T0021).
+      as an email address or name), AWS keys, or written requests, and may require
+      the adversary to [Establish Accounts](/techniques/AML.T0021).
 
 
       Artifacts might be hosted on victim-controlled infrastructure, providing the
@@ -629,7 +636,7 @@ techniques:
       files to understand agent capabilities, gain unauthorized access to tools and
       data sources, or identify credentials for further attacks. Configuration files
       define what tools an agent can use, credentials for external services, system
-      prompts, and behavioral settings, making valuable resources for adversaries
+      prompts, and behavioral settings, making them valuable resources for adversaries
       targeting AI agent deployments.
 
 
@@ -657,10 +664,8 @@ techniques:
       runtime behavior, often environment variables or framework-specific configs.'
     references: []
     created-date: '2026-04-22'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
-    - Predictive AI
-    - Generative AI
     - Agentic AI
     id: AML.T0002.002
     maturity: Demonstrated
@@ -775,7 +780,7 @@ techniques:
       will mimic the behavior and performance of the target model.
 
 
-      A replicated model that closely mimic''s the target model is a valuable resource
+      A replicated model that closely mimics the target model is a valuable resource
       in staging the attack.
 
       The adversary can use the replicated model to [Craft Adversarial Data](/techniques/AML.T0043)
@@ -950,15 +955,12 @@ techniques:
       Large AI datasets are often distributed as a list of URLs to individual datapoints.
       Adversaries may acquire expired domains that are included in these datasets
       and replace individual datapoints with poisoned examples ([Publish Poisoned
-      Datasets](/techniques/AML.T0019)).'
+      AI Artifacts: Datasets](/techniques/AML.T0115.000)).'
     references: []
     created-date: '2025-03-12'
     modified-date: '2026-05-27'
     platforms:
     - Enterprise
-    attack-reference:
-      id: T1583.001
-      url: https://attack.mitre.org/techniques/T1583/001/
     id: AML.T0008.002
     maturity: Demonstrated
     uuid: 88ed7595-57b1-547d-8de1-436641bda943
@@ -992,11 +994,11 @@ techniques:
 
 
       Once acquired, the serverless runtime environment can be leveraged to either
-      respond directly to infected machines or to Proxy traffic to an adversary-owned
+      respond directly to infected machines or to proxy traffic to an adversary-owned
       command and control server. As traffic generated by these functions will appear
       to come from subdomains of common cloud providers, it may be difficult to distinguish
       from ordinary traffic to these providers. This can be used to bypass a Content
-      Security Policy which prevent retrieving content from arbitrary locations.'
+      Security Policy that prevent retrieving content from arbitrary locations.'
     references: []
     created-date: '2025-04-15'
     modified-date: '2026-05-27'
@@ -1024,12 +1026,12 @@ techniques:
 
       Commercial AI service proxies distribute traffic from different accounts and
       various cloud platforms. The mix of traffic can make malicious activity difficult
-      to detect and block [[anthropic]].
+      to detect and block[[anthropic]].
 
 
       Malicious actors conduct [LLM Jacking](https://atlas.mitre.org/studies/AML.CS0030)
-      attacks to gain access to victim accounts which they resell access to in their
-      proxy services [[sysdig]].'
+      attacks to gain access to victim accounts which they then resell access to in
+      their proxy services[[sysdig]].'
     references:
     - id: anthropic
       title: Detecting and preventing distillation attacks \ Anthropic
@@ -1041,6 +1043,9 @@ techniques:
     modified-date: '2026-05-27'
     platforms:
     - Enterprise
+    attack-reference:
+      id: T1583.007
+      url: https://attack.mitre.org/techniques/T1583/007/
     id: AML.T0008.005
     maturity: Realized
     uuid: 647ac4ac-b2bc-53f7-ab83-81f421a1f0b5
@@ -1051,8 +1056,8 @@ techniques:
       the unique portions of the AI supply chain.
 
       This could include [Hardware](/techniques/AML.T0010.000), [Data](/techniques/AML.T0010.002)
-      and its annotations, parts of the AI [AI Software](/techniques/AML.T0010.001)
-      stack, or the [Model](/techniques/AML.T0010.003) itself.
+      and its annotations, parts of the [AI Software](/techniques/AML.T0010.001) stack,
+      or the [Model](/techniques/AML.T0010.003) itself.
 
       In some instances the attacker will need secondary access to fully carry out
       an attack using compromised components of the supply chain.'
@@ -1099,7 +1104,7 @@ techniques:
       Adversaries may compromise legitimate packages [[aws]] or publish malicious
       software to a namesquatted location [[pytorch]]. They may target package names
       that are hallucinated by large language models [[trendmicro]] (see: Publish
-      Hallucinated Entities). They may also perform a [AI Supply Chain Rug Pull](/techniques/AML.T0109)
+      Hallucinated Entities). They may also perform an [AI Supply Chain Rug Pull](/techniques/AML.T0109)
       in which they first publish a legitimate package and then publish a malicious
       version once they reach a critical mass of users.'
     references:
@@ -1165,10 +1170,9 @@ techniques:
     object-type: technique
   AML.T0010.003:
     name: Model
-    description: 'AI-enabled systems often rely on open sourced models in various
-      ways.
+    description: 'AI-enabled systems often rely on open-source models in various ways.
 
-      Most commonly, the victim organization may be using these models for fine tuning.
+      Most commonly, the victim organization may be using these models for fine-tuning.
 
       These models will be downloaded from an external source and then used as the
       base for the model as it is tuned on a smaller, private dataset.
@@ -1217,15 +1221,16 @@ techniques:
       victim''s AI supply chain. Tools add capabilities to AI agents, allowing them
       to interact with other services, connect to data sources, access internet resources,
       run system tools, and execute code. They are an attractive target for adversaries
-      because compromising an AI agent can provide them with broad accesses and permissions
+      because compromising an AI agent can provide them with broad access and permissions
       on the victim''s system via the agent''s other tools.
 
 
-      Poisoned agent tools (See [AI Agent Tool Poisoning](/techniques/AML.T0110))
-      can contain malicious code or [LLM Prompt Injection](/techniques/AML.T0051)s
-      that manipulate the agent''s behavior and even modify how other tools are called.
-      Adversaries have successfully used a poisoned MCP server to exfiltrate private
-      user data [[koi]].
+      Poisoned AI agent tools may contain malicious definitions or instructions, hidden
+      executable logic, or deliberately poisoned runtime responses (See [AI Agent
+      Tool Poisoning](/techniques/AML.T0110)). These changes may manipulate the agent''s
+      behavior, modify how other tools are invoked, introduce hidden side effects,
+      or provide unauthorized access to data and services. Adversaries have successfully
+      used a poisoned MCP server to exfiltrate private user data [[koi]].
 
 
       Agent tools have exploded in popularity, with thousands of MCP servers available
@@ -1252,10 +1257,8 @@ techniques:
       title: Remote MCP Servers
       url: https://mcpservers.org/remote-mcp-servers
     created-date: '2026-03-30'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
-    - Predictive AI
-    - Generative AI
     - Agentic AI
     id: AML.T0010.005
     maturity: Realized
@@ -1263,47 +1266,59 @@ techniques:
     object-type: technique
   AML.T0011:
     name: User Execution
-    description: 'An adversary may rely upon specific actions by a user in order to
-      gain execution.
+    description: 'An adversary may rely upon a user to load, execute, interpret, or
+      otherwise use a malicious or unsafe artifact. In AI systems, user execution
+      may include loading a model or causing an inference runtime to process executable
+      or behavior-shaping components bundled with an AI artifact. The resulting effect
+      may include host code execution or malicious AI behavior.
+
 
       Users may inadvertently execute unsafe code introduced via [AI Supply Chain
       Compromise](/techniques/AML.T0010).
+
 
       Users may be subjected to social engineering to get them to execute malicious
       code by, for example, opening a malicious document file or link.'
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Predictive AI
     - Generative AI
     - Agentic AI
     - Enterprise
-    attack-reference:
-      id: T1204
-      url: https://attack.mitre.org/techniques/T1204/
     id: AML.T0011
     maturity: Realized
     uuid: aac7fa8d-c943-5fec-a01f-cd4d14184395
     object-type: technique
   AML.T0011.000:
     name: Unsafe AI Artifacts
-    description: 'Adversaries may develop unsafe AI artifacts that when executed have
-      a deleterious effect.
-
-      The adversary can use this technique to establish persistent access to systems.
-
-      These models may be introduced via a [AI Supply Chain Compromise](/techniques/AML.T0010).
+    description: 'Adversaries may develop new AI artifacts or manipulate existing
+      AI artifacts that have a deleterious effect when loaded, executed, interpreted,
+      or used for inference by a victim. The unsafe artifacts may continue to work
+      as expected from the victim''s perspective.
 
 
-      Serialization of models is a popular technique for model storage, transfer,
-      and loading.
+      Unsafe AI artifacts may include serialized models, model packages, and bundled
+      components such as prompt or chat templates, tokenizer metadata, configuration,
+      pre-processing logic, post-processing logic, or other executable or behavior-shaping
+      metadata.
 
-      However, this format without proper checking presents an opportunity for code
-      execution.'
+
+      An unsafe artifact may exploit deserialization or another software vulnerability
+      to execute code on the host. However, exploitation of a software vulnerability
+      is not required. An artifact may instead use functionality intentionally supported
+      by an AI runtime to alter model context, model outputs, safety behavior, or
+      agent actions.
+
+
+      Adversaries may introduce unsafe artifacts through an [AI Supply Chain Compromise](/techniques/AML.T0010).
+      Execution may occur when a user loads the artifact, starts an inference runtime,
+      submits an inference request, or otherwise causes the artifact''s bundled logic
+      to be processed.'
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Predictive AI
     - Generative AI
@@ -1333,17 +1348,18 @@ techniques:
     object-type: technique
   AML.T0011.002:
     name: Poisoned AI Agent Tool
-    description: 'A victim may invoke a poisoned tool when interacting with their
-      AI agent. A poisoned tool may execute an [LLM Prompt Injection](/techniques/AML.T0051)
-      or perform [AI Agent Tool Invocation](/techniques/AML.T0053).
+    description: 'A victim may invoke a poisoned tool when interacting with an AI
+      agent. Invocation may expose the agent to poisoned definitions or responses,
+      execute malicious tool implementation logic, or cause the agent to invoke additional
+      tools. Poisoned tools may be introduced through AI software, installed packages,
+      skills, or connections to remotely hosted services.
 
 
       Poisoned AI agent tools may be introduced into the victim''s environment via
-      [AI Software](/techniques/AML.T0010.001), or the user may configure their agent
-      to connect to remote tools.'
+      [AI Supply Chain Compromise: AI Agent Tool](/techniques/AML.T0010.005).'
     references: []
     created-date: '2026-01-30'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Agentic AI
     id: AML.T0011.002
@@ -1364,7 +1380,7 @@ techniques:
       There are many ways an adversary can leverage malicious links to gain access
       to a victim system via an AI system. For example, an AI Agent that is configured
       to not validate website origin headers will accept connections from any website,
-      allowing adversaries the ability to get around previously inaccessible network.'
+      allowing adversaries to access otherwise inaccessible networks.'
     references: []
     created-date: '2026-01-30'
     modified-date: '2026-05-27'
@@ -1408,7 +1424,7 @@ techniques:
     description: 'Adversaries may discover the ontology of an AI model''s output space,
       for example, the types of objects a model can detect.
 
-      The adversary may discovery the ontology by repeated queries to the model, forcing
+      The adversary may discover the ontology by repeated queries to the model, forcing
       it to enumerate its output space.
 
       Or the ontology may be discovered in a configuration file or in documentation
@@ -1430,7 +1446,7 @@ techniques:
     object-type: technique
   AML.T0014:
     name: Discover AI Model Family
-    description: 'Adversaries may discover the general family of model.
+    description: 'Adversaries may discover the general family of a model.
 
       General information about the model may be revealed in documentation, or the
       adversary may use carefully constructed examples and analyze the model''s responses
@@ -1544,9 +1560,10 @@ techniques:
     description: 'Adversaries may search for and obtain generative AI models or tools,
       such as large language models (LLMs), to assist them in various steps of their
       operation. Generative AI can be used in a variety of malicious ways, such as
-      to generating malware, to [Generate Deepfakes](/techniques/AML.T0088), to [Generate
-      Malicious Commands](/techniques/AML.T0102), for [Retrieval Content Crafting](/techniques/AML.T0066),
-      or to generate [Phishing](/techniques/AML.T0052) content.
+      to {{ create_internal_link(undefined) }}, to [Generate Deepfakes](/techniques/AML.T0088),
+      to [Generate Malicious Commands](/techniques/AML.T0102), for [Retrieval Content
+      Crafting](/techniques/AML.T0066), or to generate [Phishing](/techniques/AML.T0052)
+      content.
 
 
       Adversaries may obtain open source models and serve them locally using frameworks
@@ -1641,14 +1658,15 @@ techniques:
     object-type: technique
   AML.T0018:
     name: Manipulate AI Model
-    description: Adversaries may directly manipulate an AI model to change its behavior
-      or introduce malicious code. Manipulating a model gives the adversary a persistent
-      change in the system. This can include poisoning the model by changing its weights,
-      modifying the model architecture to change its behavior, and embedding malware
-      which may be executed when the model is loaded.
+    description: "Adversaries may manipulate an AI model artifact or its bundled components\
+      \ to change AI system behavior, introduce malicious code, or establish persistent\
+      \ malicious functionality. This may include modifying model weights, model architecture,\
+      \ or prompt-construction logic.  \n\nManipulated artifacts may retain expected\
+      \ behavior under ordinary conditions while activating malicious behavior only\
+      \ for selected inputs, contexts, or deployment conditions."
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Predictive AI
     - Generative AI
@@ -1723,46 +1741,45 @@ techniques:
     maturity: Realized
     uuid: 55ad0ff6-ab08-5ea5-8204-aaa28578d805
     object-type: technique
-  AML.T0019:
-    name: Publish Poisoned Datasets
-    description: 'Adversaries may [Poison Training Data](/techniques/AML.T0020) and
-      publish it to a public location.
-
-      The poisoned dataset may be a novel dataset or a poisoned variant of an existing
-      open source dataset.
-
-      This data may be introduced to a victim system via [AI Supply Chain Compromise](/techniques/AML.T0010).'
+  AML.T0018.003:
+    name: Modify Prompt Construction Logic
+    description: Adversaries may modify templates, role delimiters, embedded system
+      instructions, tokenizer settings, tool-call formatting, or other artifact-bundled
+      logic that constructs the context sent to an AI model. Model file formats such
+      as GGUF can package this logic alongside model weights in a single distributable
+      artifact. A compatible inference runtime may interpret the modified logic during
+      future inference requests, enabling persistent covert instruction injection,
+      altered instruction precedence, redirected tool use, or manipulated model output
+      without changing model weights.
     references: []
-    created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
     platforms:
-    - Predictive AI
     - Generative AI
     - Agentic AI
-    id: AML.T0019
+    id: AML.T0018.003
     maturity: Demonstrated
-    uuid: c38896b2-974c-5ed5-adeb-c2477b311353
+    uuid: 426f6a20-2362-5c03-97cb-84019ca850f5
     object-type: technique
   AML.T0020:
-    name: Poison Training Data
-    description: 'Adversaries may attempt to poison datasets used by an AI model by
-      modifying the underlying data or its labels.
-
-      This allows the adversary to embed vulnerabilities in AI models trained on the
-      data that may not be easily detectable.
-
-      Data poisoning attacks may or may not require modifying the labels.
-
-      The embedded vulnerability is activated at a later time by data samples with
-      an [Insert Backdoor Trigger](/techniques/AML.T0043.004)
+    name: Training Data Poisoning
+    description: 'Adversaries may manipulate data used for training or fine-tuning
+      an AI model to influence the resulting model''s behavior. Adversaries may add,
+      remove, or modify data samples; alter labels or annotations; or manipulate feedback
+      and data-collection processes.
 
 
-      Poisoned data can be introduced via [AI Supply Chain Compromise](/techniques/AML.T0010)
-      or the data may be poisoned after the adversary gains [Initial Access](/tactics/AML.TA0004)
-      to the system.'
+      Training data poisoning may cause targeted errors, introduce biased or unsafe
+      behavior, degrade model performance, or embed backdoors activated by specific
+      inputs. The resulting behavior may persist in the trained model after the poisoned
+      data is no longer accessible.
+
+
+      Adversaries may poison data directly after gaining access to a training pipeline,
+      or poisoned datasets may be introduced through [AI Supply Chain Compromise](/techniques/AML.T0010).'
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Predictive AI
     - Generative AI
@@ -1814,7 +1831,7 @@ techniques:
     - Generative AI
     - Agentic AI
     id: AML.T0024
-    maturity: Feasible
+    maturity: Realized
     uuid: 85fed2c6-e2df-595e-88bf-f356a17cec21
     object-type: technique
   AML.T0024.000:
@@ -1884,7 +1901,7 @@ techniques:
     - Generative AI
     - Agentic AI
     id: AML.T0024.002
-    maturity: Feasible
+    maturity: Realized
     uuid: 3f567912-629a-5e0b-ab0c-0102977c2d6c
     object-type: technique
   AML.T0025:
@@ -2238,11 +2255,12 @@ techniques:
       or [Manual Modification](/techniques/AML.T0043.003).
 
 
-      The adversary may [Verify Attack](/techniques/AML.T0042) their approach works
-      if they have white-box or inference API access to the model.
+      The adversary may perform [Verify Attack](/techniques/AML.T0042) to confirm
+      that their approach works if they have white-box or inference API access to
+      the model.
 
-      This allows the adversary to gain confidence their attack is effective "live"
-      environment where their attack may be noticed.
+      This allows the adversary to gain confidence their attack is effective in a
+      live environment where their attack may be noticed.
 
       They can then use the attack at a later time to accomplish their goals.
 
@@ -2366,8 +2384,8 @@ techniques:
       parameters, and class ontology.
 
       They may exfiltrate the model to [Craft Adversarial Data](/techniques/AML.T0043)
-      and [Verify Attack](/techniques/AML.T0042) in an offline where it is hard to
-      detect their behavior.'
+      and [Verify Attack](/techniques/AML.T0042) in an offline environment where it
+      is hard to detect their behavior.'
     references: []
     created-date: '2021-05-13'
     modified-date: '2026-05-27'
@@ -2611,13 +2629,13 @@ techniques:
       either to leverage the LLM to generate harmful content or to gain a foothold
       on the system and lead to further effects.
 
-      Prompts may also be injected indirectly when as part of its normal operation
-      the LLM ingests the malicious prompt from another data source ([Indirect](/techniques/AML.T0051.001)).
-      This type of injection can be used by the adversary to a foothold on the system
-      or to target the user of the LLM.
+      Prompts may also be injected indirectly when the LLM, as part of its normal
+      operation, ingests the malicious prompt from another data source ([Indirect](/techniques/AML.T0051.001)).
+      This type of injection can be used by the adversary to gain a foothold on the
+      system or to target the user of the LLM.
 
-      Malicious prompts may also be [Triggered](/techniques/AML.T0051.002) user actions
-      or system events.'
+      Malicious prompts may also be [Triggered](/techniques/AML.T0051.002) by user
+      actions or system events.'
     references: []
     created-date: '2023-10-25'
     modified-date: '2026-05-27'
@@ -2645,9 +2663,8 @@ techniques:
     object-type: technique
   AML.T0051.001:
     name: Indirect
-    description: 'An adversary may inject prompts indirectly via separate data channel
-      ingested by the LLM such as include text or multimedia pulled from databases
-      or websites.
+    description: 'An adversary may inject prompts indirectly via a separate data channel
+      ingested by the LLM, such as text or multimedia pulled from databases or websites.
 
       These malicious prompts may be hidden or obfuscated from the user. This type
       of injection may be used by the adversary to gain a foothold in the system or
@@ -2852,12 +2869,19 @@ techniques:
       execute arbitrary instructions.
 
 
+      AI agents may also invoke applications indirectly through operating-system mechanisms
+      such as deep links, app-intent URIs, universal links, or redirect chains. This
+      can cause an installed application to open or perform an application-specific
+      action even when that application was not selected as a direct agent tool, potentially
+      avoiding normal user-confirmation workflows.
+
+
       AI agents may be configured to have access to tools that are not directly accessible
       by users. Adversaries may abuse this to gain access to tools they otherwise
       wouldn''t be able to use.'
     references: []
     created-date: '2023-10-25'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Agentic AI
     id: AML.T0053
@@ -2933,7 +2957,7 @@ techniques:
 
 
       Adversaries may also directly manipulate a model''s weights, or modify or remove
-      parts of a model to create a jailbroken of "uncensored" variant of the target
+      parts of a model to create a jailbroken or "uncensored" variant of the target
       model. This is applicable to open-source models, or cases where the adversary
       gains full access to the target model. Approaches include fine-tuning to reduce
       refusals [[single-direction]], targeted model editing [[rome]], addition of
@@ -3025,8 +3049,9 @@ techniques:
   AML.T0056:
     name: Extract LLM System Prompt
     description: 'Adversaries may attempt to extract a large language model''s (LLM)
-      system prompt. This can be done via prompt injection to induce the model to
-      reveal its own system prompt or may be extracted from a configuration file.
+      system prompt. Adversaries achieve this via prompt injection that induces the
+      model to reveal its system prompt, or they may extract it from a configuration
+      file.
 
 
       System prompts can be a portion of an AI provider''s competitive advantage and
@@ -3060,23 +3085,6 @@ techniques:
     maturity: Demonstrated
     uuid: 0c8eca96-8d33-5fd4-a9c0-51db41128b89
     object-type: technique
-  AML.T0058:
-    name: Publish Poisoned Models
-    description: Adversaries may publish a poisoned model to a public location such
-      as a model registry or code repository. The poisoned model may be a novel model
-      or a poisoned variant of an existing open-source model. This model may be introduced
-      to a victim system via [AI Supply Chain Compromise](/techniques/AML.T0010).
-    references: []
-    created-date: '2025-03-12'
-    modified-date: '2026-05-27'
-    platforms:
-    - Predictive AI
-    - Generative AI
-    - Agentic AI
-    id: AML.T0058
-    maturity: Realized
-    uuid: d4c7f78e-4609-555c-a2eb-3d344dab3309
-    object-type: technique
   AML.T0059:
     name: Erode Dataset Integrity
     description: Adversaries may poison or manipulate portions of a dataset to reduce
@@ -3096,10 +3104,11 @@ techniques:
   AML.T0060:
     name: Publish Hallucinated Entities
     description: Adversaries may create an entity they control, such as a software
-      package, website, or email address to a source hallucinated by an LLM. The hallucinations
-      may take the form of package names commands, URLs, company names, or email addresses
-      that point the victim to the entity controlled by the adversary. When the victim
-      interacts with the adversary-controlled entity, the attack can proceed.
+      package, website, or email address corresponding to a source hallucinated by
+      an LLM. The hallucinations may take the form of package names, commands, URLs,
+      company names, or email addresses that point the victim to the entity controlled
+      by the adversary. When the victim interacts with the adversary-controlled entity,
+      the attack can proceed.
     references: []
     created-date: '2025-03-12'
     modified-date: '2026-05-27'
@@ -3259,9 +3268,9 @@ techniques:
   AML.T0067.000:
     name: Citations
     description: Adversaries may manipulate the citations provided in an AI system's
-      response, in order to make it appear trustworthy. Variants include citing a
-      providing the wrong citation, making up a new citation, or providing the right
-      citation but for adversary-provided data.
+      response, in order to make it appear trustworthy. Variants include providing
+      the wrong citation, making up a new citation, or providing the right citation
+      but for adversary-provided data.
     references: []
     created-date: '2025-03-12'
     modified-date: '2026-05-27'
@@ -3394,7 +3403,7 @@ techniques:
     description: "Adversaries may introduce false entries into a victim's retrieval\
       \ augmented generation (RAG) database. Content designed to be interpreted as\
       \ a document by the large language model (LLM) used in the RAG system is included\
-      \ in a data source being ingested into the RAG database. When RAG entry including\
+      \ in a data source being ingested into the RAG database. When a RAG entry containing\
       \ the false document is retrieved, the LLM is tricked into treating part of\
       \ the retrieved content as a false RAG result. \n\nBy including a false RAG\
       \ document inside of a regular RAG entry, it bypasses data monitoring tools.\
@@ -3457,15 +3466,21 @@ techniques:
     object-type: technique
   AML.T0074:
     name: Masquerading
-    description: Adversaries may attempt to manipulate features of their artifacts
+    description: 'Adversaries may attempt to manipulate features of their artifacts
       to make them appear legitimate or benign to users and/or security tools. Masquerading
       occurs when the name or location of an object, legitimate or malicious, is manipulated
       or abused for the sake of evading defenses and observation. This may include
       manipulating file metadata, tricking users into misidentifying the file type,
       and giving legitimate task or service names.
+
+
+      In public artifact registries such as HuggingFace, adversaries may reclaim or
+      recreate a previously trusted namespace or path after it is deleted or renamed.
+      Systems that resolve stale, unpinned identifiers may then retrieve adversary-controlled
+      artifacts that appear to be the originally trusted artifact.'
     references: []
     created-date: '2025-04-14'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Enterprise
     attack-reference:
@@ -3590,18 +3605,15 @@ techniques:
 
 
       Adversaries may stage a variety of AI Artifacts including poisoned datasets
-      ([Publish Poisoned Datasets](/techniques/AML.T0019), malicious models ([Publish
-      Poisoned Models](/techniques/AML.T0058), and prompt injections. They may target
-      names of legitimate companies or products, engage in typosquatting, or use hallucinated
-      entities ([Discover LLM Hallucinations](/techniques/AML.T0062)).'
+      ([Publish Poisoned AI Artifacts: Datasets](/techniques/AML.T0115.000), malicious
+      models ([Publish Poisoned AI Artifacts: Models](/techniques/AML.T0115.001),
+      and prompt injections. They may target names of legitimate companies or products,
+      engage in typosquatting, or use hallucinated entities ([Discover LLM Hallucinations](/techniques/AML.T0062)).'
     references: []
     created-date: '2025-04-16'
     modified-date: '2026-05-27'
     platforms:
     - Enterprise
-    attack-reference:
-      id: T1608
-      url: https://attack.mitre.org/techniques/T1608/
     id: AML.T0079
     maturity: Realized
     uuid: fc992978-dd6d-58dc-861f-c3429a75e3ee
@@ -3614,7 +3626,7 @@ techniques:
       of the target agent and further their goals.
 
 
-      Context poisoning can be accomplished by prompting the an LLM to add instructions
+      Context poisoning can be accomplished by prompting the LLM to add instructions
       or preferences to memory (See [Memory](/techniques/AML.T0080.000)) or by simply
       prompting an LLM that uses prior messages in a thread as part of its context
       (See [Thread](/techniques/AML.T0080.001)).'
@@ -3631,8 +3643,8 @@ techniques:
   AML.T0080.000:
     name: Memory
     description: "Adversaries may manipulate the memory of a large language model\
-      \ (LLM) in order to persist changes to the LLM to future chat sessions. \n\n\
-      Memory is a common feature in LLMs that allows them to remember information\
+      \ (LLM) in order to persist changes to the LLM across future chat sessions.\
+      \ \n\nMemory is a common feature in LLMs that allows them to remember information\
       \ across chat sessions by utilizing a user-specific database. Because the memory\
       \ is controlled via normal conversations with the user (e.g. \"remember my preference\
       \ for ...\") an adversary can inject memories via Direct or Indirect Prompt\
@@ -3916,10 +3928,10 @@ techniques:
 
       The invoked tool itself may be legitimate but invoked by an adversary via [LLM
       Prompt Injection](/techniques/AML.T0051), or the tool may be malicious (See
-      [AI Agent Tool Poisoning](/techniques/AML.T0110).
+      [AI Agent Tool Poisoning](/techniques/AML.T0110)).
 
 
-      [AI Agent Tool Poisoning](/techniques/AML.T0110) can also be used manipulate
+      [AI Agent Tool Poisoning](/techniques/AML.T0110) can also be used to manipulate
       the inputs and destination of a separate legitimate tool, invoked through normal
       usage by the victim.'
     references: []
@@ -4352,18 +4364,30 @@ techniques:
     object-type: technique
   AML.T0099:
     name: AI Agent Tool Data Poisoning
-    description: 'Adversaries may place malicious content on a victim''s system where
-      it can be retrieved by an AI Agent Tool. This may be accomplished by placing
-      documents in a location that will be ingested by a service the AI agent has
-      associated tools for.
+    description: 'Adversaries may manipulate data in a victim-controlled, trusted,
+      or connected data source that is accessible through an AI agent tool. Poisoned
+      data may be placed in document repositories, databases, source-code repositories,
+      knowledge bases, search indexes, enterprise applications, or third-party data
+      services used by the agent.
 
 
-      The content may be targeted such that it would often be retrieved by common
-      queries. The adversary''s content may include false or misleading information.
-      It may also include prompt injections with malicious instructions.'
+      The content may be crafted to appear in common tool queries or retrieval operations.
+      It may contain false or misleading information or malicious instructions intended
+      to produce an [LLM Prompt Injection: Indirect](/techniques/AML.T0051.001) when
+      retrieved.
+
+
+      This technique concerns manipulation of a data source that an agent tool treats
+      as a source of information. When the adversary introduces the content through
+      a victim-controlled public-facing application, the activity may also constitute
+      [Prompt Infiltration via Public-Facing Application](/techniques/AML.T0093).
+      Content retrieved directly from an adversary-controlled website may instead
+      constitute [Drive-by Compromise](/techniques/AML.T0078). A malicious or compromised
+      tool that deliberately alters its own runtime result constitutes [AI Agent Tool
+      Poisoning: Runtime Response](/techniques/AML.T0110.002).'
     references: []
     created-date: '2025-11-25'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Agentic AI
     id: AML.T0099
@@ -4406,7 +4430,7 @@ techniques:
     name: Generate Malicious Commands
     description: 'Adversaries may use large language models (LLMs) to dynamically
       generate malicious commands from natural language. Dynamically generated commands
-      may be harder detect as the attack signature is constantly changing. AI-generated
+      may be harder to detect as the attack signature is constantly changing. AI-generated
       commands may also allow adversaries to more rapidly adapt to different environments
       and adjust their tactics.
 
@@ -4454,33 +4478,6 @@ techniques:
     id: AML.T0103
     maturity: Realized
     uuid: f8d5be4e-b5f8-5b61-bdc9-3a8818327210
-    object-type: technique
-  AML.T0104:
-    name: Publish Poisoned AI Agent Tool
-    description: 'Adversaries may create and publish poisoned AI agent tools. Poisoned
-      tools may contain an [LLM Prompt Injection](/techniques/AML.T0051), which can
-      lead to a variety of impacts.
-
-
-      Tools may be published to open source version control repositories (e.g. GitHub,
-      GitLab), to package registries (e.g. npm), or to repositories specifically designed
-      for sharing tools (e.g. OpenClaw Hub). These registries may be largely unregulated
-      and may contain many poisoned tools [[opensourcemalware]]. Tools may also be
-      published as remotely hosted servers [[mcpservers]].'
-    references:
-    - id: mcpservers
-      title: Remote MCP Servers | Awesome MCP Servers
-      url: https://mcpservers.org/remote-mcp-servers
-    - id: opensourcemalware
-      title: ClawdBot Skills Just Ganked Your Crypto | OpenSourceMalware
-      url: https://opensourcemalware.com/blog/clawdbot-skills-ganked-your-crypto
-    created-date: '2026-01-30'
-    modified-date: '2026-05-27'
-    platforms:
-    - Agentic AI
-    id: AML.T0104
-    maturity: Realized
-    uuid: 04842d98-bb69-586e-9765-6ff1f56ef722
     object-type: technique
   AML.T0105:
     name: Escape to Host
@@ -4580,13 +4577,9 @@ techniques:
       defenses and be more likely to achieve [Initial Access](/tactics/AML.TA0004).
 
 
-      Adversaries may publish malicious AI components via [Publish Poisoned Models](/techniques/AML.T0058),
-      [Publish Poisoned Datasets](/techniques/AML.T0019), or [Publish Poisoned AI
-      Agent Tool](/techniques/AML.T0104).
-
-
-      Adversaries may use other techniques (See [AI Supply Chain Reputation Inflation](/techniques/AML.T0111))
-      to gain user trust and increase adoption before performing the rug pull.'
+      Adversaries may [Publish Poisoned AI Artifacts](/techniques/AML.T0115), then
+      attempt to gain user trust and increase adoption before performing the rug pull
+      (See [AI Supply Chain Reputation Inflation](/techniques/AML.T0111)).'
     references: []
     created-date: '2026-03-30'
     modified-date: '2026-05-27'
@@ -4600,25 +4593,167 @@ techniques:
     object-type: technique
   AML.T0110:
     name: AI Agent Tool Poisoning
-    description: 'Adversaries may achieve persistence by poisoning tools used by AI
-      agents including built-in tools or tools available to the agent via Model Context
-      Protocol (MCP) connections. This involves compromising benign tools already
-      integrated into the agent''s environment.
+    description: 'Adversaries may poison tools used by AI agents by introducing or
+      modifying malicious content or behavior in a tool''s model-visible definition,
+      executable implementation, or runtime responses. Tools may include built-in
+      integrations, locally installed packages, remotely hosted services, Model Context
+      Protocol (MCP) servers and tools, and agent skills or similar capability packages.
 
 
-      By altering tool behavior such as modifying parameters or descriptions, injecting
-      hidden logic, or redirecting outputs, attackers can maintain long-term influence
-      over the agent''s actions, decisions, or external interactions. Poisoned tools
-      may silently exfiltrate data, execute unauthorized commands, or manipulate downstream
-      processes without raising suspicion.'
+      A poisoned tool is represented or trusted as performing a benign function, but
+      its definition, implementation, or responses cause agent behavior or tool-mediated
+      effects to differ materially from the represented function. Poisoning may be
+      present when a tool is first published, introduced through an [AI Supply Chain
+      Compromise](/techniques/AML.T0010), or added after adoption through an [AI Supply
+      Chain Rug Pull](/techniques/AML.T0109). Once the tool is installed, connected,
+      or otherwise made available to the agent, it may provide the adversary with
+      persistent influence over the agent''s actions and external interactions.
+
+
+      Adversaries may poison a tool''s model-visible semantic interface, including
+      its descriptions, schemas, parameter documentation, annotations, or agent-readable
+      instructions (See [Definition and Instructions](/techniques/AML.T0110.000)).
+      They may introduce hidden executable behavior that changes the effects of otherwise
+      normal tool invocations (See [Implementation](/techniques/AML.T0110.001)). They
+      may also cause a malicious or compromised tool to deliberately return content
+      intended to influence the model''s subsequent reasoning or actions (See [Runtime
+      Response](/techniques/AML.T0110.002)).
+
+
+      Poisoned tools may cause an agent to access sensitive data, alter the inputs
+      or destinations of other tools, execute unauthorized commands, conceal actions
+      from users, or exfiltrate information. Tool poisoning frequently enables other
+      techniques such as [LLM Prompt Injection](/techniques/AML.T0051), [AI Agent
+      Tool Invocation](/techniques/AML.T0053), and [Exfiltration via AI Agent Tool
+      Invocation](/techniques/AML.T0086).
+
+
+      Tool poisoning is distinct from malicious data that a benign tool faithfully
+      retrieves from an external or victim-controlled source (See [AI Agent Tool Data
+      Poisoning](/techniques/AML.T0099) and [LLM Prompt Injection: Indirect](/techniques/AML.T0051.001).
+      Software that merely uses an agent tool package as a delivery vehicle for conventional
+      malware, without subverting the tool''s represented interface or operation,
+      may be better described as a malicious package or software supply-chain compromise
+      rather than AI Agent Tool Poisoning.'
     references: []
     created-date: '2026-03-30'
-    modified-date: '2026-05-27'
+    modified-date: '2026-07-31'
     platforms:
     - Agentic AI
     id: AML.T0110
     maturity: Realized
     uuid: b1b2cc5a-7312-5f26-93d3-8b8ee1baf97d
+    object-type: technique
+  AML.T0110.000:
+    name: Definition and Instructions
+    description: 'Adversaries may poison the model-visible definition or operational
+      instructions of an AI agent tool to manipulate how an agent interprets, selects,
+      or invokes the tool. The poisoned content may be contained in tool descriptions,
+      docstrings, parameter names, help text, input or output schemas, annotations,
+      examples, manifests, skill instruction files, or other static content used to
+      explain a tool''s capabilities to the model.
+
+
+      Malicious instructions in this layer may direct the agent to collect additional
+      data, populate hidden or unnecessary parameters, conceal actions from the user,
+      or invoke other tools. Because an agent may receive a more complete representation
+      of a tool than is shown in the user interface, the model may process malicious
+      instructions that are invisible or only partially visible to a human reviewer[[invariant-tool-poisoning]].
+
+
+      Definition poisoning may also be used for tool shadowing, in which the definition
+      of one malicious tool contains instructions that alter how the agent selects
+      or invokes another trusted tool. The poisoned tool may not need to be invoked
+      for its definition to influence the agent if definitions from multiple connected
+      tools are included in the same model context[[invariant-tool-poisoning]].'
+    references:
+    - id: invariant-tool-poisoning
+      title: 'MCP Security Notification: Tool Poisoning Attacks'
+      url: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
+    - id: mcp-tools
+      title: 'Model Context Protocol Specification: Tools'
+      url: https://modelcontextprotocol.io/specification/2025-06-18/server/tools
+    - id: owasp-tool-poisoning
+      title: MCP Tool Poisoning
+      url: https://owasp.org/www-community/attacks/MCP_Tool_Poisoning
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Agentic AI
+    id: AML.T0110.000
+    maturity: Demonstrated
+    uuid: 44973152-65df-5c42-a03b-d3d255d57dd8
+    object-type: technique
+  AML.T0110.001:
+    name: Implementation
+    description: 'Adversaries may poison the executable implementation of an AI agent
+      tool so that normal tool invocation produces unauthorized behavior or hidden
+      side effects. The tool may continue to provide its represented functionality
+      while also accessing additional data, modifying requests, changing recipients
+      or destinations, executing unauthorized commands, weakening security controls,
+      or performing covert data exfiltration.
+
+
+      Implementation poisoning does not require the model to interpret or follow malicious
+      instructions. The adversarial effect is produced by executable logic when the
+      agent or user invokes the tool. For example, a poisoned email tool may send
+      the requested message while silently adding an adversary-controlled blind-copy
+      recipient. A file-processing tool may return the requested result while also
+      transmitting the source file to an external service.
+
+
+      Implementation poisoning may be introduced before publication, through compromise
+      of a tool''s source repository or build process, or through a malicious update
+      after users have adopted a benign version. Installed copies may continue to
+      exhibit the poisoned behavior even after the malicious package or remote listing
+      is removed[[koi-postmark]].'
+    references:
+    - id: koi-postmark
+      title: 'First Malicious MCP in the Wild: The Postmark Backdoor That''s Stealing
+        Your Emails'
+      url: https://www.koi.ai/blog/postmark-mcp-npm-malicious-backdoor-email-theft
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Agentic AI
+    id: AML.T0110.001
+    maturity: Realized
+    uuid: 357db260-e699-5692-84de-a81f8ded94d1
+    object-type: technique
+  AML.T0110.002:
+    name: Runtime Response
+    description: 'Adversaries may poison the runtime response channel of a malicious
+      or compromised AI agent tool by deliberately returning content intended to influence
+      the model''s subsequent reasoning, decisions, or actions. Poisoned responses
+      may contain malicious instructions, deceptive data, fabricated errors, embedded
+      resources, or other content designed to be treated as trusted context after
+      an approved tool invocation.
+
+
+      Because tool responses are commonly incorporated into the model''s context,
+      an adversary may use them to direct the agent to invoke additional tools, access
+      sensitive information, alter an ongoing workflow, or transmit data to an adversary-controlled
+      destination. Poisoned instructions may be mixed with legitimate results so that
+      the tool appears to operate normally. Responses may use structured or unstructured
+      content, including text, images, resource links, embedded resources, or schema-conforming
+      fields [[mcp-tools]][[owasp-tool-poisoning]].'
+    references:
+    - id: mcp-tools
+      title: 'Model Context Protocol Specification: Tools'
+      url: https://modelcontextprotocol.io/specification/2025-11-25/server/tools
+    - id: owasp-tool-poisoning
+      title: MCP Tool Poisoning
+      url: https://owasp.org/www-community/attacks/MCP_Tool_Poisoning
+    - id: owasp-mcp-security
+      title: MCP Security Cheat Sheet
+      url: https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Agentic AI
+    id: AML.T0110.002
+    maturity: Feasible
+    uuid: 1b963ef2-b782-59e4-b5e3-ddd7e91ca940
     object-type: technique
   AML.T0111:
     name: AI Supply Chain Reputation Inflation
@@ -4789,6 +4924,107 @@ techniques:
     maturity: Demonstrated
     uuid: 40a17734-3151-5082-a69d-9ec7c7edb5ce
     object-type: technique
+  AML.T0115:
+    name: Publish Poisoned AI Artifacts
+    description: 'Adversaries may create or modify AI artifacts and publish them through
+      public or shared distribution channels to facilitate compromise of downstream
+      AI systems. Poisoned AI artifacts may include datasets, models, and AI agent
+      tools containing malicious content, behaviors, code, or configurations.
+
+
+      Adversaries may publish novel artifacts or malicious variants of legitimate
+      artifacts through dataset or model repositories, package registries, source
+      code repositories, tool hubs, or remotely hosted services. Victims may subsequently
+      acquire and integrate these artifacts through [AI Supply Chain Compromise](/techniques/AML.T0010).'
+    references: []
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    id: AML.T0115
+    maturity: Realized
+    uuid: 625576d9-f6b7-556e-bfed-35828f8476e3
+    object-type: technique
+  AML.T0115.000:
+    name: Datasets
+    description: 'Adversaries may publish poisoned datasets intended for training
+      or fine-tuning AI models. The dataset may be newly created or a modified variant
+      of a legitimate dataset and may contain manipulated samples, labels, annotations,
+      or metadata.
+
+
+      Adversaries may distribute poisoned datasets through dataset repositories, code
+      repositories, file-sharing services, or compromised data sources. A victim that
+      incorporates the dataset into a training pipeline may be affected by [Training
+      Data Poisoning](/techniques/AML.T0020), potentially through [AI Supply Chain
+      Compromise](/techniques/AML.T0010).'
+    references: []
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    id: AML.T0115.000
+    maturity: Demonstrated
+    uuid: 639ae26e-0aad-5969-ad81-a6ef134297c6
+    object-type: technique
+  AML.T0115.001:
+    name: Models
+    description: 'Adversaries may publish poisoned AI models through model registries,
+      code repositories, or other model distribution channels. The model may be newly
+      created or a modified variant of a legitimate model and may contain manipulated
+      weights, configurations, architecture, serialized code, or other components
+      that produce malicious behavior or execute malicious code.
+
+
+      Victims may subsequently download and integrate the model through [AI Supply
+      Chain Compromise](/techniques/AML.T0010).'
+    references: []
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    id: AML.T0115.001
+    maturity: Realized
+    uuid: 28b3b5f8-fc35-5fd2-bc4b-b7d2cfec3110
+    object-type: technique
+  AML.T0115.002:
+    name: AI Agent Tools
+    description: 'Adversaries may create and publish poisoned AI agent tools. Poisoned
+      tools may contain malicious model-visible definitions or instructions, hidden
+      executable behavior, or runtime responses designed to manipulate an AI agent.
+      Tools may be published through source code repositories, package registries,
+      agent tool or skill registries, or adversary-controlled remote services. The
+      tool may be newly created or a modified variant of a legitimate tool and may
+      produce malicious behavior when selected, installed, or invoked by a victim''s
+      AI agent.
+
+
+      Adversaries may distribute poisoned tools through open-source version control
+      repositories (e.g. GitHub, GitLab), package registries (e.g. npm), or to repositories
+      specifically designed for sharing tools (e.g. OpenClaw Hub). These registries
+      may be largely unregulated and may contain many poisoned tools [[opensourcemalware]].
+      Tools may also be published as remotely hosted servers [[mcpservers]].'
+    references:
+    - id: mcpservers
+      title: Remote MCP Servers | Awesome MCP Servers
+      url: https://mcpservers.org/remote-mcp-servers
+    - id: opensourcemalware
+      title: ClawdBot Skills Just Ganked Your Crypto | OpenSourceMalware
+      url: https://opensourcemalware.com/blog/clawdbot-skills-ganked-your-crypto
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    platforms:
+    - Agentic AI
+    id: AML.T0115.002
+    maturity: Realized
+    uuid: 75f2d288-ce6a-5f97-a79a-b621903b526a
+    object-type: technique
 mitigations:
   AML.M0000:
     name: Limit Public Release of Information
@@ -4801,7 +5037,7 @@ mitigations:
       or datasets may be inferred.
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     categories:
@@ -4816,7 +5052,7 @@ mitigations:
       or that are representative of those used in production.
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Deployment
@@ -4826,13 +5062,18 @@ mitigations:
     uuid: 68a1c707-b05e-5588-b0a3-01aa35182ed0
     object-type: mitigation
   AML.M0002:
-    name: Passive AI Output Obfuscation
-    description: Decreasing the fidelity of model outputs provided to the end user
-      can reduce an adversary's ability to extract information about the model and
-      optimize attacks for the model.
+    name: Predictive AI Output Obfuscation
+    description: 'Reduce the fidelity and amount of information returned by predictive
+      AI inference endpoints to make model discovery, extraction, replication, and
+      black-box adversarial-example optimization more difficult.
+
+
+      Limit outputs to those required by the application. Depending on the use case,
+      this may include withholding or reducing the precision of confidence scores,
+      logits, class rankings, labels, embeddings, or additional model metadata.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - AI Model Evaluation
     - Deployment
@@ -4842,12 +5083,18 @@ mitigations:
     uuid: 8aaa7934-9c52-56f0-a48d-1f5258e4288b
     object-type: mitigation
   AML.M0003:
-    name: Model Hardening
-    description: Use techniques to make AI models robust to adversarial inputs such
-      as adversarial training or network distillation.
+    name: Predictive AI Model Hardening
+    description: 'Design and train predictive AI models to maintain intended performance
+      when presented with adversarial examples. Adversarial examples may include digitally
+      perturbed inputs or physical countermeasures intended to cause misclassification,
+      missed detection, or another attacker-selected prediction.
+
+
+      Robustness techniques may include adversarial training, robust model architectures,
+      defensive distillation, and certified robustness methods.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Data Preparation
     - AI Model Engineering
@@ -4857,11 +5104,21 @@ mitigations:
     uuid: e3e2c4e7-ecc1-5e0b-a276-9b00c0b30204
     object-type: mitigation
   AML.M0004:
-    name: Restrict Number of AI Model Queries
-    description: Limit the total number and rate of queries a user can perform.
+    name: Limit AI Service Query Volume and Rate
+    description: 'Limit the number and rate of requests that users can submit to an
+      AI service. Apply limits by user, API key, tenant, device, or other authenticated
+      identity. Use short-term rate, burst, and concurrency limits together with longer-term
+      usage quotas.
+
+
+      Query limits can increase the time and cost required to extract model information,
+      optimize adversarial inputs, discover system behavior, verify attacks, or overwhelm
+      a service. Monitor for attempts to evade limits through distributed requests,
+      account rotation, or stolen credentials. Query limits may not protect against
+      attacks that require few requests or are performed against an offline model.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Deployment
@@ -4878,7 +5135,7 @@ mitigations:
       approved users.
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Data Preparation
@@ -4890,13 +5147,19 @@ mitigations:
     uuid: 1fc2879c-d3c3-5dbf-882d-4ca4721f30d4
     object-type: mitigation
   AML.M0006:
-    name: Use Ensemble Methods
-    description: Use an ensemble of models for inference to increase robustness to
-      adversarial inputs. Some attacks may effectively evade one model or model family
-      but be ineffective against others.
+    name: Predictive AI Ensembles
+    description: 'Use an ensemble of diverse predictive AI models to reduce reliance
+      on a single model or model family and improve robustness against adversarial
+      examples.
+
+
+      Ensemble members should be sufficiently diverse, such as through different architectures,
+      training procedures, features, or model families. Combine their predictions
+      using an aggregation or adjudication method designed to prevent an adversarial
+      example that evades one model from controlling the system''s predictions.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - AI Model Engineering
     categories:
@@ -4945,12 +5208,19 @@ mitigations:
     uuid: b1132427-33bb-5055-9e86-9df87ad144e7
     object-type: mitigation
   AML.M0009:
-    name: Use Multi-Modal Sensors
-    description: Incorporate multiple sensors to integrate varying perspectives and
-      modalities to avoid a single point of failure susceptible to physical attacks.
+    name: Predictive AI Multi-Sensor Fusion
+    description: 'Use independent physical sensors (ideally across multiple modalities
+      or from several perspectives) to avoid relying on a single sensor that may be
+      manipulated, obstructed, or disrupted by an adversary.
+
+
+      Relevant sensors may include visible-light cameras, infrared cameras, depth
+      sensors, radar, lidar, microphones, or other physical sensing systems. Corroborate
+      observations across sensors so manipulation of one input source does not overly
+      influence the model''s predictions.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Data Preparation
@@ -4961,12 +5231,18 @@ mitigations:
     uuid: 6c1c5f7a-986c-5c1f-ac9b-bde692d0b3fe
     object-type: mitigation
   AML.M0010:
-    name: Input Restoration
-    description: Preprocess all inference data to nullify or reverse potential adversarial
-      perturbations.
+    name: Predictive AI Input Restoration
+    description: 'Preprocess predictive AI inference inputs to remove, reduce, or
+      disrupt adversarial perturbations before the inputs are evaluated by the model.
+
+
+      Restoration methods may include denoising, compression, reconstruction, resampling,
+      feature squeezing, randomized transformations, or other modality-appropriate
+      preprocessing. Evaluate restoration methods against adaptive adversaries that
+      account for the preprocessing operation.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Data Preparation
     - AI Model Evaluation
@@ -4988,7 +5264,7 @@ mitigations:
       can contain exploits that allow for loading of malicious libraries.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     attack-reference:
       id: M1044
       url: https://attack.mitre.org/mitigations/M1044/
@@ -5056,16 +5332,21 @@ mitigations:
     uuid: bf670d38-5978-5e5e-ba61-9b61dbc70122
     object-type: mitigation
   AML.M0015:
-    name: Adversarial Input Detection
-    description: 'Detect and block adversarial inputs or atypical queries that deviate
-      from known benign behavior, exhibit behavior patterns observed in previous attacks
-      or that come from potentially malicious IPs.
+    name: Predictive AI Adversarial Input Detection
+    description: 'Detect and block digital or physical adversarial examples submitted
+      to predictive AI models. Adversarial examples are inputs modified or constructed
+      to cause misclassification, missed detection, excessive computation, or another
+      attacker-selected behavior.
 
-      Incorporate adversarial detection algorithms into the AI system prior to the
-      AI model.'
+
+      Apply detection before model inference and monitor for input characteristics
+      or query patterns associated with adversarial example generation, transfer attacks,
+      or black-box optimization. Detection may use statistical tests, auxiliary models,
+      consistency checks, input distribution analysis, or modality-specific adversarial
+      example detectors.'
     references: []
     created-date: '2023-04-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Data Preparation
     - AI Model Engineering
@@ -5089,17 +5370,14 @@ mitigations:
       These files should be scanned for potentially unsafe calls, which could be used
       to execute code, create new processes, or establish networking capabilities.
 
-      Adversaries may embed malicious code in model corrupt model files, so scanners
-      should be capable of working with models that cannot be fully de-serialized.
+      Adversaries may embed malicious code in corrupt model files, so scanners should
+      be capable of working with models that cannot be fully de-serialized.
 
       Model artifacts, downstream products produced by models, and external software
       dependencies should be scanned for known vulnerabilities.'
     references: []
     created-date: '2023-04-12'
     modified-date: '2025-12-23'
-    attack-reference:
-      id: M1016
-      url: https://attack.mitre.org/mitigations/M1016/
     lifecycle-phases:
     - Data Preparation
     - AI Model Engineering
@@ -5161,7 +5439,7 @@ mitigations:
       to ensure compliance with usage policies and to prevent model misuse.'
     references: []
     created-date: '2024-01-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Deployment
     - Monitoring and Maintenance
@@ -5227,7 +5505,7 @@ mitigations:
 
 
       Guardrails should be continuously evaluated, red-teamed, and updated as adversarial
-      techniques evolve. Guardrail decisions should be logged (See [AI Telemetry Logging](/mitigations/AML.M0021)
+      techniques evolve. Guardrail decisions should be logged (See [AI Telemetry Logging](/mitigations/AML.M0021))
       and observed failures should be systematically incorporated into updated policies,
       evaluation datasets, detection logic, prompts, and [Generative AI Model Alignment](/mitigations/AML.M0022).'
     references:
@@ -5244,7 +5522,7 @@ mitigations:
       title: What is Azure AI Content Safety?
       url: https://learn.microsoft.com/en-us/azure/ai-services/content-safety/overview
     created-date: '2025-03-12'
-    modified-date: '2026-06-30'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - AI Model Engineering
     - AI Model Evaluation
@@ -5300,7 +5578,7 @@ mitigations:
       that validate inputs, outputs, retrieved context, and tool use.'
     references: []
     created-date: '2025-03-12'
-    modified-date: '2026-06-30'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - AI Model Engineering
     - AI Model Evaluation
@@ -5312,18 +5590,79 @@ mitigations:
     object-type: mitigation
   AML.M0022:
     name: Generative AI Model Alignment
-    description: 'When training or fine-tuning a generative AI model it is important
-      to utilize techniques that improve model alignment with safety, security, and
-      content policies.
+    description: 'Generative AI Model Alignment is the process of training or fine-tuning
+      a generative model to guide its output toward a set of human values, goals,
+      or ethical principles. Desired principles can be in alignment with safety, security,
+      content policies, and legal requirements, with goals such as removing harmful
+      content or hallucinations, reducing biases, increasing predictability, and ensuring
+      models do not have adverse societal consequences. In the context of agentic
+      AI, alignment is about producing models that make decisions in support of the
+      goals of the organization and individual users, with actions that remain in
+      scope of the designated task, and designing agents that follow security standards,
+      exhibit transparency in decision making, and operate within organizational boundaries.
 
 
-      The fine-tuning process can potentially remove built-in safety mechanisms in
-      a generative AI model, but utilizing techniques such as Supervised Fine-Tuning,
-      Reinforcement Learning from Human Feedback or AI Feedback, and Targeted Safety
-      Context Distillation can improve the safety and alignment of the model.'
-    references: []
+      Common methods for aligning a generative model during training or fine-tuning
+      include[[ibm-llm-alignment]][[meta-llama]]:
+
+      - Reinforcement Learning from Human or AI Feedback (RLHF or RLAIF)
+
+      - Supervised Fine-Tuning (SFT)
+
+      - Targeted Safety Context Distillation
+
+      - Instruction Tuning
+
+      - Direct Preference Optimization (DPO)
+
+      - Constitutional AI
+
+
+      For agentic systems, alignment depends on the purpose of the agent, the tools
+      available to the agent, and the levels of privileges and risks associated with
+      tool calls. Standard alignment methods for LLMs can often be used in conjunction
+      with domain-specific fine-tuning data, reward signals with examples of correct
+      tool calls, or reinforcement learning based on interactions with a realistic
+      environment. Examples of alignment methods specific to agentic AI are:
+
+      - Trajectory Preference Optimization[[tpmm-dpo]]
+
+      - Environment-Driven Reinforcement Learning[[envrl]]
+
+      - Reinforcement Learning with Execution Feedback (RLEF)[[rlef]]
+
+      - Reinforcement Learning with Verifiable Rewards (RLVR)[[nvidia-mastering-agentic]]
+
+
+      Generative AI Model Alignment should be used in combination with [Generative
+      AI Guardrails](mitigations/AML.M0020) and [Generative AI Guidelines](mitigations/AML.M0021).
+      Models should be continually evaluated for alignment and retrained or fine-tuned
+      systematically to incorporate observed failure modes or updated policies. It
+      is important to also consider that fine-tuning a model can remove previously
+      learned alignments and should be undertaken with care and a comprehensive plan
+      for testing the updated model for safety and security.'
+    references:
+    - id: ibm-llm-alignment
+      title: What is LLM alignment?
+      url: https://www.ibm.com/think/topics/llm-alignment
+    - id: meta-llama
+      title: 'Meta Llama: Responsible Use Guide'
+      url: https://ai.meta.com/static-resource/responsible-use-guide/
+    - id: tpmm-dpo
+      title: 'TPMM-DPO: Trajectory-aware Preference-guided Model Merging for Iterative
+        Direct Preference Optimization'
+      url: https://arxiv.org/html/2605.23398v1
+    - id: envrl
+      title: 'EnvRL: Learn from Environment Dynamics in Agentic Reinforcement Learning'
+      url: https://arxiv.org/html/2606.17680v1
+    - id: rlef
+      title: 'RLEF: Grounding Code LLMs in Execution Feedback with Reinforcement Learning'
+      url: https://arxiv.org/abs/2410.02089
+    - id: nvidia-mastering-agentic
+      title: 'Mastering Agentic Techniques: AI Agent Customization'
+      url: https://developer.nvidia.com/blog/mastering-agentic-techniques-ai-agent-customization/
     created-date: '2025-03-12'
-    modified-date: '2025-12-23'
+    modified-date: '2025-07-31'
     lifecycle-phases:
     - AI Model Engineering
     - AI Model Evaluation
@@ -5384,7 +5723,7 @@ mitigations:
       a complete record of any modifications.
     references: []
     created-date: '2025-03-12'
-    modified-date: '2025-12-23'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Data Preparation
@@ -5500,16 +5839,54 @@ mitigations:
     object-type: mitigation
   AML.M0031:
     name: Memory Hardening
-    description: Memory Hardening involves developing trust boundaries and secure
-      processes for how an AI agent stores and accesses memory and context. This may
-      be implemented using a combination of strategies including restricting an agent's
-      ability to store memories by requiring external authentication and validation
-      for memory updates, performing semantic integrity checks on retrieved memories
-      before agents execute actions, and implementing controls for monitoring of memory
-      and remediation processes for poisoned memory.
-    references: []
+    description: 'Memory Hardening protects persistent state used by AI agents, including
+      saved preferences, episodic or semantic memories, conversation summaries, stored
+      chat history, and agent-managed experience stores. Unlike guardrails that evaluate
+      content during an interaction, memory hardening controls how durable agent state
+      is created, modified, isolated, audited, and recovered.
+
+
+      Apply the following controls throughout the memory lifecycle, from creation
+      and use through deletion and recovery:
+
+      - Enforce memory access controls: Authenticate memory operations and authorize
+      them within the appropriate user, tenant, agent, and session scope.
+
+      - Set strong memory security policies: Enforce limits on memory size and update
+      frequency, validate memory integrity, and define retention and deletion policies.
+
+      - Preserve memory provenance: Record the source of all memory updates and preserve
+      a history with known good versions. Quarantine or roll-back suspicious records.
+
+      - Audit and monitor memory operations: Audit security relevant reads and writes.
+      Monitor for unusual update frequency and repeated self-authored updates.
+
+
+      Content filtering and protections against malicious prompts may be provided
+      by [Generative AI Guardrails](/mitigations/AML.M0020), but does not replace
+      memory access control, isolation, provenance, integrity, or recovery.
+
+
+      Open-source tools that implement memory hardening controls include OWASP Agent
+      Memory Guard[[owasp-agent-memory-guard-project]] and Microsoft Agent Governance
+      Toolkit[[microsoft-agent-governance-toolkit]]. Memory management and persistence
+      tooling such as Mem0[[mem0-entity-partitioning]], and LangGraph Persistence[[langgraph-persistence]]
+      can also support aspects of memory hardening.'
+    references:
+    - id: owasp-agent-memory-guard-project
+      title: OWASP Agent Memory Guard
+      url: https://owasp.org/www-project-agent-memory-guard/
+    - id: microsoft-agent-governance-toolkit
+      title: Microsoft Agent Governance Toolkit
+      url: https://github.com/microsoft/agent-governance-toolkit
+    - id: mem0-entity-partitioning
+      title: Mem0 Partition Memories by Entity
+      url: https://docs.mem0.ai/cookbooks/essentials/entity-partitioning-playbook
+    - id: langgraph-persistence
+      title: LangGraph Persistence
+      url: https://docs.langchain.com/oss/python/langgraph/persistence
     created-date: '2025-10-29'
-    modified-date: '2025-12-20'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - AI Model Engineering
     - Deployment
@@ -5529,7 +5906,7 @@ mitigations:
       throughout the system.
     references: []
     created-date: '2025-11-25'
-    modified-date: '2026-03-19'
+    modified-date: '2026-07-31'
     lifecycle-phases:
     - Business and Data Understanding
     - Deployment
@@ -5587,6 +5964,122 @@ mitigations:
     id: AML.M0034
     uuid: b5f63458-7f5c-5631-9056-1dfa6e7cf946
     object-type: mitigation
+  AML.M0035:
+    name: AI Red Team
+    description: "Establish an AI red team responsible for conducting recurring, authorized,\
+      \ and threat-informed red-teaming exercises to identify and remediate vulnerabilities\
+      \ in AI-enabled systems before deployment and throughout operation. AI red-teaming\
+      \ simulates realistic adversary behavior to evaluate how attacks could affect\
+      \ the confidentiality, integrity, availability, safety, privacy, and mission\
+      \ performance of an AI-enabled system.\n\nRed-teaming exercises should consider\
+      \ the complete AI-enabled system, including models and data, agents (including\
+      \ memory and tools), data flows, decision processes, application logic, retrieval\
+      \ systems, identities and permissions, software dependencies, non-AI system\
+      \ components, infrastructure, user interfaces, and human workflows.\n\nAn AI\
+      \ red team exercise can be organized into three phases: planning and scoping\
+      \ the exercise, executing the selected exercises, and assessing the results\
+      \ to guide reporting and remediation.\n\n1. **Plan and Scope**\n    - Document\
+      \ the system's intended use, deployment environment, users, sensitive data,\
+      \ connected resources, and potential consequences of failure or misuse. Diagram\
+      \ the system's components, trust boundaries, data flows, external services,\
+      \ human decision points, and training- and inference-time access points.\n \
+      \   - Establish rules of engagement covering authorized systems, accounts, data,\
+      \ techniques, test windows, resource limits, escalation procedures, evidence\
+      \ handling, and stop conditions. Plan destructive, privacy-invasive, or high-cost\
+      \ tests for isolated environments with appropriate safeguards.\n    - Develop\
+      \ a threat model based on the system's operating environment and relevant adversary\
+      \ behavior. Define the adversary's objectives, access, knowledge, capabilities,\
+      \ resources, and constraints, and account for digital and physical attack paths\
+      \ and the role of human oversight.\n    - Use ATLAS tactics, techniques, and\
+      \ procedures to identify relevant adversary behaviors and construct threat vectors.\
+      \ Prioritize them according to likelihood and severity of impact to the system.\n\
+      \    - Define success criteria and stopping conditions. Identify task-level\
+      \ metrics for effects on the AI capability and operational metrics for measuring\
+      \ impact to the overall system.\n\n2. **Execute**\n    - Conduct the selected\
+      \ exercises using manual and automated methods as appropriate. Automation can\
+      \ generate input variations, replay attack sequences, and evaluate responses\
+      \ at scale. Human testers can develop system-specific attacks, adapt to observed\
+      \ defenses, and investigate unexpected behavior.\n    - Follow the rules of\
+      \ engagement and record attack activity, system responses, control behavior,\
+      \ deviations from the test plan, and evidence needed to evaluate the results.\n\
+      \    - Stop or escalate testing when predefined conditions are reached. After\
+      \ testing, remove test accounts, modified data, installed software, persistent\
+      \ instructions, and other exercise artifacts.\n\n3. **Assess, Report, and Improve**\n\
+      \    - Evaluate the results against the defined task and operational metrics.\
+      \ Document successful and unsuccessful attacks, their consequences, observed\
+      \ control behavior, deviations from the test plan, and gaps in the threat model.\n\
+      \    - Report findings to the appropriate developers, defenders, operational\
+      \ teams, risk owners, and other stakeholders.\n    - Assign findings to responsible\
+      \ owners, track remediation, and retest corrected systems.\n    - Use demonstrated\
+      \ attacks to improve preventive controls, detection, incident response, and\
+      \ recovery. Where appropriate, convert confirmed failures into regression tests,\
+      \ evaluation datasets, detection logic, monitoring requirements, or deployment\
+      \ criteria.\n\nRed-teaming is a continuous process and should be repeated as\
+      \ the threat landscape evolves and when changes are made to the system, its\
+      \ components, intended use, or deployment environment. New threat intelligence,\
+      \ vulnerabilities, and test results should inform the scope and priorities of\
+      \ future exercises."
+    references:
+    - id: mitre-ai-red-team-playbook
+      title: An AI Red Team Playbook
+      url: https://journals.spiedigitallibrary.org/conference-proceedings-of-spie/13054/130540B/An-AI-red-team-playbook/10.1117/12.3021906.full
+    - id: microsoft-red-teaming-100-products
+      title: Lessons From Red Teaming 100 Generative AI Products
+      url: https://www.microsoft.com/en-us/research/publication/lessons-from-red-teaming-100-generative-ai-products/
+    - id: nist-ai-600-1
+      title: 'Artificial Intelligence Risk Management Framework: Generative Artificial
+        Intelligence Profile'
+      url: https://doi.org/10.6028/NIST.AI.600-1
+    - id: owasp-genai-red-teaming-guide
+      title: GenAI Red Teaming Guide
+      url: https://genai.owasp.org/resource/genai-red-teaming-guide/
+    - id: nvidia-ai-red-team
+      title: 'NVIDIA AI Red Team: An Introduction'
+      url: https://developer.nvidia.com/blog/nvidia-ai-red-team-an-introduction/
+    created-date: '2026-07-21'
+    modified-date: '2026-07-21'
+    lifecycle-phases:
+    - Business and Data Understanding
+    - Data Preparation
+    - AI Model Engineering
+    - AI Model Evaluation
+    - Deployment
+    - Monitoring and Maintenance
+    categories:
+    - Policy
+    - Technical - AI
+    - Technical - Cyber
+    id: AML.M0035
+    uuid: a539c06f-5c4c-515a-85e0-6c5d48529adc
+    object-type: mitigation
+  AML.M0036:
+    name: Limit AI Workload Resource Consumption
+    description: 'Limit the resources that an AI request, inference job, or agent
+      workflow can consume. Set bounds on input size, batch size, execution time,
+      memory, compute, and output size. Generative AI services should also limit context
+      and output tokens. Agentic AI systems should limit iterations, retries, tool
+      calls, parallel tasks, delegation depth, and downstream spending.
+
+
+      Apply resource limits across the complete workflow because one request may initiate
+      multiple model calls or external actions. Use timeouts, cost ceilings, circuit
+      breakers, and safe termination conditions to prevent individual workloads from
+      exhausting shared resources. These controls complement query-rate limits, which
+      address large numbers of otherwise inexpensive requests.'
+    references:
+    - id: owasp-llm10
+      title: OWASP LLM10:2025 Unbounded Consumption
+      url: https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    lifecycle-phases:
+    - Deployment
+    - Monitoring and Maintenance
+    categories:
+    - Technical - AI
+    id: AML.M0036
+    uuid: 98919f42-697d-5b47-8bdd-d19724cc2f0c
+    object-type: mitigation
 case-studies:
   AML.CS0000:
     name: Evasion of Deep Learning Detector for Malware C&C Traffic
@@ -5623,10 +6116,10 @@ case-studies:
       It is a generic domain mutation technique which can evade most ML-based DGA
       detection modules.
 
-      The generic mutation technique evades most ML-based DGA detection modules DGA
-      and can be used to test the effectiveness and robustness of all DGA detection
-      methods developed by security companies in the industry before they is deployed
-      to the production environment.'
+      The generic mutation technique evades most ML-based DGA detection modules and
+      can be used to test the effectiveness and robustness of all DGA detection methods
+      developed by security companies in the industry before they are deployed to
+      the production environment.'
     references:
     - id: ref-1
       title: Yu, Bin, Jie Pan, Jiaming Hu, Anderson Nascimento, and Martine De Cock.  "Character
@@ -6270,9 +6763,9 @@ case-studies:
       to a public website, where a ChatGPT user may interact with it. The prompt causes
       ChatGPT to respond with the markdown for an image, whose URL has the user''s
       conversation secretly embedded. ChatGPT renders the image for the user, creating
-      a automatic request to an adversary-controlled script and exfiltrating the user''s
-      conversation. Additionally, the researcher demonstrated how the prompt can execute
-      other plugins, opening them up to additional harms.'
+      an automatic request to an adversary-controlled script and exfiltrating the
+      user''s conversation. Additionally, the researcher demonstrated how the prompt
+      can execute other plugins, opening them up to additional harms.'
     references:
     - id: ref-1
       title: 'ChatGPT Plugins: Data Exfiltration via Images & Cross Plugin Request
@@ -6321,7 +6814,7 @@ case-studies:
     uuid: d80da313-59af-5f23-8ca1-cc80ce140dd7
     object-type: case-study
   AML.CS0023:
-    name: ShadowRay
+    name: 'ShadowRay: Hijacking Exposed Ray Clusters'
     description: 'Ray is an open-source Python framework for scaling production AI
       workflows. Ray''s Job API allows for arbitrary remote execution by design. However,
       it does not offer authentication, and the default configuration may expose the
@@ -6353,10 +6846,10 @@ case-studies:
       title: 'ShadowRay: AI Infrastructure Is Being Exploited In the Wild'
       url: https://protectai.com/threat-research/shadowray-ai-infrastructure-is-being-exploited-in-the-wild
     created-date: '2025-03-14'
-    modified-date: '2025-03-14'
+    modified-date: '2026-07-31'
     type: Incident
-    actor: Ray
-    target: Multiple systems
+    actor: Unknown
+    target: Exposed Ray Clusters
     reporter: Oligo Research Team
     date: '2023-09-05'
     date-granularity: Day
@@ -6410,7 +6903,7 @@ case-studies:
       title: Poisoning Web-Scale Training Datasets is Practical
       url: https://arxiv.org/pdf/2302.10149
     created-date: '2025-03-14'
-    modified-date: '2026-03-31'
+    modified-date: '2026-07-31'
     type: Exercise
     actor: Researchers from Google Deepmind, ETH Zurich, NVIDIA, Robust Intelligence,
       and Google
@@ -6436,7 +6929,7 @@ case-studies:
       through with the wire transfer with the wrong banking information.[[youtu]]
 
 
-      This following is the payload used in the exercise. The colors represent the
+      The following is the payload used in the exercise. The colors represent the
       sections of the prompt which correspond to different techniques described in
       the procedure.
 
@@ -6817,12 +7310,12 @@ case-studies:
     name: 'AIKatz: Attacking LLM Desktop Applications'
     description: 'Researchers at Lumia have demonstrated that it is possible to extract
       authentication tokens from the memory of LLM Desktop Applications. An attacker
-      could then use those tokens to impersonate as the victim to the LLM backed,
-      thereby gaining access to the victim''s conversations as well as the ability
-      to interfere in future conversations. The attacker''s access would allow them
-      the ability to directly inject prompts to change the LLM''s behavior, poison
-      the LLM''s context to have persistent effects, manipulate the user''s conversation
-      history to cover their tracks, and ultimately impact the confidentiality, integrity,
+      could then use those tokens to impersonate the victim to the LLM backend, thereby
+      gaining access to the victim''s conversations as well as the ability to interfere
+      in future conversations. The attacker''s access would allow them the ability
+      to directly inject prompts to change the LLM''s behavior, poison the LLM''s
+      context to have persistent effects, manipulate the user''s conversation history
+      to cover their tracks, and ultimately impact the confidentiality, integrity,
       and availability of the system. The researchers demonstrated this on Anthropic
       Claude, Microsoft M365 Copilot, and OpenAI ChatGPT.
 
@@ -7090,10 +7583,10 @@ case-studies:
       The campaign began with a phishing attack leveraging a compromised government
       email account to deliver a malicious ZIP archive disguised as Appendix.pdf.zip.
       The archive contained the LAMEHUG malware, a Python-based executable, packed
-      with PyInstaller. When executed, the malware, makes calls to an LLM endpoint
-      to generate malicious from natural language prompts. Dynamically generated commands
-      may make the malware harder to detect. LAMEHUG was configured to collect files
-      from the local system and exfiltrate them.'
+      with PyInstaller. When executed, the malware makes calls to an LLM endpoint
+      to generate malicious commands from natural language prompts. Dynamically generated
+      commands may make the malware harder to detect. LAMEHUG was configured to collect
+      files from the local system and exfiltrate them.'
     references:
     - id: bleepingcomputer
       title: LameHug malware uses AI LLM to craft Windows data-theft commands in real-time
@@ -7269,8 +7762,8 @@ case-studies:
       API Keys, Telegram Bot Tokens, Slack Oauth Credentials, and Signal Device Linking
       URIs. The researcher prompted ClawdBot directly via the chat interface, which
       led to exposure of its system prompt. They were also able to get ClawdBot to
-      execute commands via it''s `bash` skill, which at least in once instance led
-      to root access in the ClawdBot container.
+      execute commands via its `bash` skill, which at least in at least one instance
+      led to root access in the ClawdBot container.
 
 
       The researcher noted a broad range of other impacts they could have had with
@@ -7319,7 +7812,7 @@ case-studies:
         #1 downloaded clawdhub skill)'
       url: https://x.com/theonejvo/status/2015892980851474595
     created-date: '2026-02-06'
-    modified-date: '2026-03-31'
+    modified-date: '2026-07-31'
     type: Exercise
     actor: Jamieson O'Reilly
     target: ClawdBot (now OpenClaw)
@@ -7474,7 +7967,7 @@ case-studies:
       title: 'MCP Security Notification: Tool Poisoning Attacks'
       url: https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
     created-date: '2026-03-31'
-    modified-date: '2026-03-31'
+    modified-date: '2026-07-31'
     type: Exercise
     actor: Invariant Labs
     target: Model Context Protocol
@@ -7776,6 +8269,239 @@ case-studies:
     date-granularity: Day
     id: AML.CS0062
     uuid: 1cba4b35-34b5-5d31-9128-13a1b4f85974
+    object-type: case-study
+  AML.CS0063:
+    name: Prompt-Based Attacks Against Gemini via Calendar Invitations
+    description: 'SafeBreach researchers demonstrated how adversary-controlled instructions
+      embedded in productivity content, including Google Calendar invitations, emails,
+      and shared files, could influence the behavior of Gemini-powered assistants
+      when that content was later retrieved.
+
+
+      An adversary places malicious instructions in content likely to be retrieved
+      in response to a future victim request. When Gemini incorporates the adversary-controlled
+      content into the conversation context, the instructions can influence the model''s
+      behavior and cause it to use the victim''s authorized tools and connected services
+      in unintended ways.
+
+
+      The demonstrated attack paths share a common chain: an adversary sends a poisoned
+      Calendar invitation; the victim asks Gemini about upcoming events; Gemini retrieves
+      the malicious event title and adds it to conversation context; and a later victim
+      response (e.g. "Thanks") triggers the embedded instructions. The attack was
+      demonstrated on both the Gemini web and Android applications. The web application
+      could access Workspace services, while the Android application exposed additional
+      device and connected-home capabilities. The same chain was shown to produce
+      several impacts:
+
+
+      - Generate toxic content or adversary-selected promotions in Gemini responses.
+
+      - Delete or create Calendar events using the victim''s authorized Calendar access.
+
+      - Control connected Google Home devices, including windows, boilers, and lights.
+
+      - Open an adversary-controlled website, initiating a download and exposing the
+      victim''s IP address for approximate geolocation.
+
+      - Invoke the Zoom application on the victim''s device and stream video to an
+      adversary-controlled meeting.
+
+      - Retrieve Calendar or Gmail data, encode it in an adversary-controlled URL,
+      and transmit it through a browser request.'
+    references:
+    - id: safebreach-invitation-is-all-you-need
+      title: 'Invitation Is All You Need: Hacking Gemini'
+      url: https://www.safebreach.com/blog/invitation-is-all-you-need-hacking-gemini/
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    type: Exercise
+    actor: SafeBreach Research Team
+    target: Google Gemini
+    date: '2025-08-06'
+    date-granularity: Day
+    id: AML.CS0063
+    uuid: e247d4df-c1fe-58f7-9534-2f8fc561d6bd
+    object-type: case-study
+  AML.CS0064:
+    name: 'Poisoned GGUF Templates: Inference-Time Supply Chain Attack'
+    description: 'Researchers from Pillar Security and Fujitsu Research of Europe
+      demonstrated an inference-time supply-chain backdoor in which poisoned chat
+      templates alter model and agent behavior without modifying model weights. The
+      backdoor is embedded in trusted prompt-construction logic, allowing it to remain
+      dormant until triggered and evade defenses that inspect only external prompt
+      content.
+
+
+      The researchers demonstrated the attack using GPT-Generated Unified Format (GGUF),
+      a widely used model format that packages quantized weights, configuration metadata,
+      and chat-template logic in one artifact. An adversary can modify a template
+      and redistribute the artifact; when a lexical, semantic, or contextual trigger
+      occurs, the template injects attacker-controlled instructions into the context
+      sent to the model.
+
+
+      The attack was validated across eighteen models from seven families and four
+      inference engines. In controlled evaluations, it manipulated model responses,
+      redirected agent tool use, exfiltrated sensitive data, and inserted attacker-controlled
+      code into generated software.'
+    references:
+    - id: pillar-poisoned-gguf-templates
+      title: 'LLM Backdoors at the Inference Level: The Threat of Poisoned Templates'
+      url: https://www.pillar.security/blog/llm-backdoors-at-the-inference-level-the-threat-of-poisoned-templates
+    - id: fogel-inference-time-backdoors
+      title: 'Inference-Time Backdoors via Chat Templates: From LLM Supply Chains
+        to Agentic System Compromise'
+      url: https://arxiv.org/abs/2602.04653
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    type: Exercise
+    actor: Pillar Security, Fujitsu Research of Europe
+    target: Model registries distributing models in GGUF format
+    date: '2025-06-01'
+    date-granularity: Month
+    id: AML.CS0064
+    uuid: 1ee6ddb4-99e5-5e7f-863e-0b9d1a00efe4
+    object-type: case-study
+  AML.CS0065:
+    name: Model Namespace Reuse Supply Chain Attack
+    description: 'Unit 42 researchers demonstrated an AI supply chain attack in which
+      an attacker reclaims a deleted Hugging Face author namespace and publishes a
+      malicious model under the same historical Author/ModelName identifier. Applications
+      and model catalogs that retain unpinned references to that identifier may resolve
+      and deploy the adversary-controlled replacement rather than the originally trusted
+      artifact.
+
+
+      The attack can affect deleted models and models whose ownership was transferred
+      to a new Hugging Face author. In the ownership-transfer scenario, Hugging Face
+      redirects requests for the old path to the new model location, allowing stale
+      references to continue working. If the original author namespace is later deleted
+      and reclaimed by an attacker, the attacker can recreate the old path and cause
+      it to resolve to a malicious model instead of the legitimate redirected model.
+
+
+      Unit 42 demonstrated this technique against Hugging Face-backed model catalogs
+      in Google Vertex AI and Azure AI Foundry. The researchers embedded reverse-shell
+      payloads in replacement models and obtained code execution in the deployed endpoint
+      environments. They also identified reusable model references in open-source
+      code repositories, documentation, default arguments, example notebooks, and
+      downstream model registries, which could expose users who do not directly interact
+      with Hugging Face.'
+    references:
+    - id: unit42-model-namespace-reuse
+      title: 'Model Namespace Reuse: An AI Supply-Chain Attack Exploiting Model Name
+        Trust'
+      url: https://unit42.paloaltonetworks.com/model-namespace-reuse/
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    type: Exercise
+    actor: Unit 42 Researchers
+    target: Users of Hugging Face-backed model catalogs, code pipelines, and cloud
+      integrations
+    date: '2025-09-03'
+    date-granularity: Day
+    id: AML.CS0065
+    uuid: 69653c4c-47e3-5678-af2d-51bd18758f45
+    object-type: case-study
+  AML.CS0066:
+    name: 'ZombieAgent: Data Exfiltration Attack on ChatGPT'
+    description: 'ZombieAgent is a proof-of-concept indirect prompt injection attack
+      demonstrated by Radware against OpenAI''s ChatGPT Deep Research and Connector
+      functionality. The attacks showed how instructions concealed in externally controlled
+      content, such as emails and documents, could be ingested and executed by ChatGPT
+      during normal user activity. The demonstration used Gmail as the injection source,
+      but any ChatGPT Connector such as Outlook, Google Drive, Jira, or Teams could
+      be similarly abused.
+
+
+      The Radware Security Researchers sent a malicious email containing concealed
+      instructions to a Gmail inbox connected to ChatGPT. When the user later asked
+      ChatGPT to perform an ordinary inbox-related task, ChatGPT retrieved the email
+      and executed its instructions. The user did not open, click, or knowingly interact
+      with the malicious email.
+
+
+      The injected instructions caused ChatGPT to collect information from connected
+      services and exfiltrate it through URL requests. OpenAI had introduced a control
+      preventing ChatGPT from dynamically constructing or modifying URLs which could
+      be used to exfiltrate data via query parameters. The researchers bypassed this
+      control by supplying an indexed dictionary of preconstructed static URLs and
+      instructing ChatGPT to open URLs corresponding to individual characters to exfiltrate
+      the collected data.
+
+
+      The researchers also showed that the malicious instructions could manipulate
+      ChatGPT''s Memory. The injected memories instructed ChatGPT to retain sensitive
+      information from future conversations and to retrieve and execute a designated
+      attacker-controlled email during later interactions. This created a persistent
+      mechanism for repeated collection and exfiltration across chat sessions.
+
+
+      The researchers also demonstrated how the malicious prompt could be propagated.
+      A compromised agent could collect email addresses from the victim''s mailbox
+      and use its connected email capabilities to send additional messages containing
+      the malicious prompt to those contacts. Recipients whose AI agents later processed
+      the poisoned messages could become additional victims.'
+    references:
+    - id: radware-zombieagent
+      title: 'ZombieAgent: New ChatGPT Vulnerabilities Let Data Theft Continue (and
+        Spread)'
+      url: https://www.radware.com/blog/threat-intelligence/zombieagent/
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    type: Exercise
+    actor: Radware Security Researchers
+    target: OpenAI ChatGPT
+    date: '2025-09-25'
+    date-granularity: Day
+    id: AML.CS0066
+    uuid: a445e4ce-e296-56a8-b446-0a66c3b31670
+    object-type: case-study
+  AML.CS0067:
+    name: Claude Code GitHub Action Secret Exposure
+    description: 'The [Microsoft Defender Security Research Team](https://www.microsoft.com/en-us/security/blog/author/windows-defender-research/)
+      demonstrated that Anthropic''s [Claude Code GitHub Action](https://github.com/anthropics/claude-code-action)
+      could expose CI/CD workflow secrets when processing GitHub content, such as
+      issue bodies, pull request descriptions, and comments, containing prompt injections.
+
+
+      The researchers analyzed the Claude Code Action codebase and obfuscated Claude
+      Agent SDK to understand how agent tools executed and how GitHub events supplied
+      content to the agent. They crafted a prompt framed as a compliance review that
+      directed Claude to read a credential from its process environment, remove the
+      credential prefix, and emit the transformed value. They introduced the prompt
+      through attacker-controlled GitHub content processed by the lab workflow. The
+      action fetched the malicious content into Claude''s context, where it was interpreted
+      as instructions.
+
+
+      Claude invoked its Read tool against `/proc/self/environ`, returning the action
+      process''s unsanitized environment, including `ANTHROPIC_API_KEY`. Unlike Bash
+      subprocesses, Read operations did not execute within the Bubblewrap sandbox
+      and scrubbed-environment boundary. Removing the key''s `sk-ant-` prefix allowed
+      the output to bypass Claude''s refusal behavior and GitHub''s secret-pattern
+      detection while remaining reconstructable by the researchers. Microsoft identified
+      WebFetch, Bash, GitHub MCP, and GitHub Actions logs as potential additional
+      exfiltration channels depending on workflow configuration.
+
+
+      Microsoft disclosed the issue to Anthropic through HackerOne on April 29, 2026.
+      Anthropic mitigated the vulnerability in Claude Code 2.1.128 on May 5, 2026,
+      by blocking Read access to sensitive `/proc` files.'
+    references:
+    - id: microsoft-claude-code-action-case
+      title: 'Securing CI/CD in an agentic world: Claude Code Github action case'
+      url: https://www.microsoft.com/en-us/security/blog/2026/06/05/securing-ci-cd-in-agentic-world-claude-code-github-action-case/
+    created-date: '2026-07-31'
+    modified-date: '2026-07-31'
+    type: Exercise
+    actor: Microsoft Defender Security Research Team
+    target: Claude Code GitHub Action
+    date: '2026-06-05'
+    date-granularity: Day
+    id: AML.CS0067
+    uuid: 491e63fe-7fa3-528f-b8e5-a75156e3ec75
     object-type: case-study
 relationships:
   AML.CS0000:
@@ -8440,7 +9166,7 @@ relationships:
       target: AML.T0043.000
       relationship-type: employs
       description: Using the target model and data, the red team crafted evasive adversarial
-        data in an offline manor.
+        data in an offline manner.
       tactic: AML.TA0001
       step-id: S04
       leads-to:
@@ -8978,7 +9704,7 @@ relationships:
       target: AML.T0015
       relationship-type: employs
       description: 'The individual collected stolen identities, including names, dates
-        of birth, and Social Security numbers. and used them along with a photo of
+        of birth, and Social Security numbers and used them along with a photo of
         himself wearing wigs to acquire fake driver''s licenses.
 
 
@@ -9164,8 +9890,8 @@ relationships:
     - source: AML.CS0019
       target: AML.T0010.003
       relationship-type: employs
-      description: 'Unwitting users could have downloaded the adversarial model, integrated
-        it into applications.
+      description: 'Unwitting users could have downloaded the adversarial model and
+        integrated it into applications.
 
 
         HuggingFace disabled the similarly-named repository after the researchers
@@ -9215,7 +9941,7 @@ relationships:
       step-id: S06
       leads-to: []
     - source: AML.CS0019
-      target: AML.T0058
+      target: AML.T0115.001
       relationship-type: employs
       description: The researchers uploaded the PoisonGPT model back to HuggingFace
         under a similar repository name as the original model, missing one letter.
@@ -9581,22 +10307,11 @@ relationships:
       leads-to:
       - S02
     - source: AML.CS0025
-      target: AML.T0019
-      relationship-type: employs
-      description: An adversary could then upload the poisoned data to the domains
-        they control.  In this particular exercise, the researchers track requests
-        to the URLs they control to track downloads to demonstrate there are active
-        users of the dataset.
-      tactic: AML.TA0003
-      step-id: S03
-      leads-to:
-      - S04
-    - source: AML.CS0025
       target: AML.T0020
       relationship-type: employs
       description: An adversary could create poisoned training data to replace expired
         portions of the dataset.
-      tactic: AML.TA0003
+      tactic: AML.TA0006
       step-id: S02
       leads-to:
       - S03
@@ -9618,6 +10333,17 @@ relationships:
       step-id: S04
       leads-to:
       - S05
+    - source: AML.CS0025
+      target: AML.T0115.000
+      relationship-type: employs
+      description: An adversary could then upload the poisoned data to the domains
+        they control.  In this particular exercise, the researchers track requests
+        to the URLs they control to track downloads to demonstrate there are active
+        users of the dataset.
+      tactic: AML.TA0003
+      step-id: S03
+      leads-to:
+      - S04
   AML.CS0026:
     employs:
     - source: AML.CS0026
@@ -9885,7 +10611,7 @@ relationships:
     - source: AML.CS0027
       target: AML.T0044
       relationship-type: employs
-      description: The employees made use of the Hugging Face organizaion and uploaded
+      description: The employees made use of the Hugging Face organization and uploaded
         private models. As owner of the Hugging Face account, the researcher has full
         read and write access to all of these uploaded models.
       tactic: AML.TA0000
@@ -9919,15 +10645,6 @@ relationships:
       leads-to:
       - S11
     - source: AML.CS0027
-      target: AML.T0058
-      relationship-type: employs
-      description: The researcher re-uploaded the manipulated model to the Hugging
-        Face repository.
-      tactic: AML.TA0003
-      step-id: S05
-      leads-to:
-      - S06
-    - source: AML.CS0027
       target: AML.T0072
       relationship-type: employs
       description: The Sliver implant grants the researcher a command and control
@@ -9940,7 +10657,7 @@ relationships:
       target: AML.T0073
       relationship-type: employs
       description: Employees of the targeted company found and joined the fake Hugging
-        Face organization. Since the organization account name is matches or appears
+        Face organization. Since the organization account name matches or appears
         to match the real organization, the employees were fooled into believing the
         account was official.
       tactic: AML.TA0007
@@ -9957,6 +10674,15 @@ relationships:
       step-id: S08
       leads-to:
       - S09
+    - source: AML.CS0027
+      target: AML.T0115.001
+      relationship-type: employs
+      description: The researcher re-uploaded the manipulated model to the Hugging
+        Face repository.
+      tactic: AML.TA0003
+      step-id: S05
+      leads-to:
+      - S06
   AML.CS0028:
     employs:
     - source: AML.CS0028
@@ -10253,18 +10979,6 @@ relationships:
       leads-to:
       - S01
     - source: AML.CS0031
-      target: AML.T0058
-      relationship-type: employs
-      description: 'The adversary uploaded the model to Hugging Face.
-
-
-        In both instances observed by the ReversingLab, the malicious models did not
-        make any attempt to mimic a popular legitimate model.'
-      tactic: AML.TA0003
-      step-id: S01
-      leads-to:
-      - S02
-    - source: AML.CS0031
       target: AML.T0072
       relationship-type: employs
       description: The malicious payload was a reverse shell set to connect to a hardcoded
@@ -10286,6 +11000,18 @@ relationships:
       step-id: S02
       leads-to:
       - S03
+    - source: AML.CS0031
+      target: AML.T0115.001
+      relationship-type: employs
+      description: 'The adversary uploaded the model to Hugging Face.
+
+
+        In both instances observed by the ReversingLab, the malicious models did not
+        make any attempt to mimic a popular legitimate model.'
+      tactic: AML.TA0003
+      step-id: S01
+      leads-to:
+      - S02
   AML.CS0032:
     employs:
     - source: AML.CS0032
@@ -10376,8 +11102,8 @@ relationships:
     - source: AML.CS0033
       target: AML.T0016.001
       relationship-type: employs
-      description: The researchers obtained [Open Broadcaster Software (OBS)](https://obsproject.com)which
-        can broadcast a video stream over the network.
+      description: The researchers obtained [Open Broadcaster Software (OBS)](https://obsproject.com)
+        which can broadcast a video stream over the network.
       tactic: AML.TA0003
       step-id: S02
       leads-to:
@@ -11436,7 +12162,7 @@ relationships:
       relationship-type: employs
       description: The attachment contained an executable file with a .pif extension,
         created using PyInstaller from Python source code which CERT-UA classified
-        it as LAMEHUG malware. Files with the .pif extension are executable on Windows.
+        as LAMEHUG malware. Files with the .pif extension are executable on Windows.
       tactic: AML.TA0005
       step-id: S04
       leads-to:
@@ -11497,7 +12223,8 @@ relationships:
       target: AML.T0102
       relationship-type: employs
       description: The LAMEHUG malware abused the Qwen 2.5 Coder 32B Instruct model
-        Hugging Face API to generate malicious commands from natural language prompts.
+        via its Hugging Face API to generate malicious commands from natural language
+        prompts.
       tactic: AML.TA0001
       step-id: S05
       leads-to:
@@ -11507,8 +12234,8 @@ relationships:
     - source: AML.CS0045
       target: AML.T0048.000
       relationship-type: employs
-      description: A bad actor could use the stolen credentials cause financial damage
-        and could also steal other sensitive information from the victim user.
+      description: A bad actor could use the stolen credentials to cause financial
+        damage and could also steal other sensitive information from the victim user.
       tactic: AML.TA0011
       step-id: S10
       leads-to: []
@@ -11835,7 +12562,7 @@ relationships:
       target: AML.T0053
       relationship-type: employs
       description: The researcher prompted ClawdBot with `root` and it responded by
-        invoking its bash`skill logged in as the root user.
+        invoking its `bash`skill logged in as the root user.
       tactic: AML.TA0012
       step-id: S06
       leads-to:
@@ -11910,9 +12637,9 @@ relationships:
       description: When a user asked Claude Code "what would Elon do?" it calls the
         poisoned Skill.
       tactic: AML.TA0005
-      step-id: S06
+      step-id: S07
       leads-to:
-      - S07
+      - S08
     - source: AML.CS0049
       target: AML.T0017
       relationship-type: employs
@@ -11939,25 +12666,25 @@ relationships:
 
         - Performing anything else Claude Code is capable of'
       tactic: AML.TA0011
-      step-id: S10
+      step-id: S11
       leads-to: []
     - source: AML.CS0049
-      target: AML.T0051.000
+      target: AML.T0051.001
       relationship-type: employs
       description: Claude Code read all files that are part of the Skill, executing
         the malicious prompt in the `rules/logic.md` file.
       tactic: AML.TA0005
-      step-id: S07
+      step-id: S08
       leads-to:
-      - S08
+      - S09
     - source: AML.CS0049
       target: AML.T0053
       relationship-type: employs
       description: Claude Code executed the shell command using it's `bash` tool.
       tactic: AML.TA0012
-      step-id: S09
+      step-id: S10
       leads-to:
-      - S10
+      - S11
     - source: AML.CS0049
       target: AML.T0065
       relationship-type: employs
@@ -11976,20 +12703,20 @@ relationships:
         appears to be legitimate and may be confused with the legitimate `https://clawdhub.com`
         domain, causing the user to select confirm.
       tactic: AML.TA0007
-      step-id: S08
+      step-id: S09
       leads-to:
-      - S09
+      - S10
     - source: AML.CS0049
-      target: AML.T0104
+      target: AML.T0110.000
       relationship-type: employs
-      description: The researcher developed a poisoned ClawdBot Skill called "What
-        Would Elon Do?" The Skill contained the malicious prompt in the `rules/logic.md`
-        file, which is read when the Skill is activated. The researcher published
-        their Skill to ClawdHub.
-      tactic: AML.TA0003
-      step-id: S03
+      description: The poisoned Skill included malicious model-readable instructions
+        in `rules/logic.md`. Once the Skill was installed and made available to the
+        agent, these instructions altered how Claude Code handled requests associated
+        with the Skill.
+      tactic: AML.TA0006
+      step-id: S06
       leads-to:
-      - S04
+      - S07
     - source: AML.CS0049
       target: AML.T0111
       relationship-type: employs
@@ -11999,6 +12726,17 @@ relationships:
       step-id: S04
       leads-to:
       - S05
+    - source: AML.CS0049
+      target: AML.T0115.002
+      relationship-type: employs
+      description: The researcher developed a poisoned ClawdBot Skill called "What
+        Would Elon Do?" The Skill contained the malicious prompt in the `rules/logic.md`
+        file, which is read when the Skill is activated. The researcher published
+        their Skill to ClawdHub.
+      tactic: AML.TA0003
+      step-id: S03
+      leads-to:
+      - S04
   AML.CS0050:
     employs:
     - source: AML.CS0050
@@ -12364,7 +13102,7 @@ relationships:
       target: AML.T0004
       relationship-type: employs
       description: The researchers performed targeting to identify applications that
-        are likely built on with LLM Frameworks and may use the functions vulnerable
+        are likely built with LLM Frameworks and may use the functions vulnerable
         to RCE. This was done by scanning source code repositories for app deployment
         URLs.
       tactic: AML.TA0002
@@ -12535,15 +13273,6 @@ relationships:
       leads-to:
       - S08
     - source: AML.CS0053
-      target: AML.T0104
-      relationship-type: employs
-      description: The bad actor published their malicious version of `postmark-mcp`
-        to npm.
-      tactic: AML.TA0003
-      step-id: S02
-      leads-to:
-      - S03
-    - source: AML.CS0053
       target: AML.T0109
       relationship-type: employs
       description: By waiting for users to adopt a legitimate version of `postmark-mcp`
@@ -12554,7 +13283,7 @@ relationships:
       leads-to:
       - S04
     - source: AML.CS0053
-      target: AML.T0110
+      target: AML.T0110.001
       relationship-type: employs
       description: Once configured with the organization's AI agents, the poisoned
         Postmark MCP server's effects persist.
@@ -12562,51 +13291,72 @@ relationships:
       step-id: S05
       leads-to:
       - S06
+    - source: AML.CS0053
+      target: AML.T0115.002
+      relationship-type: employs
+      description: The bad actor published their malicious version of `postmark-mcp`
+        to npm.
+      tactic: AML.TA0003
+      step-id: S02
+      leads-to:
+      - S03
   AML.CS0054:
     employs:
     - source: AML.CS0054
       target: AML.T0010.005
       relationship-type: employs
-      description: The researchers hosted a poisoned MCP tool that contains the malicious
-        instructions hidden in the docstring of the tool.
+      description: The victim configured their AI agent to connect to the adversary-controlled
+        remote MCP server, introducing the poisoned tool definition into the agent's
+        available tool set.
       tactic: AML.TA0004
       step-id: S02
       leads-to:
       - S03
     - source: AML.CS0054
+      target: AML.T0011.002
+      relationship-type: employs
+      description: When the user made a request that represented the poisoned tool's
+        functionality, the agent invoked the poisoned MCP tool and acted on the malicious
+        instructions contained in its definition.
+      tactic: AML.TA0005
+      step-id: S04
+      leads-to:
+      - S05
+    - source: AML.CS0054
       target: AML.T0048.003
       relationship-type: employs
       description: The user's private data was exposed to remote MCP server.
       tactic: AML.TA0011
-      step-id: S08
+      step-id: S10
       leads-to: []
     - source: AML.CS0054
-      target: AML.T0051.000
+      target: AML.T0051.001
       relationship-type: employs
-      description: When a user called the remote MCP tool, the prompt injection hidden
-        in the docstring is executed locally.
+      description: The agent ingested and followed malicious instructions supplied
+        through the remote tool's model-visible definition rather than directly through
+        an adversary-authored user message.
       tactic: AML.TA0005
-      step-id: S03
+      step-id: S05
       leads-to:
-      - S04
+      - S06
     - source: AML.CS0054
       target: AML.T0053
       relationship-type: employs
       description: The prompt invoked an agent tool capable of reading files from
         the victim's filesystem.
       tactic: AML.TA0005
-      step-id: S04
+      step-id: S06
       leads-to:
-      - S05
+      - S07
     - source: AML.CS0054
       target: AML.T0055
       relationship-type: employs
       description: The prompt instructed the AI agent to read the user's SSH keys
         at `~/.ssh/id_rsa`.
       tactic: AML.TA0013
-      step-id: S05
+      step-id: S07
       leads-to:
-      - S06
+      - S08
     - source: AML.CS0054
       target: AML.T0065
       relationship-type: employs
@@ -12623,20 +13373,31 @@ relationships:
       description: The prompt instructed the AI agent to store the credentials files
         in an extraneous MCP tool parameter to exfiltrate them via the MCP connection.
       tactic: AML.TA0010
-      step-id: S07
+      step-id: S09
       leads-to:
-      - S08
+      - S10
     - source: AML.CS0054
       target: AML.T0098
       relationship-type: employs
       description: The prompt instructed the AI agent to read `mcp.json`, which often
         contains credentials for other MCP servers.
       tactic: AML.TA0013
-      step-id: S06
+      step-id: S08
       leads-to:
-      - S07
+      - S09
     - source: AML.CS0054
-      target: AML.T0104
+      target: AML.T0110.000
+      relationship-type: employs
+      description: The MCP tool's model-visible docstring contained malicious instructions
+        directing the agent to read credential files, conceal the additional actions
+        from the user, and place the credential contents in an otherwise unnecessary
+        tool parameter.
+      tactic: AML.TA0006
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0054
+      target: AML.T0115.002
       relationship-type: employs
       description: The researchers hosted a poisoned MCP server that contains the
         malicious instructions hidden in the docstring of one of the provided tools.
@@ -12980,7 +13741,7 @@ relationships:
     - source: AML.CS0059
       target: AML.T0051.002
       relationship-type: employs
-      description: When the user later invoked Copilot, which retrieved the malicious
+      description: When the user later invoked Copilot, it retrieved the malicious
         email into its context and triggering the prompt injection.
       tactic: AML.TA0005
       step-id: S06
@@ -13359,6 +14120,651 @@ relationships:
       tactic: AML.TA0011
       step-id: S05
       leads-to: []
+  AML.CS0063:
+    employs:
+    - source: AML.CS0063
+      target: AML.T0006
+      relationship-type: employs
+      description: The researchers directly probed Gemini interfaces to understand
+        its agent selection and execution behavior.
+      tactic: AML.TA0002
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0063
+      target: AML.T0025
+      relationship-type: employs
+      description: The adversary-controlled website received the victim device's source
+        IP address, enabling approximate geolocation.
+      tactic: AML.TA0010
+      step-id: S15
+      leads-to:
+      - S16
+    - source: AML.CS0063
+      target: AML.T0048.003
+      relationship-type: employs
+      description: Gemini delivered harmful content or repeated adversary-selected
+        promotions to the victim.
+      tactic: AML.TA0011
+      step-id: S09
+      leads-to:
+      - S10
+    - source: AML.CS0063
+      target: AML.T0048.003
+      relationship-type: employs
+      description: The victim's physical environment was altered, potentially creating
+        safety, privacy, property, or financial harm.
+      tactic: AML.TA0011
+      step-id: S13
+      leads-to:
+      - S14
+    - source: AML.CS0063
+      target: AML.T0048.003
+      relationship-type: employs
+      description: Unauthorized video streaming caused privacy harm to the victim.
+      tactic: AML.TA0011
+      step-id: S17
+      leads-to:
+      - S18
+    - source: AML.CS0063
+      target: AML.T0051.001
+      relationship-type: employs
+      description: When the victim asked Gemini to summarize Calendar events or emails,
+        Gemini retrieved the adversary-controlled content and incorporated it into
+        its context.
+      tactic: AML.TA0005
+      step-id: S04
+      leads-to:
+      - S05
+    - source: AML.CS0063
+      target: AML.T0051.002
+      relationship-type: employs
+      description: A later victim response such as "Thanks" activated the stored instructions.
+      tactic: AML.TA0005
+      step-id: S07
+      leads-to:
+      - S08
+    - source: AML.CS0063
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to invoke Google Calendar tools
+        using the victim's authorized access to modify Calendar data.
+      tactic: AML.TA0012
+      step-id: S10
+      leads-to:
+      - S11
+    - source: AML.CS0063
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to invoke Google Home using
+        the victim's authorized connection to control connected windows, a boiler,
+        or lights.
+      tactic: AML.TA0012
+      step-id: S12
+      leads-to:
+      - S13
+    - source: AML.CS0063
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to use Android Utilities to
+        open an adversary-controlled URL in the victim's browser and initiate a download.
+      tactic: AML.TA0012
+      step-id: S14
+      leads-to:
+      - S15
+    - source: AML.CS0063
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to use Android Utilities and
+        an application link or redirect chain to invoke Zoom.
+      tactic: AML.TA0012
+      step-id: S16
+      leads-to:
+      - S17
+    - source: AML.CS0063
+      target: AML.T0054
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to follow roleplay and instruction-override
+        content to replace its normal response with adversary-selected toxic content
+        or promotions.
+      tactic: AML.TA0007
+      step-id: S08
+      leads-to:
+      - S09
+    - source: AML.CS0063
+      target: AML.T0065
+      relationship-type: employs
+      description: The researchers crafted malicious instructions tailored to Gemini's
+        retrieval behavior, agents, and available tool permissions.
+      tactic: AML.TA0003
+      step-id: S02
+      leads-to:
+      - S03
+    - source: AML.CS0063
+      target: AML.T0080.001
+      relationship-type: employs
+      description: The injected instructions remained in the conversation context,
+        including Calendar content concealed behind 'Show more,' to influence subsequent
+        turns.
+      tactic: AML.TA0006
+      step-id: S05
+      leads-to:
+      - S06
+    - source: AML.CS0063
+      target: AML.T0084
+      relationship-type: employs
+      description: The researchers identified available agents, tools, and connected
+        services, including Calendar, Gmail, Google Home, Android Utilities, Chrome,
+        and Zoom.
+      tactic: AML.TA0008
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0063
+      target: AML.T0085.001
+      relationship-type: employs
+      description: The malicious prompt caused Gemini to retrieve Calendar event titles
+        or Gmail email subjects using connected agent tools and place the contents
+        into adversary-controlled URLs.
+      tactic: AML.TA0009
+      step-id: S18
+      leads-to:
+      - S19
+    - source: AML.CS0063
+      target: AML.T0086
+      relationship-type: employs
+      description: Gemini opened the constructed URL using Android Utilities, transmitting
+        the victim's Calendar or email data to the adversary-controlled server.
+      tactic: AML.TA0010
+      step-id: S19
+      leads-to: []
+    - source: AML.CS0063
+      target: AML.T0093
+      relationship-type: employs
+      description: The researchers sent a poisoned Calendar invitation or email containing
+        malicious instructions in its title or subject.
+      tactic: AML.TA0004
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0063
+      target: AML.T0094
+      relationship-type: employs
+      description: The malicious instructions deferred the action until a future victim
+        interaction, avoiding restrictions imposed during the original retrieval turn.
+      tactic: AML.TA0007
+      step-id: S06
+      leads-to:
+      - S07
+    - source: AML.CS0063
+      target: AML.T0101
+      relationship-type: employs
+      description: Gemini deleted a victim Calendar event.
+      tactic: AML.TA0011
+      step-id: S11
+      leads-to:
+      - S12
+  AML.CS0064:
+    employs:
+    - source: AML.CS0064
+      target: AML.T0002.001
+      relationship-type: employs
+      description: The adversary obtains a legitimate open-weight model artifact containing
+        a bundled chat template. The adversary selects an artifact whose downstream
+        users are likely to retain and use the supplied template.
+      tactic: AML.TA0003
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0064
+      target: AML.T0010.003
+      relationship-type: employs
+      description: A victim downloads and integrates the poisoned artifact while trusting
+        the model and its bundled components. This introduces the template backdoor
+        into the victim's AI application or agent.
+      tactic: AML.TA0004
+      step-id: S05
+      leads-to:
+      - S06
+    - source: AML.CS0064
+      target: AML.T0011.000
+      relationship-type: employs
+      description: The victim loads and uses the poisoned artifact in a compatible
+        inference engine. During inference, the engine automatically interprets the
+        bundled chat template, causing the attacker-modified prompt-construction logic
+        to execute as part of normal model use.
+      tactic: AML.TA0005
+      step-id: S06
+      leads-to:
+      - S07
+    - source: AML.CS0064
+      target: AML.T0017.000
+      relationship-type: employs
+      description: The adversary develops a template-based backdoor containing conditional
+        trigger logic and an attacker-controlled instruction payload. The trigger
+        is selected to activate during ordinary use of the intended application.
+      tactic: AML.TA0003
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0064
+      target: AML.T0018.003
+      relationship-type: employs
+      description: The adversary modifies the chat template bundled with the model
+        artifact. The modified template injects attacker-controlled instructions into
+        the model context when its trigger is present, while leaving the model weights
+        unchanged.
+      tactic: AML.TA0001
+      step-id: S02
+      leads-to:
+      - S03
+    - source: AML.CS0064
+      target: AML.T0031
+      relationship-type: employs
+      description: The injected instruction causes the model to produce plausible
+        but incorrect or attacker-influenced responses. The model continues to behave
+        normally when the trigger is absent, making the integrity compromise difficult
+        to detect.
+      tactic: AML.TA0011
+      step-id: S08
+      leads-to:
+      - S09
+    - source: AML.CS0064
+      target: AML.T0048.003
+      relationship-type: employs
+      description: The compromised system may expose users to privacy loss, credential
+        theft, misleading information, or attacker-modified software. Malicious content
+        inserted into generated artifacts may continue to affect downstream users
+        after those artifacts are deployed or distributed.
+      tactic: AML.TA0011
+      step-id: S12
+      leads-to: []
+    - source: AML.CS0064
+      target: AML.T0051.002
+      relationship-type: employs
+      description: When a designated phrase or contextual condition appears, the template
+        injects the attacker-controlled instruction into the serialized model context.
+        The victim's ordinary activity activates the backdoor without requiring additional
+        attacker interaction.
+      tactic: AML.TA0005
+      step-id: S07
+      leads-to:
+      - S08
+    - source: AML.CS0064
+      target: AML.T0053
+      relationship-type: employs
+      description: When the poisoned model operates as part of an AI agent, the injected
+        instruction redirects the agent's tool selection, tool arguments, or execution
+        order toward the attacker's objective while allowing the legitimate task to
+        continue.
+      tactic: AML.TA0005
+      step-id: S10
+      leads-to:
+      - S11
+    - source: AML.CS0064
+      target: AML.T0067
+      relationship-type: employs
+      description: The injected instruction causes the model to include attacker-selected
+        links, references, or other response components in a form that appears relevant
+        or trustworthy to the user.
+      tactic: AML.TA0007
+      step-id: S09
+      leads-to:
+      - S10
+    - source: AML.CS0064
+      target: AML.T0074
+      relationship-type: employs
+      description: The adversary makes the modified artifact appear equivalent to
+        the legitimate model. The artifact preserves expected behavior when the trigger
+        is absent, and the malicious logic is concealed among legitimate template
+        formatting and control logic.
+      tactic: AML.TA0007
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0064
+      target: AML.T0086
+      relationship-type: employs
+      description: The compromised agent invokes a network-capable or write-capable
+        tool to transmit sensitive information to an attacker-controlled destination.
+        The agent may then continue and complete the user's legitimate task, concealing
+        the unauthorized transmission.
+      tactic: AML.TA0010
+      step-id: S11
+      leads-to:
+      - S12
+    - source: AML.CS0064
+      target: AML.T0115.001
+      relationship-type: employs
+      description: The adversary publishes the modified model artifact through a model
+        repository or another distribution channel used by downstream developers and
+        organizations.
+      tactic: AML.TA0003
+      step-id: S04
+      leads-to:
+      - S05
+  AML.CS0065:
+    employs:
+    - source: AML.CS0065
+      target: AML.T0010.003
+      relationship-type: employs
+      description: A cloud model catalog, application, or deployment pipeline resolved
+        its stale name-only model reference to the attacker-controlled replacement
+        model. Unit 42 demonstrated this through Vertex AI and Azure AI Foundry deployments.
+      tactic: AML.TA0004
+      step-id: S05
+      leads-to:
+      - S06
+    - source: AML.CS0065
+      target: AML.T0011.000
+      relationship-type: employs
+      description: When a user or service deployed the malicious model, loading or
+        deployment executed the embedded payload in the model endpoint environment.
+      tactic: AML.TA0005
+      step-id: S06
+      leads-to:
+      - S07
+    - source: AML.CS0065
+      target: AML.T0018.002
+      relationship-type: employs
+      description: Unit 42 prepared attacker-controlled model artifacts containing
+        a payload that initiated a reverse shell when deployed or loaded.
+      tactic: AML.TA0001
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0065
+      target: AML.T0021
+      relationship-type: employs
+      description: Unit 42 registered a Hugging Face organization using an abandoned
+        namespace associated with a previously trusted model path. The original owner's
+        account was not compromised.
+      tactic: AML.TA0003
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0065
+      target: AML.T0072
+      relationship-type: employs
+      description: The payload established a reverse shell from the deployed endpoint
+        to researcher-controlled infrastructure.
+      tactic: AML.TA0014
+      step-id: S07
+      leads-to: []
+    - source: AML.CS0065
+      target: AML.T0074
+      relationship-type: employs
+      description: By recreating the namespace, Unit 42 made the malicious artifact
+        appear to be the formerly trusted model. For transferred models, reclaiming
+        the old namespace displaced the legacy redirect to the legitimate model's
+        new location.
+      tactic: AML.TA0007
+      step-id: S02
+      leads-to:
+      - S03
+    - source: AML.CS0065
+      target: AML.T0095
+      relationship-type: employs
+      description: Unit 42 reviewed public Hugging Face-backed model catalogs, Hugging
+        Face author pages, and open-source repositories to identify references to
+        models whose original author namespace had been deleted and was available
+        for registration. They identified stale references in cloud catalogs, source
+        code, documentation, default arguments, and example notebooks.
+      tactic: AML.TA0002
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0065
+      target: AML.T0115.001
+      relationship-type: employs
+      description: Unit 42 uploaded the malicious model under the reclaimed namespace
+        using the original Author/ModelName identifier.
+      tactic: AML.TA0003
+      step-id: S04
+      leads-to:
+      - S05
+  AML.CS0066:
+    employs:
+    - source: AML.CS0066
+      target: AML.T0051.001
+      relationship-type: employs
+      description: A later, legitimate user request, such as asking ChatGPT to summarize
+        the inbox, caused the agent to retrieve the malicious content and execute
+        the concealed instructions. The user did not knowingly interact with the malicious
+        email.
+      tactic: AML.TA0005
+      step-id: S04
+      leads-to:
+      - S05
+      - S06
+    - source: AML.CS0066
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious instructions caused ChatGPT to invoke connector and
+        web-access capabilities available under the victim's authority. This gave
+        the prompt access to information and actions that were not directly available
+        to the researchers.
+      tactic: AML.TA0012
+      step-id: S06
+      leads-to:
+      - S07
+      - S11
+    - source: AML.CS0066
+      target: AML.T0053
+      relationship-type: employs
+      description: The malicious instructions caused ChatGPT to reproduce the prompt
+        in new emails or documents and distribute them to collected contacts. If another
+        AI agent processed the poisoned content, the attack could propagate between
+        users or connected AI systems.
+      tactic: AML.TA0015
+      step-id: S12
+      leads-to: []
+    - source: AML.CS0066
+      target: AML.T0054
+      relationship-type: employs
+      description: The researchers bypassed ChatGPT's restriction against dynamically
+        constructing or modifying URLs by supplying an indexed dictionary of static
+        URLs. ChatGPT encoded collected data by selecting and opening the URL corresponding
+        to each character and position.
+      tactic: AML.TA0007
+      step-id: S08
+      leads-to:
+      - S09
+    - source: AML.CS0066
+      target: AML.T0065
+      relationship-type: employs
+      description: The researchers crafted malicious prompt payloads for the different
+        attack variants. The payloads contained instructions for connector access,
+        data collection, static-URL encoding, memory manipulation, and propagation.
+      tactic: AML.TA0003
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0066
+      target: AML.T0068
+      relationship-type: employs
+      description: The prompt injection was visually concealed in externally controlled
+        content using techniques such as white-on-white text or microscopic font sizes.
+        ChatGPT could process the instructions even though they were not apparent
+        to the user.
+      tactic: AML.TA0007
+      step-id: S02
+      leads-to:
+      - S03
+    - source: AML.CS0066
+      target: AML.T0079
+      relationship-type: employs
+      description: The researchers prepared infrastructure to receive exfiltrated
+        data.
+      tactic: AML.TA0003
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0066
+      target: AML.T0080.000
+      relationship-type: employs
+      description: The malicious instructions caused ChatGPT to create or modify memories.
+        The poisoned memories instructed ChatGPT to retain sensitive information from
+        conversations and to perform attacker-defined actions during later interactions.
+      tactic: AML.TA0006
+      step-id: S05
+      leads-to:
+      - S06
+    - source: AML.CS0066
+      target: AML.T0085.001
+      relationship-type: employs
+      description: ChatGPT used connected-service tools to retrieve information accessible
+        to the victim's agent. Demonstrated collection included mailbox content and
+        email contact information.
+      tactic: AML.TA0009
+      step-id: S07
+      leads-to:
+      - S08
+    - source: AML.CS0066
+      target: AML.T0085.001
+      relationship-type: employs
+      description: ChatGPT searched the victim's mailbox and collected email addresses
+        belonging to potential additional targets.
+      tactic: AML.TA0009
+      step-id: S11
+      leads-to:
+      - S12
+    - source: AML.CS0066
+      target: AML.T0086
+      relationship-type: employs
+      description: ChatGPT invoked its URL-opening capability to request the selected
+        adversary-controlled URLs. The researchers reconstructed the sensitive data
+        from the character and position encoded in the resulting server requests.
+        The requests originated from OpenAI's infrastructure rather than the victim's
+        endpoint or corporate network.
+      tactic: AML.TA0010
+      step-id: S09
+      leads-to: []
+    - source: AML.CS0066
+      target: AML.T0093
+      relationship-type: employs
+      description: The researchers sent a malicious email to an inbox connected to
+        ChatGPT or provided a malicious document that could be uploaded or retrieved
+        through a connected service. This introduced the prompt into a data source
+        accessible to the victim's agent.
+      tactic: AML.TA0004
+      step-id: S03
+      leads-to:
+      - S04
+  AML.CS0067:
+    employs:
+    - source: AML.CS0067
+      target: AML.T0051.001
+      relationship-type: employs
+      description: Claude Code Action incorporated the malicious GitHub content into
+        the model context. Claude interpreted the malicious content as instructions
+        and followed the supplied instructions.
+      tactic: AML.TA0005
+      step-id: S05
+      leads-to:
+      - S06
+    - source: AML.CS0067
+      target: AML.T0053
+      relationship-type: employs
+      description: Claude invoked its built-in Read tool on `/proc/self/environ`.
+        Read did not execute within the Bubblewrap and scrubbed-environment boundary
+        applied to Bash subprocesses.
+      tactic: AML.TA0005
+      step-id: S07
+      leads-to:
+      - S08
+    - source: AML.CS0067
+      target: AML.T0054
+      relationship-type: employs
+      description: The prompt used benign compliance review framing and instructions
+        to remove the credential prefix to bypass Claude's refusal behavior for emitting
+        a recognizable API key.
+      tactic: AML.TA0007
+      step-id: S06
+      leads-to:
+      - S07
+    - source: AML.CS0067
+      target: AML.T0057
+      relationship-type: employs
+      description: Claude emitted the Anthropic API key after removing its `sk-ant-`
+        prefix. The transformation prevented GitHub's secret scanner from recognizing
+        the credential, while the researchers could reconstruct the original key by
+        restoring the prefix.
+      tactic: AML.TA0010
+      step-id: S09
+      leads-to:
+      - S10
+    - source: AML.CS0067
+      target: AML.T0065
+      relationship-type: employs
+      description: The researchers crafted a prompt tailored to Claude Code Action
+        framed as a compliance task that directed Claude to read a credential from
+        its environment and emit it.
+      tactic: AML.TA0003
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0067
+      target: AML.T0084.001
+      relationship-type: employs
+      description: The researchers identified the tools available to Claude Code Action
+        and compared their execution paths. They determined that Bash subprocesses
+        could run within Bubblewrap with a scrubbed environment, while the built-in
+        Read tool performed direct, in-process file access outside that isolation
+        boundary.
+      tactic: AML.TA0008
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0067
+      target: AML.T0084.002
+      relationship-type: employs
+      description: The researchers identified that Claude Code Action could be triggered
+        by GitHub events involving issues, pull requests, and comments and that the
+        action would fetch the associated content into Claude's context.
+      tactic: AML.TA0008
+      step-id: S02
+      leads-to:
+      - S03
+    - source: AML.CS0067
+      target: AML.T0086
+      relationship-type: employs
+      description: The researchers could use WebFetch, Bash, GitHub MCP, and Action
+        logs as potential exfiltration channels depending on the tools available in
+        the workflow configuration.
+      tactic: AML.TA0010
+      step-id: S10
+      leads-to: []
+    - source: AML.CS0067
+      target: AML.T0093
+      relationship-type: employs
+      description: The researchers introduced the malicious prompt through attacker-controlled
+        GitHub content processed by the lab workflow, modeling delivery through an
+        issue body, pull request description, or comment handled by Claude Code Action.
+      tactic: AML.TA0004
+      step-id: S04
+      leads-to:
+      - S05
+    - source: AML.CS0067
+      target: AML.T0095.000
+      relationship-type: employs
+      description: The researchers analyzed the Claude Code Action codebase and the
+        obfuscated Claude Agent SDK. They used the implementation details to understand
+        how agent tools executed and where security boundaries were applied.
+      tactic: AML.TA0002
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0067
+      target: AML.T0098
+      relationship-type: employs
+      description: The Read tool returned the action process's unsanitized environment,
+        including `ANTHROPIC_API_KEY` and potentially other credentials available
+        to the workflow.
+      tactic: AML.TA0013
+      step-id: S08
+      leads-to:
+      - S09
   AML.M0000:
     mitigates:
     - source: AML.M0000
@@ -13366,6 +14772,12 @@ relationships:
       relationship-type: mitigates
       description: Limit the connection between publicly disclosed approaches and
         the data, models, and algorithms used in production.
+    - source: AML.M0000
+      target: AML.T0001
+      relationship-type: mitigates
+      description: Limit disclosure of the production AI stack and system-specific
+        technical details that let adversaries connect public vulnerability research
+        to the deployed target.
     - source: AML.M0000
       target: AML.T0002
       relationship-type: mitigates
@@ -13396,6 +14808,42 @@ relationships:
       relationship-type: mitigates
       description: Limiting release of technical information about a model and training
         data can reduce an adversary's ability to create an accurate proxy model.
+    - source: AML.M0000
+      target: AML.T0064
+      relationship-type: mitigates
+      description: Withhold public documentation that identifies RAG data sources,
+        indexes, and retrieval architecture.
+    - source: AML.M0000
+      target: AML.T0069
+      relationship-type: mitigates
+      description: Withhold public prompt templates, model configuration, and architecture
+        details that could aid LLM reconnaissance.
+    - source: AML.M0000
+      target: AML.T0084
+      relationship-type: mitigates
+      description: Limit public disclosure of agent tools, services, configuration,
+        and workflows.
+    - source: AML.M0000
+      target: AML.T0084.001
+      relationship-type: mitigates
+      description: Avoid publicly documenting sensitive agent tool definitions and
+        capabilities.
+    - source: AML.M0000
+      target: AML.T0084.002
+      relationship-type: mitigates
+      description: Avoid publicly disclosing agent activation keywords, events, and
+        workflows.
+    - source: AML.M0000
+      target: AML.T0084.003
+      relationship-type: mitigates
+      description: Limit public disclosure of agent call chains and execution-sink
+        details.
+    - source: AML.M0000
+      target: AML.T0095
+      relationship-type: mitigates
+      description: Limit public technical and organizational information that reveals
+        the AI stack, services, personnel, or other targeting details on websites
+        and domains.
   AML.M0001:
     mitigates:
     - source: AML.M0001
@@ -13418,6 +14866,16 @@ relationships:
       relationship-type: mitigates
       description: Limiting the release of model artifacts can reduce an adversary's
         ability to create an accurate proxy model.
+    - source: AML.M0001
+      target: AML.T0016
+      relationship-type: mitigates
+      description: Limit public release of production model artifacts that adversaries
+        could acquire and adapt as operational capabilities.
+    - source: AML.M0001
+      target: AML.T0016.002
+      relationship-type: mitigates
+      description: Limit public release of production model artifacts that adversaries
+        could acquire and adapt as operational capabilities.
     - source: AML.M0001
       target: AML.T0020
       relationship-type: mitigates
@@ -13528,23 +14986,23 @@ relationships:
     - source: AML.M0004
       target: AML.T0005
       relationship-type: mitigates
-      description: Restricting the number of queries to the model decreases an adversary's
-        ability to replicate an accurate proxy model.
+      description: Limit inference queries to reduce the labeled outputs available
+        for training a proxy model.
     - source: AML.M0004
       target: AML.T0005.001
       relationship-type: mitigates
-      description: Restricting the number of queries to the model decreases an adversary's
-        ability to replicate an accurate proxy model.
+      description: Limit inference queries to reduce the labeled outputs available
+        for training a proxy model.
     - source: AML.M0004
       target: AML.T0013
       relationship-type: mitigates
-      description: Limit the amount of information an attacker can learn about a model's
-        ontology through API queries.
+      description: Limit inference queries to reduce an adversary's ability to discover
+        the model's full output ontology.
     - source: AML.M0004
       target: AML.T0014
       relationship-type: mitigates
-      description: Limit the amount of information an attacker can learn about a model's
-        ontology through API queries.
+      description: Limit inference queries to reduce an adversary's ability to infer
+        the family of AI model.
     - source: AML.M0004
       target: AML.T0024
       relationship-type: mitigates
@@ -13582,33 +15040,32 @@ relationships:
     - source: AML.M0004
       target: AML.T0042
       relationship-type: mitigates
-      description: Restricting the number of queries to the model decreases an adversary's
-        ability to verify the efficacy of an attack.
+      description: Limit repeated queries used to test and refine an attack against
+        the target model.
     - source: AML.M0004
       target: AML.T0043
       relationship-type: mitigates
-      description: Restricting the number of model queries can reduce an adversary's
-        ability to refine and evaluate adversarial queries.
+      description: Limit volume of model queries to prevent or slow an adversary's
+        ability to create adversarial inputs.
     - source: AML.M0004
       target: AML.T0043.001
       relationship-type: mitigates
-      description: Restricting the number of queries to the model limits or slows
-        an adversary's ability to perform black-box optimization attacks.
+      description: Limit volume of model queries to prevent or slow an adversary's
+        ability to perform black-box optimization attacks.
     - source: AML.M0004
       target: AML.T0043.003
       relationship-type: mitigates
-      description: Restricting the number of model queries can reduce an adversary's
+      description: Limit volume of model queries to prevent or slow an adversary's
         ability to refine manually crafted adversarial inputs.
     - source: AML.M0004
       target: AML.T0046
       relationship-type: mitigates
-      description: Limit the number of queries users can perform in a given interval
-        to protect the system from chaff data spam.
+      description: Limit volume and rate of queries to protect the system from chaff
+        data spam.
     - source: AML.M0004
       target: AML.T0062
       relationship-type: mitigates
-      description: Restricting number of model queries limits or slows an adversary's
-        ability to identify possible hallucinations.
+      description: Limit repeated prompts used to search for exploitable hallucinations.
   AML.M0005:
     mitigates:
     - source: AML.M0005
@@ -13626,6 +15083,11 @@ relationships:
       relationship-type: mitigates
       description: Access controls can prevent tampering with ML artifacts and prevent
         unauthorized copying.
+    - source: AML.M0005
+      target: AML.T0012
+      relationship-type: mitigates
+      description: Restrict model registries and training data to approved identities
+        so compromised accounts expose only explicitly authorized AI assets.
     - source: AML.M0005
       target: AML.T0018
       relationship-type: mitigates
@@ -13646,6 +15108,11 @@ relationships:
       relationship-type: mitigates
       description: Access controls can prevent tampering with ML artifacts and prevent
         unauthorized copying.
+    - source: AML.M0005
+      target: AML.T0021
+      relationship-type: mitigates
+      description: Verify identities before granting access to model registries so
+        newly established accounts cannot automatically access protected AI artifacts.
     - source: AML.M0005
       target: AML.T0025
       relationship-type: mitigates
@@ -13674,6 +15141,29 @@ relationships:
       target: AML.T0048.004
       relationship-type: mitigates
       description: Access controls can prevent theft of intellectual property.
+    - source: AML.M0005
+      target: AML.T0069
+      relationship-type: mitigates
+      description: Restrict access to stored system prompts, configuration files,
+        and model metadata.
+    - source: AML.M0005
+      target: AML.T0069.000
+      relationship-type: mitigates
+      description: Restrict access to stored prompt templates and configurations containing
+        internal delimiters.
+    - source: AML.M0005
+      target: AML.T0069.001
+      relationship-type: mitigates
+      description: Restrict access to stored system instructions and tool definitions
+        containing privileged keywords.
+    - source: AML.M0005
+      target: AML.T0069.002
+      relationship-type: mitigates
+      description: Restrict access to stored system prompts and prompt templates.
+    - source: AML.M0005
+      target: AML.T0112.001
+      relationship-type: mitigates
+      description: Restrict write access to model registries and AI artifact stores.
   AML.M0006:
     mitigates:
     - source: AML.M0006
@@ -13750,6 +15240,16 @@ relationships:
       target: AML.T0059
       relationship-type: mitigates
       description: Remediating poisoned data can re-establish dataset integrity.
+    - source: AML.M0007
+      target: AML.T0115
+      relationship-type: mitigates
+      description: Dataset repositories inspect submissions and quarantine poisoned
+        samples, labels, annotations, or metadata before listing.
+    - source: AML.M0007
+      target: AML.T0115.000
+      relationship-type: mitigates
+      description: Dataset repositories inspect submissions and quarantine poisoned
+        samples, labels, annotations, or metadata before listing.
   AML.M0008:
     mitigates:
     - source: AML.M0008
@@ -13792,6 +15292,16 @@ relationships:
       relationship-type: mitigates
       description: Robust evaluation of an AI model can be used to detect privacy
         concerns, data leakage, and potential for revealing sensitive information.
+    - source: AML.M0008
+      target: AML.T0115
+      relationship-type: mitigates
+      description: Model repositories evaluate submissions for backdoors, data leakage,
+        adversarial influence, and unexpected behavior before listing.
+    - source: AML.M0008
+      target: AML.T0115.001
+      relationship-type: mitigates
+      description: Model repositories evaluate submissions for backdoors, data leakage,
+        adversarial influence, and unexpected behavior before listing.
   AML.M0009:
     mitigates:
     - source: AML.M0009
@@ -13862,6 +15372,21 @@ relationships:
       relationship-type: mitigates
       description: Restricting packages from loading external libraries can limit
         their ability to execute malicious code.
+    - source: AML.M0011
+      target: AML.T0050
+      relationship-type: mitigates
+      description: Restrict library loading so command and script interpreters cannot
+        load untrusted libraries as an execution mechanism.
+    - source: AML.M0011
+      target: AML.T0074
+      relationship-type: mitigates
+      description: Restrict library loading to trusted locations and approved libraries
+        so disguised malicious libraries cannot be loaded as legitimate dependencies.
+    - source: AML.M0011
+      target: AML.T0090
+      relationship-type: mitigates
+      description: Restrict library loading to block credential-dumping paths that
+        inject or load malicious code into processes holding authentication material.
   AML.M0012:
     mitigates:
     - source: AML.M0012
@@ -13948,11 +15473,6 @@ relationships:
       relationship-type: mitigates
       description: Introduce proper checking of signatures to ensure that unsafe AI
         artifacts will not be executed in the system.
-    - source: AML.M0014
-      target: AML.T0019
-      relationship-type: mitigates
-      description: Determine validity of published data in order to avoid using poisoned
-        data that introduces vulnerabilities.
   AML.M0015:
     mitigates:
     - source: AML.M0015
@@ -14017,6 +15537,31 @@ relationships:
       relationship-type: mitigates
       description: Vulnerability scanning can help identify malicious packages and
         prevent user execution.
+    - source: AML.M0016
+      target: AML.T0106
+      relationship-type: mitigates
+      description: Vulnerability scanning identifies and remediates software flaws
+        before they can be exploited to obtain credentials.
+    - source: AML.M0016
+      target: AML.T0107
+      relationship-type: mitigates
+      description: Vulnerability scanning reduces opportunities for adversaries to
+        exploit weaknesses that bypass security controls.
+    - source: AML.M0016
+      target: AML.T0115
+      relationship-type: mitigates
+      description: Model and agent tool registries scan uploaded artifacts for malicious
+        content before listing.
+    - source: AML.M0016
+      target: AML.T0115.001
+      relationship-type: mitigates
+      description: Model registries scan uploaded models for unsafe serialization,
+        embedded code, malware, and known vulnerabilities before listing.
+    - source: AML.M0016
+      target: AML.T0115.002
+      relationship-type: mitigates
+      description: Tool registries scan uploaded tool packages and dependencies for
+        malicious code and vulnerabilities before listing.
   AML.M0017:
     mitigates:
     - source: AML.M0017
@@ -14094,6 +15639,21 @@ relationships:
       description: Access controls on models APIs can reduce an adversary's ability
         to produce an accurate proxy model.
     - source: AML.M0019
+      target: AML.T0006
+      relationship-type: mitigates
+      description: Require authenticated access to production AI endpoints and monitor
+        queries to limit unauthenticated probing of exposed AI services.
+    - source: AML.M0019
+      target: AML.T0012
+      relationship-type: mitigates
+      description: Authenticate production AI endpoints and monitor model queries
+        for misuse of otherwise valid credentials.
+    - source: AML.M0019
+      target: AML.T0021
+      relationship-type: mitigates
+      description: Verify identities before granting production AI access so newly
+        established accounts cannot automatically access protected AI services.
+    - source: AML.M0019
       target: AML.T0024
       relationship-type: mitigates
       description: Adversaries can use unrestricted API access to build a proxy training
@@ -14121,7 +15681,7 @@ relationships:
     - source: AML.M0019
       target: AML.T0043
       relationship-type: mitigates
-      description: Access controls on model APIs can restricts an adversary's access
+      description: Access controls on model APIs can restrict an adversary's access
         required to generate adversarial data.
     - source: AML.M0019
       target: AML.T0043.001
@@ -14143,12 +15703,47 @@ relationships:
       relationship-type: mitigates
       description: Controlling access to the model in production can help prevent
         adversaries from inferring information from the model outputs.
+    - source: AML.M0019
+      target: AML.T0069
+      relationship-type: mitigates
+      description: Authenticate and monitor access to production models and configuration
+        interfaces.
+    - source: AML.M0019
+      target: AML.T0069.000
+      relationship-type: mitigates
+      description: Authenticate and monitor access to production models and prompt
+        configuration.
+    - source: AML.M0019
+      target: AML.T0069.002
+      relationship-type: mitigates
+      description: Authenticate and monitor access to production models and prompt
+        configuration.
+    - source: AML.M0019
+      target: AML.T0091
+      relationship-type: mitigates
+      description: Enforce authorization and monitor production AI API use for anomalous
+        activity associated with replayed access tokens.
+    - source: AML.M0019
+      target: AML.T0091.000
+      relationship-type: mitigates
+      description: Enforce authorization and monitor production AI API use for anomalous
+        activity associated with replayed access tokens.
+    - source: AML.M0019
+      target: AML.T0096
+      relationship-type: mitigates
+      description: Authenticate AI service API callers and monitor queries for policy
+        violations and misuse.
   AML.M0020:
     mitigates:
     - source: AML.M0020
       target: AML.T0010
       relationship-type: mitigates
       description: Guardrails can detect harmful code in model outputs.
+    - source: AML.M0020
+      target: AML.T0016.002
+      relationship-type: mitigates
+      description: Apply guardrails to block malicious use and jailbreak attempts
+        against generative AI models or services.
     - source: AML.M0020
       target: AML.T0051
       relationship-type: mitigates
@@ -14181,6 +15776,74 @@ relationships:
       relationship-type: mitigates
       description: Guardrails can help block hallucinated content that appears in
         model output.
+    - source: AML.M0020
+      target: AML.T0066
+      relationship-type: mitigates
+      description: Apply retrieval guardrails to reject untrusted, malicious, irrelevant,
+        or unsupported RAG content.
+    - source: AML.M0020
+      target: AML.T0068
+      relationship-type: mitigates
+      description: Apply input guardrails that decode, normalize, inspect, and block
+        concealed malicious instructions.
+    - source: AML.M0020
+      target: AML.T0069
+      relationship-type: mitigates
+      description: Block output of system prompts, hidden instructions, secrets, and
+        internal configuration details.
+    - source: AML.M0020
+      target: AML.T0069.000
+      relationship-type: mitigates
+      description: Filter responses that expose hidden prompt formatting, delimiters,
+        or internal instructions.
+    - source: AML.M0020
+      target: AML.T0069.001
+      relationship-type: mitigates
+      description: Filter responses that reveal system keywords, tool names, function
+        definitions, or hidden instructions.
+    - source: AML.M0020
+      target: AML.T0069.002
+      relationship-type: mitigates
+      description: Filter responses that reveal system prompts and hidden instructions.
+    - source: AML.M0020
+      target: AML.T0070
+      relationship-type: mitigates
+      description: Apply retrieval guardrails to reject untrusted, malicious, irrelevant,
+        or unsupported RAG content.
+    - source: AML.M0020
+      target: AML.T0071
+      relationship-type: mitigates
+      description: Validate retrieved documents and block nested false entries, malicious
+        instructions, and unsupported content.
+    - source: AML.M0020
+      target: AML.T0078
+      relationship-type: mitigates
+      description: Apply retrieval, input, and tool-action guardrails to detect and
+        block malicious instructions embedded in websites before execution.
+    - source: AML.M0020
+      target: AML.T0099
+      relationship-type: mitigates
+      description: Apply retrieval guardrails to reject untrusted, malicious, irrelevant,
+        or unsupported tool-retrieved content.
+    - source: AML.M0020
+      target: AML.T0100
+      relationship-type: mitigates
+      description: Apply guardrails to untrusted web content and proposed computer-use
+        actions.
+    - source: AML.M0020
+      target: AML.T0102
+      relationship-type: mitigates
+      description: Block prompts and outputs that request or contain malicious commands.
+    - source: AML.M0020
+      target: AML.T0108
+      relationship-type: mitigates
+      description: Block malicious agent instructions, command outputs, and unsafe
+        tool requests with guardrails.
+    - source: AML.M0020
+      target: AML.T0112.000
+      relationship-type: mitigates
+      description: Block malicious prompts, unsafe outputs, and prohibited agent actions
+        with guardrails.
   AML.M0021:
     mitigates:
     - source: AML.M0021
@@ -14218,8 +15881,18 @@ relationships:
       relationship-type: mitigates
       description: Guidelines can instruct the model to avoid producing hallucinated
         content.
+    - source: AML.M0021
+      target: AML.T0100
+      relationship-type: mitigates
+      description: Instruct agents to treat webpage instructions as untrusted and
+        request approval for consequential actions.
   AML.M0022:
     mitigates:
+    - source: AML.M0022
+      target: AML.T0016.002
+      relationship-type: mitigates
+      description: Align generative models to resist and adversary's malicious requests
+        and attempts to remove safety behavior.
     - source: AML.M0022
       target: AML.T0051
       relationship-type: mitigates
@@ -14255,6 +15928,11 @@ relationships:
       relationship-type: mitigates
       description: Model alignment can help steer the model away from hallucinated
         content.
+    - source: AML.M0022
+      target: AML.T0102
+      relationship-type: mitigates
+      description: Align generative AI models with safety objectives to reduce the
+        likelihood that they will generate malicious commands or harmful instructions.
   AML.M0023:
     mitigates:
     - source: AML.M0023
@@ -14275,15 +15953,7 @@ relationships:
       relationship-type: mitigates
       description: An AI BOM can help users identify untrustworthy software dependencies.
     - source: AML.M0023
-      target: AML.T0019
-      relationship-type: mitigates
-      description: An AI BOM can help users identify untrustworthy model artifacts.
-    - source: AML.M0023
       target: AML.T0020
-      relationship-type: mitigates
-      description: An AI BOM can help users identify untrustworthy model artifacts.
-    - source: AML.M0023
-      target: AML.T0058
       relationship-type: mitigates
       description: An AI BOM can help users identify untrustworthy model artifacts.
   AML.M0024:
@@ -14384,11 +16054,6 @@ relationships:
       relationship-type: mitigates
       description: Dataset provenance can protect against poisoning of models.
     - source: AML.M0025
-      target: AML.T0019
-      relationship-type: mitigates
-      description: Maintaining a detailed history of datasets can help identify use
-        of poisoned datasets from public sources.
-    - source: AML.M0025
       target: AML.T0020
       relationship-type: mitigates
       description: Dataset provenance can protect against poisoning of training data
@@ -14397,6 +16062,11 @@ relationships:
       relationship-type: mitigates
       description: Maintaining dataset provenance can help identify adverse changes
         to the data.
+    - source: AML.M0025
+      target: AML.T0074
+      relationship-type: mitigates
+      description: Record dataset sources and modification history so datasets falsely
+        presented as trusted can be identified.
   AML.M0026:
     mitigates:
     - source: AML.M0026
@@ -14559,15 +16229,24 @@ relationships:
     - source: AML.M0031
       target: AML.T0080
       relationship-type: mitigates
-      description: Memory hardening can help protect LLM memory from manipulation
-        and prevent poisoned memories from executing.
+      description: Memory hardening reduces persistent context poisoning by controlling
+        what an agent may save as memory, preventing saved data from becoming higher-authority
+        instructions, and enabling poisoned records to be identified, quarantined,
+        and rolled back.
     - source: AML.M0031
       target: AML.T0080.000
       relationship-type: mitigates
-      description: Memory hardening can help protect LLM memory from manipulation
-        and prevent poisoned memories from executing.
+      description: Memory hardening reduces persistent context poisoning by controlling
+        what an agent may save as memory, preventing saved data from becoming higher-authority
+        instructions, and enabling poisoned records to be identified, quarantined,
+        and rolled back.
   AML.M0032:
     mitigates:
+    - source: AML.M0032
+      target: AML.T0006
+      relationship-type: mitigates
+      description: Segment AI agent components so an exposed service does not reveal
+        or provide reachability to additional internal components.
     - source: AML.M0032
       target: AML.T0053
       relationship-type: mitigates
@@ -14658,6 +16337,232 @@ relationships:
       relationship-type: mitigates
       description: Deepfake detection can be used to identify and block generated
         content.
+  AML.M0035:
+    mitigates:
+    - source: AML.M0035
+      target: AML.T0010
+      relationship-type: mitigates
+      description: Exercise the introduction of controlled untrusted software, data,
+        models, and agent tools through representative acquisition and deployment
+        paths. Remediate weaknesses in provenance, validation, approvals, isolation,
+        and rollback.
+    - source: AML.M0035
+      target: AML.T0010.001
+      relationship-type: mitigates
+      description: Introduce controlled untrusted AI packages, libraries, plugins,
+        or software components. Verify dependency controls, scanning, signing, approval,
+        isolation, and safe installation.
+    - source: AML.M0035
+      target: AML.T0010.002
+      relationship-type: mitigates
+      description: Introduce controlled untrusted datasets through representative
+        acquisition and ingestion paths. Verify provenance, integrity, sanitization,
+        review, and rejection controls.
+    - source: AML.M0035
+      target: AML.T0010.003
+      relationship-type: mitigates
+      description: Introduce a controlled untrusted or modified model through representative
+        acquisition and deployment paths. Verify provenance, scanning, signing, approval,
+        isolation, and rollback.
+    - source: AML.M0035
+      target: AML.T0010.005
+      relationship-type: mitigates
+      description: Introduce a controlled untrusted agent tool or tool definition.
+        Verify source authorization, integrity, review, permission boundaries, and
+        safe activation.
+    - source: AML.M0035
+      target: AML.T0015
+      relationship-type: mitigates
+      description: Execute representative digital, multimodal, and physical-domain
+        evasion attacks. Use successful attacks to improve model robustness, preprocessing,
+        adversarial-input detection, human oversight, and monitoring.
+    - source: AML.M0035
+      target: AML.T0018
+      relationship-type: mitigates
+      description: Attempt controlled modification or substitution of models, weights,
+        adapters, and related configuration. Remediate weaknesses in authorization,
+        artifact integrity, deployment approval, monitoring, and recovery.
+    - source: AML.M0035
+      target: AML.T0018.000
+      relationship-type: mitigates
+      description: Test whether controlled changes to model weights, fine-tuning,
+        or associated artifacts can introduce targeted or persistent behavior. Improve
+        model provenance, validation, integrity monitoring, and rollback.
+    - source: AML.M0035
+      target: AML.T0018.001
+      relationship-type: mitigates
+      description: Attempt controlled unauthorized changes to model architecture or
+        executable model components. Verify review, integrity checking, signing, deployment
+        approval, and restoration controls.
+    - source: AML.M0035
+      target: AML.T0020
+      relationship-type: mitigates
+      description: Introduce controlled poisoned records or triggers into representative
+        data pipelines. Verify and improve provenance, sanitization, review, drift
+        detection, model validation, and rollback controls.
+    - source: AML.M0035
+      target: AML.T0024
+      relationship-type: mitigates
+      description: Exercise inference interfaces for membership inference, model inversion,
+        and functional extraction. Use findings to improve privacy controls, authentication,
+        output restriction, rate limits, and monitoring.
+    - source: AML.M0035
+      target: AML.T0024.000
+      relationship-type: mitigates
+      description: Test whether model outputs reveal the membership of known training
+        samples. Improve privacy-preserving training, output restriction, access controls,
+        and query monitoring.
+    - source: AML.M0035
+      target: AML.T0024.001
+      relationship-type: mitigates
+      description: Attempt to reconstruct sensitive records, attributes, or representative
+        training information from model outputs. Remediate leakage through model changes,
+        output minimization, privacy controls, and restricted inference access.
+    - source: AML.M0035
+      target: AML.T0024.002
+      relationship-type: mitigates
+      description: Simulate functional model extraction through inference queries.
+        Establish appropriate authentication, rate limits, output restrictions, anomaly
+        detection, and extraction monitoring.
+    - source: AML.M0035
+      target: AML.T0029
+      relationship-type: mitigates
+      description: Submit adversarial workloads and exercise dependency failures that
+        could exhaust inference or supporting services. Apply quotas, concurrency
+        limits, timeouts, resource isolation, and graceful degradation based on findings.
+    - source: AML.M0035
+      target: AML.T0034
+      relationship-type: mitigates
+      description: Exercise requests and workflows designed to amplify inference,
+        infrastructure, or external-service costs. Verify budgets, quotas, rate limits,
+        workload controls, alerting, and termination mechanisms.
+    - source: AML.M0035
+      target: AML.T0034.000
+      relationship-type: mitigates
+      description: Generate controlled high-volume query activity. Verify authentication,
+        user and tenant quotas, rate limits, anomaly detection, cost alerts, and service
+        protection.
+    - source: AML.M0035
+      target: AML.T0034.001
+      relationship-type: mitigates
+      description: Submit controlled requests designed to consume disproportionate
+        inference resources. Verify input constraints, timeouts, workload limits,
+        resource isolation, and cost monitoring.
+    - source: AML.M0035
+      target: AML.T0034.002
+      relationship-type: mitigates
+      description: Test recursive behavior, repeated tool calls, costly API use, and
+        attacker-controlled task expansion. Verify budgets, iteration limits, timeouts,
+        approval thresholds, and termination controls.
+    - source: AML.M0035
+      target: AML.T0051
+      relationship-type: mitigates
+      description: Test direct, indirect, and triggered instructions through user
+        input, retrieved data, documents, messages, websites, images, metadata, and
+        tool output. Remediate trust-boundary, instruction-handling, permission, and
+        monitoring failures.
+    - source: AML.M0035
+      target: AML.T0051.000
+      relationship-type: mitigates
+      description: Submit controlled malicious instructions directly through user-facing
+        model and application interfaces. Improve instruction enforcement, input controls,
+        authorization, and monitoring.
+    - source: AML.M0035
+      target: AML.T0051.001
+      relationship-type: mitigates
+      description: Place controlled malicious instructions in external or retrieved
+        content processed by the system. Improve content trust boundaries, retrieval
+        controls, instruction isolation, and restrictions on resulting actions.
+    - source: AML.M0035
+      target: AML.T0051.002
+      relationship-type: mitigates
+      description: Place controlled instructions in content or workflows where later
+        user actions or system events activate them. Verify trigger authorization,
+        context handling, action restrictions, and monitoring.
+    - source: AML.M0035
+      target: AML.T0053
+      relationship-type: mitigates
+      description: Attempt to select unauthorized tools, supply unsafe arguments,
+        exceed user privileges, or chain tools into harmful actions. Correct permissions,
+        argument validation, sandboxing, action controls, and approval requirements.
+    - source: AML.M0035
+      target: AML.T0054
+      relationship-type: mitigates
+      description: Exercise manual and automated multi-turn, multilingual, encoded,
+        transformed, and multimodal jailbreaks. Incorporate successful cases into
+        guardrails, guidelines, alignment, monitoring, and regression evaluations.
+    - source: AML.M0035
+      target: AML.T0056
+      relationship-type: mitigates
+      description: Probe model and application interfaces for disclosure of system
+        instructions, policies, tool definitions, or hidden context. Remove embedded
+        secrets and improve configuration isolation and output controls.
+    - source: AML.M0035
+      target: AML.T0057
+      relationship-type: mitigates
+      description: Place synthetic secrets or canary records in representative data
+        sources and attempt extraction through prompts, retrieval, tools, and rendered
+        output. Improve authorization boundaries, filtering, tenant isolation, and
+        exfiltration detection.
+    - source: AML.M0035
+      target: AML.T0068
+      relationship-type: mitigates
+      description: Test encoded, transformed, visually hidden, multilingual, and multimodal
+        instructions. Use successful bypasses to improve normalization, decoding,
+        content inspection, and detection controls.
+    - source: AML.M0035
+      target: AML.T0070
+      relationship-type: mitigates
+      description: Seed controlled malicious or misleading content into representative
+        ingestion sources. Improve source authorization, provenance, content validation,
+        indexing controls, and retrieval-time filtering.
+    - source: AML.M0035
+      target: AML.T0080
+      relationship-type: mitigates
+      description: Attempt to persist malicious instructions in agent memory and long-lived
+        threads. Verify authorization for context changes, integrity checks, trust
+        labeling, expiration, user visibility, and remediation.
+    - source: AML.M0035
+      target: AML.T0080.000
+      relationship-type: mitigates
+      description: Attempt to store controlled malicious instructions or preferences
+        in persistent agent memory. Verify authorization, user visibility, integrity
+        validation, expiration, and memory-remediation controls.
+    - source: AML.M0035
+      target: AML.T0080.001
+      relationship-type: mitigates
+      description: Introduce controlled malicious instructions into long-lived or
+        shared conversation threads. Verify context isolation, trust handling, thread
+        reset, expiration, and monitoring.
+    - source: AML.M0035
+      target: AML.T0081
+      relationship-type: mitigates
+      description: Exercise unauthorized changes to system prompts, tools, knowledge
+        sources, security settings, and approval requirements. Improve access controls,
+        change approval, integrity monitoring, and restoration from trusted configurations.
+  AML.M0036:
+    mitigates:
+    - source: AML.M0036
+      target: AML.T0029
+      relationship-type: mitigates
+      description: Limit the resources consumed by individual requests to reduce denial
+        of service from computationally expensive inputs.
+    - source: AML.M0036
+      target: AML.T0034
+      relationship-type: mitigates
+      description: Apply resource budgets to AI requests and workflows to limit costs
+        from resource-intensive queries, excessive output, and uncontrolled agentic
+        activity.
+    - source: AML.M0036
+      target: AML.T0034.001
+      relationship-type: mitigates
+      description: Bound input size, output size, execution time, memory, and compute
+        consumed by resource-intensive queries.
+    - source: AML.M0036
+      target: AML.T0034.002
+      relationship-type: mitigates
+      description: Limit agent iterations, tool calls, fan-out, runtime, and downstream
+        spending to constrain agentic resource consumption.
   AML.T0000:
     achieves:
     - source: AML.T0000
@@ -15057,16 +16962,20 @@ relationships:
     - source: AML.T0018.002
       target: AML.T0018
       relationship-type: specializes
-  AML.T0019:
+  AML.T0018.003:
     achieves:
-    - source: AML.T0019
-      target: AML.TA0003
+    - source: AML.T0018.003
+      target: AML.TA0001
       relationship-type: achieves
+    - source: AML.T0018.003
+      target: AML.TA0006
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0018.003
+      target: AML.T0018
+      relationship-type: specializes
   AML.T0020:
     achieves:
-    - source: AML.T0020
-      target: AML.TA0003
-      relationship-type: achieves
     - source: AML.T0020
       target: AML.TA0006
       relationship-type: achieves
@@ -15381,6 +17290,9 @@ relationships:
     - source: AML.T0053
       target: AML.TA0012
       relationship-type: achieves
+    - source: AML.T0053
+      target: AML.TA0015
+      relationship-type: achieves
   AML.T0054:
     achieves:
     - source: AML.T0054
@@ -15403,11 +17315,6 @@ relationships:
     achieves:
     - source: AML.T0057
       target: AML.TA0010
-      relationship-type: achieves
-  AML.T0058:
-    achieves:
-    - source: AML.T0058
-      target: AML.TA0003
       relationship-type: achieves
   AML.T0059:
     achieves:
@@ -15775,11 +17682,6 @@ relationships:
     - source: AML.T0103
       target: AML.TA0005
       relationship-type: achieves
-  AML.T0104:
-    achieves:
-    - source: AML.T0104
-      target: AML.TA0003
-      relationship-type: achieves
   AML.T0105:
     achieves:
     - source: AML.T0105
@@ -15810,6 +17712,33 @@ relationships:
     - source: AML.T0110
       target: AML.TA0006
       relationship-type: achieves
+  AML.T0110.000:
+    achieves:
+    - source: AML.T0110.000
+      target: AML.TA0006
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0110.000
+      target: AML.T0110
+      relationship-type: specializes
+  AML.T0110.001:
+    achieves:
+    - source: AML.T0110.001
+      target: AML.TA0006
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0110.001
+      target: AML.T0110
+      relationship-type: specializes
+  AML.T0110.002:
+    achieves:
+    - source: AML.T0110.002
+      target: AML.TA0006
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0110.002
+      target: AML.T0110
+      relationship-type: specializes
   AML.T0111:
     achieves:
     - source: AML.T0111
@@ -15848,6 +17777,38 @@ relationships:
     - source: AML.T0114
       target: AML.TA0014
       relationship-type: achieves
+  AML.T0115:
+    achieves:
+    - source: AML.T0115
+      target: AML.TA0003
+      relationship-type: achieves
+  AML.T0115.000:
+    achieves:
+    - source: AML.T0115.000
+      target: AML.TA0003
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0115.000
+      target: AML.T0115
+      relationship-type: specializes
+  AML.T0115.001:
+    achieves:
+    - source: AML.T0115.001
+      target: AML.TA0003
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0115.001
+      target: AML.T0115
+      relationship-type: specializes
+  AML.T0115.002:
+    achieves:
+    - source: AML.T0115.002
+      target: AML.TA0003
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0115.002
+      target: AML.T0115
+      relationship-type: specializes
   ATLAS-matrix:
     sequences:
     - source: ATLAS-matrix

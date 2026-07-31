@@ -66,8 +66,8 @@ def generate_next_id(
             )
             .scalar()
         )
-        max_num = max_num or 0
-        return f"AML.T{parent_num}.{max_num + 1:03d}"
+        next_num = 0 if max_num is None else max_num + 1
+        return f"AML.T{parent_num}.{next_num:03d}"
 
     max_num = (
         db.query(

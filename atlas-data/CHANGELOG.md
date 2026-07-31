@@ -1,3 +1,98 @@
+## [2026.07]() (2026-07-31)
+
+##### Content v2026.07
+
+This version of ATLAS data contains 1 matrix, 16 tactics, 101 techniques, 77 sub-techniques, 37 mitigations, and 68 case studies.
+
+###### Techniques
+
+- Added new techniques
+
+  - [Publish Poisoned AI Artifacts](/techniques/AML.T0115)
+  - [Manipulate AI Model: Modify Prompt Construction Logic](/techniques/AML.T0018.003)
+  - [AI Agent Tool Poisoning: Definition and Instructions](/techniques/AML.T0110.000)
+  - [AI Agent Tool Poisoning: Implementation](/techniques/AML.T0110.001)
+  - [AI Agent Tool Poisoning: Runtime Response](/techniques/AML.T0110.002)
+
+- Updated existing techniques
+
+  - [Publish Poisoned AI Artifacts: Datasets](/techniques/AML.T0115.000)
+    - Previously "Publish Poisoned Datasets" (AML.T0019)
+  - [Publish Poisoned AI Artifacts: Models](/techniques/AML.T0115.000)
+    - Previously "Publish Poisoned Models" (AML.T0058)
+  - [Publish Poisoned AI Artifacts: AI Agent Tools](/techniques/AML.T0115.000)
+    - Previously "Publish Poisoned AI Agent Tool" (AML.T0104)
+  - [Training Data Poisoning](/techniques/AML.T0020)
+    - Previously called Poison Training Data
+  - [Masquerading](/techniques/AML.T0074)
+  - [AI Agent Tool Poisoning](/techniques/AML.T0110)
+  - [AI Agent Tool Invocation](/techniques/AML.T0053)
+  - [AI Supply Chain Compromise: AI Agent Tool](/techniques/AML.AML.T0010.005)
+  - [User Execution: Unsafe AI Artifacts](/techniques/AML.T0011.000)
+  - [User Execution: Poisoned AI Agent Tool](/techniques/AML.T0011.002)
+  - [Acquire Public AI Artifacts: AI Agent Configuration](/techniques/AML.T0002.002)
+  - [AI Agent Tool Data Poisoning](/techniques/AML.T0099)
+  - [Manipulate AI Model](/techniques/AML.T0018)
+
+###### Mitigations
+
+- Added new mitigations
+
+  - [AI Red Team](/mitigations/AML.M0035)
+  - [Limit AI Workload Resource Consumption](/mitigations/AML.M0036)
+
+- Updated existing mitigations
+
+  - [Memory Hardening](/mitigations/AML.M0031)
+  - [Generative AI Model Alignment](/mitigations/AML.M0022)
+  - [Passive AI Output Obfuscation](/mitigations/AML.M0002)
+    - Previously called "Passive AI Output Obfuscation"
+  - [Predictive AI Model Hardening](/mitigations/AML.M0003)
+    - Previously called "Model Hardening"
+  - [Predictive AI Ensembles](/mitigations/AML.M0006)
+    - Previously called "Use Ensemble Methods"
+  - [Predictive AI Multi-Sensor Fusion](/mitigations/AML.M0009)
+    - Previously called "Use Multi-Modal Sensors"
+  - [Predictive AI Input Restoration](/mitigations/AML.M0010)
+    - Previously called "Input Restoration"
+  - [Predictive AI Adversarial Input Detection](/mitigations/AML.M0015)
+    - Previously called "Adversarial Input Detection"
+  - [Limit AI Service Query Volume and Rate](/mitigations/AML.M0004)
+    - Previously called "Restrict Number of AI Model Queries"
+  - [Limit Public Release of Information](/mitigations/AML.M0000)
+  - [Limit Model Artifact Release](/mitigations/AML.M0001)
+  - [Control Access to AI Models and Data at Rest](/mitigations/AML.M0005)
+  - [Restrict Library Loading](/mitigations/AML.M0011)
+  - [Control Access to AI Models and Data in Production](/mitigations/AML.M0019)
+  - [Generative AI Guardrails](/mitigations/AML.M0020)
+  - [Generative AI Guidelines](/mitigations/AML.M0021)
+  - [Maintain AI Dataset Provenance](/mitigations/AML.M0025)
+  - [Segmentation of AI Agent Components](/mitigations/AML.M0032)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [Prompt-Based Attacks Against Gemini via Calendar Invitations](/studies/AML.CS0063)
+  - [Poisoned GGUF Templates: Inference-Time Supply Chain Attack](/studies/AML.CS0064)
+  - [Model Namespace Reuse Supply Chain Attack](/studies/AML.CS0065)
+  - [ZombieAgent: Data Exfiltration Attack on ChatGPT](/studies/AML.CS0066)
+  - [Claude Code GitHub Action Secret Exposure](/studies/AML.CS0067)
+
+- Updated existing case studies
+
+  - [Web-Scale Data Poisoning: Split-View Attack](/studies/AML.CS0025)
+  - [ShadowRay: Hijacking Exposed Ray Clusters](/studies/AML.CS0023)
+    - Previously called "ShadowRay"
+  - [Supply Chain Compromise via Poisoned ClawdBot Skill](/studies/AML.CS0049)
+  - [Poisoned Postmark MCP Server Email Exfiltration](/studies/AML.CS0053)
+  - [Data Exfiltration via Remote Poisoned MCP Tool](/studies/AML.CS0054)
+
+##### Data Tools
+
+- Added stix-atlas-attack-enterprise.json to release artifacts
+- Updated navigator layer generation
+
 ## [2026.06]() (2026-06-30)
 
 ##### Content v2026.06

@@ -61,6 +61,7 @@ jobs:
           cp dist/excel-files/atlas-techniques.xlsx release-assets/excel-atlas-techniques.xlsx
           cp dist/excel-files/atlas-tactics.xlsx release-assets/excel-atlas-tactics.xlsx
           cp dist/excel-files/atlas-mitigations.xlsx release-assets/excel-atlas-mitigations.xlsx
+          cp dist/excel-files/atlas-case-studies.xlsx release-assets/excel-atlas-case-studies.xlsx
           cp dist/excel-files/atlas-matrices.xlsx release-assets/excel-atlas-matrices.xlsx
 
       - name: Upload excel assets to release

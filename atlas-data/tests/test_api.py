@@ -689,8 +689,13 @@ class TestTechniques:
         resp = client.post(f"/{ATLAS_DATA_VERSION}/techniques/", json=payload)
         assert resp.status_code == 201
         body = resp.json()
+        assert body["id"] == f"{parent_id}.000"
         assert body["specializes"] is not None
         assert body["specializes"]["technique"] == parent_id
+
+        second_resp = client.post(f"/{ATLAS_DATA_VERSION}/techniques/", json=payload)
+        assert second_resp.status_code == 201
+        assert second_resp.json()["id"] == f"{parent_id}.001"
 
     def test_create_subtechnique_rejects_tactic_mismatch(
         self, client: TestClient
@@ -777,6 +782,7 @@ class TestTechniques:
             json=technique_payload(name="Parent Updated", tactics=[{"tactic": t2_id}]),
         )
         assert update_resp.status_code == 200
+        assert [item["tactic"] for item in update_resp.json()["tactics"]] == [t2_id]
 
         child_resp = client.get(f"/{ATLAS_DATA_VERSION}/techniques/{child_id}")
         assert child_resp.status_code == 200

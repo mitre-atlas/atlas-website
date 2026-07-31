@@ -17,6 +17,9 @@ import yaml
 
 # Captures the technique ID of a top-level technique or subtechnique ID
 TECHNIQUE_ID_REGEX = re.compile(r"^(AML\.T\d{4})")
+NAVIGATOR_VERSION = "5.3.2"
+LAYER_FORMAT_VERSION = "4.5"
+NAVIGATOR_DOMAIN = "atlas-atlas"
 
 
 def _step_sort_key(step):
@@ -289,7 +292,7 @@ def generate_matrix_layer(
 def build_navigator_technique_objs(data):
     """Returns a dictionary of Navigator layer technique objects from the provided ATLAS data.
 
-    https://github.com/mitre-attack/attack-navigator/blob/master/layers/LAYERFORMATv4.md
+    https://github.com/mitre-attack/attack-navigator/blob/master/layers/spec/v4.5/layerformat.md
     """
     # Build mapping of tactic ID to Navigator tactic name
     navigator_tactic_names = {}
@@ -383,14 +386,13 @@ def main() -> None:
         data = yaml.safe_load(f)
     data = normalize_atlas_data(data)
 
-    # Define common Navigator layer info
-    # nav-app/src/assets/config.json's version name before the 'vX' - domain name
-    domain = "atlas-atlas"
-
     # Base for all layers
     layer_data = {
-        "versions": {"layer": "4.3", "navigator": "4.6.4"},
-        "domain": domain,
+        "versions": {
+            "layer": LAYER_FORMAT_VERSION,
+            "navigator": NAVIGATOR_VERSION,
+        },
+        "domain": NAVIGATOR_DOMAIN,
         "metadata": [
             {"name": "atlas_data_version", "value": str(data.get("version", "unknown"))}
         ],

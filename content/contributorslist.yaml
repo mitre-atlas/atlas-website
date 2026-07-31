@@ -78,14 +78,23 @@ data:
 
   - organization: FS-ISAC
 
+  - organization: Fujitsu
+    contributors:
+      - Omer Hofman
+      - Roman Vainshtein
+
+  - organization: Fujitsu
+    contributors:
+      - Ahmed Elmesiry
+
   - organization: Fujitsu Research of Europe Limited, UK
     contributors:
       - Inderjeet Singh
-      - Andrés Murillo, Fujitsu Research of Europe Limited, UK
+      - Andrés Murillo
 
   - organization: Fujitsu Limited, Japan
     contributors:
-      - Motoyoshi Sekiya, 
+      - Motoyoshi Sekiya
       - Yuki Unno
       - Junichi Suga
 
@@ -144,6 +153,7 @@ data:
       - Amit Eliahu
       - Dor Edry
       - Uri Oren
+      - Dan Jones
 
   - organization: Bosch
     contributors:
@@ -302,6 +312,8 @@ data:
   - organization: Pillar Security
     contributors:
       - Ziv Karliner
+      - Ariel Fogel
+      - Eilon Cohen
 
   - organization: Bank of America
 
@@ -353,3 +365,11 @@ data:
     contributors:
     - Sean Gallagher
     - Don Le
+
+  - organization: OWASP
+    contributors:
+    - Vaishnavi Gudur
+
+  - organization: Indian Institute of Technology Madras 
+    contributors:
+    - Shailesh Tiwary

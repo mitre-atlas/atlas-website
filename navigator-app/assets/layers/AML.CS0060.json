@@ -1,0 +1,99 @@
+{
+    "versions": {
+        "layer": "4.3",
+        "navigator": "4.6.4"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0060"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.06"
+        }
+    ],
+    "name": "Cross-Site Scripting via Prompt Manipulation in Lenovo AI Chatbot",
+    "description": "Cybernews researchers demonstrated that Lenovo's AI chatbot \"Lena\" was vulnerable to a prompt injection that produced malicious HTML which was saved in the chat history and could exfiltrate a human support agent's session cookie when rendered in their browser.\n\nThe researchers prompted Lena with a benign-looking product information request that included instructions to respond with a dangerous HTML payload. The response was saved in the user's chat history, creating a stored cross-site scripting (XSS) payload. When the researchers requested transfer to a human support agent, the agent's normal workflow of opening the chat transcript caused the poisoned content to render, exfiltrating session cookie data to an attacker-controlled server. If a valid support agent cookie were reused, an adversary could potentially access Lenovo's customer support platform as that agent and view customer conversations or perform other actions available to the account.\n\nLenovo acknowledged the issue and reported implementing corrective actions to mitigate the potential impact and address the issue.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0008",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0065",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0047",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0093",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0011",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0050",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0113",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0077",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement"
+        },
+        {
+            "techniqueID": "AML.T0048",
+            "showSubtechniques": false,
+            "tactic": "impact",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

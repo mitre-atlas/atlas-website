@@ -220,12 +220,13 @@ def _set_subtechnique_tactics_from_parent(
     achieves_relationships = [
         models.Relationship(
             source=db_subtechnique.id,
-            target=tactic.id,
+            target=rel.target,
             version=db_subtechnique.version,
             relationship_type=models.AtlasRelationshipType.ACHIEVES,
             description=None,
         )
-        for tactic in db_parent.tactics
+        for rel in db_parent.source_relationships
+        if rel.relationship_type == AtlasRelationshipType.ACHIEVES
     ]
     replace_source_relationships(
         db,

@@ -1,0 +1,75 @@
+{
+    "versions": {
+        "layer": "4.3",
+        "navigator": "4.6.4"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0058"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.06"
+        }
+    ],
+    "name": "Google Photos AI Model Extraction",
+    "description": "Skyld researchers analyzed the Google Photos Android application and recovered TensorFlow Lite models used by AI-powered photo editing and image analysis features. The researchers found models stored unencrypted in the application's assets, embedded in the native library, and encrypted on disk. They used static reverse engineering to locate TFLite artifacts and dynamic instrumentation with Frida to capture encrypted models after runtime decryption. The recovered models provided white-box access to proprietary Google Photos model artifacts.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0007",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0035",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0025",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0044",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0043.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0043",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-staging"
+        },
+        {
+            "techniqueID": "AML.T0015",
+            "showSubtechniques": false,
+            "tactic": "impact",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048.004",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048",
+            "showSubtechniques": true,
+            "tactic": "impact"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

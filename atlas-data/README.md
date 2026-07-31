@@ -261,7 +261,10 @@ Generate Navigator layers:
 uv run generate-navigator-layers -i dist/v6/ATLAS-2026.05.yaml
 ```
 
+Generated layers target ATT&CK Navigator 5.3.2, layer format 4.5, and the
+custom `atlas-atlas` domain used by the ATLAS Navigator.
+
 ## Release Statement
 
-Approved for Public Release; Distribution Unlimited. Public Release Case Number 26-1162
-©2026 The MITRE Corporation. ALL RIGHTS RESERVED.
+©2021-2026 The MITRE Corporation. ALL RIGHTS RESERVED.
+Approved for Public Release; Distribution Unlimited. Public Release Case Numbers 21-2363, 26-1162.

@@ -39,7 +39,9 @@ def get_existing_version(db: Session, version: str) -> models.Version | None:
 
 
 def delete_version_data(db: Session, version: str) -> None:
-    db.query(models.Relationship).filter(models.Relationship.version == version).delete()
+    db.query(models.Relationship).filter(
+        models.Relationship.version == version
+    ).delete()
     for model in _VERSION_CHILDREN:
         db.query(model).filter(model.version == version).delete()
     db.query(models.AtlasObject).filter(models.AtlasObject.version == version).delete()

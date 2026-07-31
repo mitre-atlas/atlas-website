@@ -1,0 +1,87 @@
+{
+    "versions": {
+        "layer": "4.3",
+        "navigator": "4.6.4"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0057"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.06"
+        }
+    ],
+    "name": "Storm-2139 Azure OpenAI Guardrail Bypass",
+    "description": "Storm-2139 built custom jailbreak tooling to bypass guardrails on Azure OpenAI Services, allowing users to generate harmful synthetic content.\n\nMicrosoft reported that members of Storm-2139 scraped exposed customer credentials from public sources and used them to access accounts for generative AI services. The group developed and operated tools and services that bypassed safety safeguards, modified service capabilities, and enabled end users to generate harmful and illicit content, including non-consensual intimate images of celebrities and other sexually explicit content.\n\nThe operation included creators who developed illicit tools, providers who modified and supplied those tools, and users who generated prohibited content. Microsoft pursued civil legal action.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0008",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0079",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0040",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0054",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0088",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-staging",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048",
+            "showSubtechniques": true,
+            "tactic": "impact"
+        },
+        {
+            "techniqueID": "AML.T0048.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048",
+            "showSubtechniques": true,
+            "tactic": "impact"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}
