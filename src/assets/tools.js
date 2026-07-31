@@ -5,7 +5,7 @@
 
 import { dump } from 'js-yaml'
 import jsyaml from 'js-yaml'
-import { ATLAS_DATA_GITHUB_URL, NAVIGATOR_LAYER_GITHUB_URL, NAVIGATOR_URL } from '@/config/env'
+import { ATLAS_DATA_GITHUB_URL, NAVIGATOR_LAYER_URL, NAVIGATOR_URL } from '@/config/env'
 
 import { caseStudySchema as schema } from './schemas.js'
 import { EXTRA_ADDED_WEBSITE_KEYS } from '../stores/main'
@@ -343,21 +343,22 @@ export function openNewTab(url) {
 }
 
 /**
- * Constructs the link to a specified Navigator layer file.
+ * Constructs the link to a Navigator layer bundled with the standalone app.
  *
  * @param {string} filename JSON filename, without the extension
- * @param {string} directory (optional)
  */
-export function constructNavigatorLayerGitHubUrl(
-  filename,
-  directory = 'dist/case-study-navigator-layers',
-  version = ''
-) {
-  if (version) {
-    return constructReleaseArtifactUrl(`navigator-${filename}.json`, version)
-  }
-  // Construct the full URL to the layer file
-  return `${NAVIGATOR_LAYER_GITHUB_URL}/${directory}/${filename}.json`
+export function constructNavigatorLayerUrl(filename) {
+  return new URL(`${filename}.json`, new URL(NAVIGATOR_LAYER_URL, window.location.origin)).href
+}
+
+/**
+ * Constructs the link to open the specified Navigator layer file
+ * in the ATLAS Navigator.
+ * @param {string} layerUrl
+ */
+export function constructNavigatorUrlToLayer(layerUrl) {
+  const navigatorUrl = new URL(NAVIGATOR_URL, window.location.origin).href
+  return `${navigatorUrl}#layerURL=${encodeURIComponent(layerUrl)}`
 }
 
 export function constructReleaseArtifactUrl(filename, version) {
@@ -367,16 +368,6 @@ export function constructReleaseArtifactUrl(filename, version) {
     return ''
   }
   return `${ATLAS_DATA_RELEASE_BASE_URL}/v${encodeURIComponent(normalizedVersion)}/${normalizedFilename}`
-}
-
-/**
- * Constructs the link to open the specified Navigator layer file
- * in the ATLAS Navigator.
- * @param {string} layerGitHubUrl
- */
-export function constructNavigatorUrlToLayer(layerGitHubUrl) {
-  // Construct the full URL to open the layer file on the Navigator
-  return `${NAVIGATOR_URL}/#layerURL=${layerGitHubUrl}`
 }
 
 /**

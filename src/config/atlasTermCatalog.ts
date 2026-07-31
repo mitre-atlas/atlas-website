@@ -104,7 +104,7 @@ export const ATLAS_TERM_CATALOG: Record<AtlasTermGroupKey, AtlasTermGroup> = {
       {
         value: 'Generative AI',
         description:
-          'The is adversary operating against AI components of the system that generate new content (e.g., text, code, images, audio, video), targeting components such as prompts, model outputs, safety controls, retrieval context, and generation pipelines.',
+          'The adversary is operating against AI components of the system that generate new content (e.g., text, code, images, audio, video), targeting components such as prompts, model outputs, safety controls, retrieval context, and generation pipelines.',
       },
       {
         value: 'Agentic AI',

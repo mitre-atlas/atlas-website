@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="atlas-navigator-fallback" content="true" />
+    <title>ATLAS Navigator unavailable</title>
+    <style>
+      :root {
+        color: #0b2338;
+        background: #edf6fa;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        min-height: 100vh;
+        margin: 0;
+        padding: 2rem;
+        place-items: center;
+      }
+
+      main {
+        width: min(36rem, 100%);
+        padding: clamp(2rem, 6vw, 4rem);
+        border-top: 0.4rem solid #1bb0e6;
+        background: #fff;
+        box-shadow: 0 1rem 3rem rgb(11 35 56 / 14%);
+      }
+
+      p:first-child {
+        margin: 0 0 0.75rem;
+        color: #005b94;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        line-height: 1.1;
+      }
+
+      p {
+        line-height: 1.6;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border: 2px solid #005b94;
+        color: #005b94;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus-visible {
+        background: #005b94;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>MITRE ATLAS</p>
+      <h1>Navigator unavailable</h1>
+      <p>
+        The standalone ATLAS Navigator was not included in this deployment. The rest of the ATLAS
+        website is still available.
+      </p>
+      <a href="../" target="_top">Return to the ATLAS website</a>
+    </main>
+  </body>
+</html>

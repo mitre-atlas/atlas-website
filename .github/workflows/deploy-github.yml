@@ -5,9 +5,14 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
+  build-navigator:
+    uses: ./.github/workflows/build-navigator.yml
+
   deploy:
+    needs: build-navigator
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -21,7 +26,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -30,13 +35,19 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Configure environment variables
         shell: bash
         env:
           GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           VITE_OSANO_SCRIPT: ${{ secrets.VITE_OSANO_SCRIPT }}
-        run: echo -e "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID\nVITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT" > .env.production
+        run: |
+          printf '%s\n' \
+            "VITE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID" \
+            "VITE_OSANO_SCRIPT=$VITE_OSANO_SCRIPT" \
+            "VITE_NAVIGATOR_URL=/navigator-app/" \
+            "VITE_NAVIGATOR_LAYER_URL=/navigator-app/assets/layers/" \
+            > .env.production
 
       - name: Install dependencies
         run: npm install
@@ -45,10 +56,33 @@ jobs:
         run: |
           export NODE_OPTIONS="--max_old_space_size=4096"
           npm run build
+
+      - name: Add standalone Navigator to website
+        uses: actions/download-artifact@v4
+        with:
+          name: atlas-navigator
+          path: dist/navigator-app
+
+      - name: Finalize combined Pages output
+        run: |
           # Fix for 404 on refresh issue
           cp dist/index.html dist/404.html
+          test -f dist/navigator-app/index.html
+          test -f dist/navigator-app/assets/config.json
+          if grep -q 'atlas-navigator-fallback' dist/navigator-app/index.html; then
+            echo "Navigator artifact did not replace the fallback page" >&2
+            exit 1
+          fi
 
-      - name: deploy
+      - name: Upload Pages preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pages-preview
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:

@@ -35,29 +35,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useMain } from '@/stores/main'
 import { MITRE_TITLE } from '@/config/env'
-import { constructNavigatorLayerGitHubUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
-
-const route = useRoute()
-const mainStore = useMain()
-
-const artifactVersion = computed(() => {
-  const routeVersion = typeof route.params.version === 'string' ? route.params.version : ''
-  return routeVersion || String(mainStore.getDataAttribute('version') || '')
-})
+import { constructNavigatorLayerUrl, constructNavigatorUrlToLayer } from '@/assets/tools.js'
 
 // Construct link to open the case study frequency Navigator layer on the ATLAS Navigator
-const frequencyLayerGitHubUrl = computed(() =>
-  constructNavigatorLayerGitHubUrl(
-    'atlas_case_study_frequency',
-    'dist/default-navigator-layers',
-    artifactVersion.value
-  )
-)
-const frequencyNavigatorUrl = computed(() =>
-  constructNavigatorUrlToLayer(frequencyLayerGitHubUrl.value)
-)
+const frequencyLayerUrl = constructNavigatorLayerUrl('atlas_case_study_frequency')
+const frequencyNavigatorUrl = constructNavigatorUrlToLayer(frequencyLayerUrl)
 </script>

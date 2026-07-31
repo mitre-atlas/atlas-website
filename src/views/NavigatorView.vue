@@ -2,13 +2,12 @@
   <div>
     <PageSectionTitle :pageTitle="title" />
     <p>
-      The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays {{ SHORT_NAME }} techniques
-      alongside ATT&CK Enterprise techniques and allows users to create and view complex
-      visualizations. In addition to the matrix, the Navigator also shows a frequency heat map of
-      techniques used in {{ SHORT_NAME }} case studies. View the {{ SHORT_NAME }} Navigator below or
-      at
-      <a :href="NAVIGATOR_URL" target="_blank" rel="noreferrer"
-        >{{ NAVIGATOR_URL }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
+      The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays {{ SHORT_NAME }} techniques and
+      allows users to create and view complex visualizations. In addition to the matrix, the
+      Navigator also shows a frequency heat map of techniques used in {{ SHORT_NAME }} case studies.
+      View the {{ SHORT_NAME }} Navigator below or at
+      <a :href="navigatorUrl" target="_blank" rel="noreferrer"
+        >{{ navigatorUrl }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
       >.
     </p>
 
@@ -35,7 +34,7 @@
     </div>
     <iframe
       v-show="!loading"
-      :src="`${NAVIGATOR_URL}`"
+      :src="navigatorUrl"
       width="90%"
       height="700px"
       frameBorder="0"
@@ -50,6 +49,8 @@ import PageSectionTitle from '@//components/PageSectionTitle.vue'
 import { MITRE_TITLE, NAVIGATOR_URL, SHORT_NAME } from '@/config/env'
 
 const title = ref(SHORT_NAME + ' Navigator')
+const navigatorBaseUrl = new URL(NAVIGATOR_URL, window.location.origin)
+const navigatorUrl = new URL('index.html', navigatorBaseUrl).href
 
 const loading = ref(true)
 </script>

@@ -1,0 +1,126 @@
+name: Build ATLAS Navigator
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out website configuration
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Check out ATT&CK Navigator
+        uses: actions/checkout@v4
+        with:
+          repository: mitre-attack/attack-navigator
+          ref: v5.3.2
+          path: navigator-source
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: navigator-source/nav-app/.nvmrc
+          cache: npm
+          cache-dependency-path: navigator-source/nav-app/package-lock.json
+
+      - name: Download latest ATLAS release assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          release_json="$(curl --fail --location --silent --show-error --retry 3 \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/mitre-atlas/atlas-data/releases/latest)"
+          release_tag="$(jq -er '.tag_name' <<< "$release_json")"
+          assets_dir="navigator-source/nav-app/src/assets"
+          layers_dir="$assets_dir/layers"
+          mkdir -p "$layers_dir"
+
+          stix_url="$(jq -er '.assets[] | select(.name == "stix-atlas.json") | .browser_download_url' \
+            <<< "$release_json")"
+          curl --fail --location --silent --show-error --retry 3 \
+            "$stix_url" --output "$assets_dir/stix-atlas.json"
+
+          while IFS=$'\t' read -r name url; do
+            output_name="${name#navigator-}"
+            curl --fail --location --silent --show-error --retry 3 \
+              "$url" --output "$layers_dir/$output_name"
+          done < <(jq -r '.assets[] | select(.name | startswith("navigator-")) |
+            [.name, .browser_download_url] | @tsv' <<< "$release_json")
+
+          content_version="$(jq -er '.objects[] | select(.type == "x-mitre-collection") |
+            .x_mitre_version' "$assets_dir/stix-atlas.json")"
+          jq --arg version "$content_version" -f navigator/config-overrides.jq \
+            "$assets_dir/config.json" > "$assets_dir/config.json.tmp"
+          mv "$assets_dir/config.json.tmp" "$assets_dir/config.json"
+
+          echo "Bundled ATLAS $content_version from release $release_tag"
+
+      - name: Validate ATLAS Navigator data
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          assets_dir="navigator-source/nav-app/src/assets"
+          layers_dir="$assets_dir/layers"
+
+          jq -e '.objects[] | select(.type == "x-mitre-matrix") |
+            select(.external_references[]?.external_id == "ATLAS-matrix")' \
+            "$assets_dir/stix-atlas.json" > /dev/null
+          jq -e '.collection_index_url ==
+            "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/index.json" and
+            .versions.enabled == true and
+            .versions.entries[0].domains[0].identifier == "atlas-atlas"' \
+            "$assets_dir/config.json" > /dev/null
+
+          test -f "$layers_dir/atlas_case_study_frequency.json"
+          test -f "$layers_dir/atlas_layer_matrix.json"
+
+          for layer in "$layers_dir"/*.json; do
+            jq -e '.domain == "atlas-atlas"' "$layer" > /dev/null
+          done
+
+          while IFS= read -r case_study_id; do
+            layer="$layers_dir/$case_study_id.json"
+            if [[ ! -f "$layer" ]]; then
+              echo "Missing Navigator release layer for $case_study_id" >&2
+              exit 1
+            fi
+          done < <(perl -ne 'print "$1\n" if /^- id: (AML\.CS\d+)/' \
+            public/atlas-data/dist/ATLAS.yaml)
+
+      - name: Install Navigator dependencies
+        working-directory: navigator-source/nav-app
+        run: npm ci
+
+      - name: Build standalone Navigator
+        working-directory: navigator-source/nav-app
+        run: npm run build -- --configuration production --base-href=/navigator-app/
+
+      - name: Validate Navigator build
+        shell: bash
+        run: |
+          set -euo pipefail
+          output="navigator-source/nav-app/dist/browser"
+          test -f "$output/index.html"
+          test -f "$output/assets/config.json"
+          test -f "$output/assets/stix-atlas.json"
+          test -f "$output/assets/layers/AML.CS0001.json"
+          grep -q '<base href="/navigator-app/">' "$output/index.html"
+
+      - name: Upload Navigator artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-navigator
+          path: navigator-source/nav-app/dist/browser
+          if-no-files-found: error
+          retention-days: 7

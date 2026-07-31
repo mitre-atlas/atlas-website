@@ -1,5 +1,10 @@
 # ATLAS Website Changelog
 
+## [5.2.0]() (2026-07-31)
+
+- Bundled ATLAS Navigator with website deployment
+- Updated ATLAS data to [version 2026.07](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.07-2026-07-31)
+
 ## [5.1.0]() (2026-06-30)
 
 - Added page for ATLAS Knowledge Base Agent

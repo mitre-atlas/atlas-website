@@ -27,12 +27,9 @@
 <script setup>
 import {
   downloadUrlAsFile,
-  constructNavigatorLayerGitHubUrl,
+  constructNavigatorLayerUrl,
   constructNavigatorUrlToLayer,
 } from '@/assets/tools.js'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useMain } from '@/stores/main'
 
 const { study } = defineProps([
   /**
@@ -42,31 +39,21 @@ const { study } = defineProps([
   'study',
 ])
 
-const route = useRoute()
-const mainStore = useMain()
-
-const artifactVersion = computed(() => {
-  const routeVersion = typeof route.params.version === 'string' ? route.params.version : ''
-  return routeVersion || String(mainStore.getDataAttribute('version') || '')
-})
-
 // URL to the JSON file of this study's layer
-const rawJsonURL = computed(() =>
-  constructNavigatorLayerGitHubUrl(study.id, undefined, artifactVersion.value)
-)
+const rawJsonURL = constructNavigatorLayerUrl(study.id)
 // URL to open the above layer in the Navigator
-const navigatorURL = computed(() => constructNavigatorUrlToLayer(rawJsonURL.value))
+const navigatorURL = constructNavigatorUrlToLayer(rawJsonURL)
 
 const options = [
   {
     title: 'View on ATLAS Navigator',
     icon: 'mdi-open-in-new',
-    function: () => window.open(navigatorURL.value, '_blank'),
+    function: () => window.open(navigatorURL, '_blank'),
   },
   {
     title: 'Download as raw data (.json)',
     icon: 'mdi-arrow-collapse-down',
-    function: () => downloadUrlAsFile(rawJsonURL.value, `${study.id}.json`),
+    function: () => downloadUrlAsFile(rawJsonURL, `${study.id}.json`),
   },
 ]
 </script>
