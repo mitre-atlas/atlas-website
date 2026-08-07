@@ -1,7 +1,7 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
@@ -11,7 +11,7 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
     "name": "Web-Scale Data Poisoning: Split-View Attack",
@@ -38,14 +38,17 @@
         {
             "techniqueID": "AML.T0020",
             "showSubtechniques": false,
-            "tactic": "resource-development",
+            "tactic": "persistence",
             "color": "#C8E6C9"
         },
         {
-            "techniqueID": "AML.T0019",
-            "showSubtechniques": false,
-            "tactic": "resource-development",
+            "techniqueID": "AML.T0115.000",
             "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0115",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
         },
         {
             "techniqueID": "AML.T0059",

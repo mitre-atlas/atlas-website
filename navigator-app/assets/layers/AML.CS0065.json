@@ -1,0 +1,87 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0065"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.07"
+        }
+    ],
+    "name": "Model Namespace Reuse Supply Chain Attack",
+    "description": "Unit 42 researchers demonstrated an AI supply chain attack in which an attacker reclaims a deleted Hugging Face author namespace and publishes a malicious model under the same historical Author/ModelName identifier. Applications and model catalogs that retain unpinned references to that identifier may resolve and deploy the adversary-controlled replacement rather than the originally trusted artifact.\n\nThe attack can affect deleted models and models whose ownership was transferred to a new Hugging Face author. In the ownership-transfer scenario, Hugging Face redirects requests for the old path to the new model location, allowing stale references to continue working. If the original author namespace is later deleted and reclaimed by an attacker, the attacker can recreate the old path and cause it to resolve to a malicious model instead of the legitimate redirected model.\n\nUnit 42 demonstrated this technique against Hugging Face-backed model catalogs in Google Vertex AI and Azure AI Foundry. The researchers embedded reverse-shell payloads in replacement models and obtained code execution in the deployed endpoint environments. They also identified reusable model references in open-source code repositories, documentation, default arguments, example notebooks, and downstream model registries, which could expose users who do not directly interact with Hugging Face.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0095",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0021",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0074",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0018.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0018",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-staging"
+        },
+        {
+            "techniqueID": "AML.T0115.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0115",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0010.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0010",
+            "showSubtechniques": true,
+            "tactic": "initial-access"
+        },
+        {
+            "techniqueID": "AML.T0011.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0011",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0072",
+            "showSubtechniques": false,
+            "tactic": "command-and-control",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

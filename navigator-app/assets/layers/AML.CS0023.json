@@ -1,7 +1,7 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
@@ -11,10 +11,10 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
-    "name": "ShadowRay",
+    "name": "ShadowRay: Hijacking Exposed Ray Clusters",
     "description": "Ray is an open-source Python framework for scaling production AI workflows. Ray's Job API allows for arbitrary remote execution by design. However, it does not offer authentication, and the default configuration may expose the cluster to the internet. Researchers at Oligo discovered that Ray clusters have been actively exploited for at least seven months. Adversaries can use victim organization's compute power and steal valuable information. The researchers estimate the value of the compromised machines to be nearly 1 billion USD.\n\nFive vulnerabilities in Ray were reported to Anyscale, the maintainers of Ray. Anyscale promptly fixed four of the five vulnerabilities. However, the fifth vulnerability [CVE-2023-48022](https://nvd.nist.gov/vuln/detail/CVE-2023-48022) remains disputed. Anyscale maintains that Ray's lack of authentication is a design decision, and that Ray is meant to be deployed in a safe network environment. The Oligo researchers deem this a \"shadow vulnerability\" because in disputed status, the CVE does not show up in static scans.",
     "techniques": [
         {

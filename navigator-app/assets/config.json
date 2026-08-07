@@ -4,8 +4,8 @@
     "enabled": true,
     "entries": [
       {
-        "name": "ATLAS v2026.06",
-        "version": "2026.06",
+        "name": "ATLAS v2026.07",
+        "version": "2026.07",
         "domains": [
           {
             "name": "ATLAS",
@@ -29,7 +29,7 @@
   "comment_color": "#FFF601",
   "link_color": "#1BB0E6",
   "metadata_color": "#005B94",
-  "banner": "MITRE ATLAS Navigator | ATLAS data v2026.06",
+  "banner": "MITRE ATLAS Navigator | ATLAS data v2026.07",
   "customize_features": [
     {
       "name": "multiselect",

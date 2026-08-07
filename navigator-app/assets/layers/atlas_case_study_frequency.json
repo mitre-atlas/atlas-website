@@ -1,17 +1,17 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
     "name": "ATLAS Case Study Frequency",
-    "description": "Heatmap of technique occurrences in 63 ATLAS case studies",
+    "description": "Heatmap of technique occurrences in 68 ATLAS case studies",
     "techniques": [
         {
             "techniqueID": "AML.T0000",
@@ -49,7 +49,7 @@
         },
         {
             "techniqueID": "AML.T0002.001",
-            "score": 4
+            "score": 5
         },
         {
             "techniqueID": "AML.T0002.002",
@@ -89,7 +89,7 @@
             "techniqueID": "AML.T0006",
             "showSubtechniques": true,
             "tactic": "reconnaissance",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0007",
@@ -147,7 +147,7 @@
         },
         {
             "techniqueID": "AML.T0010.003",
-            "score": 4
+            "score": 6
         },
         {
             "techniqueID": "AML.T0010.004",
@@ -165,7 +165,7 @@
         },
         {
             "techniqueID": "AML.T0011.000",
-            "score": 2
+            "score": 4
         },
         {
             "techniqueID": "AML.T0011.001",
@@ -173,7 +173,7 @@
         },
         {
             "techniqueID": "AML.T0011.002",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0011.003",
@@ -247,7 +247,7 @@
         },
         {
             "techniqueID": "AML.T0017.000",
-            "score": 4
+            "score": 5
         },
         {
             "techniqueID": "AML.T0018",
@@ -271,31 +271,23 @@
         },
         {
             "techniqueID": "AML.T0018.002",
-            "score": 2
+            "score": 3
         },
         {
-            "techniqueID": "AML.T0019",
-            "showSubtechniques": true,
-            "tactic": "resource-development",
-            "score": 1
-        },
-        {
-            "techniqueID": "AML.T0020",
-            "showSubtechniques": true,
-            "tactic": "resource-development",
+            "techniqueID": "AML.T0018.003",
             "score": 1
         },
         {
             "techniqueID": "AML.T0020",
             "showSubtechniques": true,
             "tactic": "persistence",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0021",
             "showSubtechniques": true,
             "tactic": "resource-development",
-            "score": 5
+            "score": 6
         },
         {
             "techniqueID": "AML.T0024",
@@ -319,7 +311,7 @@
             "techniqueID": "AML.T0025",
             "showSubtechniques": true,
             "tactic": "exfiltration",
-            "score": 10
+            "score": 11
         },
         {
             "techniqueID": "AML.T0029",
@@ -331,7 +323,7 @@
             "techniqueID": "AML.T0031",
             "showSubtechniques": true,
             "tactic": "impact",
-            "score": 5
+            "score": 6
         },
         {
             "techniqueID": "AML.T0034",
@@ -451,7 +443,7 @@
         },
         {
             "techniqueID": "AML.T0048.003",
-            "score": 12
+            "score": 16
         },
         {
             "techniqueID": "AML.T0048.004",
@@ -477,15 +469,15 @@
         },
         {
             "techniqueID": "AML.T0051.000",
-            "score": 12
+            "score": 10
         },
         {
             "techniqueID": "AML.T0051.001",
-            "score": 13
+            "score": 18
         },
         {
             "techniqueID": "AML.T0051.002",
-            "score": 3
+            "score": 5
         },
         {
             "techniqueID": "AML.T0052",
@@ -511,19 +503,25 @@
             "techniqueID": "AML.T0053",
             "showSubtechniques": true,
             "tactic": "execution",
-            "score": 5
+            "score": 7
         },
         {
             "techniqueID": "AML.T0053",
             "showSubtechniques": true,
             "tactic": "privilege-escalation",
-            "score": 10
+            "score": 15
+        },
+        {
+            "techniqueID": "AML.T0053",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement",
+            "score": 1
         },
         {
             "techniqueID": "AML.T0054",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 5
+            "score": 8
         },
         {
             "techniqueID": "AML.T0054",
@@ -547,13 +545,7 @@
             "techniqueID": "AML.T0057",
             "showSubtechniques": true,
             "tactic": "exfiltration",
-            "score": 1
-        },
-        {
-            "techniqueID": "AML.T0058",
-            "showSubtechniques": true,
-            "tactic": "resource-development",
-            "score": 3
+            "score": 2
         },
         {
             "techniqueID": "AML.T0059",
@@ -595,7 +587,7 @@
             "techniqueID": "AML.T0065",
             "showSubtechniques": true,
             "tactic": "resource-development",
-            "score": 24
+            "score": 27
         },
         {
             "techniqueID": "AML.T0066",
@@ -607,7 +599,7 @@
             "techniqueID": "AML.T0067",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0067.000",
@@ -617,7 +609,7 @@
             "techniqueID": "AML.T0068",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 9
+            "score": 10
         },
         {
             "techniqueID": "AML.T0069",
@@ -653,7 +645,7 @@
             "techniqueID": "AML.T0072",
             "showSubtechniques": true,
             "tactic": "command-and-control",
-            "score": 3
+            "score": 4
         },
         {
             "techniqueID": "AML.T0073",
@@ -665,7 +657,7 @@
             "techniqueID": "AML.T0074",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 4
+            "score": 6
         },
         {
             "techniqueID": "AML.T0075",
@@ -695,7 +687,7 @@
             "techniqueID": "AML.T0079",
             "showSubtechniques": true,
             "tactic": "resource-development",
-            "score": 10
+            "score": 11
         },
         {
             "techniqueID": "AML.T0080",
@@ -705,11 +697,11 @@
         },
         {
             "techniqueID": "AML.T0080.000",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0080.001",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0081",
@@ -739,7 +731,7 @@
             "techniqueID": "AML.T0084",
             "showSubtechniques": true,
             "tactic": "discovery",
-            "score": 0
+            "score": 1
         },
         {
             "techniqueID": "AML.T0084.000",
@@ -747,11 +739,11 @@
         },
         {
             "techniqueID": "AML.T0084.001",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0084.002",
-            "score": 1
+            "score": 2
         },
         {
             "techniqueID": "AML.T0084.003",
@@ -769,13 +761,13 @@
         },
         {
             "techniqueID": "AML.T0085.001",
-            "score": 3
+            "score": 6
         },
         {
             "techniqueID": "AML.T0086",
             "showSubtechniques": true,
             "tactic": "exfiltration",
-            "score": 6
+            "score": 10
         },
         {
             "techniqueID": "AML.T0087",
@@ -825,7 +817,7 @@
             "techniqueID": "AML.T0093",
             "showSubtechniques": true,
             "tactic": "initial-access",
-            "score": 10
+            "score": 13
         },
         {
             "techniqueID": "AML.T0093",
@@ -837,17 +829,17 @@
             "techniqueID": "AML.T0094",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 1
+            "score": 2
         },
         {
             "techniqueID": "AML.T0095",
             "showSubtechniques": true,
             "tactic": "reconnaissance",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0095.000",
-            "score": 1
+            "score": 2
         },
         {
             "techniqueID": "AML.T0096",
@@ -865,7 +857,7 @@
             "techniqueID": "AML.T0098",
             "showSubtechniques": true,
             "tactic": "credential-access",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0099",
@@ -883,7 +875,7 @@
             "techniqueID": "AML.T0101",
             "showSubtechniques": true,
             "tactic": "impact",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0102",
@@ -896,12 +888,6 @@
             "showSubtechniques": true,
             "tactic": "execution",
             "score": 1
-        },
-        {
-            "techniqueID": "AML.T0104",
-            "showSubtechniques": true,
-            "tactic": "resource-development",
-            "score": 3
         },
         {
             "techniqueID": "AML.T0105",
@@ -937,7 +923,19 @@
             "techniqueID": "AML.T0110",
             "showSubtechniques": true,
             "tactic": "persistence",
+            "score": 0
+        },
+        {
+            "techniqueID": "AML.T0110.000",
+            "score": 2
+        },
+        {
+            "techniqueID": "AML.T0110.001",
             "score": 1
+        },
+        {
+            "techniqueID": "AML.T0110.002",
+            "score": 0
         },
         {
             "techniqueID": "AML.T0111",
@@ -970,6 +968,24 @@
             "showSubtechniques": true,
             "tactic": "command-and-control",
             "score": 1
+        },
+        {
+            "techniqueID": "AML.T0115",
+            "showSubtechniques": true,
+            "tactic": "resource-development",
+            "score": 0
+        },
+        {
+            "techniqueID": "AML.T0115.000",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0115.001",
+            "score": 5
+        },
+        {
+            "techniqueID": "AML.T0115.002",
+            "score": 3
         }
     ],
     "gradient": {
@@ -978,6 +994,6 @@
             "#F44336"
         ],
         "minValue": 0,
-        "maxValue": 63
+        "maxValue": 68
     }
 }

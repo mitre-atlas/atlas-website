@@ -1,0 +1,129 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0064"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.07"
+        }
+    ],
+    "name": "Poisoned GGUF Templates: Inference-Time Supply Chain Attack",
+    "description": "Researchers from Pillar Security and Fujitsu Research of Europe demonstrated an inference-time supply-chain backdoor in which poisoned chat templates alter model and agent behavior without modifying model weights. The backdoor is embedded in trusted prompt-construction logic, allowing it to remain dormant until triggered and evade defenses that inspect only external prompt content.\n\nThe researchers demonstrated the attack using GPT-Generated Unified Format (GGUF), a widely used model format that packages quantized weights, configuration metadata, and chat-template logic in one artifact. An adversary can modify a template and redistribute the artifact; when a lexical, semantic, or contextual trigger occurs, the template injects attacker-controlled instructions into the context sent to the model.\n\nThe attack was validated across eighteen models from seven families and four inference engines. In controlled evaluations, it manipulated model responses, redirected agent tool use, exfiltrated sensitive data, and inserted attacker-controlled code into generated software.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0002.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0002",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0017.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0018.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0018",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-staging"
+        },
+        {
+            "techniqueID": "AML.T0074",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0115.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0115",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0010.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0010",
+            "showSubtechniques": true,
+            "tactic": "initial-access"
+        },
+        {
+            "techniqueID": "AML.T0011.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0011",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0051.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0031",
+            "showSubtechniques": false,
+            "tactic": "impact",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0067",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0053",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0086",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0048",
+            "showSubtechniques": true,
+            "tactic": "impact"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

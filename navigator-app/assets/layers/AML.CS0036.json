@@ -1,7 +1,7 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
@@ -11,11 +11,11 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
     "name": "AIKatz: Attacking LLM Desktop Applications",
-    "description": "Researchers at Lumia have demonstrated that it is possible to extract authentication tokens from the memory of LLM Desktop Applications. An attacker could then use those tokens to impersonate as the victim to the LLM backed, thereby gaining access to the victim's conversations as well as the ability to interfere in future conversations. The attacker's access would allow them the ability to directly inject prompts to change the LLM's behavior, poison the LLM's context to have persistent effects, manipulate the user's conversation history to cover their tracks, and ultimately impact the confidentiality, integrity, and availability of the system. The researchers demonstrated this on Anthropic Claude, Microsoft M365 Copilot, and OpenAI ChatGPT.\n\nVendor Responses to Responsible Disclosure:\n- Anthropic (HackerOne) - Closed as informational since local attack.\n- Microsoft Security Response Center - Attack doesn't bypass security boundaries for CVE.\n- OpenAI (BugCrowd) - Closed as informational and noted that it's up to Microsoft to patch this behavior.",
+    "description": "Researchers at Lumia have demonstrated that it is possible to extract authentication tokens from the memory of LLM Desktop Applications. An attacker could then use those tokens to impersonate the victim to the LLM backend, thereby gaining access to the victim's conversations as well as the ability to interfere in future conversations. The attacker's access would allow them the ability to directly inject prompts to change the LLM's behavior, poison the LLM's context to have persistent effects, manipulate the user's conversation history to cover their tracks, and ultimately impact the confidentiality, integrity, and availability of the system. The researchers demonstrated this on Anthropic Claude, Microsoft M365 Copilot, and OpenAI ChatGPT.\n\nVendor Responses to Responsible Disclosure:\n- Anthropic (HackerOne) - Closed as informational since local attack.\n- Microsoft Security Response Center - Attack doesn't bypass security boundaries for CVE.\n- OpenAI (BugCrowd) - Closed as informational and noted that it's up to Microsoft to patch this behavior.",
     "techniques": [
         {
             "techniqueID": "AML.T0012",

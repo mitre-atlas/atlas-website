@@ -1,7 +1,7 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
@@ -11,11 +11,11 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
     "name": "ChatGPT Conversation Exfiltration",
-    "description": "[Embrace the Red](https://embracethered.com/blog/) demonstrated that ChatGPT users' conversations can be exfiltrated via an indirect prompt injection. To execute the attack, a threat actor uploads a malicious prompt to a public website, where a ChatGPT user may interact with it. The prompt causes ChatGPT to respond with the markdown for an image, whose URL has the user's conversation secretly embedded. ChatGPT renders the image for the user, creating a automatic request to an adversary-controlled script and exfiltrating the user's conversation. Additionally, the researcher demonstrated how the prompt can execute other plugins, opening them up to additional harms.",
+    "description": "[Embrace the Red](https://embracethered.com/blog/) demonstrated that ChatGPT users' conversations can be exfiltrated via an indirect prompt injection. To execute the attack, a threat actor uploads a malicious prompt to a public website, where a ChatGPT user may interact with it. The prompt causes ChatGPT to respond with the markdown for an image, whose URL has the user's conversation secretly embedded. ChatGPT renders the image for the user, creating an automatic request to an adversary-controlled script and exfiltrating the user's conversation. Additionally, the researcher demonstrated how the prompt can execute other plugins, opening them up to additional harms.",
     "techniques": [
         {
             "techniqueID": "AML.T0065",

@@ -1,7 +1,7 @@
 {
     "versions": {
-        "layer": "4.3",
-        "navigator": "4.6.4"
+        "layer": "4.5",
+        "navigator": "5.3.2"
     },
     "domain": "atlas-atlas",
     "metadata": [
@@ -11,7 +11,7 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.06"
+            "value": "2026.07"
         }
     ],
     "name": "Supply Chain Compromise via Poisoned ClawdBot Skill",
@@ -39,10 +39,13 @@
             "color": "#C8E6C9"
         },
         {
-            "techniqueID": "AML.T0104",
-            "showSubtechniques": false,
-            "tactic": "resource-development",
+            "techniqueID": "AML.T0115.002",
             "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0115",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
         },
         {
             "techniqueID": "AML.T0111",
@@ -60,6 +63,15 @@
             "tactic": "initial-access"
         },
         {
+            "techniqueID": "AML.T0110.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0110",
+            "showSubtechniques": true,
+            "tactic": "persistence"
+        },
+        {
             "techniqueID": "AML.T0011.002",
             "color": "#C8E6C9"
         },
@@ -69,7 +81,7 @@
             "tactic": "execution"
         },
         {
-            "techniqueID": "AML.T0051.000",
+            "techniqueID": "AML.T0051.001",
             "color": "#C8E6C9"
         },
         {

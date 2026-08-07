@@ -1,0 +1,111 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0066"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.07"
+        }
+    ],
+    "name": "ZombieAgent: Data Exfiltration Attack on ChatGPT",
+    "description": "ZombieAgent is a proof-of-concept indirect prompt injection attack demonstrated by Radware against OpenAI's ChatGPT Deep Research and Connector functionality. The attacks showed how instructions concealed in externally controlled content, such as emails and documents, could be ingested and executed by ChatGPT during normal user activity. The demonstration used Gmail as the injection source, but any ChatGPT Connector such as Outlook, Google Drive, Jira, or Teams could be similarly abused.\n\nThe Radware Security Researchers sent a malicious email containing concealed instructions to a Gmail inbox connected to ChatGPT. When the user later asked ChatGPT to perform an ordinary inbox-related task, ChatGPT retrieved the email and executed its instructions. The user did not open, click, or knowingly interact with the malicious email.\n\nThe injected instructions caused ChatGPT to collect information from connected services and exfiltrate it through URL requests. OpenAI had introduced a control preventing ChatGPT from dynamically constructing or modifying URLs which could be used to exfiltrate data via query parameters. The researchers bypassed this control by supplying an indexed dictionary of preconstructed static URLs and instructing ChatGPT to open URLs corresponding to individual characters to exfiltrate the collected data.\n\nThe researchers also showed that the malicious instructions could manipulate ChatGPT's Memory. The injected memories instructed ChatGPT to retain sensitive information from future conversations and to retrieve and execute a designated attacker-controlled email during later interactions. This created a persistent mechanism for repeated collection and exfiltration across chat sessions.\n\nThe researchers also demonstrated how the malicious prompt could be propagated. A compromised agent could collect email addresses from the victim's mailbox and use its connected email capabilities to send additional messages containing the malicious prompt to those contacts. Recipients whose AI agents later processed the poisoned messages could become additional victims.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0065",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0079",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0068",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0093",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0080.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0080",
+            "showSubtechniques": true,
+            "tactic": "persistence"
+        },
+        {
+            "techniqueID": "AML.T0053",
+            "showSubtechniques": false,
+            "tactic": "privilege-escalation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0085.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0085",
+            "showSubtechniques": true,
+            "tactic": "collection"
+        },
+        {
+            "techniqueID": "AML.T0054",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0086",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0085.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0085",
+            "showSubtechniques": true,
+            "tactic": "collection"
+        },
+        {
+            "techniqueID": "AML.T0053",
+            "showSubtechniques": false,
+            "tactic": "lateral-movement",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}
