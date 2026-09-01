@@ -11,7 +11,7 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.07"
+            "value": "2026.08"
         }
     ],
     "name": "Malware Prototype with Embedded Prompt Injection",
@@ -20,7 +20,7 @@
         {
             "techniqueID": "AML.T0065",
             "showSubtechniques": false,
-            "tactic": "resource-development",
+            "tactic": "ai-attack-adaptation",
             "color": "#C8E6C9"
         },
         {

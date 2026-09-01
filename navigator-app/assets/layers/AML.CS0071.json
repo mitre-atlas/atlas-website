@@ -1,0 +1,102 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0071"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.08"
+        }
+    ],
+    "name": "Multi-Agent Framework Compromises Taiwanese Government Systems",
+    "description": "In early July 2026, an unknown Chinese-language operator used a multi-agent framework built on Hermes and OpenClaw against government systems that subsequent public reporting identified as Taiwanese.[[financial-times-taiwan-ai-attack]] Dream Research Labs recovered a 160 MB operational workspace containing 1,395 files documenting 12 attack waves conducted from July 1 through July 4.[[dream-multi-agent-framework]] Taiwan's Ministry of Digital Affairs separately confirmed[[moda-ai-agent-attacks]] detecting abnormal attacks during July involving a hybrid of human operation and OpenClaw-assisted activity.\n\nThe agentic AI framework coordinated up to eight specialized sub-agents concurrently across reconnaissance, authentication attacks, API testing, vulnerability research, and exploitation. A probabilistic decision engine ranked findings and 14 candidate attack paths, allocated additional testing to promising results, discarded invalidated paths, and used after-action reports to redirect subsequent activity.\n\nStarting from an internet-facing government portal, the framework decompiled client-side application bundles and mapped connected systems, identity infrastructure, and exposed APIs. It obtained access through exposed debug endpoints, unsigned JWT acceptance, and password spraying based on personnel identifiers collected from unauthenticated APIs. Tesseract OCR automated CAPTCHA solving, reportedly helping compromise 85 accounts, 84 of which authenticated to another government system through an SSO bridge without additional MFA or user confirmation.\n\nDream Research Labs reported the extraction of more than 2,564 personnel records, a complete user-database export, SSO configuration and client information, database credentials, and internal network ranges.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0124",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0117",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0118.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0118",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-adaptation"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0006",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0036",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "lateral-movement",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0126",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0025",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

@@ -1,0 +1,162 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0069"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.08"
+        }
+    ],
+    "name": "GTG-1002 Claude Code Espionage Campaign",
+    "description": "In September 2025, GTG-1002 used a jailbroken Claude Code agent to conduct a cyber-espionage campaign against approximately 30 organizations, succeeding against a small number. Anthropic assessed with high confidence that GTG-1002 was a Chinese state-sponsored group.\n\nGTG-1002 selected organizations in the technology, financial, chemical-manufacturing, and government sectors and configured an autonomous attack framework to operate against them. The operators obtained access to Claude Code and circumvented its safeguards by concealing their malicious purpose behind a false defensive-security persona and apparently benign tasks. GTG-1002 then connected the jailbroken Claude agent to scanners, browser automation, password crackers, database tooling, and dedicated penetration-testing servers through MCP.\n\nBetween operator-controlled stage gates, the adversary's jailbroken Claude agent autonomously inspected target infrastructure, identified high-value systems, scanned for vulnerabilities, and developed and deployed a tailored exploit chain for an identified SSRF vulnerability. After obtaining access to a target, it mapped internal resources and network relationships, found authentication certificates in system configuration files, used harvested credentials to access additional services, established a backdoor account, and collected sensitive information from local systems and internal databases.\n\nThe adversary's jailbroken Claude agent performed an estimated 80-90% of campaign activity, including processing collected data, categorizing it by intelligence value, and documenting attack progress. Human operators retained approximately four to six critical decisions per target, including review and approval before selected data was exfiltrated over the Claude web service.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0040",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0051",
+            "showSubtechniques": true,
+            "tactic": "execution"
+        },
+        {
+            "techniqueID": "AML.T0054",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0128",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0103",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0117",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0006",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0075",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0089",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0055",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "lateral-movement",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0125",
+            "showSubtechniques": false,
+            "tactic": "persistence",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0036",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0037",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0126",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0127",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0025",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

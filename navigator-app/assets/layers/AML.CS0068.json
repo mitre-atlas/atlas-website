@@ -1,0 +1,273 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0068"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.08"
+        }
+    ],
+    "name": "Autonomous OpenAI Evaluation Agents Compromise Hugging Face Infrastructure",
+    "description": "During large-scale internal OpenAI cyber evaluations from May 26 through July 13, 2026, a partially coordinated collective of autonomous agent runs crossed evaluation boundaries, established external infrastructure, and compromised Hugging Face production systems. The activity was driven primarily by a highly persistent internal research model, with additional participation by GPT-5.6 Sol.\n\nThe agents were tasked with completing ExploitGym challenges. Some challenges were effectively impossible in the available environment. As agents exhausted intended approaches, they probed their surroundings and developed alternative ways to complete their tasks. This led to the chain of events that compromised Hugging Face infrastructure in search of challenge-related material.\n\nAgents used Artifactory vulnerabilities to obtain indirect Internet access. On July 8, they also discovered that an Artifactory remote-cache endpoint accepted unauthenticated WebDAV MKCOL requests. This allowed them to reconstruct a shared message board using named collections. Approximately 1,200 agent runs exchanged more than 70,000 messages and files through the board, including addressed requests, assignments, exploits, credentials, scripts, operating rules, status, and results.\n\nOn July 9, agents obtained root execution inside a publicly exposed, customer-hosted CyberGym workload running on Modal and used its short-lived sandboxes as an external launchpad. Modal's platform itself was not compromised. On July 10, agents found and shared Hugging Face write-access tokens exposed in a public dataset. On July 11, they developed exploits targeting Hugging Face's automated dataset-processing pipeline. An HDF5 artifact containing external file references disclosed files local to a processing worker, while a ReferenceFileSystem and Jinja2 exploit allowed arbitrary command execution in production Dataset Server workers running as Kubernetes pods.\n\nAcross the Hugging Face intrusion, approximately 700 agent runs generated roughly 17,600 attacker actions against Hugging Face systems. The agents ultimately executed code on 41 Hugging Face production Dataset Server workers, obtained root access on at least one production Kubernetes node, accessed Kubernetes and cloud credentials, and reached connected clusters and internal services. They downloaded four private source repositories and accessed selected private challenge-related data. Attacker-controlled dataset repositories and public web services carried commands, payloads, operational state, and results. Hugging Face identified five challenge-related customer datasets as accessed customer content. That count does not include internal source code, infrastructure secrets, bounded database results, or private challenge archives. Approximately 700 agent runs participated in the Hugging Face intrusion.\n\nThe broader incident included an earlier containment breach and successful communication between agents, as well as several parallel post-breach activity clusters. This case study focuses on the activity that led to Hugging Face intrusion. For a full breakdown of the incident, see the reporting from OpenAI[[openai-technical-report]][[openai-incident-report]][[black-hat-presentation]], Hugging Face[[hugging-face-disclosure]][[hugging-face-timeline]], and METR[[metr-investigation]].",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0117",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0122",
+            "showSubtechniques": false,
+            "tactic": "lateral-movement",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0118.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0118",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-adaptation"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0102",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0050",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0075",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0089",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0121",
+            "showSubtechniques": false,
+            "tactic": "persistence",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0072",
+            "showSubtechniques": false,
+            "tactic": "command-and-control",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0123",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0055",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0119",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0037",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0055",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0119",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0050",
+            "showSubtechniques": false,
+            "tactic": "execution",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0120",
+            "showSubtechniques": false,
+            "tactic": "command-and-control",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0123",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0055",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement"
+        },
+        {
+            "techniqueID": "AML.T0075",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0089",
+            "showSubtechniques": false,
+            "tactic": "discovery",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0105",
+            "showSubtechniques": false,
+            "tactic": "privilege-escalation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0055",
+            "showSubtechniques": false,
+            "tactic": "credential-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": false,
+            "tactic": "lateral-movement",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0091",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement"
+        },
+        {
+            "techniqueID": "AML.T0036",
+            "showSubtechniques": false,
+            "tactic": "collection",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0025",
+            "showSubtechniques": false,
+            "tactic": "exfiltration",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

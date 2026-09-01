@@ -11,7 +11,7 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.07"
+            "value": "2026.08"
         }
     ],
     "name": "ProKYC: Deepfake Tool for Account Fraud Attacks",
@@ -35,13 +35,13 @@
         {
             "techniqueID": "AML.T0088",
             "showSubtechniques": false,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "color": "#C8E6C9"
         },
         {
             "techniqueID": "AML.T0088",
             "showSubtechniques": false,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "color": "#C8E6C9"
         },
         {

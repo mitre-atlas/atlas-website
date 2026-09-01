@@ -7,17 +7,17 @@
     "metadata": [
         {
             "name": "atlas_data_version",
-            "value": "2026.07"
+            "value": "2026.08"
         }
     ],
     "name": "ATLAS Case Study Frequency",
-    "description": "Heatmap of technique occurrences in 68 ATLAS case studies",
+    "description": "Heatmap of technique occurrences in 72 ATLAS case studies",
     "techniques": [
         {
             "techniqueID": "AML.T0000",
             "showSubtechniques": true,
             "tactic": "reconnaissance",
-            "score": 8
+            "score": 10
         },
         {
             "techniqueID": "AML.T0000.000",
@@ -70,7 +70,7 @@
         {
             "techniqueID": "AML.T0005",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "score": 3
         },
         {
@@ -89,7 +89,7 @@
             "techniqueID": "AML.T0006",
             "showSubtechniques": true,
             "tactic": "reconnaissance",
-            "score": 3
+            "score": 7
         },
         {
             "techniqueID": "AML.T0007",
@@ -183,13 +183,19 @@
             "techniqueID": "AML.T0012",
             "showSubtechniques": true,
             "tactic": "initial-access",
-            "score": 7
+            "score": 9
         },
         {
             "techniqueID": "AML.T0012",
             "showSubtechniques": true,
             "tactic": "privilege-escalation",
             "score": 2
+        },
+        {
+            "techniqueID": "AML.T0012",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement",
+            "score": 3
         },
         {
             "techniqueID": "AML.T0013",
@@ -233,11 +239,19 @@
         },
         {
             "techniqueID": "AML.T0016.001",
-            "score": 4
+            "score": 6
         },
         {
             "techniqueID": "AML.T0016.002",
-            "score": 3
+            "score": 4
+        },
+        {
+            "techniqueID": "AML.T0016.003",
+            "score": 2
+        },
+        {
+            "techniqueID": "AML.T0016.004",
+            "score": 1
         },
         {
             "techniqueID": "AML.T0017",
@@ -250,9 +264,17 @@
             "score": 5
         },
         {
+            "techniqueID": "AML.T0017.001",
+            "score": 6
+        },
+        {
+            "techniqueID": "AML.T0017.002",
+            "score": 1
+        },
+        {
             "techniqueID": "AML.T0018",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "score": 0
         },
         {
@@ -311,7 +333,7 @@
             "techniqueID": "AML.T0025",
             "showSubtechniques": true,
             "tactic": "exfiltration",
-            "score": 11
+            "score": 14
         },
         {
             "techniqueID": "AML.T0029",
@@ -353,19 +375,19 @@
             "techniqueID": "AML.T0036",
             "showSubtechniques": true,
             "tactic": "collection",
-            "score": 1
+            "score": 4
         },
         {
             "techniqueID": "AML.T0037",
             "showSubtechniques": true,
             "tactic": "collection",
-            "score": 4
+            "score": 6
         },
         {
             "techniqueID": "AML.T0040",
             "showSubtechniques": true,
             "tactic": "ai-model-access",
-            "score": 8
+            "score": 10
         },
         {
             "techniqueID": "AML.T0041",
@@ -376,13 +398,13 @@
         {
             "techniqueID": "AML.T0042",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "score": 7
         },
         {
             "techniqueID": "AML.T0043",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "score": 1
         },
         {
@@ -453,13 +475,13 @@
             "techniqueID": "AML.T0049",
             "showSubtechniques": true,
             "tactic": "initial-access",
-            "score": 5
+            "score": 11
         },
         {
             "techniqueID": "AML.T0050",
             "showSubtechniques": true,
             "tactic": "execution",
-            "score": 5
+            "score": 7
         },
         {
             "techniqueID": "AML.T0051",
@@ -469,7 +491,7 @@
         },
         {
             "techniqueID": "AML.T0051.000",
-            "score": 10
+            "score": 11
         },
         {
             "techniqueID": "AML.T0051.001",
@@ -521,7 +543,7 @@
             "techniqueID": "AML.T0054",
             "showSubtechniques": true,
             "tactic": "defense-evasion",
-            "score": 8
+            "score": 9
         },
         {
             "techniqueID": "AML.T0054",
@@ -533,7 +555,7 @@
             "techniqueID": "AML.T0055",
             "showSubtechniques": true,
             "tactic": "credential-access",
-            "score": 7
+            "score": 12
         },
         {
             "techniqueID": "AML.T0056",
@@ -586,13 +608,13 @@
         {
             "techniqueID": "AML.T0065",
             "showSubtechniques": true,
-            "tactic": "resource-development",
+            "tactic": "ai-attack-adaptation",
             "score": 27
         },
         {
             "techniqueID": "AML.T0066",
             "showSubtechniques": true,
-            "tactic": "resource-development",
+            "tactic": "ai-attack-adaptation",
             "score": 3
         },
         {
@@ -645,7 +667,7 @@
             "techniqueID": "AML.T0072",
             "showSubtechniques": true,
             "tactic": "command-and-control",
-            "score": 4
+            "score": 5
         },
         {
             "techniqueID": "AML.T0073",
@@ -663,7 +685,7 @@
             "techniqueID": "AML.T0075",
             "showSubtechniques": true,
             "tactic": "discovery",
-            "score": 1
+            "score": 4
         },
         {
             "techniqueID": "AML.T0076",
@@ -778,14 +800,14 @@
         {
             "techniqueID": "AML.T0088",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "score": 4
         },
         {
             "techniqueID": "AML.T0089",
             "showSubtechniques": true,
             "tactic": "discovery",
-            "score": 1
+            "score": 4
         },
         {
             "techniqueID": "AML.T0090",
@@ -801,7 +823,7 @@
         },
         {
             "techniqueID": "AML.T0091.000",
-            "score": 1
+            "score": 3
         },
         {
             "techniqueID": "AML.T0091.001",
@@ -839,7 +861,7 @@
         },
         {
             "techniqueID": "AML.T0095.000",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0096",
@@ -880,20 +902,20 @@
         {
             "techniqueID": "AML.T0102",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging",
-            "score": 1
+            "tactic": "ai-attack-adaptation",
+            "score": 3
         },
         {
             "techniqueID": "AML.T0103",
             "showSubtechniques": true,
             "tactic": "execution",
-            "score": 1
+            "score": 2
         },
         {
             "techniqueID": "AML.T0105",
             "showSubtechniques": true,
             "tactic": "privilege-escalation",
-            "score": 2
+            "score": 3
         },
         {
             "techniqueID": "AML.T0106",
@@ -986,6 +1008,92 @@
         {
             "techniqueID": "AML.T0115.002",
             "score": 3
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": true,
+            "tactic": "reconnaissance",
+            "score": 6
+        },
+        {
+            "techniqueID": "AML.T0117",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-adaptation",
+            "score": 4
+        },
+        {
+            "techniqueID": "AML.T0118",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-adaptation",
+            "score": 0
+        },
+        {
+            "techniqueID": "AML.T0118.000",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0118.001",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0119",
+            "showSubtechniques": true,
+            "tactic": "initial-access",
+            "score": 2
+        },
+        {
+            "techniqueID": "AML.T0120",
+            "showSubtechniques": true,
+            "tactic": "command-and-control",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0121",
+            "showSubtechniques": true,
+            "tactic": "persistence",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0122",
+            "showSubtechniques": true,
+            "tactic": "lateral-movement",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0123",
+            "showSubtechniques": true,
+            "tactic": "defense-evasion",
+            "score": 2
+        },
+        {
+            "techniqueID": "AML.T0124",
+            "showSubtechniques": true,
+            "tactic": "ai-attack-adaptation",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0125",
+            "showSubtechniques": true,
+            "tactic": "persistence",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0126",
+            "showSubtechniques": true,
+            "tactic": "collection",
+            "score": 2
+        },
+        {
+            "techniqueID": "AML.T0127",
+            "showSubtechniques": true,
+            "tactic": "collection",
+            "score": 1
+        },
+        {
+            "techniqueID": "AML.T0128",
+            "showSubtechniques": true,
+            "tactic": "resource-development",
+            "score": 1
         }
     ],
     "gradient": {
@@ -994,6 +1102,6 @@
             "#F44336"
         ],
         "minValue": 0,
-        "maxValue": 68
+        "maxValue": 72
     }
 }

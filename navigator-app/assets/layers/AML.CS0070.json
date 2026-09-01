@@ -1,0 +1,156 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0070"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.08"
+        }
+    ],
+    "name": "Threat Actor Uses a DeepSeek-Powered Hermes Agent in Langflow and n8n Exploitation Attempts",
+    "description": "A Chinese-speaking threat actor operating as knaithe or KnYuan configured Hermes Agent to use DeepSeek as its reasoning engine. Hermes supplied terminal access, Telegram-based operator control, and a skills system containing both bundled and actor-created red-team skills. The actor also integrated an MCP server that exposed FOFA search, query translation, and Nuclei scan-generation capabilities.\n\nUnit 42 recovered a detailed Hermes Agent session dated May 7, 2026. The actor supplied an initial task through Telegram, but Unit 42 recovered no additional operator input during the session. The DeepSeek-powered Hermes Agent then autonomously searched for targets, obtained public exploits, ran scans, evaluated the results, and revised its approach.\n\nThe agent initially targeted Langflow using a public exploit for CVE-2026-33017. After determining that available targets lacked the exploit's prerequisites, it abandoned that path, compared vulnerabilities across 10 product families, and selected n8n based on apparent severity, exposure, and exploitability. It then obtained a public exploit chain for CVE-2026-21858 and CVE-2025-68613 and probed candidate systems identified through FOFA. Although several systems appeared to run affected versions, the agent found that they lacked the required unauthenticated file-upload functionality. None of the autonomous exploitation attempts obtained access.\n\nSeparate workspace evidence documented manual actor activity involving Citrix NetScaler data extraction, Marimo command execution, and reverse-shell attempts against Tomcat and IKE VPN systems.\n\nUnit 42 obtained this visibility after Hermes Agent responded to a Telegram command by starting an HTTP file server from the actor's home directory, `/home/worker`, instead of an isolated staging directory. This unintentionally exposed the actor's workspace, including AI tool configurations, API keys, exploit scripts, target lists, Bash history, and autonomous exploitation session logs.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0016.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0016.001",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0016.004",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0017.002",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0017",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0040",
+            "showSubtechniques": false,
+            "tactic": "ai-model-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0117",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0102",
+            "showSubtechniques": false,
+            "tactic": "ai-attack-adaptation",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0000",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0006",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0116",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0095.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0095",
+            "showSubtechniques": true,
+            "tactic": "reconnaissance"
+        },
+        {
+            "techniqueID": "AML.T0016.003",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": true,
+            "tactic": "resource-development"
+        },
+        {
+            "techniqueID": "AML.T0000",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0006",
+            "showSubtechniques": false,
+            "tactic": "reconnaissance",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0049",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

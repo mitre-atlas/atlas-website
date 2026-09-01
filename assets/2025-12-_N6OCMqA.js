@@ -1,0 +1,1 @@
+var e=`/assets/2025-12-BrynXam8.md`;export{e as default};

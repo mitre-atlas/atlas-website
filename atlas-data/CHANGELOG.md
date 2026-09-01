@@ -1,3 +1,83 @@
+## [2026.08]() (2026-08-31)
+
+##### Content v2026.08
+
+This version of ATLAS data contains 1 matrix, 16 tactics, 114 techniques, 83 sub-techniques, 39 mitigations, and 72 case studies.
+
+ATLAS is a globally accessible, living knowledge base of adversary tactics and techniques involving AI, including attacks against AI-enabled systems, abuse or manipulation of AI capabilities, and harmful autonomous behavior materially enabled by AI. ATLAS is based on empirical evidence from observations of real-world attacks as well as realistic demonstrations from AI red teams and security groups.
+
+###### Matrices
+
+- Updated existing matrices
+
+  - [ATLAS Matrix](/matrices/ATLAS-matrix)
+
+###### Tactics
+
+- Updated existing tactics
+
+  - [AI Attack Adaptation](/techniques/AML.TA0001)
+    - Previously "AI Attack Staging"
+
+###### Techniques
+
+- Added new techniques
+
+  - [Autonomous Reconnaissance](/techniques/AML.T0116)
+  - [Autonomous Attack-Path Adaptation](/techniques/AML.T0117)
+  - [Autonomous AI Agent Communication](/techniques/AML.T0118)
+  - [Autonomous AI Agent Communication: Communication via Shared Artifacts](/techniques/AML.T0118.000)
+  - [Autonomous AI Agent Communication: Direct Agent Communication](/techniques/AML.T0118.001)
+  - [Exploit Automated Artifact Processing Pipeline](/techniques/AML.T0119)
+  - [AI Artifact Repository](/techniques/AML.T0120)
+  - [AI Agent Environment Reconstruction](/techniques/AML.T0121)
+  - [Exploitation of Remote Services](/techniques/AML.T0122)
+  - [Obfuscated Files or Information](/techniques/AML.T0123)
+  - [Autonomous Attack Orchestration](/techniques/AML.T0124)
+  - [Create Account](/techniques/AML.T0125)
+  - [Automated Collection](/techniques/AML.T0126)
+  - [Data Staged](/techniques/AML.T0127)
+  - [Compromise Infrastructure](/techniques/AML.T0128)
+  - [Develop Capabilities: Autonomous Exploit Development](/techniques/AML.T0016.001)
+  - [Develop Capabilities: AI Agent Tools](/techniques/AML.T0017.002)
+  - [Obtain Capabilities: AI Agent Tools](/techniques/AML.T0016.004)
+
+- Updated existing techniques
+
+  - [Enterprise Resource Discovery](/techniques/AML.T0075)
+    - Generalized from "Cloud Service Discoery"
+  - [Enterprise Environment Discovery](/techniques/AML.T0089)
+    - Generalized from "Process Discovery"
+  - [Cyber Communication Channel](/techniques/AML.T0072)
+    - Generalized from "Reverse Shell"
+  - [Develop Capabilities](/techniques/AML.T0016)
+  - [LLM Prompt Crafting](/techniques/AML.T0065)
+  - [Retrieval Content Crafting](/techniques/AML.T0066)
+
+###### Mitigations
+
+- Added new mitigations
+
+  - [AI Agent Authority Expansion Controls](/mitigations/AML.M0037)
+  - [AI Agent Scope Drift Detection](/mitigations/AML.M0038)
+
+- Updated existing mitigations
+
+  - [Generative AI Model Alignment](/mitigations/AML.M0022)
+  - [Segmentation of AI Agent Components](/mitigations/AML.M0032)
+  - [Vulnerability Scanning](/mitigations/AML.M0016)
+  - [AI Red Team](/mitigations/AML.M0035)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [Autonomous OpenAI Evaluation Agents Compromise Hugging Face Infrastructure](/studies/AML.CS0068)
+  - [GTG-1002 Claude Code Espionage Campaign](/studies/AML.CS0069)
+  - [Threat Actor Uses a DeepSeek-Powered Hermes Agent in Langflow and n8n Exploitation Attempts](/studies/AML.CS0070)
+  - [Multi-Agent Framework Compromises Taiwanese Government Systems](/studies/AML.CS0071)
+
+
 ## [2026.07]() (2026-07-31)
 
 ##### Content v2026.07

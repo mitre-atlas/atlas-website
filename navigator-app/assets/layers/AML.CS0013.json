@@ -11,7 +11,7 @@
         },
         {
             "name": "atlas_data_version",
-            "value": "2026.07"
+            "value": "2026.08"
         }
     ],
     "name": "Backdoor Attack on Deep Learning Models in Mobile Apps",
@@ -59,7 +59,7 @@
         {
             "techniqueID": "AML.T0042",
             "showSubtechniques": false,
-            "tactic": "ai-attack-staging",
+            "tactic": "ai-attack-adaptation",
             "color": "#C8E6C9"
         },
         {
@@ -78,7 +78,7 @@
         {
             "techniqueID": "AML.T0043",
             "showSubtechniques": true,
-            "tactic": "ai-attack-staging"
+            "tactic": "ai-attack-adaptation"
         },
         {
             "techniqueID": "AML.T0041",

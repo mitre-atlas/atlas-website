@@ -1,0 +1,62 @@
+var e=`#### June 2026
+
+The ATLAS knowledge base is built from community contributions. We want to acknowledge the following for their contributions for this release:
+- The members of the [Center for Threat-Informed Defense](https://ctid.mitre.org/) (CTID) [Secure AI](https://ctid.mitre.org/projects/secure-ai/) project for feedback on new contribution forms.
+- NEC Corporation (Takeuchi Toshiki) and NEC Corporation India (Sareena Karapoola, Abhishek Dhiman, and Pooja Natarajan) for contributing
+  - [Cross-Site Scripting via Prompt Manipulation in Lenovo’s AI Chatbot](/studies/AML.CS0060),
+  - [EchoLeak: Zero-Click Prompt Injection Targeting M365 Copilot for Data Exfiltration](/studies/AML.CS0059),
+  - [Storm-2139 Azure OpenAI Guardrail Bypass](/studies/AML.CS0057),
+  - and updates to [LLM Jailbreak](/studies/AML.T0054).
+- Microsoft (Amit Eliahu, Dor Edry, and Uri Oren) for contributing [RCE Vulnerability in Semantic Kernel Search Plugin](/studies/AML.CS0062).
+- Stifel (Sean Gallagher and Don Le) for contributing [AI in the Middle: Web-Based AI Services as C2 Relays](/studies/AML.CS0061).
+- Skyld (Victor Guyomard) for contributing [Google Photos AI Model Extraction](/studies/AML.CS0058).
+
+##### Knowledge Base Agent v1.0.0
+
+Initial release of the [ATLAS Knowledge Base Agent](https://github.com/mitre-atlas/atlas-knowledge-base-agent): an open-source AI assistant for exploring the MITRE ATLAS Knowledge Base.
+
+##### Website v5.1.0
+
+- Added page for the [ATLAS Knowledge Base Agent](/agent)
+- Updated ATLAS data to version 2026.06
+
+##### Data v2026.06
+
+This version of ATLAS data contains 1 matrix, 16 tactics, 104 techniques, 69 sub-techniques, 35 mitigations, and 63 case studies.
+
+###### Techniques
+
+- Added new techniques
+
+  - [Steal Web Session Cookie](/studies/AML.T0113)
+  - [Use Alternate Authentication Material: Web Session Cookie](/studies/AML.T0091.001)
+  - [AI Service Web Interface](/studies/AML.T0114)
+
+- Updated existing techniques
+
+  - [LLM Jailbreak](/studies/AML.T0054)
+
+###### Mitigations
+
+- Updated existing mitigations
+
+  - [Generative AI Guardrails](/mitigations/AML.M0020)
+  - [Generative AI Guidelines](/mitigations/AML.M0021)
+  - [AI Telemetry Logging](/mitigations/AML.M0024)
+
+###### Case Studies
+
+- Added new case studies
+
+  - [Storm-2139 Azure OpenAI Guardrail Bypass](/studies/AML.CS0057)
+  - [Google Photos AI Model Extraction](/studies/AML.CS0058)
+  - [EchoLeak: Zero-Click Prompt Injection Targeting M365 Copilot for Data Exfiltration](/studies/AML.CS0059)
+  - [Cross-Site Scripting via Prompt Manipulation in Lenovo’s AI Chatbot](/studies/AML.CS0060)
+  - [AI in the Middle: Web-Based AI Services as C2 Relays](/studies/AML.CS0061)
+  - [RCE Vulnerability in Semantic Kernel Search Plugin](/studies/AML.CS0062)
+
+##### Data Tools
+
+- Update STIX generation to include platforms and domains
+- Add validation to case study reporter in schema
+`;export{e as t};
