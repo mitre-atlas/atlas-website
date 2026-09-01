@@ -5,10 +5,6 @@
       The {{ MITRE_TITLE }} version of the ATT&CK Navigator displays {{ SHORT_NAME }} techniques and
       allows users to create and view complex visualizations. In addition to the matrix, the
       Navigator also shows a frequency heat map of techniques used in {{ SHORT_NAME }} case studies.
-      View the {{ SHORT_NAME }} Navigator below or at
-      <a :href="navigatorUrl" target="_blank" rel="noreferrer"
-        >{{ navigatorUrl }} <v-icon size="x-small">mdi-open-in-new</v-icon></a
-      >.
     </p>
 
     <p class="pt-5 mb-10">
@@ -32,12 +28,23 @@
         class="mt-16"
       />
     </div>
+    <div class="tool-embed-actions">
+      <VAtlasBtnSecondary
+        :href="navigatorUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        append-icon="mdi-open-in-new"
+        class="tool-embed-action"
+      >
+        Open Navigator full screen
+      </VAtlasBtnSecondary>
+    </div>
     <iframe
       v-show="!loading"
       :src="navigatorUrl"
-      width="90%"
-      height="700px"
-      frameBorder="0"
+      title="ATLAS Navigator"
+      class="tool-embed"
+      allowfullscreen
       @load="loading = false"
     />
   </div>

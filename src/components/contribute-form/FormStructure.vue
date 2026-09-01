@@ -482,11 +482,11 @@
       <div v-if="!showThanks" class="submission-actions">
         <p v-if="props.type === 'other'" class="my-16">
           Please click “Send Your Contribution” to email your contribution to the
-          <a href="mailto:atlas@mitre.org" title="atlas@mitre.org">MITRE ATLAS™ team</a>.
+          <a :href="`mailto:${SUBMISSION_EMAIL}`" :title="SUBMISSION_EMAIL">MITRE ATLAS™ team</a>.
         </p>
         <p v-else class="mt-2 mb-10">
           Once your file is saved, please click “Send Your Contribution” to email your file to the
-          <a href="mailto:atlas@mitre.org" title="atlas@mitre.org">MITRE ATLAS™ team</a>.
+          <a :href="`mailto:${SUBMISSION_EMAIL}`" :title="SUBMISSION_EMAIL">MITRE ATLAS™ team</a>.
           <b>Please include your file as an attachment in the email.</b>
         </p>
         <div class="text-right">
@@ -558,6 +558,7 @@ import { storeToRefs } from 'pinia'
 import AddProcedure from '../case-study-form/AddProcedure.vue'
 import EditableProcedureTimeline from '../case-study-form/EditableProcedureTimeline.vue'
 import { truncateText, validateUrl } from '@/assets/tools'
+import { SUBMISSION_EMAIL } from '@/config/env'
 import {
   contributionObjectTypeFromKey,
   contributionTypeWordFromKey,
@@ -586,7 +587,6 @@ const isVuetifyFormValid = ref(null)
 const fileNameTouched = ref(false)
 const hasDownloadedSinceLastChange = ref(false)
 const showCancelDialog = ref(false)
-const contributionEmailAddress = 'atlas@mitre.org'
 const contributionFieldDefaults = { baseColor: 'lightNavy', color: 'lightNavy' }
 const contributionDropdownFieldDefaults = {
   ...contributionFieldDefaults,
@@ -1082,7 +1082,7 @@ Regards,
 
 function contributionMailtoHref() {
   return (
-    `mailto:${contributionEmailAddress}?` +
+    `mailto:${SUBMISSION_EMAIL}?` +
     `subject=${mailtoEncode(contributionEmailSubject())}&` +
     `body=${mailtoEncode(contributionEmailBody())}`
   )

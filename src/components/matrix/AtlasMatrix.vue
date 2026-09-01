@@ -131,11 +131,18 @@
         </div>
       </div>
     </div>
+    <div class="matrix-scroll-hint text-caption mb-2">
+      <v-icon aria-hidden="true" size="small">mdi-gesture-swipe-horizontal</v-icon>
+      <span>Swipe horizontally to explore the matrix</span>
+    </div>
     <MatrixAttackStyle
       :tactics="tactics"
       :expand-all="expandAll"
       :expand-all-revision="expandAllRevision"
-      style="overflow: auto"
+      class="matrix-scroll-container"
+      role="region"
+      aria-label="ATLAS threat matrix, horizontally scrollable"
+      tabindex="0"
     ></MatrixAttackStyle>
     <div class="text-right mt-2">
       <span class="attack-and">&amp;</span>&nbsp;indicates a tactic or technique is adapted from

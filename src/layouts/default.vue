@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="isErrorRoute">
       <Header />
-      <v-main class="mx-16 mb-16">
+      <v-main class="mx-4 mx-sm-6 mx-md-16 mb-16">
         <slot />
       </v-main>
       <Footer />
@@ -73,6 +73,6 @@ const showBreadcrumbs = computed(() => {
 })
 
 const layoutMainClass = computed(() => {
-  return isRouteFullView.value ? '' : 'mx-16 mb-16'
+  return isRouteFullView.value ? '' : 'mx-4 mx-sm-6 mx-md-16 mb-16'
 })
 </script>

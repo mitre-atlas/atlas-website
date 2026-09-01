@@ -44,7 +44,7 @@
         </a>
       </p>
 
-      <video autoplay loop muted playsinline controls width="85%">
+      <video autoplay loop muted playsinline controls preload="metadata" class="tool-media">
         <source :src="videoUrl" type="video/webm" />
         Your browser does not support the video tag.
       </video>
@@ -55,7 +55,6 @@
 <script setup>
 import { ref } from 'vue'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
-import { MITRE_TITLE, SHORT_NAME } from '@/config/env'
 import videoUrl from '@/assets/atlas-agent.webm'
 
 const title = ref(SHORT_NAME + ' Knowledge Base Agent')

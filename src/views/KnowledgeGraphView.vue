@@ -34,11 +34,25 @@
         </li>
       </ul>
 
-      <br />
-      <a :href="`${KNOWLEDGE_GRAPH_URL}`">Explore the ATLAS Knowledge Graph -></a>
     </div>
 
-    <iframe :src="`${KNOWLEDGE_GRAPH_URL}`" width="85%" height="750" frameborder="0"> </iframe>
+    <div class="tool-embed-actions">
+      <VAtlasBtnSecondary
+        :href="KNOWLEDGE_GRAPH_URL"
+        target="_blank"
+        rel="noopener noreferrer"
+        append-icon="mdi-open-in-new"
+        class="tool-embed-action"
+      >
+        Open Knowledge Graph full screen
+      </VAtlasBtnSecondary>
+    </div>
+    <iframe
+      :src="KNOWLEDGE_GRAPH_URL"
+      title="ATLAS Knowledge Graph interactive visualization"
+      class="tool-embed"
+      allowfullscreen
+    />
   </div>
 </template>
 

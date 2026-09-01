@@ -1,7 +1,7 @@
 <template>
   <hero></hero>
   <about></about>
-  <v-container fluid class="px-10">
+  <v-container fluid class="px-4 px-sm-6 px-md-10">
     <AtlasMatrix></AtlasMatrix>
   </v-container>
 </template>

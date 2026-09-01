@@ -1,7 +1,7 @@
 <template>
-  <div class="text-h3 my-5">
+  <h1 class="text-h4 text-sm-h3 my-5">
     {{ pageTitle }}
-  </div>
+  </h1>
 </template>
 
 <script setup lang="ts">

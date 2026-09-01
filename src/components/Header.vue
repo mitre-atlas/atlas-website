@@ -1,14 +1,29 @@
 <template>
   <v-app-bar dark clipped-left elevate-on-scroll color="navy">
-    <v-app-bar-nav-icon color="white" v-if="doesPageHaveSideNav" @click.prevent="toggle()" />
+    <v-app-bar-nav-icon
+      v-if="doesPageHaveSideNav"
+      color="white"
+      aria-label="Open section navigation"
+      @click.prevent="toggle()"
+    />
 
-    <h1 class="pa-3">
-      <router-link :to="homeRoute">
-        <img src="../assets/graphics/MITRE_ATLAS_light.svg" width="200" contain />
+    <div class="pa-2 pa-sm-3">
+      <router-link :to="homeRoute" aria-label="MITRE ATLAS home">
+        <img
+          src="../assets/graphics/MITRE_ATLAS_light.svg"
+          class="header-logo"
+          alt="MITRE ATLAS"
+        />
       </router-link>
-    </h1>
+    </div>
 
-    <v-chip v-if="showVersionIndicator" size="small" color="white" variant="outlined" class="mr-2">
+    <v-chip
+      v-if="showVersionIndicator"
+      size="small"
+      color="white"
+      variant="outlined"
+      class="d-none d-sm-flex mr-2"
+    >
       Version: {{ activeVersion }}
     </v-chip>
 
@@ -48,29 +63,56 @@
       </v-toolbar-items>
     </template>
     <v-toolbar-items v-if="smAndDown">
-      <v-menu>
+      <v-menu v-model="mobileMenuOpen" :close-on-content-click="false">
         <template #activator="{ props }">
-          <v-btn icon v-bind="props">
+          <v-btn icon v-bind="props" aria-label="Open main navigation">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <div v-for="(link, i) in linksModded" :key="i">
-            <div v-if="link.isDropdown">
+          <v-list-subheader v-if="showVersionIndicator" class="d-sm-none">
+            Version: {{ activeVersion }}
+          </v-list-subheader>
+          <template v-for="link in linksModded" :key="link.name">
+            <v-list-group
+              v-if="link.isDropdown"
+              :value="link.name"
+              class="mobile-nav-group"
+            >
+              <template #activator="{ props }">
+                <v-list-item
+                  v-bind="props"
+                  :title="link.name"
+                  class="text-button text-capitalize"
+                />
+              </template>
               <v-list-item
-                v-for="(childLink, j) in link.links"
-                :key="j"
+                v-for="childLink in link.links"
+                :key="childLink.name"
                 :to="childLink.to"
                 :href="childLink.href"
-                class="px-6 text-button text-capitalize"
+                :title="childLink.name"
+                class="mobile-nav-child text-button text-capitalize"
+                @click="mobileMenuOpen = false"
+              />
+            </v-list-group>
+            <div v-else-if="link.name === 'Contribute'" class="px-4 py-2">
+              <VAtlasBtnPrimary
+                :to="link.to"
+                block
+                @click="mobileMenuOpen = false"
               >
-                {{ childLink.name }}
-              </v-list-item>
+                {{ link.name }}
+              </VAtlasBtnPrimary>
             </div>
-            <v-list-item v-else :to="link.to" text exact class="px-6 text-button text-capitalize">
-              {{ link.name }}
-            </v-list-item>
-          </div>
+            <v-list-item
+              v-else
+              :to="link.to"
+              :title="link.name"
+              class="text-button text-capitalize"
+              @click="mobileMenuOpen = false"
+            />
+          </template>
         </v-list>
       </v-menu>
     </v-toolbar-items>
@@ -85,13 +127,15 @@
 import { useMain } from '@/stores/main'
 import { dataObjectToPluralTitle } from '@/assets/dataHelpers.js'
 import { getStoreObjectCollectionKey } from '@/assets/objectTypes.js'
+import { capitalize } from '@/assets/tools.js'
 import { useDisplay } from 'vuetify'
 import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const route = useRoute()
 const mainStore = useMain()
 const { mdAndUp, smAndDown } = useDisplay() // Used for breakpoints
+const mobileMenuOpen = ref(false)
 
 const activeVersion = computed(() => mainStore.getActiveNavigationVersion)
 
@@ -216,7 +260,7 @@ const linksModded = computed(() => {
   const dynamicDataKeys = dataKeys.filter((k) => k !== studiesCollectionKey)
   const dataLinks = dynamicDataKeys.map((objectType) => {
     return {
-      name: `${dataObjectToPluralTitle(objectType)}`, // Plural version
+      name: capitalize(dataObjectToPluralTitle(objectType)), // Plural version
       to: withVersion(activeVersion.value ? 'VersionedDataObjectList' : 'DataObjectList', {
         objectTypePlural: dataObjectToPluralTitle(objectType, true),
       }),
@@ -242,3 +286,21 @@ function toggle() {
   mainStore.TOGGLE_NAV_DRAWER()
 }
 </script>
+
+<style scoped>
+.header-logo {
+  display: block;
+  width: 150px;
+  max-width: 100%;
+}
+
+.mobile-nav-group :deep(.v-list-group__items .mobile-nav-child) {
+  padding-inline-start: 48px !important;
+}
+
+@media (min-width: 600px) {
+  .header-logo {
+    width: 200px;
+  }
+}
+</style>

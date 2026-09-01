@@ -290,6 +290,22 @@
 .matrix-controls button:hover {
   background: whitesmoke;
 }
+
+.matrix-scroll-container {
+  overflow: auto;
+}
+
+.matrix-scroll-container:focus-visible {
+  outline: 3px solid rgb(var(--v-theme-primary));
+  outline-offset: 2px;
+}
+
+.matrix-scroll-hint {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  color: rgba(var(--v-theme-on-surface), 0.7);
+}
 .matrix-controls .layout-button:active {
   color: #16181b;
   background-color: #f8f9fa;
@@ -435,6 +451,47 @@
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 6px;
+}
+
+@media (max-width: 959px) {
+  .matrix-scroll-hint {
+    display: flex;
+  }
+
+  .matrix-columns {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .matrix-text {
+    font-size: 1.5rem;
+    padding-bottom: 0;
+  }
+
+  .matrix-controls-group {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .matrix-filter,
+  .matrix-filter .fieldset-border {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .matrix-filter .slider-width,
+  .matrix-filter .platform-filter-select,
+  .matrix-filter .platform-chip-group {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    box-sizing: border-box;
+  }
 }
 
 /*# sourceMappingURL=matrix.css.map */

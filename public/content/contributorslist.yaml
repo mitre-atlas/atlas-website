@@ -83,14 +83,11 @@ data:
       - Omer Hofman
       - Roman Vainshtein
 
-  - organization: Fujitsu
-    contributors:
-      - Ahmed Elmesiry
-
   - organization: Fujitsu Research of Europe Limited, UK
     contributors:
       - Inderjeet Singh
       - Andrés Murillo
+      - Ahmed Elmesiry
 
   - organization: Fujitsu Limited, Japan
     contributors:

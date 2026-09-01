@@ -1,22 +1,25 @@
 <template>
   <v-container fluid class="hero-image pa-0" align="center">
     <AnnoucementBanner />
-    <v-container fluid class="home-panel d-flex justify-space-between align-center">
-      <div class="text-white text-h4 text-md-h2 text-lg-h1 mt-3 ms-8 me-8">
-        <b class="tagline">
-          Navigate threats to AI systems through
-          <span class="text-highlighter">real-world insights</span>
-        </b>
-      </div>
+    <v-container
+      fluid
+      class="home-panel d-flex flex-column flex-md-row justify-center justify-md-space-between align-center"
+    >
+      <h1
+        class="tagline text-white text-h4 text-md-h2 text-lg-h1 font-weight-bold text-center text-md-start mt-3 mb-0 mx-4 mx-md-8"
+      >
+        Navigate threats to AI systems through
+        <span class="text-highlighter">real-world insights</span>
+      </h1>
 
-      <div class="d-flex flex-column align-end">
-        <div class="d-flex mb-4">
+      <div class="hero-actions d-flex flex-column align-center align-md-end mt-8 mt-md-0">
+        <div class="hero-stats d-flex flex-wrap flex-md-nowrap justify-center justify-md-end mb-4">
           <matrix-stat
             v-for="stat in matrixStats"
             :key="stat.label"
             v-bind="stat"
             color="highlighter"
-            class="me-6"
+            class="hero-stat me-2 me-sm-4 me-md-6"
           ></matrix-stat>
         </div>
         <v-btn
@@ -25,6 +28,7 @@
           :to="matrixRoute"
           append-icon="mdi-chevron-right"
           :size="buttonSize"
+          class="hero-cta"
           >Explore the ATLAS Threat Matrix
         </v-btn>
       </div>
@@ -81,5 +85,28 @@ const buttonSize = computed(() => (mdAndUp.value ? 'x-large' : undefined))
 
 .tagline {
   font-family: 'TradeGothicBold';
+}
+
+.hero-actions {
+  width: 100%;
+}
+
+.hero-stat {
+  flex: 0 1 7rem;
+}
+
+.hero-cta {
+  width: 100%;
+}
+
+@media (min-width: 960px) {
+  .hero-actions,
+  .hero-cta {
+    width: auto;
+  }
+
+  .hero-stat {
+    flex-basis: auto;
+  }
 }
 </style>

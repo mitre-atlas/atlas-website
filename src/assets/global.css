@@ -18,8 +18,15 @@ ul {
 }
 
 .home-panel {
-  padding-top: 7em !important;
-  padding-bottom: 7em !important;
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+@media (min-width: 960px) {
+  .home-panel {
+    padding-top: 7em !important;
+    padding-bottom: 7em !important;
+  }
 }
 
 .v-btn.atlas-btn-primary,
@@ -50,4 +57,81 @@ ul {
 /* account for header height + a padding when scrolling to anchors */
 [id] {
   scroll-margin-top: calc(64px + 1.5rem);
+}
+
+.markdown-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.markdown-content figure {
+  margin-inline: 0;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Raw Markdown figures use Vuetify class names without being Vuetify components. */
+.markdown-content .v-responsive.v-img {
+  display: block;
+  height: auto !important;
+}
+
+.markdown-content .v-img__img {
+  position: static !important;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 600px;
+  height: auto !important;
+  margin-inline: auto;
+}
+
+.markdown-content iframe {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.markdown-content .v-table,
+.markdown-content .v-table__wrapper {
+  max-width: 100%;
+}
+
+.markdown-content .v-table__wrapper {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tool-embed-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 1rem;
+}
+
+.tool-embed {
+  display: block;
+  width: 100%;
+  height: 700px;
+  height: clamp(480px, 75dvh, 800px);
+  border: 0;
+}
+
+.tool-media {
+  display: block;
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+}
+
+@media (max-width: 599px) {
+  .tool-embed-action {
+    width: 100%;
+  }
 }

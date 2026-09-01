@@ -9,10 +9,7 @@
           </v-card-title>
           <v-card-text>
             <div class="text-mediumNavy text-justify" style="font-size: 16px; margin-top: 40px">
-              ATLAS (Adversarial Threat Landscape for Artificial-Intelligence Systems) is a globally
-              accessible, living knowledge base of adversary tactics and techniques against
-              Al-enabled systems based on real-world attack observations and realistic
-              demonstrations from Al red teams and security groups.
+              ATLAS is a globally accessible, living knowledge base of adversary tactics and techniques involving AI, including attacks against AI-enabled systems, abuse or manipulation of AI capabilities, and harmful autonomous behavior materially enabled by AI. ATLAS is based on empirical evidence from observations of real-world attacks as well as realistic demonstrations from AI red teams and security groups.
             </div>
           </v-card-text>
         </v-card>

@@ -14,7 +14,12 @@
       <attack-technique-cell v-else :technique="technique" />
     </td>
 
-    <td v-if="hasSubtechniques" class="sidebar" @click="doShowSubtechniques = !doShowSubtechniques">
+    <td
+      v-if="hasSubtechniques"
+      class="sidebar"
+      :class="{ expanded: doShowSubtechniques }"
+      @click="doShowSubtechniques = !doShowSubtechniques"
+    >
       <div class="angle top">
         <svg width="12px" height="12px">
           <path d="M0 12H12V0Z" />

@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageSectionTitle :pageTitle="title" />
-    <div v-html="mdAsHtml" class="mx-10"></div>
+    <div v-html="mdAsHtml" class="markdown-content mx-0 mx-md-10"></div>
   </div>
 </template>
 

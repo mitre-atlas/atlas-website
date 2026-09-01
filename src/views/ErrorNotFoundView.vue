@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center flex flex-center ma-10">
+  <div class="text-center flex flex-center ma-4 ma-sm-10">
     <div>
-      <div class="text-h1 font-weight-bold">404</div>
+      <h1 class="text-h2 text-sm-h1 font-weight-bold ma-0">404</h1>
 
-      <div class="text-h2 text-grey">Oops. Nothing here...</div>
+      <div class="text-h4 text-sm-h2 text-grey">Oops. Nothing here...</div>
       <div v-if="mainStore.dataLoadError" class="text-body-1 text-grey-darken-1 mt-2">
         {{ mainStore.dataLoadError }}
       </div>

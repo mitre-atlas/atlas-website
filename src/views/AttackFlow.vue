@@ -34,11 +34,23 @@
       case study:
     </div>
 
+    <div class="tool-embed-actions">
+      <VAtlasBtnSecondary
+        :href="attackFlowUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        append-icon="mdi-open-in-new"
+        class="tool-embed-action"
+      >
+        Open Attack Flow full screen
+      </VAtlasBtnSecondary>
+    </div>
     <iframe
-      src="https://center-for-threat-informed-defense.github.io/attack-flow/ui/?src=https%3A//center-for-threat-informed-defense.github.io/attack-flow/corpus/OpenClaw.afb"
-      width="100%"
-      height="3600"
-    ></iframe>
+      :src="attackFlowUrl"
+      title="ATLAS OpenClaw Attack Flow example"
+      class="tool-embed"
+      allowfullscreen
+    />
   </div>
 </template>
 
@@ -49,4 +61,6 @@ import { SHORT_NAME } from '@/config/env'
 
 const title = ref(SHORT_NAME + ' in Attack Flow')
 const openClawRoute = '/studies/AML.CS0051'
+const attackFlowUrl =
+  'https://center-for-threat-informed-defense.github.io/attack-flow/ui/?src=https%3A//center-for-threat-informed-defense.github.io/attack-flow/corpus/OpenClaw.afb'
 </script>

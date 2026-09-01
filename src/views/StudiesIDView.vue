@@ -1,8 +1,6 @@
 <template>
   <div v-if="study != undefined">
-    <div class="text-h3 my-5">
-      <span>{{ title }}</span>
-    </div>
+    <h1 class="text-h4 text-sm-h3 my-5">{{ title }}</h1>
 
     <v-row align="start">
       <v-col cols="12" md="9">
