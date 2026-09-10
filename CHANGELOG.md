@@ -1,10 +1,14 @@
 # ATLAS Website Changelog
 
+## [5.4.0]() (2026-09-15)
+
+- Updated ATLAS data to [version 2026.09](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.09-2026-09-15)
+
 ## [5.3.0]() (2026-08-31)
 
 - Improved website display on mobile
 - Updated contribution email to GitLab Service Desk address
-- Updated ATLAS data to [version 2026.08](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.08-2026-07-31)
+- Updated ATLAS data to [version 2026.08](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.08-2026-08-31)
 
 ## [5.2.0]() (2026-07-31)
 
