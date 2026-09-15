@@ -1,0 +1,66 @@
+{
+    "versions": {
+        "layer": "4.5",
+        "navigator": "5.3.2"
+    },
+    "domain": "atlas-atlas",
+    "metadata": [
+        {
+            "name": "url",
+            "value": "https://atlas.mitre.org/studies/AML.CS0072"
+        },
+        {
+            "name": "atlas_data_version",
+            "value": "2026.09"
+        }
+    ],
+    "name": "AI Recommendation Poisoning via Crafted AI Assistant Links",
+    "description": "The [Microsoft Defender Security Research Team](https://www.microsoft.com/en-us/security/blog/author/windows-defender-research/) identified a widespread pattern of AI assistant memory manipulation carried out for promotional purposes, which they named AI Recommendation Poisoning. \n\nMost major AI assistants accept a pre-filled prompt through a URL query parameter, allowing any party controlling a hyperlink to author the first turn of a user's conversation with their assistant. Operators embedded crafted links into their websites as \"Summarize with AI\" buttons and share widgets, and in some cases distributed them by email. \n\nEach link paired a legitimate summarization request with an appended instruction directing the assistant to record the operator's domain as a trusted or authoritative source for future conversations. When the user clicked, the prompt populated the assistant's input field, and the persistence clause caused a durable memory entry to be written, biasing later recommendations toward the operator.\nReviewing AI assistant URLs observed in email traffic over approximately 60 days, the researchers identified more than 50 distinct promotional memory manipulation prompts from 31 companies across 14 industries. Every case was attributed to a legitimate business rather than a conventional threat actor, and the researchers traced the trend to publicly available tooling marketed as a search optimization technique for large language models. Several prompts targeted health and financial advice sites. \n\nMicrosoft reported that effectiveness varied by platform and that several previously observed behaviors could no longer be reproduced as vendor protections evolved.",
+    "techniques": [
+        {
+            "techniqueID": "AML.T0016",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0079",
+            "showSubtechniques": false,
+            "tactic": "resource-development",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0131",
+            "showSubtechniques": false,
+            "tactic": "initial-access",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0068",
+            "showSubtechniques": false,
+            "tactic": "defense-evasion",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0080.000",
+            "color": "#C8E6C9"
+        },
+        {
+            "techniqueID": "AML.T0080",
+            "showSubtechniques": true,
+            "tactic": "persistence"
+        },
+        {
+            "techniqueID": "AML.T0130",
+            "showSubtechniques": false,
+            "tactic": "impact",
+            "color": "#C8E6C9"
+        }
+    ],
+    "legendItems": [
+        {
+            "label": "Used in case study",
+            "color": "#C8E6C9"
+        }
+    ]
+}

