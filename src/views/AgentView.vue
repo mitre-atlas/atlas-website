@@ -54,6 +54,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { SHORT_NAME } from '@/config/env'
 import PageSectionTitle from '@//components/PageSectionTitle.vue'
 import videoUrl from '@/assets/atlas-agent.webm'
 

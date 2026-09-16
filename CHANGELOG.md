@@ -1,5 +1,10 @@
 # ATLAS Website Changelog
 
+## [5.4.1]() (2026-09-15)
+
+- Fixed Knowledge Base Agent Page
+- Updated release notes
+
 ## [5.4.0]() (2026-09-15)
 
 - Updated ATLAS data to [version 2026.09](https://github.com/mitre-atlas/atlas-data/blob/main/CHANGELOG.md#2026.09-2026-09-15)
